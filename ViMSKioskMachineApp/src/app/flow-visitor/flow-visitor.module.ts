@@ -46,12 +46,12 @@ import { staffDetailForTempComponent } from './staffDetailForTemp/staffDetailFor
 import { staffTemperatureComponent } from './staffTemperature/staffTemperature.component';
 import { visitorDetailForTempComponent } from './visitorDetailForTemp/visitorDetailForTemp.component';
 import { visitorTemperatureComponent } from './visitorTemperature/visitorTemperature.component';
-import { DialogPrepareForScanComponent1 } from '../questionnaries/questionnaries.component';
+import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnaries/questionnaries.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
      RegistrationTypeComponent, DialogPrepareForScanComponent, DialogPrepareForScanComponent1,
-      ScanRLoadingComponent,AppTermsAndCondtion,
+      ScanRLoadingComponent,AppTermsAndCondtion, DialogAlertBox,
       AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
       AppointmentSuccessComponent,DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
       VisitorPreApontmntComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
@@ -81,6 +81,7 @@ import { DialogPrepareForScanComponent1 } from '../questionnaries/questionnaries
   entryComponents: [
     BottomSheetPurposeSheet,BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect,
     BottomSheetGenderSelect,
+    DialogAlertBox,
     DialogVisitorAlreadyExist,takeVisitorPictureDialog,
     DialogMobileVerifyComponent,
     DialogPrepareForScanComponent,

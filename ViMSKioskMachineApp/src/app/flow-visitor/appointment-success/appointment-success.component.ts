@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { SettingsService } from 'src/services/settings.service';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 import {Location} from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-appointment-success',
@@ -19,11 +20,14 @@ export class AppointmentSuccessComponent implements OnInit {
   LOGO_IMG = "assets/images/cus_icons/icon_rightyes.png";
   TEST_PIN:any = "";
   RESULT_MSG = "";
+  RESULT_MSG2 = "";
+  RESULT_MSG3 = "";
   AVAL_VISITORS:any = [];
   CURRENT_VISTOR_CHCKIN_DATA_FOR_PRINT:any;
   EnableAcsQrCode:any = false;
   CheckInVisitorData:any=[];
-  DisplayImageHandlerURL:any=[];
+  DisplayImageHandlerURL:SafeResourceUrl;
+  base64Image = '';
   GScopeValue:any = ""; GVisitorPass:any = ""; GPermittedTime:any = "";
   LabelPrintEnable:any = false;
   LabelPrintManualOrAuto:any = 10;
@@ -33,10 +37,12 @@ export class AppointmentSuccessComponent implements OnInit {
     private settingsService:SettingsService,
     public datePipe:DatePipe,
     private _location: Location,
+    private domSanitizer: DomSanitizer,
     private dialog:MatDialog,
      private router:Router, private apiServices:ApiServices) {
     this.isLoading = true;
     this.TEST_PIN = "";
+    this.DisplayImageHandlerURL;
     this._initPrintAndCardDispenserValues();
   }
   _initPrintAndCardDispenserValues(){
@@ -137,7 +143,14 @@ export class AppointmentSuccessComponent implements OnInit {
       }
     }
   }
+  if (poReturnVal) {
     return JSON.parse(localStorage.getItem('APP_KIOSK_CODE_DECRIPTED')).ApiUrl+'Handler/QRImageHandler.ashx?Code='+poReturnVal;
+  } else {
+    const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
+
+    return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image.split('base64,')[1]);
+  }
+
   }
   triggerLabelPrint() {
     this.loadlblprint(this.CheckInVisitorData,(pri_status:boolean)=>{});
@@ -506,8 +519,16 @@ export class AppointmentSuccessComponent implements OnInit {
     this.isLoading = false;
     let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
     this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_sccess_msg1'] ;
+    this.RESULT_MSG2 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_mid'] ;
+    this.RESULT_MSG3 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_last'] ;
+    const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
+    if (image && !this.DisplayImageHandlerURL) {
+      this.DisplayImageHandlerURL = image;
+    }
     _timeout = parseInt(_timeout) * 1000;
-    setTimeout(()=>{this.router.navigateByUrl('/landing');},_timeout);
+    setTimeout(()=>{
+      this.router.navigateByUrl('/landing');
+    },_timeout);
   }
 
   // --------------- Print Label -------------------

@@ -55,7 +55,7 @@ import { MatVideoModule } from 'mat-video';
     NgVirtualKeyboardModule,
     MatVideoModule
  ],
-  providers: [ApiServices, DatePipe, SettingsService],
+  providers: [ApiServices, DatePipe , SettingsService],
   bootstrap: [AppComponent],
 
   entryComponents:[DialogAppCommonDialog,DialogAppSessionTimeOutDialog]

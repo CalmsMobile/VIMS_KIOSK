@@ -79,11 +79,14 @@ export class QuestionnariesComponent implements OnInit {
         if (this.QuestionsDisplay.length > 0) {
           this.position = 0;
         } else {
-          const dialogRef = this.dialog.open(DialogVisitorAlreadyExist, {
+          const dialogRef = this.dialog.open(DialogAlertBox, {
             //width: '50vw',
             data: {"title": "Questions not found", "subTile":"Please contact admin." }
           });
-          this._location.back();
+          dialogRef.afterClosed().subscribe(result => {
+            this._location.back();
+          });
+
         }
         console.log("QuestionsDisplay",data);
       } else {
@@ -147,11 +150,13 @@ export class QuestionnariesComponent implements OnInit {
     if (Enable_Safety_brief_video) {
       this.isPlayVideo = true;
       if (!this.videoPath) {
-        const dialogRef = this.dialog.open(DialogVisitorAlreadyExist, {
+        const dialogRef = this.dialog.open(DialogAlertBox, {
           //width: '50vw',
-          data: {"title": "Questions not found", "subTile":"Please contact admin." }
+          data: {"title": "Video not found", "subTile":"Please contact admin." }
         });
-        this._location.back();
+        dialogRef.afterClosed().subscribe(result => {
+          this._location.back();
+        });
         return;
       }
       // this.videoPath = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
@@ -164,9 +169,12 @@ export class QuestionnariesComponent implements OnInit {
           if(this._updateVisitorList()){
             this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
           } else{
-            const dialogRef = this.dialog.open(DialogVisitorAlreadyExist, {
+            const dialogRef = this.dialog.open(DialogAlertBox, {
               //width: '50vw',
               data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              this._location.back();
             });
           }
         });
@@ -175,9 +183,12 @@ export class QuestionnariesComponent implements OnInit {
       if(this._updateVisitorList()){
         this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
       } else{
-        const dialogRef = this.dialog.open(DialogVisitorAlreadyExist, {
+        const dialogRef = this.dialog.open(DialogAlertBox, {
           //width: '50vw',
           data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this._location.back();
         });
       }
     }
@@ -213,20 +224,15 @@ export class QuestionnariesComponent implements OnInit {
       disableClose:false,
       data: {
         "title": 'Warning',
-        "subTile": 'You have entered wrong answer. Do you wish to coninue?',
-        "cancel":'Retry',
-        "ok":'Proceed'
+        "subTile": 'Oops, based on your answer, you are not permitted to proceed. Click \'Yes\' to recheck your answer or click \'No\' to cancel the check-in & process to registration counter.',
+        "cancel":'No',
+        "ok":'Yes'
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        if (this.position + 1 === this.QuestionsDisplay.length) {
-          console.log('Reached End');
-          this.playVideo();
-        } else {
-          this.position = this.position + 1;
-        }
+      if(result === 'exit'){
+        this.router.navigateByUrl('/landing');
       } else{
 
       }
@@ -240,11 +246,11 @@ export class QuestionnariesComponent implements OnInit {
 @Component({
   selector: 'dialog-mobile-verify-dialog',
   template: `
-        <h2 mat-dialog-title margin-top>{{data.title}}</h2>
-        <h2 mat-dialog-title margin-top style="margin-bottom: 3vw;">{{data.subTile}}</h2>
-        <div mat-dialog-actions margin>
-          <button (click)="retry()" mat-raised-button my-theme-alt-button margin-right [mat-dialog-close]="false" > {{data.cancel}}</button>
-          <button (click)="proceed()" mat-raised-button my-theme-button [mat-dialog-close]="true"> {{data.ok}}</button>
+        <h1 mat-dialog-title margin>{{data.title}}</h1>
+        <h2 mat-dialog-title margin style="margin-bottom: 3vw !important;">{{data.subTile}}</h2>
+        <div mat-dialog-actions margin style="margin: 0 auto !important;display: table;">
+          <button (click)="proceed()" mat-raised-button my-theme-alt-button margin-right [mat-dialog-close]="false" > {{data.cancel}}</button>
+          <button (click)="retry()" mat-raised-button my-theme-button [mat-dialog-close]="true"> {{data.ok}}</button>
         </div>`,
 })
 export class DialogPrepareForScanComponent1 {
@@ -258,11 +264,11 @@ export class DialogPrepareForScanComponent1 {
   }
 
   retry():void {
-    this.dialogRef.close();
+    this.dialogRef.close('retry');
   }
 
   proceed():void {
-    this.dialogRef.close('continue');
+    this.dialogRef.close('exit');
   }
 
 }
@@ -279,10 +285,10 @@ export class DialogPrepareForScanComponent1 {
           [mat-dialog-close]="true" cdkFocusInitial> Ok</button>
         </div>`,
 })
-export class DialogVisitorAlreadyExist {
+export class DialogAlertBox {
 
   constructor(
-    public dialogRef: MatDialogRef<DialogVisitorAlreadyExist>,
+    public dialogRef: MatDialogRef<DialogAlertBox>,
     @Inject(MAT_DIALOG_DATA) public data) {}
 
   onNoClick(): void {

@@ -1,0 +1,22 @@
+[terms-condition]{
+    width: 60vw;
+    margin: auto;
+    height: 58vh;
+    background: white;
+    box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.3);
+    padding: 25px;
+    border-radius: 10px;
+    overflow-y: auto;
+    [terms-condition-body]{
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 95%;
+        height: 100%;
+        margin: auto;
+        text-align: left;
+    }
+}
+.cctv_counter{
+    padding: 20px;
+    border-radius: 50%; 
+}

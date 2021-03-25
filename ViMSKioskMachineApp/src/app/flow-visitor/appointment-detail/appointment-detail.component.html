@@ -1,0 +1,228 @@
+<div my-headerbar-visitorlist>
+  <!-- <button *ngIf="totalVisitors > 0" (click)="takeActFor('visitorSummary')" mat-icon-button my-theme-round-button
+    [matBadge]="totalVisitors" matBadgePosition="before" matBadgeColor="accent">
+    <i class="siva-icon-users-1"></i> </button> -->
+</div>
+<div style="text-align:center;padding:30px;">
+  <p info-title no-margin-top margin-bottom>
+    {{KIOSK_PROPERTIES.modules.only_visitor.appointment_screen_title}}
+  </p>
+  <div>
+      <!-- <div [style.paddingTop.vh]="PADDING_TOP" *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.enb_webCam_img_capture">
+          <div [style.backgroundImage]="'url(' + ((aptmDetails.visitorB64Image != '') ? aptmDetails.visitorB64Image : temp_take_pic) + ')'"
+          [style.border]="(aptmDetails.visitorB64Image != '') ? '4px solid white':'4px solid red'"
+          matRipple matRippleColor="rgba(255,255,255,0.1)" style="margin:0px auto;"
+          (click)="takeVistorProfilePicture()" visitor-img-capture-button
+          [style.height.vh]="WEB_CAM_HEIGHT"
+          [style.width.vh]="WEB_CAM_WIDTH">
+          <div *ngIf="aptmDetails.visitorB64Image != ''" class="recapture"
+          [style.marginLeft]= "WEB_CAM_BADG_MARGIN"><i class="siva-icon-camera"></i> </div>
+        </div>
+      </div> -->
+
+    <div style="padding-top:15vh;">
+      <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        (click)="openBottomCategorySelect()"
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Category.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Category.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Category.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Category.Caption}}</mat-label>
+          <input matInput readonly theme-input-button
+          [required]="KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory"
+          [(ngModel)]="aptmDetails.category" >
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        (click)="openBottomHostSelect()"
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Host.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Host.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Host.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Host.Caption}}</mat-label>
+          <input matInput readonly theme-input-button
+          [required]="KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory"
+          [(ngModel)]="aptmDetails.hostDetails.name">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.VisitorId.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory"
+          [(ngModel)]="aptmDetails.id"
+          (blur)="textDataBindTemp($event.target.value, 'id')"
+          (focusout)="itFocusOut($event.target.value, 'id')"
+          [disabled]="docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
+            spellcheck="false" autocomplete="off"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.VisitorId.Caption">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Name.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Name.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Name.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Name.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory"
+          [(ngModel)]="aptmDetails.name" (blur)="textDataBindTemp($event.target.value, 'name')"
+            spellcheck="false"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Name.Caption">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Company.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Company.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Company.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Company.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory"
+          [(ngModel)]="aptmDetails.company" (blur)="textDataBindTemp($event.target.value, 'company')"
+            spellcheck="false"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Company.Caption">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Contact.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Contact.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Contact.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Contact.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory"
+          [(ngModel)]="aptmDetails.contact" (blur)="textDataBindTemp($event.target.value, 'contact')"
+            spellcheck="false"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Contact.Caption">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.EmailId.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory"
+          [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')"
+            spellcheck="false"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.EmailId.Caption">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Vehicle.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory"
+          [(ngModel)]="aptmDetails.vehicle" (blur)="textDataBindTemp($event.target.value, 'vehicle')"
+            spellcheck="false"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Vehicle.Caption">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        (click)="openBottomPurposeSheet()"
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Purpose.Caption}}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.purpose"
+          [required]="KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory"
+          spellcheck="false">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        (click)="openBottomGenderSelect()"
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Gender.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Gender.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Gender.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Gender.Caption}}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.Gender"
+          [required]="KIOSK_PROPERTIES.CheckinSettings.Gender.Mandatory"
+          spellcheck="false">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        (click)="openBottomCountrySelect()"
+        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Country.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Country.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Country.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Country.Caption}}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.Country"
+          [required]="KIOSK_PROPERTIES.CheckinSettings.Country.Mandatory"
+          spellcheck="false">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+
+
+
+    </div>
+  </div>
+
+</div>
+<div my-footer-toolbar>
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
+    <i class="siva-icon-left-big"></i>
+  </button>
+  <button mat-raised-button my-theme-button (click)="takeActFor('addVisitor')"
+  *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_registration_action_type != 'single'"
+  [disabled]="
+  (KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Name.Show && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Company.Show && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Category.Show && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+  || (KIOSK_PROPERTIES.modules.only_visitor.checkin.enb_webCam_img_capture && (aptmDetails.visitorB64Image == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Host.Show && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
+  ">
+    {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_multi_act_but_label}}</button>
+
+    <button mat-raised-button my-theme-button *ngIf="showFirstPageFields"
+  style="float: right;" (click)="takeActFor('confirm')"
+  [disabled]="
+  (KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Name.Show && KIOSK_PROPERTIES.CheckinSettings.Name.Page1 && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Company.Show && KIOSK_PROPERTIES.CheckinSettings.Company.Page1 && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Category.Show && KIOSK_PROPERTIES.CheckinSettings.Category.Page1 && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Host.Show && KIOSK_PROPERTIES.CheckinSettings.Host.Page1 && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Gender.Show && KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 && KIOSK_PROPERTIES.CheckinSettings.Gender.Mandatory && (aptmDetails.Gender == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Country.Show && KIOSK_PROPERTIES.CheckinSettings.Country.Page1 && KIOSK_PROPERTIES.CheckinSettings.Country.Mandatory && (aptmDetails.Country == ''))
+  ">{{(showFirstPageFields && this.NUMBER_OF_INPUTS > 7)? 'Next' : KIOSK_PROPERTIES.modules.only_visitor.checkin.in_act_but_label}}</button>
+
+  <button mat-raised-button my-theme-button *ngIf="!showFirstPageFields"
+  style="float: right;" (click)="takeActFor('confirm')"
+  [disabled]="
+  (KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && !KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Name.Show && !KIOSK_PROPERTIES.CheckinSettings.Name.Page1 && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && !KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && !KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && !KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Company.Show && !KIOSK_PROPERTIES.CheckinSettings.Company.Page1 && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Category.Show && !KIOSK_PROPERTIES.CheckinSettings.Category.Page1 && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && !KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Host.Show && !KIOSK_PROPERTIES.CheckinSettings.Host.Page1 && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Gender.Show && !KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 && KIOSK_PROPERTIES.CheckinSettings.Gender.Mandatory && (aptmDetails.Gender == ''))
+  || (KIOSK_PROPERTIES.CheckinSettings.Country.Show && !KIOSK_PROPERTIES.CheckinSettings.Country.Page1 && KIOSK_PROPERTIES.CheckinSettings.Country.Mandatory && (aptmDetails.Country == ''))
+  ">{{(showFirstPageFields && this.NUMBER_OF_INPUTS > 7)? 'Next' : KIOSK_PROPERTIES.modules.only_visitor.checkin.in_act_but_label}}</button>
+</div>
+<!--
+(KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id != ''))
+  && (KIOSK_PROPERTIES.CheckinSettings.Name.Show && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name != ''))
+  && (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email != ''))
+&& (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact != ''))
+&& (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose != ''))
+&& (KIOSK_PROPERTIES.CheckinSettings.Company.Show && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company != ''))
+&& (KIOSK_PROPERTIES.CheckinSettings.Category.Show && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category != ''))
+&& (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle != ''))
+&& (KIOSK_PROPERTIES.modules.only_visitor.checkin.enb_webCam_img_capture && (aptmDetails.visitorB64Image != ''))
+&& (KIOSK_PROPERTIES.CheckinSettings.Host.Show && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name != ''))
+-->

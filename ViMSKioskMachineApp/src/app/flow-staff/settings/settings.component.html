@@ -1,0 +1,68 @@
+<div *ngIf="!isLogin" style="text-align:center;padding:30px;">
+  <p info-title>
+    Please enter Passcode
+  </p>
+  <div style="margin-top:40px;">
+    <input type="text" passcode-big-textbox [(ngModel)]="HOST_PASSCODE_PIN" maxlength="6" (blur)="textDataBindTemp($event.target.value, 'HOST_PASSCODE_PIN')"
+      ng-virtual-keyboard ng-virtual-keyboard-layout="numeric" ng-virtual-keyboard-placeholder="Passcode" />
+  </div>
+  <div style="margin-top:60px;">
+    <button mat-raised-button my-theme-button (click)="takeActFor('back')" style="margin-right:100px;">Back</button>
+    <button mat-raised-button my-theme-button [disabled]="HOST_PASSCODE_PIN.length < 6" (click)="takeActFor('next')">Next</button>
+  </div>
+</div>
+<div *ngIf="isLogin" style="text-align:center;padding:30px;">
+  <table my-settings-table style="margin-top:5vh;">
+    <tr>
+      <td width="25%"> Available Card</td>
+      <td width="20%"> {{VM.avlCard}}</td>
+      <td width="30%">
+        <input type="text" my-sett-table-textbox [(ngModel)]="VM.addCard" maxlength="3" ng-virtual-keyboard
+          ng-virtual-keyboard-layout="numeric" ng-virtual-keyboard-placeholder="Available Card" />
+      </td>
+      <td width="25%">
+        <button mat-raised-button my-theme-button (click)="takeActFor('add')" style="margin-right:20px;min-height: 5vh;
+        padding: 2.5vh 3vh !important;">+</button>
+        <button mat-raised-button my-theme-button (click)="takeActFor('min')" style="min-height: 5vh;
+        padding: 2.5vh 3vh !important;">-</button>
+      </td>
+    </tr>
+    <tr>
+      <td width="25%"> Passcode</td>
+      <td width="20%"> {{VM.passcode}}</td>
+      <td width="30%">
+        <input type="text" my-sett-table-textbox [(ngModel)]="VM.newPasscode" maxlength="6" ng-virtual-keyboard
+          ng-virtual-keyboard-layout="numeric" ng-virtual-keyboard-placeholder="Passcode" />
+      </td>
+      <td width="25%"> <button mat-raised-button my-theme-button (click)="takeActFor('save')" style="min-height: 7vh;">Save</button></td>
+    </tr>
+    <tr>
+      <td width="25%"> COM Port Card</td>
+      <td width="20%"> {{VM.COM_PORT_CARD}}</td>
+      <td width="30%">
+        <input type="text" my-sett-table-textbox [(ngModel)]="VM.NEW_COM_PORT_CARD" ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended" ng-virtual-keyboard-placeholder="COM Port Card" />
+      </td>
+      <td width="25%"> <button mat-raised-button my-theme-button (click)="takeActFor('savecardcom')" style="min-height: 7vh;">Save</button></td>
+    </tr>
+    <tr>
+      <td width="25%"> Timeout (in seconds)</td>
+      <td width="25%">
+        <input type="number" my-sett-table-textbox placeholder="Before message" maxlength="3" (blur)="textDataBindTemp($event.target.value, 'card_scrnTimOut')"
+          [(ngModel)]="VM.card_scrnTimOut" ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
+          ng-virtual-keyboard-placeholder="Before message" />
+      </td>
+      <td width="25%">
+        <input type="text" my-sett-table-textbox placeholder="After message" [(ngModel)]="VM.card_showTimeOutMsgAfter"
+          maxlength="3" (blur)="textDataBindTemp($event.target.value, 'card_showTimeOutMsgAfter')" ng-virtual-keyboard
+          ng-virtual-keyboard-layout="numeric" ng-virtual-keyboard-placeholder="After message" />
+      </td>
+      <td width="25%"> <button mat-raised-button my-theme-button (click)="takeActFor('saveTimeInter')" style="min-height: 7vh;">Save</button></td>
+    </tr>
+  </table>
+</div>
+<div my-footer-toolbar>
+  <button mat-raised-button my-theme-button (click)="takeActFor('back')">Close</button>
+  <button mat-raised-button my-theme-button style="margin-left:4vw" (click)="closeWindow('exit')">Exit from App</button>
+  <button mat-raised-button my-theme-button style="display: none;" class="testButton" (click)="takeActFor('testing')">Test</button>
+</div>

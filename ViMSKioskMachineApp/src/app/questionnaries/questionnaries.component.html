@@ -1,0 +1,44 @@
+<div *ngIf="!isPlayVideo">
+  <div style="text-align:center;padding:20px;">
+    <p info-title>
+      Screening Questions
+    </p>
+
+
+
+    <div style="margin-top: 15vh;;margin-left: 5vh;">
+       <div *ngIf="position > -1">
+        <div class="badge badge-info" style="color: white;
+        font-size: 35px; text-align: left;"></div>
+      <h1 style="color: white;"><span [innerHTML]="QuestionsDisplay[position].Description"></span></h1>
+      <div style="display: inline-block;
+      margin: 0 auto;margin-top: 15vh;">
+        <button mat-raised-button my-theme-button (click)="takeActFor('yes')" style="float: left;margin-right: 20px;">
+          YES
+        </button>
+        <button mat-raised-button my-theme-button
+        style="float: right;margin-left: 20px;" (click)="takeActFor('no')"
+        >NO</button>
+      </div>
+    </div>
+   </div>
+  </div>
+
+
+
+  <div my-footer-toolbar>
+    <button mat-icon-button my-theme-round-button (click)="takeActFor('prev')" style="float: left;">
+      <i class="siva-icon-left-big"></i>
+    </button>
+
+    <button mat-raised-button my-theme-button
+    style="float: right;" (click)="takeActFor('next')"
+    >NEXT</button>
+  </div>
+</div>
+<div *ngIf="isPlayVideo" style="height: 100vh">
+  <mat-video #video [autoplay]="true" [fullscreen]="true" [overlay]="false" [download]="false" src="{{videoPath}}"></mat-video>
+  <!-- <mat-video title="My Tutorial Title" [autoplay]="true" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="spin" poster="image.jpg">
+    <source matVideoSource src="" type="video/mp4">
+  </mat-video> -->
+</div>

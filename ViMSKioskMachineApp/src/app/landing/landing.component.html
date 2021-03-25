@@ -1,0 +1,41 @@
+<button mat-button (click)="gotoCountClickSettings()"
+style="position: absolute;
+right: 0;
+min-height: 15vh;
+min-width: 15vh;z-index: 999999999;">
+</button>
+<div my-headerbar-homeButton *ngIf="KIOSK_PROPERTIES.modules.card_dispenser.enable">
+  <button disabled mat-icon-button my-theme-round-button
+    [matBadge]="KIOSK_AVAL_CARDS" matBadgePosition="before" matBadgeColor="accent">
+    <i class="siva-icon-docs-1"></i> </button>
+</div> 
+<div style="text-align:center;padding:30px;" >
+  <h1 welcome-title *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''">
+    {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1}}
+  </h1>
+  <img style="height: 24vh;margin-top: 2vh;" alt="Angular Logo" [src]="LOGO_IMG">
+  <h3 info-title  *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''"
+  style="margin-top:10vh;">
+      {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2}}</h3>
+</div>
+<div style="text-align: center;">
+  <input type="text" id="readStaffCard" #readStaffCard autofocus [(ngModel)]="StaffCardNo" (keyup.enter)="readStaffCardEnter()"/>
+</div>
+<div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.modules.app_flow_type == 'staff_and_visitor'">
+  <button mat-raised-button my-theme-button (click)="takeActFor('staff')" style="margin-right:100px;">Staff</button>
+  <button mat-raised-button my-theme-button (click)="takeActFor('visitor')">Visitor</button>
+</div>
+<div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.General.AppType == '10' || KIOSK_PROPERTIES.General.AppType == '30'">
+  <button mat-raised-button my-theme-button 
+    [ngClass]="{ bigmarginright: KIOSK_PROPERTIES.modules.only_visitor.CheckinOption}"
+    *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
+    (click)="takeActFor('vcheckout')"
+    [disabled]="!IF_CONNECT_WITH_SERVER">
+      {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}</button>
+  <button mat-raised-button my-theme-button 
+  *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckinOption"
+  (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
+    {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_in_btn_label}}</button>
+  
+</div>
+

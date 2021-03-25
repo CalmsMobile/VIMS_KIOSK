@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ViMS Self Check-in Kiosk</title>
+  <!-- <base href="/"> -->
+  <!-- For Electron Changes -->
+  <base href="./"> 
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <link href="assets/fonts/Font_Roboto.css" rel="stylesheet">
+  <link href="assets/fonts/Materialiconfont/material-icons.css" rel="stylesheet">
+  <style id="MY_RUNTIME_CSS">
+    
+    .testButton{
+      display: none !important;
+    }
+  </style>
+</head>
+<body app-bg>
+  <div id="bodyloader">
+      <div class='loading'>
+          <div class='bullet'></div>
+          <div class='bullet'></div>
+          <div class='bullet'></div>
+          <div class='bullet'></div>
+          <div class='bullet'></div>
+        </div>
+  </div>
+  <app-root ></app-root>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!-- <div style="position: fixed;top: 50px;left:50px">
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('adminsettings')">
+    <i class="siva-icon-cog"></i> </button>
+</div> -->
+<div loader-page *ngIf="isLoading">
+  <div>
+    <p info-title style="text-align:center;">
+      Processing ...
+    </p>
+    <div class='loading'>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+    </div>
+  </div>
+</div>
+<div style="position: fixed;top: 50px;right:50px" *ngIf="!isLoading && AVAL_VISITORS.length > 0">
+  <button mat-icon-button my-theme-round-button disabled [matBadge]="AVAL_VISITORS.length" matBadgePosition="before"
+    matBadgeColor="accent">
+    <i class="siva-icon-users-1"></i> </button>
+</div>
+<div style="text-align:center;padding:30px;" *ngIf="!isLoading &&  AVAL_VISITORS.length > 0">
+  <p info-title no-margin-top margin-bottom>
+    Appointment Details
+  </p>
+  <table my-appointment-table style="margin-top:5vh;">
+    <tr>
+      <td width="35%"> Name</td>
+      <td width="65%"> {{AVAL_VISITORS[0]['visitor_name']}}</td>
+    </tr>
+    <!-- <tr>
+      <td width="35%"> UID</td>
+      <td width="65%"> {{AVAL_VISITORS[0]['att_visitor_id']}}</td>
+    </tr> -->
+    <tr>
+      <td width="35%"> Date of Visit</td>
+      <td width="65%"> {{AVAL_VISITORS[0]['att_check_in_date'] | date:'dd/MM/yyyy'}}</td>
+    </tr>
+    <tr>
+      <td width="35%"> Time of Visit</td>
+      <td width="65%"> {{AVAL_VISITORS[0]['att_check_in_time'] | date:'shortTime'}}</td>
+    </tr>
+    <tr>
+      <td width="35%"> Host Number</td>
+      <td width="65%"> {{AVAL_VISITORS[0]['hostnumber']}}</td>
+    </tr>
+    <tr>
+      <td width="50"> Purpose</td>
+      <td width="50"> {{AVAL_VISITORS[0]['att_reason']}}</td>
+    </tr>
+  </table>
+  <mat-form-field class="example-full-width" style="opacity:0;">
+    <input #cardSerInput matInput (keydown.enter)="onKeydown($event)" placeholder="Card Serial Number" value="">
+  </mat-form-field>
+
+</div>
+<div my-footer-toolbar *ngIf="page == 'in'">
+  <button mat-raised-button my-theme-button [disabled]="!AVAL_VISITORS.length > 0" (click)="takeActFor('dproceed')"
+    style="margin-right:100px;">Don't Proceed</button>
+  <button mat-raised-button my-theme-button [disabled]="!AVAL_VISITORS.length > 0" (click)="takeActFor('proceed')">Proceed</button>
+</div>
+<div my-footer-toolbar *ngIf="page == 'out'">
+  <button mat-raised-button my-theme-button [disabled]="!AVAL_VISITORS.length > 0" (click)="takeActFor('signOut')"
+    style="margin-right:100px;">Sign Out</button>
+</div>
+<div style="text-align:center;padding:30px;" *ngIf="AVAL_VISITORS.length <= 0 && showMsg">
+  <div info-title margin-bottom style="margin-top: 30vh;">
+    Appointment Already Sign {{page}}
+  </div>
+</div>

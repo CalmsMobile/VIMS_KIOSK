@@ -1,0 +1,25 @@
+[big-mobiletextbox]{
+    font-size: 7vh;
+    color: #d50109;
+    padding: 10px 30px;
+    max-width: 25vw;
+    border: 0px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    &:focus{
+        outline: none;
+    }
+}
+[mobilenumber-prefix]{
+    background: #d50109;
+    color: #fff;
+    display: inline;
+    padding: 20px 10px 20px 20px;
+    border-radius: 10px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

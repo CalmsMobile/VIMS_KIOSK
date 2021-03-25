@@ -1,0 +1,29 @@
+<div style="text-align:center;padding:30px;">
+  <p info-title no-margin-top margin-bottom>
+    Total visitors {{listOFvisitors.length}}
+  </p>
+  <div style="min-height:60vh;max-height:60vh;overflow: auto;width: auto;width: 70vw;margin:auto;margin-top:5vh;">
+  <table my-appointment-table style="width: 100%;" *ngIf="listOFvisitors.length > 0">
+    <tr *ngFor="let visitor of listOFvisitors; let i = index;">
+      <td> {{visitor.name}} </td>
+      <td width="50px" no-padding>
+        <button style="line-height: 4.5vw;"mat-button no-padding no-margin
+        (click)="deleteThisItem(i)">
+          <mat-icon style="font-size: 2.8vw;line-height: 3vw;height: auto;width:auto;min-width: 100px;">delete_forever</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </table>
+  <div info-title *ngIf="listOFvisitors.length <= 0"> Please add visitors </div>
+</div>
+</div>
+<div my-footer-toolbar>
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
+    <i class="siva-icon-left-big"></i>
+  </button>
+    <button mat-raised-button my-theme-button (click)="takeActFor('addVisitor')" 
+    style="margin-right:60px;">Add Visitor</button>
+    <button mat-raised-button my-theme-button style="float: right;"
+     (click)="takeActFor('confirm')">Confirm</button>
+     
+  </div>

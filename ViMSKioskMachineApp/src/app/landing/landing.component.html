@@ -8,7 +8,7 @@ min-width: 15vh;z-index: 999999999;">
   <button disabled mat-icon-button my-theme-round-button
     [matBadge]="KIOSK_AVAL_CARDS" matBadgePosition="before" matBadgeColor="accent">
     <i class="siva-icon-docs-1"></i> </button>
-</div> 
+</div>
 <div style="text-align:center;padding:30px;" >
   <h1 welcome-title *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''">
     {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1}}
@@ -26,16 +26,76 @@ min-width: 15vh;z-index: 999999999;">
   <button mat-raised-button my-theme-button (click)="takeActFor('visitor')">Visitor</button>
 </div>
 <div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.General.AppType == '10' || KIOSK_PROPERTIES.General.AppType == '30'">
-  <button mat-raised-button my-theme-button 
-    [ngClass]="{ bigmarginright: KIOSK_PROPERTIES.modules.only_visitor.CheckinOption}"
+  <!-- <mat-radio-group>
+    <mat-radio-button my-reg-option-radio sp-button-violet-out
     *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
+      matRipple matRippleColor="rgba(255,255,255,0.1)"
+      value="PREAPPOINTMT" (click)="takeActFor('vcheckout')">
+      {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}
+    </mat-radio-button>
+
+    <mat-radio-button my-reg-option-radio sp-button-yellow-out
+    *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckinOption"
+      matRipple matRippleColor="rgba(255,255,255,0.1)"
+      value="OTHER" (click)="takeActFor('vcheckinapproval')">
+      {{KIOSK_PROPERTIES.ApptFieldSettings.Caption}}
+    </mat-radio-button>
+
+
+    <mat-radio-button my-reg-option-radio sp-button-yellow-out
+    *ngIf="KIOSK_PROPERTIES.ApptFieldSettings.Enable"
+      matRipple matRippleColor="rgba(255,255,255,0.1)"
+      value="OTHER" (click)="takeActFor('vcheckinapproval')">
+      {{KIOSK_PROPERTIES.ApptFieldSettings.Caption}}
+    </mat-radio-button>
+  </mat-radio-group> -->
+
+  <button my-reg-option-radio sp-button-violet-out matRipple
+  matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
+  font-size: 20px;
+  font-weight: 700;"
+*ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
     (click)="takeActFor('vcheckout')"
     [disabled]="!IF_CONNECT_WITH_SERVER">
-      {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}</button>
-  <button mat-raised-button my-theme-button 
-  *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckinOption"
-  (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_in_btn_label}}</button>
-  
+
+      <img src="../assets/images/cus_icons/checkout.png" style="    width: 80px;
+      height: 80px;
+      padding-bottom: 10px;
+      margin: 0 auto;
+      display: block;"/>
+ {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}</button>
+
+    <button my-reg-option-radio sp-button-red-out matRipple
+    matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
+    font-size: 20px;
+    font-weight: 700;"
+    *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckinOption"
+    value="CHECKIN"
+    (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
+    <img src="../assets/images/cus_icons/checkin.png" style="    width: 80px;
+    height: 80px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+    display: block;"/>
+      {{KIOSK_PROPERTIES.CheckinSettings.Caption}}</button>
+
+    <button my-reg-option-radio sp-button-green-out matRipple
+    matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
+    font-size: 20px;
+    font-weight: 700;"
+    *ngIf="KIOSK_PROPERTIES.ApptFieldSettings.Enable"
+    (click)="takeActFor('vcheckinapproval')" [disabled]="!IF_CONNECT_WITH_SERVER">
+    <img src="../assets/images/cus_icons/register.png" style="   width: 80px;
+    height: 80px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+    display: block;"/>
+      {{KIOSK_PROPERTIES.ApptFieldSettings.Caption}}</button>
+
+      <!-- <button mat-raised-button my-theme-button style="margin-right: 5vh;"
+      *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor"
+      (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
+        {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label}}</button> -->
+
 </div>
 

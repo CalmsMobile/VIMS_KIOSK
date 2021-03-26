@@ -7,6 +7,7 @@ import { SettingsService } from 'src/services/settings.service';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 import {Location} from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AppSettings } from 'src/services/app.settings';
 
 @Component({
   selector: 'app-appointment-success',
@@ -23,6 +24,7 @@ export class AppointmentSuccessComponent implements OnInit {
   RESULT_MSG2 = "";
   RESULT_MSG3 = "";
   AVAL_VISITORS:any = [];
+  mainModule = '';
   CURRENT_VISTOR_CHCKIN_DATA_FOR_PRINT:any;
   EnableAcsQrCode:any = false;
   CheckInVisitorData:any=[];
@@ -100,6 +102,7 @@ export class AppointmentSuccessComponent implements OnInit {
       // },100);
   }
   ngOnInit() {
+    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     this._updateKioskSettings();
     this.sub = this.route
       .queryParams
@@ -177,6 +180,12 @@ export class AppointmentSuccessComponent implements OnInit {
       uploadArray['visitorDetails'][0]['temperature']=localStorage.getItem("Temperature");
       uploadArray['visitorDetails'][0].category = uploadArray['visitorDetails'][0].categoryId;
     }
+
+    if (this.mainModule === 'vcheckinapproval') {
+      this.callApitoSaveAppointment(uploadArray['visitorDetails'][0]);
+      return;
+    }
+
     this.apiServices.localPostMethod("AddAttendanceForVisitor", uploadArray).subscribe((data:any) => {
       console.log(data);
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
@@ -228,6 +237,101 @@ export class AppointmentSuccessComponent implements OnInit {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
     }
   }
+
+  callApitoSaveAppointment(appointment1) {
+    const cDate = new Date();
+    const startTime = this.datePipe.transform(cDate+"", "yyyy-MM-ddTHH:mm:ss");
+    const endDate = new Date().setTime(new Date().getTime() + (appointment1.meetingHoursValue? appointment1.meetingHoursValue: 1) *60*60*1000);
+    const endTime = this.datePipe.transform(endDate+"", "yyyy-MM-ddTHH:mm:ss");
+    const appointment : any = {};
+    appointment.SEQ_ID = '';
+    appointment.Address = '';
+    appointment.CategoryId = appointment1.categoryId? appointment1.categoryId: '';
+    appointment.CompanyId = appointment1.company? appointment1.company: '';
+    appointment.Contact = appointment1.contact? appointment1.contact: '';
+    appointment.CountryId = appointment1.Country? appointment1.Country: '';
+    appointment.Email = appointment1.email? appointment1.email: '';
+    appointment.EndDateTime = endTime;
+    appointment.FloorId = '';
+    appointment.FullName = appointment1.name? appointment1.name: '';
+    appointment.GenderId = appointment1.gender? appointment1.gender: '';
+
+    appointment.HostDeptId = appointment1.hostDetails.HostDeptId?appointment1.hostDetails.HostDeptId:'';
+    appointment.HostId = appointment1.hostDetails.id?appointment1.hostDetails.id:'';
+    appointment.IdentityNo = appointment1.id? appointment1.id: '';
+    appointment.Photo = appointment1.visitorB64Image? appointment1.visitorB64Image: '';
+    appointment.PurposeId = appointment1.purpose? appointment1.purpose: '';
+    appointment.Remarks = '';
+    appointment.RoomId = '';
+
+    appointment.StartDateTime = startTime;
+    appointment.VehicleNo = appointment1.vehicle;
+    appointment.AnswerList = appointment1.VisitorAnswers;
+    appointment.AttachmentList = '';
+    appointment.CheckList = '';
+    appointment.VehicleBrand = '';
+    appointment.VehicleModel = '';
+    appointment.VehicleColor = '';
+
+    var _callErrorMsg = ()=>{
+      this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_sccess_msg2'] ;
+      const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+        data: {"title": this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_sccess_msg2'], "subTile":"Please try again or Contact Reception" }
+      });
+      dialogRef.afterClosed().subscribe((data)=>{
+        this.router.navigateByUrl('/landing');
+      });
+    }
+
+    if (appointment) {
+      console.log("VisitorAckSave : " + JSON.stringify(appointment));
+    }
+  this.apiServices.localPostMethod("VisitorAckSave", appointment).subscribe((data:any) => {
+    console.log(data);
+    if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+      let _RETdata = data[0]["Data"];
+      if(_RETdata != ""){
+        let Data = JSON.parse(_RETdata) || [];
+        console.log(Data);
+        if(Data["Table"]!= undefined && Data["Table"].length > 0 && (Data["Table"][0]['code'] == 'S' || Data["Table"][0]['Code'] == 10)){
+          this.isLoading = false;
+          let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
+          this.RESULT_MSG = Data["Table"][0].description;
+          _timeout = parseInt(_timeout) * 1000;
+          setTimeout(()=>{
+            this.router.navigateByUrl('/landing');
+          },_timeout);
+        } else if(Data["Table"]!= undefined && Data["Table"].length > 0 && Data["Table"][0]['code'] == 'S'){
+          const dialogRef = this.dialog.open(DialogAppCommonDialog, {
+            disableClose:true,
+            data: {"title": "Notification", "subTile":Data["Table"][0]['description'],
+            "enbCancel":true,"oktext":"Retry","canceltext":"Cancel"}
+          });
+          dialogRef.afterClosed().subscribe(result => {
+             if(result){
+               this._registerVisitors(true);
+             } else{
+              //this.router.navigateByUrl('/landing');
+              localStorage.setItem("VISI_LIST_ARRAY",'{"appSettings":{}, "visitorDetails" :[]}');
+              this._location.back();
+             }
+          });
+        } else{
+          _callErrorMsg();
+          return false;
+        }
+      }
+    } else{
+      _callErrorMsg();
+      return false;
+    }
+  } ,
+  err => {
+    _callErrorMsg();
+    return false;
+  });
+}
+
   private visitorIndividualCheckIn(att_id:string, att_card_serialno:string, _callback:any){
     let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     let vbookingseqid = '';

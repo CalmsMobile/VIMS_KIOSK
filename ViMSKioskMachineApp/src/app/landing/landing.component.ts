@@ -82,7 +82,7 @@ export class LandingComponent implements OnInit {
       //this.router.navigateByUrl('/staffFlow');
     } else if(action === "visitor"){
       //this.router.navigateByUrl('/visitorAgree');
-    } else if(action === "vcheckin"){
+    } else if(action === "vcheckin" || action === 'vcheckinapproval'){
       this.checkCardPosition((status:boolean)=>{
         if(status){
           if(this.KIOSK_PROPERTIES['modules']['T_adn_C']['enable']){
@@ -96,6 +96,7 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+                  localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
                   const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
                   this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
@@ -125,6 +126,7 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+                  localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
                   const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
                   this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
@@ -154,6 +156,7 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+                  localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
                   const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
                   this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
@@ -182,7 +185,8 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
                 this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual && action === 'vcheckin') {
+                  localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
                   this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: 'PREAPPOINTMT' }});
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
@@ -190,8 +194,10 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+                  localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
                   this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
               } else {
+                localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
                 this.router.navigateByUrl('/visitorRegisType');
               }
             }

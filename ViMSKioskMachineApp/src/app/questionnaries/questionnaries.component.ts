@@ -67,7 +67,7 @@ export class QuestionnariesComponent implements OnInit {
         }
         const resultData = JSON.parse(data[0].Data);
         if (resultData.Table1.length > 0) {
-          this.videoPath = api + resultData.Table1[0].VideoUrl;
+          this.videoPath = api + '/FS/' + resultData.Table1[0].VideoUrl;
         }
 
       } catch (error) {
@@ -135,7 +135,7 @@ export class QuestionnariesComponent implements OnInit {
 
 
     } else if (action === 'prev'){
-      if ((this.position - 1) === 0) {
+      if ((this.position - 1) <= 0) {
         console.log('Reached first');
         this._location.back();
       } else {

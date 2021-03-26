@@ -25,10 +25,10 @@
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
         (click)="openBottomCategorySelect()"
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Category.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Category.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Category.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Category.Caption}}</mat-label>
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Category.Caption}}</mat-label>
           <input matInput readonly theme-input-button
-          [required]="KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
           [(ngModel)]="aptmDetails.category" >
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -37,10 +37,10 @@
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
         (click)="openBottomHostSelect()"
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Host.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Host.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Host.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Host.Caption}}</mat-label>
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption}}</mat-label>
           <input matInput readonly theme-input-button
-          [required]="KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
           [(ngModel)]="aptmDetails.hostDetails.name">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -48,86 +48,86 @@
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.VisitorId.Caption}}</mat-label>
-          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory"
           [(ngModel)]="aptmDetails.id"
           (blur)="textDataBindTemp($event.target.value, 'id')"
           (focusout)="itFocusOut($event.target.value, 'id')"
           [disabled]="docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
             spellcheck="false" autocomplete="off"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.VisitorId.Caption">
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Name.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Name.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Name.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Name.Caption}}</mat-label>
-          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory"
           [(ngModel)]="aptmDetails.name" (blur)="textDataBindTemp($event.target.value, 'name')"
             spellcheck="false"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Name.Caption">
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Company.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Company.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Company.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Company.Caption}}</mat-label>
-          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
           [(ngModel)]="aptmDetails.company" (blur)="textDataBindTemp($event.target.value, 'company')"
             spellcheck="false"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Company.Caption">
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Contact.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Contact.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Contact.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Contact.Caption}}</mat-label>
-          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
           [(ngModel)]="aptmDetails.contact" (blur)="textDataBindTemp($event.target.value, 'contact')"
             spellcheck="false"
             ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Contact.Caption">
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.EmailId.Caption}}</mat-label>
-          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory"
           [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')"
             spellcheck="false"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.EmailId.Caption">
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Vehicle.Caption}}</mat-label>
-          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption}}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
           [(ngModel)]="aptmDetails.vehicle" (blur)="textDataBindTemp($event.target.value, 'vehicle')"
             spellcheck="false"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.CheckinSettings.Vehicle.Caption">
+            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
         (click)="openBottomPurposeSheet()"
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Purpose.Caption}}</mat-label>
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.purpose"
-          [required]="KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -136,10 +136,10 @@
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
         (click)="openBottomGenderSelect()"
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Gender.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Gender.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Gender.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Gender.Caption}}</mat-label>
-          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.Gender"
-          [required]="KIOSK_PROPERTIES.CheckinSettings.Gender.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Caption}}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.gender"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -148,15 +148,24 @@
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
         (click)="openBottomCountrySelect()"
-        *ngIf="KIOSK_PROPERTIES.CheckinSettings.Country.Show && ((showFirstPageFields && KIOSK_PROPERTIES.CheckinSettings.Country.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.CheckinSettings.Country.Page1))">
-          <mat-label>{{KIOSK_PROPERTIES.CheckinSettings.Country.Caption}}</mat-label>
-          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.Country"
-          [required]="KIOSK_PROPERTIES.CheckinSettings.Country.Mandatory"
+        *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1))">
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Country.Caption}}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.country"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
 
-
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
+        (click)="openBottomHoursSelect()" *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1))">
+          <mat-label>{{'Meeting Hours'}}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.meetingHours"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory"
+          spellcheck="false">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
     </div>
   </div>
@@ -169,60 +178,61 @@
   <button mat-raised-button my-theme-button (click)="takeActFor('addVisitor')"
   *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_registration_action_type != 'single'"
   [disabled]="
-  (KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Name.Show && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Company.Show && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Category.Show && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
-  || (KIOSK_PROPERTIES.modules.only_visitor.checkin.enb_webCam_img_capture && (aptmDetails.visitorB64Image == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Host.Show && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
+  (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory && (aptmDetails.contact == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && (aptmDetails.purpose == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory && (aptmDetails.company == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
   ">
     {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_multi_act_but_label}}</button>
 
     <button mat-raised-button my-theme-button *ngIf="showFirstPageFields"
   style="float: right;" (click)="takeActFor('confirm')"
   [disabled]="
-  (KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Name.Show && KIOSK_PROPERTIES.CheckinSettings.Name.Page1 && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Company.Show && KIOSK_PROPERTIES.CheckinSettings.Company.Page1 && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Category.Show && KIOSK_PROPERTIES.CheckinSettings.Category.Page1 && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Host.Show && KIOSK_PROPERTIES.CheckinSettings.Host.Page1 && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Gender.Show && KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 && KIOSK_PROPERTIES.CheckinSettings.Gender.Mandatory && (aptmDetails.Gender == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Country.Show && KIOSK_PROPERTIES.CheckinSettings.Country.Page1 && KIOSK_PROPERTIES.CheckinSettings.Country.Mandatory && (aptmDetails.Country == ''))
+  (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory && (aptmDetails.contact == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && (aptmDetails.purpose == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory && (aptmDetails.company == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.Gender == ''))
+  || (mainModule === 'vcheckinapproval' && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory && !aptmDetails.meetingHours)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory && (aptmDetails.Country == ''))
   ">{{(showFirstPageFields && this.NUMBER_OF_INPUTS > 7)? 'Next' : KIOSK_PROPERTIES.modules.only_visitor.checkin.in_act_but_label}}</button>
 
   <button mat-raised-button my-theme-button *ngIf="!showFirstPageFields"
   style="float: right;" (click)="takeActFor('confirm')"
   [disabled]="
-  (KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && !KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Name.Show && !KIOSK_PROPERTIES.CheckinSettings.Name.Page1 && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && !KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && !KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && !KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Company.Show && !KIOSK_PROPERTIES.CheckinSettings.Company.Page1 && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Category.Show && !KIOSK_PROPERTIES.CheckinSettings.Category.Page1 && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && !KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Host.Show && !KIOSK_PROPERTIES.CheckinSettings.Host.Page1 && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Gender.Show && !KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 && KIOSK_PROPERTIES.CheckinSettings.Gender.Mandatory && (aptmDetails.Gender == ''))
-  || (KIOSK_PROPERTIES.CheckinSettings.Country.Show && !KIOSK_PROPERTIES.CheckinSettings.Country.Page1 && KIOSK_PROPERTIES.CheckinSettings.Country.Mandatory && (aptmDetails.Country == ''))
+  (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory && (aptmDetails.contact == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && (aptmDetails.purpose == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory && (aptmDetails.company == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.Gender == ''))
+  || (mainModule === 'vcheckinapproval' && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory && !aptmDetails.meetingHours)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory && (aptmDetails.Country == ''))
   ">{{(showFirstPageFields && this.NUMBER_OF_INPUTS > 7)? 'Next' : KIOSK_PROPERTIES.modules.only_visitor.checkin.in_act_but_label}}</button>
 </div>
 <!--
-(KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show && KIOSK_PROPERTIES.CheckinSettings.VisitorId.Mandatory && (aptmDetails.id != ''))
-  && (KIOSK_PROPERTIES.CheckinSettings.Name.Show && KIOSK_PROPERTIES.CheckinSettings.Name.Mandatory && (aptmDetails.name != ''))
-  && (KIOSK_PROPERTIES.CheckinSettings.EmailId.Show && KIOSK_PROPERTIES.CheckinSettings.EmailId.Mandatory && (aptmDetails.email != ''))
-&& (KIOSK_PROPERTIES.CheckinSettings.Contact.Show && KIOSK_PROPERTIES.CheckinSettings.Contact.Mandatory && (aptmDetails.contact != ''))
-&& (KIOSK_PROPERTIES.CheckinSettings.Purpose.Show && KIOSK_PROPERTIES.CheckinSettings.Purpose.Mandatory && (aptmDetails.purpose != ''))
-&& (KIOSK_PROPERTIES.CheckinSettings.Company.Show && KIOSK_PROPERTIES.CheckinSettings.Company.Mandatory && (aptmDetails.company != ''))
-&& (KIOSK_PROPERTIES.CheckinSettings.Category.Show && KIOSK_PROPERTIES.CheckinSettings.Category.Mandatory && (aptmDetails.category != ''))
-&& (KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show && KIOSK_PROPERTIES.CheckinSettings.Vehicle.Mandatory && (aptmDetails.vehicle != ''))
+(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id != ''))
+  && (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name != ''))
+  && (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email != ''))
+&& (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory && (aptmDetails.contact != ''))
+&& (KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && (aptmDetails.purpose != ''))
+&& (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory && (aptmDetails.company != ''))
+&& (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category != ''))
+&& (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle != ''))
 && (KIOSK_PROPERTIES.modules.only_visitor.checkin.enb_webCam_img_capture && (aptmDetails.visitorB64Image != ''))
-&& (KIOSK_PROPERTIES.CheckinSettings.Host.Show && KIOSK_PROPERTIES.CheckinSettings.Host.Mandatory && (aptmDetails.hostDetails.name != ''))
+&& (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name != ''))
 -->

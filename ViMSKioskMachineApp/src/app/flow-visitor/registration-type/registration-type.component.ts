@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ApiServices } from 'src/services/apiService';
+import { AppSettings } from 'src/services/app.settings';
 export interface DialogData {
   title: string;
   subTile: string;
@@ -15,7 +16,8 @@ export class RegistrationTypeComponent implements OnInit {
 
   SEL_REGISTRATION_TYPE:any = '';
   totalVisitors:number = 0;
-  constructor(private router:Router, private dialog:MatDialog,private apiServices:ApiServices) { 
+  mainModule = '';
+  constructor(private router:Router, private dialog:MatDialog,private apiServices:ApiServices) {
     this.SEL_REGISTRATION_TYPE = '';
     localStorage.setItem("VISI_SCAN_DOC_DATA","");
     let getVisi = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
@@ -24,6 +26,7 @@ export class RegistrationTypeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
   }
   takeActFor(action:string){
     if(action === "back"){
@@ -43,32 +46,32 @@ export class RegistrationTypeComponent implements OnInit {
   regTypeChangeEvent(event:any){
     console.log(event.value + this.SEL_REGISTRATION_TYPE);
     setTimeout(()=>{this.takeActFor("next");},100)
-    
+
   }
   openPrepareScanDocDialog(): void {
-    if(this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV' || 
-    this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD' 
+    if(this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV' ||
+    this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD'
     || this.SEL_REGISTRATION_TYPE == 'BUSINESS'){
       let _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
 
       if(this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV'){
         _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-        this.apiServices.localGetMethod("setLEDON", 
+        this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
 
       } else if(this.SEL_REGISTRATION_TYPE == 'PASSPORT'){
         _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-        this.apiServices.localGetMethod("setLEDON", 
+        this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
 
       } else if(this.SEL_REGISTRATION_TYPE == 'MYCARD'){
         _imgsrc = "assets/images/cus_icons/id_mycard_gif.gif";
-        this.apiServices.localGetMethod("setLEDON", 
+        this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRIC_LED_port']).subscribe((ledStatus:any) => {},err=>{});
 
       } else if(this.SEL_REGISTRATION_TYPE == 'BUSINESS'){
         _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-        this.apiServices.localGetMethod("setLEDON", 
+        this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
 
       }
@@ -99,7 +102,7 @@ export class RegistrationTypeComponent implements OnInit {
   }
   KIOSK_PROPERTIES:any = {};
   _updateKioskSettings(){
-    let setngs = localStorage.getItem('KIOSK_PROPERTIES'); 
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
     }

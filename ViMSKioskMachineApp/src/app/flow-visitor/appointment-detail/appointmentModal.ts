@@ -8,8 +8,8 @@ export class AppointmentModal  {
     public category:string = '';
     public categoryId:string = '';
     public address:string = '';
-    public Country:string = '';
-    public Gender:string = '';
+    public country:string = '';
+    public gender:string = '';
     public vehicle:string = '';
     public visitorB64Image:string = '';
     public checkinCounter:string = '';
@@ -17,6 +17,8 @@ export class AppointmentModal  {
     public hostDetails:HostDetails = new HostDetails();
     public SkipFR?:boolean = false;
     public vbookingseqid?:string = '';
+    public meetingHours:string = '';
+    public meetingHoursValue:string = '';
 }
   export class HostDetails  {
     public id:string = '';
@@ -24,5 +26,6 @@ export class AppointmentModal  {
     public email:string = '';
     public contact:string = '';
     public company:string = '';
+    public HostDeptId:string = '';
   }
 

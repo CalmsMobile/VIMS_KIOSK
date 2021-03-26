@@ -8,19 +8,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
           <div mat-dialog-actions margin>
             <button *ngIf="data.enbCancel" style="margin:0px 4vw 0px auto"
             mat-raised-button my-theme-alt-button margin-right [mat-dialog-close]="false" > {{data.canceltext}}</button>
-            <button mat-raised-button my-theme-button [mat-dialog-close]="true" 
-            style="margin:0px auto;" 
+            <button mat-raised-button my-theme-button [mat-dialog-close]="true"
+            style="margin:0px auto;"
             cdkFocusInitial> {{data.oktext}}</button>
           </div>`,
   })
   export class DialogAppCommonDialog {
-  
+
     constructor(
       public dialogRef: MatDialogRef<DialogAppCommonDialog>,
       @Inject(MAT_DIALOG_DATA) public data: any) {}
-  
+
     onNoClick(): void {
       this.dialogRef.close();
     }
-  
+
   }

@@ -7,7 +7,7 @@ import { FlowVisitorComponent, AppTermsAndCondtion, appConfirmDialog } from './f
 import { HostMobileComponent, DialogMobileVerifyComponent } from './host-mobile/host-mobile.component';
 import { RegistrationTypeComponent, DialogPrepareForScanComponent } from './registration-type/registration-type.component';
 import { ScanRLoadingComponent } from './scan-rloading/scan-rloading.component';
-import { AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect, BottomSheetGenderSelect } from './appointment-detail/appointment-detail.component';
+import { AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect, BottomSheetGenderSelect, BottomSheetHoursSelect } from './appointment-detail/appointment-detail.component';
 import { AppointmentSuccessComponent, DialogSuccessMessagePage } from './appointment-success/appointment-success.component';
 import { NgVirtualKeyboardModule }  from '@protacon/ng-virtual-keyboard';
 export const ROUTES: Routes = [
@@ -51,7 +51,7 @@ import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnarie
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
      RegistrationTypeComponent, DialogPrepareForScanComponent, DialogPrepareForScanComponent1,
-      ScanRLoadingComponent,AppTermsAndCondtion, DialogAlertBox,
+      ScanRLoadingComponent,AppTermsAndCondtion, DialogAlertBox,BottomSheetHoursSelect,
       AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
       AppointmentSuccessComponent,DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
       VisitorPreApontmntComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
@@ -81,6 +81,7 @@ import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnarie
   entryComponents: [
     BottomSheetPurposeSheet,BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect,
     BottomSheetGenderSelect,
+    BottomSheetHoursSelect,
     DialogAlertBox,
     DialogVisitorAlreadyExist,takeVisitorPictureDialog,
     DialogMobileVerifyComponent,

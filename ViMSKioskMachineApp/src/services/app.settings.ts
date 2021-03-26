@@ -62,7 +62,9 @@ export const AppSettings = Object.freeze({
         "visitorIndividualCheckIn":"api/kiosk/visitorIndividualCheckIn",
         "PrintVisitorLabel":"api/kiosk/PrintVisitorLabel",
         "PrintVisitorReceipt":"api/kiosk/PrintVisitorReceipt",
-        "getTemplateData":"api/kiosk/getTemplateData"
+        "getTemplateData":"api/kiosk/getTemplateData",
+
+        "VisitorAckSave":"api/vims/VisitorAckSave"
 
         // "getKioskSetupData":"api/Device/CRUDKioskMachine",
         // "kioskCardUpdate":"api/Device/kioskCardUpdate",
@@ -109,6 +111,10 @@ export const AppSettings = Object.freeze({
     LOCAL_USER_SETUP:{
         "enb_version_choose": true,
         "enb_language_choose": true,
+    },
+
+    LOCAL_STORAGE: {
+      "MAIN_MODULE": "MAIN_MODULE"
     },
 
     SHOW_START_WIZARD: false, // Intro wizard Show / Hide Option

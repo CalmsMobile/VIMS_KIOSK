@@ -1,6 +1,6 @@
 <div my-headerbar-visitorlist>
   <button *ngIf="totalVisitors > 0" (click)="takeActFor('visitorSummary')"
-   mat-icon-button my-theme-round-button 
+   mat-icon-button my-theme-round-button
    [matBadge]="totalVisitors" matBadgePosition="before" matBadgeColor="accent">
     <i class="siva-icon-users-1"></i> </button>
 </div>
@@ -13,12 +13,12 @@
           <mat-radio-button my-reg-option-radio sp-button-blue-out
           *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC"
             matRipple matRippleColor="rgba(255,255,255,0.1)"
-            value="MYCARD" (click)="regTypeChangeEvent($event)">  
+            value="MYCARD" (click)="regTypeChangeEvent($event)">
             {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC_label}}
           </mat-radio-button>
-          <mat-radio-button my-reg-option-radio sp-button-red-out matRipple 
-            *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRICRLicense"
+          <mat-radio-button my-reg-option-radio sp-button-red-out matRipple
             matRippleColor="rgba(255,255,255,0.1)"
+            *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRICRLicense"
             value="SING_NRICrDRIV" (click)="regTypeChangeEvent($event)">
             {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRICRLicenselabel}}
           </mat-radio-button>
@@ -35,7 +35,7 @@
             {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card_label}}
           </mat-radio-button>
           <mat-radio-button my-reg-option-radio sp-button-violet-out
-          *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor"
+          *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor && mainModule != 'vcheckinapproval'"
             matRipple matRippleColor="rgba(255,255,255,0.1)"
             value="PREAPPOINTMT" (click)="regTypeChangeEvent($event)">
             {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label}}
@@ -49,13 +49,13 @@
         </mat-radio-group>
   </div>
 
-  
+
 </div>
 <div my-footer-toolbar>
   <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
     <i class="siva-icon-left-big"></i>
   </button>
-  <!-- <button mat-raised-button my-theme-button style="margin-left:100px;" (click)="takeActFor('next')" 
+  <!-- <button mat-raised-button my-theme-button style="margin-left:100px;" (click)="takeActFor('next')"
     [disabled]="SEL_REGISTRATION_TYPE == ''"
   >Next</button> -->
 </div>

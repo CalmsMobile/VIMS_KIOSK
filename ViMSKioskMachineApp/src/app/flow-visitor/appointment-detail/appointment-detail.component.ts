@@ -6,7 +6,7 @@ import { ApiServices } from 'src/services/apiService';
 import {Observable, Subject} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { AppointmentModal } from './appointmentModal';
-import { DialogPrepareForScanComponent } from '../registration-type/registration-type.component';
+import { AppSettings } from 'src/services/app.settings';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -17,6 +17,7 @@ export class AppointmentDetailComponent implements OnInit {
   aptmDetails:AppointmentModal;
   sub:any;
   docType:any = '';
+  mainModule = '';
   totalVisitors:number = 0;
   temp_take_pic = 'assets/images/cus_icons/take_picture.png';
   DefaultAddVisitorSettings=JSON.stringify({"AddVisitorsSeqId":0,"NameEnabled":false,"NameRequired":false,"IdProofEnabled":false,"IdProofRequired":false,"EmailEnabled":false,"EmailRequired":false,"CompanyEnabled":false,"CompanyRequired":false,"CategoryEnabled":true,"CategoryRequired":true,"ContactNumberEnabled":false,"ContactNumberRequired":false,"VehicleNumberEnabled":false,"VehicleNumberRequired":false,"GenderEnabled":false,"GenderRequired":false,"ImageUploadEnabled":false,"WorkPermit":false,"WorkPermitRequired":false,"WorkPermitExpiry":false,"WorkPermitExpiryRequired":false,"CountryEnabled":false,"CountryRequired":false,"AddressEnabled":false,"AddressRequired":false,"HostNameEnabled":false,"HostNameRequired":false,"HostDepartmentEnabled":false,"HostDepartmentRequired":false,"AttachmentUploadEnabled":false,"AttachmentUploadRequired":false,"MaxAttachmentAllowed":0,"VisitorCategories":"0","PurposeEnabled":false,"PurposeRequired":false});
@@ -30,6 +31,7 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     this.sub = this.route
       .queryParams
       .subscribe(params => {
@@ -198,7 +200,13 @@ export class AppointmentDetailComponent implements OnInit {
         this.showFirstPageFields = false;
         return;
       }
-      this.takeVistorProfilePicture(action);
+      if (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.enb_webCam_img_capture) {
+        this.takeVistorProfilePicture(action);
+      } else {
+        this.aptmDetails.visitorB64Image = '';
+        this.confirmAfterTakePhoto();
+      }
+
       // if(this._updateVisitorList()){
       //   this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
       // } else{
@@ -322,7 +330,17 @@ export class AppointmentDetailComponent implements OnInit {
     const country = this.bottomSheet.open(BottomSheetCountrySelect);
     country.afterDismissed().subscribe(result => {
       if(result != undefined){
-        this.aptmDetails.Country = result['name'];
+        this.aptmDetails.country = result['name'];
+      }
+    });
+  }
+
+  openBottomHoursSelect(): void {
+    const country = this.bottomSheet.open(BottomSheetHoursSelect);
+    country.afterDismissed().subscribe(result => {
+      if(result != undefined){
+        this.aptmDetails.meetingHours = result['name'];
+        this.aptmDetails.meetingHoursValue = result['code'];
       }
     });
   }
@@ -331,57 +349,64 @@ export class AppointmentDetailComponent implements OnInit {
     const country = this.bottomSheet.open(BottomSheetGenderSelect);
     country.afterDismissed().subscribe(result => {
       if(result != undefined){
-        this.aptmDetails.Gender = result['name'];
+        this.aptmDetails.gender = result['name'];
       }
     });
   }
 
   calculateNumberofInputs(){
     //calculate Number of Inputs
-    if(this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show) {
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Name.Show) {
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show) {
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Name.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Company.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Company.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Category.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Category.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Contact.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Contact.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Host.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Host.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Country.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Country.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count = this.NUMBER_OF_INPUTS;
     }
-    if(this.KIOSK_PROPERTIES.CheckinSettings.Gender.Show){
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show){
       this.NUMBER_OF_INPUTS ++;
-      this.KIOSK_PROPERTIES.CheckinSettings.Gender.Count = this.NUMBER_OF_INPUTS;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Count = this.NUMBER_OF_INPUTS;
     }
+    if(this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show){
+      this.NUMBER_OF_INPUTS ++;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Count = this.NUMBER_OF_INPUTS;
+    } else {
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show = false;
+    }
+
 
     if(this.NUMBER_OF_INPUTS <= 2){
       this.PADDING_TOP = "10";
@@ -393,7 +418,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.WEB_CAM_WIDTH = "20";
     }else if(this.NUMBER_OF_INPUTS > 4 && this.NUMBER_OF_INPUTS <= 6){
       this.PADDING_TOP = "5";
-    }else if(this.NUMBER_OF_INPUTS > 6 && this.NUMBER_OF_INPUTS <= 9){
+    }else if(this.NUMBER_OF_INPUTS > 6){
       //this.PADDING_TOP = "3";
       this.PADDING_TOP = "1";
 
@@ -402,359 +427,370 @@ export class AppointmentDetailComponent implements OnInit {
 
     switch (this.NUMBER_OF_INPUTS) {
         case 8:
-          if(this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show) {
-            if (this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Name.Show) {
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Name.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show) {
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Company.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Company.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Category.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Category.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Contact.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Contact.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = false;
             }
 
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Host.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Host.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Country.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Country.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Gender.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Gender.Count < 5) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Count < 5) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = false;
             }
           }
           break;
 
           case 9:
-          if(this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show) {
-            if (this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Name.Show) {
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Name.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show) {
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Company.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Company.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Category.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Category.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Contact.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Contact.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = false;
             }
 
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Host.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Host.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Country.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Country.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = false;
             }
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Gender.Show){
-            if (this.KIOSK_PROPERTIES.CheckinSettings.Gender.Count < 6) {
-              this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show){
+            if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Count < 6) {
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = true;
             } else {
-              this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = false;
+              this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = false;
             }
           }
           break;
           case 10:
-            if(this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show) {
-              if (this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Name.Show) {
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Name.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show) {
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Company.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Company.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Category.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Category.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Contact.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Contact.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = false;
               }
 
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Host.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Host.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Country.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Country.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = false;
               }
             }
-            if(this.KIOSK_PROPERTIES.CheckinSettings.Gender.Show){
-              if (this.KIOSK_PROPERTIES.CheckinSettings.Gender.Count < 6) {
-                this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = true;
+            if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show){
+              if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Count < 6) {
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = true;
               } else {
-                this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = false;
+                this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = false;
               }
             }
             break;
             case 11:
-              if(this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show) {
-                if (this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = true;
+            case 12:
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Name.Show) {
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Name.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show) {
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Company.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Company.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Category.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Category.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Contact.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Contact.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = false;
                 }
 
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Host.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Host.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Country.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Country.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = false;
                 }
               }
-              if(this.KIOSK_PROPERTIES.CheckinSettings.Gender.Show){
-                if (this.KIOSK_PROPERTIES.CheckinSettings.Gender.Count < 7) {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = true;
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = true;
                 } else {
-                  this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = false;
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = false;
+                }
+              }
+              if(this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show){
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Count < 7) {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 = true;
+                } else {
+                  this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 = false;
                 }
               }
               break;
       default:
-          if(this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Show) {
-            this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Name.Show) {
-            this.KIOSK_PROPERTIES.CheckinSettings.Name.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show) {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Company.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Company.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Category.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Category.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Contact.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Contact.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.EmailId.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Purpose.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Host.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Host.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Country.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Country.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
           }
-          if(this.KIOSK_PROPERTIES.CheckinSettings.Gender.Show){
-            this.KIOSK_PROPERTIES.CheckinSettings.Gender.Page1 = true;
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 = true;
+          }
+          if(this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show){
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 = true;
           }
 
         break;
@@ -770,6 +806,7 @@ export class AppointmentDetailComponent implements OnInit {
         this.aptmDetails.hostDetails.company = result['COMPANY_REFID'];
         this.aptmDetails.hostDetails.contact = result['HostExt'];
         this.aptmDetails.hostDetails.email = result['HOST_EMAIL'];
+        this.aptmDetails.hostDetails.HostDeptId = result['DEPARTMENT_REFID'];
         console.log(this.aptmDetails.hostDetails.id);
       }
     });
@@ -834,6 +871,15 @@ export class AppointmentDetailComponent implements OnInit {
     if(setngs != undefined && setngs != ""){
       this.KIOSK_CHECKIN_COUNTER_NAME = JSON.parse(setngs)['kioskName'];
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      if (this.mainModule === 'vcheckin') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours = {
+          Show: false,
+          Mandatory: false
+        }
+      } else {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
+      }
       this.calculateNumberofInputs();
     }
   }
@@ -918,6 +964,41 @@ export class BottomSheetCategorySelect {
     });
   }
 }
+
+@Component({
+  selector: 'bottom-sheet-country-select',
+  template: `<mat-nav-list >
+              <mat-list-item style="height: 4.5vw;border-bottom: 1px solid rgba(0,0,0,0.07);color: #3e5763;"
+              *ngFor="let hour of hours" (click)="selectThisItem($event,hour)" >
+                <span mat-line style="font-size:1.8vw;line-height: 2vw;">{{hour.name}}</span>
+              </mat-list-item>
+            </mat-nav-list>`,
+})
+export class BottomSheetHoursSelect {
+  hours:any;
+  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetHoursSelect>,
+    private apiServices:ApiServices) {
+    this.hours = [{name:"1 Hour",code:"1"},
+    {name:"2 Hour",code:"2"},
+    {name:"3 Hour",code:"3"},
+    {name:"4 Hour",code:"4"},
+    {name:"5 Hour",code:"5"},
+    {name:"6 Hour",code:"6"},
+    {name:"7 Hour",code:"7"},
+    {name:"8 Hour",code:"8"},
+    {name:"9 Hour",code:"9"},
+    {name:"10 Hour",code:"10"},
+    {name:"11 Hour",code:"11"},
+    {name:"12 Hour",code:"12"}
+  ];
+  }
+
+  selectThisItem(event: MouseEvent, coun:any): void {
+    this.bottomSheetRef.dismiss(coun);
+    event.preventDefault();
+  }
+}
+
 @Component({
   selector: 'bottom-sheet-country-select',
   template: `<mat-nav-list >

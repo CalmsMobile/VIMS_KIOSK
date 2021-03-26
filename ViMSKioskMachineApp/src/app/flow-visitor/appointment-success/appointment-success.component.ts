@@ -212,6 +212,7 @@ export class AppointmentSuccessComponent implements OnInit {
                } else{
                 //this.router.navigateByUrl('/landing');
                 localStorage.setItem("VISI_LIST_ARRAY",'{"appSettings":{}, "visitorDetails" :[]}');
+                localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, '');
                 this._location.back();
                }
             });
@@ -313,6 +314,7 @@ export class AppointmentSuccessComponent implements OnInit {
              } else{
               //this.router.navigateByUrl('/landing');
               localStorage.setItem("VISI_LIST_ARRAY",'{"appSettings":{}, "visitorDetails" :[]}');
+              localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, '');
               this._location.back();
              }
           });

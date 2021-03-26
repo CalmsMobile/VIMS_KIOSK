@@ -1,6 +1,7 @@
 <div *ngIf="!isPlayVideo">
   <div style="text-align:center;padding:20px;">
-    <p info-title>
+    <p info-title *ngIf="KIOSK_PROPERTIES" [ngStyle]="{'font-weight': (mainModule === 'vcheckin') ? (KIOSK_PROPERTIES.CheckinSettings.CaptionBold? 'bold': ''): (KIOSK_PROPERTIES.ApptFieldSettings.CaptionBold ? 'bold': '') ,
+    'text-transform':  (mainModule === 'vcheckin') ? (KIOSK_PROPERTIES.CheckinSettings.CaptionCapitalize? 'capitalize': ''): (KIOSK_PROPERTIES.ApptFieldSettings.CaptionCapitalize ? 'capitalize': '')}">
       Screening Questions
     </p>
 

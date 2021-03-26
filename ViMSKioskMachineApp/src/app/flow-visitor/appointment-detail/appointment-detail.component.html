@@ -4,7 +4,8 @@
     <i class="siva-icon-users-1"></i> </button> -->
 </div>
 <div style="text-align:center;padding:30px;">
-  <p info-title no-margin-top margin-bottom>
+  <p info-title no-margin-top margin-bottom [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' ,
+  'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'capitalize': ''}">
     {{KIOSK_PROPERTIES.modules.only_visitor.appointment_screen_title}}
   </p>
   <div>
@@ -160,7 +161,7 @@
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
         (click)="openBottomHoursSelect()" *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1))">
-          <mat-label>{{'Meeting Hours'}}</mat-label>
+          <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.meetingHours"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory"
           spellcheck="false">

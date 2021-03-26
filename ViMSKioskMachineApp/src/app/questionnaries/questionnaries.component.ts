@@ -20,6 +20,7 @@ export class QuestionnariesComponent implements OnInit {
   videoPath = '';
   @ViewChild('video') matVideo: any;
   KIOSK_PROPERTIES:any = {};
+  mainModule = '';
   KIOSK_CHECKIN_COUNTER_NAME:string = "";
   video;
   constructor(private apiServices:ApiServices,
@@ -49,6 +50,12 @@ export class QuestionnariesComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
+      if (this.mainModule === 'vcheckin') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
+      } else {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
+      }
     }
     const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
 
@@ -137,6 +144,14 @@ export class QuestionnariesComponent implements OnInit {
     } else if (action === 'prev'){
       if ((this.position - 1) <= 0) {
         console.log('Reached first');
+        let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+        let listOfVisitors:any = uploadArray['visitorDetails'];
+        if (listOfVisitors.length > 0) {
+          listOfVisitors.splice(-1, 1);
+        }
+        // listOfVisitors.push(this.aptmDetails);
+        uploadArray['visitorDetails'] = listOfVisitors;
+        localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
         this._location.back();
       } else {
         this.position = this.position - 1;

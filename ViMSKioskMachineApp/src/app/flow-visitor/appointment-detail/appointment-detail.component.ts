@@ -31,10 +31,10 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     this.sub = this.route
       .queryParams
       .subscribe(params => {
+        this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
         this.docType = params['docType'];
         if(this.docType == undefined || this.docType == ''){
           if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
@@ -143,6 +143,7 @@ export class AppointmentDetailComponent implements OnInit {
         this.showFirstPageFields = true;
         return;
       }
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, '');
       if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
@@ -871,6 +872,7 @@ export class AppointmentDetailComponent implements OnInit {
     if(setngs != undefined && setngs != ""){
       this.KIOSK_CHECKIN_COUNTER_NAME = JSON.parse(setngs)['kioskName'];
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours = {

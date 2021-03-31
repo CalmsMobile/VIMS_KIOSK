@@ -92,6 +92,7 @@ export class LandingComponent implements OnInit {
               this.router.navigateByUrl('/visitorDetailForTemp');
             else {
               localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+              console.log('button clicked:' + action)
               if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&

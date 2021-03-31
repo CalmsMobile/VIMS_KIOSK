@@ -460,6 +460,9 @@ $my-reg-radio-button-size: 2.8vw;
   margin-bottom: 20px;
   box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.2);
   margin-left: 2vw;
+  &:focus {
+    outline: none !important;
+  }
   &::before {
     content: "";
     width: 100%;

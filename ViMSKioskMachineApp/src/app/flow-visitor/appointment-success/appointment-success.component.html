@@ -15,19 +15,33 @@
       </mat-form-field>
   </div>
   <div *ngIf="!isLoading" style="padding-top:17vh">
-    <img [src]="DisplayImageHandlerURL" style='width:185px;height:185px;' *ngIf="EnableAcsQrCode && DisplayImageHandlerURL">
-    <button mat-icon-button my-theme-round-button *ngIf="LabelPrintEnable && LabelPrintManualOrAuto==20" (click)="triggerLabelPrint()">
+
+    <div *ngIf="!qrcodeProcessed && EnableAcsQrCode && DisplayImageHandlerURL" style="display: inline-grid;">
+      <img [src]="DisplayImageHandlerURL" style='width:185px;height:185px;    margin: 0 auto;' *ngIf="EnableAcsQrCode && DisplayImageHandlerURL">
+      <button style="margin: 0 auto;
+      margin-top: 25px;
+      margin-bottom: 25px;" mat-icon-button my-theme-round-button *ngIf="LabelPrintEnable && LabelPrintManualOrAuto==20" (click)="triggerLabelPrint()">
         <i class="material-icons icon-image-preview">print</i>
     </button>
-    <p info-title
-    [innerHTML]="RESULT_MSG | safeHtml"></p>
-    <p info-title *ngIf="RESULT_MSG2"
-    [innerHTML]="RESULT_MSG2 | safeHtml"></p>
-    <p info-title *ngIf="RESULT_MSG3"
-    [innerHTML]="RESULT_MSG3 | safeHtml"></p>
+      <button style="margin-top: 25px;" mat-raised-button my-theme-button (click)="processNexttoSuccess()">
+        Proceed
+      </button>
+    </div>
 
-    <p info-title *ngIf='TEST_PIN != ""'> Your Test OTP : {{TEST_PIN}}</p>
-    <img width="100px" alt="Angular Logo" [src]="LOGO_IMG">
+    <div *ngIf="qrcodeProcessed">
+      <img *ngIf="DisplaySuccessImageHandlerURL" [src]="DisplaySuccessImageHandlerURL" style='width:185px;height:185px;'>
+
+      <p info-title
+      [innerHTML]="RESULT_MSG | safeHtml"></p>
+      <p info-title *ngIf="RESULT_MSG2"
+      [innerHTML]="RESULT_MSG2 | safeHtml"></p>
+      <p info-title *ngIf="RESULT_MSG3"
+      [innerHTML]="RESULT_MSG3 | safeHtml"></p>
+
+      <p info-title *ngIf='TEST_PIN != ""'> Your Test OTP : {{TEST_PIN}}</p>
+      <img width="100px" alt="Angular Logo" [src]="LOGO_IMG">
+    </div>
+
   </div>
 </div>
 

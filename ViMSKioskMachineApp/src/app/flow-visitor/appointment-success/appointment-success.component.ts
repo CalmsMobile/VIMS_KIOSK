@@ -29,6 +29,8 @@ export class AppointmentSuccessComponent implements OnInit {
   EnableAcsQrCode:any = false;
   CheckInVisitorData:any=[];
   DisplayImageHandlerURL:SafeResourceUrl;
+  DisplaySuccessImageHandlerURL:SafeResourceUrl;
+  qrcodeProcessed = false;
   base64Image = '';
   GScopeValue:any = ""; GVisitorPass:any = ""; GPermittedTime:any = "";
   LabelPrintEnable:any = false;
@@ -146,14 +148,19 @@ export class AppointmentSuccessComponent implements OnInit {
       }
     }
   }
+  const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
+  this.DisplaySuccessImageHandlerURL = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image.split('base64,')[1]);
   if (poReturnVal) {
     return JSON.parse(localStorage.getItem('APP_KIOSK_CODE_DECRIPTED')).ApiUrl+'Handler/QRImageHandler.ashx?Code='+poReturnVal;
-  } else {
-    const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
-
-    return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image.split('base64,')[1]);
   }
-
+  }
+  processNexttoSuccess() {
+    this.qrcodeProcessed = true;
+    let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
+    _timeout = parseInt(_timeout) * 1000;
+    setTimeout(()=>{
+      this.router.navigateByUrl('/landing');
+    },_timeout);
   }
   triggerLabelPrint() {
     this.loadlblprint(this.CheckInVisitorData,(pri_status:boolean)=>{});
@@ -353,6 +360,9 @@ export class AppointmentSuccessComponent implements OnInit {
             if(Data["Table1"]!= undefined && Data["Table1"].length > 0){
               this.CheckInVisitorData=Data["Table1"];
               this.DisplayImageHandlerURL=this.getImageHandlerURL();
+              if (!this.EnableAcsQrCode || !this.DisplayImageHandlerURL) {
+                this.qrcodeProcessed = true;
+              }
               _callback({"s":true,"m":""}, Data["Table1"]);
               //[{"VisitorNRIC":"gg","VisitorVehicle":"","VisitorPass":null,"Smartcard":"","DynamicHex":null,"PrinterEnable":"1","ReceiptPrinterEnable":"0","PermittedTime":"2019-02-13T18:31:00","CompanyName":"","Address1":"","Address2":"","Address3":"","CompanyMobile":"","CompanyFax":"","Terms1":null,"Terms2":null,"Terms3":null,"Terms4":null,"Terms5":null,"Message1":null,"Message2":null,"EnablePrint":"0","PrintType":null,"PrintField":null,"SlipTitle":"VISITOR ENTRY SLIP"}]
               return;
@@ -623,18 +633,21 @@ export class AppointmentSuccessComponent implements OnInit {
   }
   private _finish_with_success_msg(){
     this.isLoading = false;
-    let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
     this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_sccess_msg1'] ;
     this.RESULT_MSG2 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_mid'] ;
     this.RESULT_MSG3 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_last'] ;
     const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
     if (image && !this.DisplayImageHandlerURL) {
-      this.DisplayImageHandlerURL = image;
+      this.DisplaySuccessImageHandlerURL= image;
     }
-    _timeout = parseInt(_timeout) * 1000;
-    setTimeout(()=>{
-      this.router.navigateByUrl('/landing');
-    },_timeout);
+    if (this.qrcodeProcessed) {
+      let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
+      _timeout = parseInt(_timeout) * 1000;
+      setTimeout(()=>{
+        this.router.navigateByUrl('/landing');
+      },_timeout);
+    }
+
   }
 
   // --------------- Print Label -------------------

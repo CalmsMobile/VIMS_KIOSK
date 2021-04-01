@@ -149,7 +149,10 @@ export class AppointmentSuccessComponent implements OnInit {
     }
   }
   const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
-  this.DisplaySuccessImageHandlerURL = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image.split('base64,')[1]);
+  if (image) {
+    this.DisplaySuccessImageHandlerURL = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image.split('base64,')[1]);
+  }
+
   if (poReturnVal) {
     return JSON.parse(localStorage.getItem('APP_KIOSK_CODE_DECRIPTED')).ApiUrl+'Handler/QRImageHandler.ashx?Code='+poReturnVal;
   }
@@ -303,8 +306,11 @@ export class AppointmentSuccessComponent implements OnInit {
         console.log(Data);
         if(Data["Table"]!= undefined && Data["Table"].length > 0 && (Data["Table"][0]['code'] == 'S' || Data["Table"][0]['Code'] == 10)){
           this.isLoading = false;
+
           let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
           this.RESULT_MSG = Data["Table"][0].description;
+          this.DisplayImageHandlerURL=this.getImageHandlerURL();
+          this.qrcodeProcessed = true;
           _timeout = parseInt(_timeout) * 1000;
           setTimeout(()=>{
             this.router.navigateByUrl('/landing');

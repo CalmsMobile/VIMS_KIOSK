@@ -447,6 +447,30 @@ $global-opacity: (
     padding: 10px 20px;
   }
 }
+[my-landing-image-btn2] {
+  background: url("../assets/images/cus_icons/checkin.png") no-repeat;
+  // width: 80px;
+  // height: 80px;
+  // padding-bottom: 10px;
+  // margin: 0 auto;
+  // display: block;
+}
+[my-landing-image-btn3] {
+  background: url("../assets/images/cus_icons/register.png") no-repeat;
+  width: 80px;
+  height: 80px;
+  padding-bottom: 10px;
+  margin: 0 auto;
+  display: block;
+}
+[my-landing-image-btn1] {
+  background: url("../assets/images/cus_icons/checkout.png") no-repeat;
+  width: 80px;
+  height: 80px;
+  padding-bottom: 10px;
+  margin: 0 auto;
+  display: block;
+}
 $my-reg-radio-button-size: 2.8vw;
 [my-reg-option-radio] {
   display: inline-block;
@@ -490,12 +514,6 @@ $my-reg-radio-button-size: 2.8vw;
   &[value="OTHER"]::before {
     background: url("../assets/images/cus_icons/manual_keyboard.png") no-repeat;
   }
-  // &[value="CHECKIN"]::before{
-  //   background: url("../assets/images/cus_icons/manual_keyboard.png") no-repeat;
-  // }
-  // &[value="REGISTER"]::before{
-  //   background: url("../assets/images/cus_icons/manual_keyboard.png") no-repeat;
-  // }
   &:nth-child(1) {
     margin-left: 0vw;
   }

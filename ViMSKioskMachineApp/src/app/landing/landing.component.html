@@ -27,14 +27,14 @@ min-width: 15vh;z-index: 999999999;">
 </div>
 <div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.General.AppType == '10' || KIOSK_PROPERTIES.General.AppType == '30'">
   <!-- <mat-radio-group>
-    <mat-radio-button my-reg-option-radio sp-button-violet-out
+    <mat-radio-button my-reg-option-btn sp-button-violet-out
     *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
       matRipple matRippleColor="rgba(255,255,255,0.1)"
       value="PREAPPOINTMT" (click)="takeActFor('vcheckout')">
       {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}
     </mat-radio-button>
 
-    <mat-radio-button my-reg-option-radio sp-button-yellow-out
+    <mat-radio-button my-reg-option-btn sp-button-yellow-out
     *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckinOption"
       matRipple matRippleColor="rgba(255,255,255,0.1)"
       value="OTHER" (click)="takeActFor('vcheckinapproval')">
@@ -42,7 +42,7 @@ min-width: 15vh;z-index: 999999999;">
     </mat-radio-button>
 
 
-    <mat-radio-button my-reg-option-radio sp-button-yellow-out
+    <mat-radio-button my-reg-option-btn sp-button-yellow-out
     *ngIf="KIOSK_PROPERTIES.ApptFieldSettings.Enable"
       matRipple matRippleColor="rgba(255,255,255,0.1)"
       value="OTHER" (click)="takeActFor('vcheckinapproval')">
@@ -50,7 +50,7 @@ min-width: 15vh;z-index: 999999999;">
     </mat-radio-button>
   </mat-radio-group> -->
 
-  <button my-reg-option-radio sp-button-violet-out matRipple
+  <button my-reg-option-btn sp-button-violet-out matRipple
   matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
   font-size: 20px;
   font-weight: 700;"
@@ -65,7 +65,7 @@ min-width: 15vh;z-index: 999999999;">
       display: block;"/>
  {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}</button>
 
-    <button my-reg-option-radio sp-button-red-out matRipple
+    <button my-reg-option-btn sp-button-red-out matRipple
     matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
     font-size: 20px;
     font-weight: 700;"
@@ -79,7 +79,7 @@ min-width: 15vh;z-index: 999999999;">
     display: block;"/>
       {{KIOSK_PROPERTIES.CheckinSettings.Caption}}</button>
 
-    <button my-reg-option-radio sp-button-green-out matRipple
+    <button my-reg-option-btn sp-button-green-out matRipple
     matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
     font-size: 20px;
     font-weight: 700;"

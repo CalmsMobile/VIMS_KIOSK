@@ -558,6 +558,92 @@ $my-reg-radio-button-size: 2.8vw;
     // }
   }
 }
+[my-reg-option-btn] {
+  display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+  width: 25vh;
+  height: 25vh;
+  color: white;
+  background: theme-colors();
+  text-align: left;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.2);
+  margin-left: 2vw;
+  &:focus {
+    outline: none !important;
+  }
+  &::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    // position: absolute;
+    // background-size: 50% !important;
+    // background-position: center 28% !important;
+    // z-index: 1;
+  }
+  &[value="MYCARD"]::before {
+    background: url("../assets/images/cus_icons/my_card.png") no-repeat;
+  }
+  &[value="SING_NRICrDRIV"]::before {
+    background: url("../assets/images/cus_icons/driving_card.png") no-repeat;
+  }
+  &[value="PASSPORT"]::before {
+    background: url("../assets/images/cus_icons/passport.png") no-repeat;
+  }
+  &[value="BUSINESS"]::before {
+    background: url("../assets/images/cus_icons/business_card.png") no-repeat;
+  }
+  &[value="PREAPPOINTMT"]::before {
+    background: url("../assets/images/cus_icons/pre_appointment.png") no-repeat;
+  }
+  &[value="OTHER"]::before {
+    background: url("../assets/images/cus_icons/manual_keyboard.png") no-repeat;
+  }
+  &:nth-child(1) {
+    margin-left: 0vw;
+  }
+  &.mat-radio-checked {
+    background: red;
+  }
+  button:focus {
+    outline: none;
+  }
+  .mat-radio-label {
+    width: 100% !important;
+    padding: 0px;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+
+    .mat-radio-label-content {
+      display: block;
+      text-align: center;
+      text-align: center;
+      font-weight: 600;
+      width: 70%;
+      padding: 50% 15% 0px 15%;
+      font-size: 2vh;
+      white-space: normal;
+    }
+  }
+  .mat-radio-container {
+    display: none !important;
+    // width: $my-reg-radio-button-size;
+    // height: $my-reg-radio-button-size;
+    // margin-right: 1vw;
+    // .mat-radio-outer-circle{
+    //     border-color: #fff !important;
+    //     height: $my-reg-radio-button-size;
+    //     width: $my-reg-radio-button-size;
+    // }
+    // .mat-radio-inner-circle{
+    //     background-color: #ffffff;
+    //     height: $my-reg-radio-button-size;
+    //     width: $my-reg-radio-button-size;
+    // }
+  }
+}
 [my-purpose-selection] {
   width: 100%;
   max-width: 45vw;

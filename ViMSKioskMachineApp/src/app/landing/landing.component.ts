@@ -83,6 +83,7 @@ export class LandingComponent implements OnInit {
     } else if(action === "visitor"){
       //this.router.navigateByUrl('/visitorAgree');
     } else if(action === "vcheckin" || action === 'vcheckinapproval'){
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status:boolean)=>{
         if(status){
           if(this.KIOSK_PROPERTIES['modules']['T_adn_C']['enable']){
@@ -91,7 +92,6 @@ export class LandingComponent implements OnInit {
             if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
               this.router.navigateByUrl('/visitorDetailForTemp');
             else {
-              localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
               console.log('button clicked:' + action)
               if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&

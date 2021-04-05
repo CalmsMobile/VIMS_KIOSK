@@ -143,7 +143,6 @@ export class AppointmentDetailComponent implements OnInit {
         this.showFirstPageFields = true;
         return;
       }
-      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, '');
       if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&

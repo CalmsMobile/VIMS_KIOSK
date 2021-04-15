@@ -44,9 +44,9 @@ export class ScanRLoadingComponent implements OnInit {
           } else if(this.docType == 'PASSPORT'){
             this.getDeviceConnectionData('GetPassportDetail');
           } else if(this.docType == 'MYCARD'){
-            this.getMyCardDetails('MYCARD');
+            this.getMyCardDetails('GetMyKadDetails');
           } else if(this.docType == 'BUSINESS'){
-            this.getBusinessCardDetails('BUSINESS');
+            this.getBusinessCardDetails('getBusinessCardData');
           }
         }
       });
@@ -136,7 +136,7 @@ export class ScanRLoadingComponent implements OnInit {
     //{"PassportNo":"S8076606H","FullNameName":"ZHANG JINMING","State":"","City":"","Address":"","Country":"CHINESE","DocType":"3362","Gender":"Male","PostCode":"","IDImgByte":"R0
   }
   getMyCardDetails(action:string){
-    let req = AppSettings['APP_SERVICES'][action];
+    // let req = AppSettings['APP_SERVICES'][action];
     this.apiServices.localGetMethod("GetMyKadDetails","").subscribe((data:any) => {
       console.log(data);
       if((action == "MYCARD") && data.length > 0 ) {

@@ -885,7 +885,6 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
 
-
 }
 @Component({
   selector: 'bottom-sheet-overview-example-sheet',

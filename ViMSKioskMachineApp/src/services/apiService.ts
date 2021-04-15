@@ -47,10 +47,10 @@ export class ApiServices {
   {
     console.log("Inside get method");
 
-    let URL = this._getAPIURL();
+    //let URL = this._getAPIURL();
 
 
-    // let URL = "http://localhost:57080/api/kiosk/";
+    let URL = "http://localhost/Portal/api/kiosk/";
 
     console.log("URL",URL);
     console.log("serviceName",serviceName);
@@ -70,9 +70,9 @@ export class ApiServices {
   }
   localGetMethod(serviceName:string, appendURL:string )
   {
-    let URL = this._getAPIURL();
-    // let URL = "http://localhost:57080/";
-    //let URL = "http://localhost:54402/";
+        //let URL = this._getAPIURL();
+    let URL = "http://localhost/Portal/";
+        //let URL = "http://localhost:54402/";
 
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
@@ -93,7 +93,7 @@ export class ApiServices {
   getApiDeviceConnectionRequest(service:string)
   {
     //let URL = this._getAPIURL();
-    let URL = "http://localhost:57080/";
+    let URL = "http://localhost/Portal/";
     console.log(URL + service);
     return this.http.get(URL + service);
   }
@@ -122,7 +122,7 @@ export class ApiServices {
   }
   getStaffTemperature(data:any)
   {
-    let URL = "http://localhost:57080/";
+    let URL = "http://localhost/Portal/";
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions );
   }
@@ -151,12 +151,12 @@ export class ApiServices {
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions );
   }
   PrintVisitorLabel(data:any){
-    let URL = "http://localhost:57080/";
+    let URL = "http://localhost/Portal/";
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions );
   }
   PrintVisitorReceipt(data:any){
-    let URL = "http://localhost:57080/";
+    let URL = "http://localhost/Portal/";
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions );
   }

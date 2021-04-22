@@ -109,6 +109,13 @@ $global-opacity: (
   }
   @return $color;
 }
+
+video {
+  pointer-events: none;
+}
+video::-webkit-media-controls-start-playback-button {
+  display: none;
+}
 [app-bg] {
   width: 100%;
   height: 100%;
@@ -197,62 +204,80 @@ $global-opacity: (
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-green-in] {
-  background: linear-gradient(to top left, #05bf80, #2bed8c) !important;
+  background: linear-gradient(to top left, #05bf80, #2bed8c);
   box-shadow: inset 0 13px 26px rgba(0, 0, 0, 0.15),
     inset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-green-out] {
-  background: linear-gradient(to top left, #05bf80, #2bed8c) !important;
+  background: linear-gradient(to top left, #05bf80, #2bed8c);
   box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-blue-in] {
-  background: linear-gradient(to top left, #614ffb, #9ca1ff) !important;
+  background: linear-gradient(to top left, #614ffb, #9ca1ff);
   box-shadow: inset 0 13px 26px rgba(0, 0, 0, 0.15),
     inset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-blue-out] {
-  background: linear-gradient(to top left, #614ffb, #9ca1ff) !important;
+  background: linear-gradient(to top left, #614ffb, #9ca1ff);
   box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-yellow-in] {
-  background: linear-gradient(to top left, #ff8b04, #ffbf2a) !important;
+  background: linear-gradient(to top left, #ff8b04, #ffbf2a);
   box-shadow: inset 0 13px 26px rgba(0, 0, 0, 0.15),
     inset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-yellow-out] {
-  background: linear-gradient(to top left, #ff8b04, #ffbf2a) !important;
+  background: linear-gradient(to top left, #ff8b04, #ffbf2a);
   box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-rose-in] {
-  background: linear-gradient(to top left, #c90a6d, #ff48a0) !important;
+  background: linear-gradient(to top left, #c90a6d, #ff48a0);
   box-shadow: inset 0 13px 26px rgba(0, 0, 0, 0.15),
     inset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-rose-out] {
-  background: linear-gradient(to top left, #c90a6d, #ff48a0) !important;
+  background: linear-gradient(to top left, #c90a6d, #ff48a0);
   box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-red-in] {
-  background: linear-gradient(to top left, #ff425e, #ff984d) !important;
+  background: linear-gradient(to top left, #ff425e, #ff984d);
   box-shadow: inset 0 13px 26px rgba(0, 0, 0, 0.15),
     inset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-red-out] {
-  background: linear-gradient(to top left, #ff425e, #ff984d) !important;
+  background: linear-gradient(to top left, #ff425e, #ff984d);
   box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-violet-in] {
-  background: linear-gradient(to top left, #8f3fff, #dd91fe) !important;
+  background: linear-gradient(to top left, #8f3fff, #dd91fe);
   box-shadow: inset 0 13px 26px rgba(0, 0, 0, 0.15),
     inset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }
 [sp-button-violet-out] {
-  background: linear-gradient(to top left, #8f3fff, #dd91fe) !important;
+  background: linear-gradient(to top left, #8f3fff, #dd91fe);
+  box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
+    outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+[sp-button-violet-out1] {
+  background: linear-gradient(to top left, #8f3fff, #dd91fe);
+  box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
+    outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+[sp-button-red-out1] {
+  background: linear-gradient(to top left, #ff425e, #ff984d);
+  box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
+    outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+[sp-button-green-out1] {
+  background: linear-gradient(to top left, #05bf80, #2bed8c);
   box-shadow: outset 0 13px 26px rgba(0, 0, 0, 0.15),
     outset 0 3px 6px rgba(0, 0, 0, 0.15) !important;
 }

@@ -7,7 +7,6 @@ import {Observable, Subject} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { AppointmentModal } from './appointmentModal';
 import { AppSettings } from 'src/services/app.settings';
-
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -15,11 +14,12 @@ import { AppSettings } from 'src/services/app.settings';
 })
 export class AppointmentDetailComponent implements OnInit {
   aptmDetails:AppointmentModal;
-  sub:any;
   docType:any = '';
   mainModule = '';
   totalVisitors:number = 0;
   temp_take_pic = 'assets/images/cus_icons/take_picture.png';
+  QuestionsDisplay = [];
+  videoPath = '';
   DefaultAddVisitorSettings=JSON.stringify({"AddVisitorsSeqId":0,"NameEnabled":false,"NameRequired":false,"IdProofEnabled":false,"IdProofRequired":false,"EmailEnabled":false,"EmailRequired":false,"CompanyEnabled":false,"CompanyRequired":false,"CategoryEnabled":true,"CategoryRequired":true,"ContactNumberEnabled":false,"ContactNumberRequired":false,"VehicleNumberEnabled":false,"VehicleNumberRequired":false,"GenderEnabled":false,"GenderRequired":false,"ImageUploadEnabled":false,"WorkPermit":false,"WorkPermitRequired":false,"WorkPermitExpiry":false,"WorkPermitExpiryRequired":false,"CountryEnabled":false,"CountryRequired":false,"AddressEnabled":false,"AddressRequired":false,"HostNameEnabled":false,"HostNameRequired":false,"HostDepartmentEnabled":false,"HostDepartmentRequired":false,"AttachmentUploadEnabled":false,"AttachmentUploadRequired":false,"MaxAttachmentAllowed":0,"VisitorCategories":"0","PurposeEnabled":false,"PurposeRequired":false});
   constructor(private router:Router,
      private bottomSheet: MatBottomSheet,
@@ -31,7 +31,7 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sub = this.route
+    this.route
       .queryParams
       .subscribe(params => {
         this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
@@ -74,11 +74,31 @@ export class AppointmentDetailComponent implements OnInit {
         } else {
           this.router.navigateByUrl('/visitorRegisType');
         }
+        } else {
+          const resumeData = params['resumeData'];
+          if (resumeData) {
+            const visitorData = params['visitorData'];
+            if (visitorData) {
+              this.aptmDetails = JSON.parse(visitorData);
+              this.NUMBER_OF_INPUTS = 0;
+              this._updateKioskSettings();
+              if (this.NUMBER_OF_INPUTS > 7) {
+                this.showFirstPageFields = false;
+              }
+              this.videoPath = params['video'];
+              const quest = params['questions'];
+              if (quest) {
+                this.QuestionsDisplay = JSON.parse(quest);
+              }
+            }
+          }
         }
       });
 
       this._initUpdateScanDataValues();
-      this._updateKioskSettings();
+      if (!this.NUMBER_OF_INPUTS || this.NUMBER_OF_INPUTS === 0) {
+        this._updateKioskSettings();
+      }
       this._updateVisitorCheckINSettings();
       this._getAllPurposeOfVisit();
   }
@@ -183,9 +203,9 @@ export class AppointmentDetailComponent implements OnInit {
     } else if(action === "addVisitor"){
       if(this._updateVisitorList()){
         const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
-        const Enable_Safety_brief_video = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
-        if (Questionnaries || Enable_Safety_brief_video) {
-          this.router.navigateByUrl('/questionarie');
+
+        if (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief) {
+          this.router.navigate(['/questionarie'] , {queryParams:{docType: this.docType, video: this.videoPath, questions: JSON.stringify(this.QuestionsDisplay)}});
           return;
         }
         this.router.navigate(['/visitorAgree'],{queryParams:{needHostNumber:"no"}});
@@ -257,9 +277,8 @@ export class AppointmentDetailComponent implements OnInit {
   confirmAfterTakePhoto() {
     if(this._updateVisitorList()){
       const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
-      const Enable_Safety_brief_video = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
-      if (Questionnaries || Enable_Safety_brief_video) {
-        this.router.navigateByUrl('/questionarie');
+      if (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief) {
+        this.router.navigate(['/questionarie'] , {queryParams:{docType: this.docType, video: this.videoPath, questions: JSON.stringify(this.QuestionsDisplay)}});
         return;
       }
 
@@ -313,6 +332,7 @@ export class AppointmentDetailComponent implements OnInit {
     purpose.afterDismissed().subscribe(result => {
       if(result != undefined){
         this.aptmDetails.purpose = result['visitpurpose_desc'];
+        this.aptmDetails.purposeId = result['visitpurpose_id'];
       }
     });
   }
@@ -323,7 +343,38 @@ export class AppointmentDetailComponent implements OnInit {
         this.aptmDetails.category = result['visitor_ctg_desc'];
         this.aptmDetails.categoryId = result['visitor_ctg_id'];
         //this.VisitorCategoryChange(result['visitor_ctg_id'],result['visitor_ctg_desc']);
+        const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
+          this.getQuestionsOrVideo();
+        }
       }
+    });
+  }
+
+  getQuestionsOrVideo() {
+    const postdata = {
+      "VisitorCategory": this.aptmDetails.categoryId
+      }
+    this.apiServices.localPostMethod('GetQuestionaries' , postdata).subscribe((data: any)=>{
+      try {
+        let api = this.apiServices._getAPIURL();
+        if (api.split('api').length > 1) {
+          api = api.split('api')[0];
+        }
+        const resultData = JSON.parse(data[0].Data);
+        if (resultData.Table1.length > 0 && resultData.Table1[0].VideoUrl) {
+          this.videoPath = api + '/FS/' + resultData.Table1[0].VideoUrl;
+        }
+
+      } catch (error) {
+
+      }
+      const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+      if (Questionnaries) {
+        this.QuestionsDisplay= JSON.parse(data[0].Data).Table;
+        console.log("QuestionsDisplay",data);
+      }
+
     });
   }
   openBottomCountrySelect(): void {
@@ -331,6 +382,7 @@ export class AppointmentDetailComponent implements OnInit {
     country.afterDismissed().subscribe(result => {
       if(result != undefined){
         this.aptmDetails.country = result['name'];
+        this.aptmDetails.countryId = result['code'];
       }
     });
   }
@@ -350,6 +402,7 @@ export class AppointmentDetailComponent implements OnInit {
     country.afterDismissed().subscribe(result => {
       if(result != undefined){
         this.aptmDetails.gender = result['name'];
+        this.aptmDetails.genderId = result['code'];
       }
     });
   }
@@ -834,10 +887,35 @@ export class AppointmentDetailComponent implements OnInit {
       this.getVisitorDetails(value);
     }
   }
+  onKey(value: string, event: any) {
+    console.log("onKey: " + value);
+    if (value.length > 1) {
+      this.getVisitorDetails(value);
+    } else {
+      this.aptmDetails.visitorB64Image = "";
+      this.aptmDetails.name = "";
+      this.aptmDetails.company =  "";
+      this.aptmDetails.email = "";
+      this.aptmDetails.contact = "";
+      this.aptmDetails.vehicle = "";
+    }
+  }
+
+  onKeydown(event) {
+    console.log(event);
+    if (event.key === "Enter") {
+      console.log(event);
+    }
+  }
+
+  update(value: string) {
+    console.log("update: " + value);
+  }
+
   getVisitorDetails(att_visitor_id:string){
     let uploadarray = {"att_visitor_id": att_visitor_id}
     this.apiServices.localPostMethod('getVisitorInformation',uploadarray).subscribe((data:any) => {
-      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"]){
         let _data = data[0]["Data"];
         if(_data["Table"] != undefined && _data["Table"].length > 0 && _data["Table"][0]["Code"] == '10'){
           if(_data["Table1"] != undefined && _data["Table1"].length > 0){
@@ -878,8 +956,10 @@ export class AppointmentDetailComponent implements OnInit {
           Show: false,
           Mandatory: false
         }
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
       } else {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video_preappt']
       }
       this.calculateNumberofInputs();
     }
@@ -1034,7 +1114,7 @@ export class BottomSheetGenderSelect {
   vis_gender:any;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetGenderSelect>,
     private apiServices:ApiServices) {
-    this.vis_gender= [{name:"Male",code:"MALE"},{name:"Female",code:"FEMALE"},{name:"Other",code:"OTHER"}];
+    this.vis_gender= [{name:"Male",code:"1"},{name:"Female",code:"0"},{name:"Other",code:"2"}];
   }
 
   selectThisItem(event: MouseEvent, gender:any): void {

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiServices } from 'src/services/apiService';
 import {Location} from '@angular/common';
-import { MatVideoComponent } from 'mat-video/lib/video.component';
 import { AppSettings } from 'src/services/app.settings';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from '../flow-visitor/registration-type/registration-type.component';
@@ -18,35 +17,30 @@ export class QuestionnariesComponent implements OnInit {
   QuestionsDisplay:any = []
   isPlayVideo = false;
   videoPath = '';
-  @ViewChild('video') matVideo: any;
   KIOSK_PROPERTIES:any = {};
   mainModule = '';
   KIOSK_CHECKIN_COUNTER_NAME:string = "";
-  video;
+  docType = '';
   constructor(private apiServices:ApiServices,
     public dialog: MatDialog,
     private _location: Location,
+    private route: ActivatedRoute,
     private router: Router) {
   }
 
   ngOnInit() {
 
-    // this.QuestionsDisplay= [{
-    //   ID: '1',
-    //   Description: 'Have you been contact with COVID person? If Yes, please donot contact with anyone. Keep distance.'
-    // },{
-    //   ID: '2',
-    //   Description: 'Have you been infected with fever?'
-    // },{
-    //   ID: '3',
-    //   Description: 'Have you been travelled across any country recently?'
-    // },{
-    //   ID: '4',
-    //   Description: 'DO you have any COVID symptoms?'
-    // }];
-    // if (this.QuestionsDisplay.length > 0) {
-    //   this.position = 0;
-    // }
+    this.route
+      .queryParams
+      .subscribe(params => {
+        this.docType = params['docType'];
+        this.videoPath = params['video'];
+        const ques = params['questions'];
+        if (ques) {
+          this.QuestionsDisplay = JSON.parse(ques);
+        }
+
+    });
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
@@ -57,50 +51,25 @@ export class QuestionnariesComponent implements OnInit {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
       }
     }
+
     const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
-
-    let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-    console.log("QuestionsDisplay", JSON.stringify(this.QuestionsDisplay));
-    const postdata = {
-      "VisitorCategory": uploadArray.visitorDetails[0].categoryId
-      }
-    this.apiServices.localPostMethod('GetQuestionaries' , postdata).subscribe((data: any)=>{
-
-      try {
-
-        let api = this.apiServices._getAPIURL();
-        if (api.split('api').length > 1) {
-          api = api.split('api')[0];
-        }
-        const resultData = JSON.parse(data[0].Data);
-        if (resultData.Table1.length > 0) {
-          this.videoPath = api + '/FS/' + resultData.Table1[0].VideoUrl;
-        }
-
-      } catch (error) {
-
-      }
-
-      if (Questionnaries) {
-        this.QuestionsDisplay= JSON.parse(data[0].Data).Table;
-        if (this.QuestionsDisplay.length > 0) {
-          this.position = 0;
-        } else {
-          const dialogRef = this.dialog.open(DialogAlertBox, {
-            //width: '50vw',
-            data: {"title": "Questions not found", "subTile":"Please contact admin." }
-          });
-          dialogRef.afterClosed().subscribe(result => {
-            this._location.back();
-          });
-
-        }
-        console.log("QuestionsDisplay",data);
+    if (Questionnaries) {
+      if (this.QuestionsDisplay.length > 0) {
+        this.position = 0;
       } else {
-        this.playVideo()
-      }
+        const dialogRef = this.dialog.open(DialogAlertBox, {
+          //width: '50vw',
+          data: {"title": "Questions not found", "subTile":"Please contact admin." }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.goBack(false);
+        });
 
-    });
+      }
+      console.log("QuestionsDisplay", JSON.stringify(this.QuestionsDisplay));
+    } else {
+      this.playVideo()
+    }
 
   }
 
@@ -144,56 +113,75 @@ export class QuestionnariesComponent implements OnInit {
     } else if (action === 'prev'){
       if ((this.position - 1) <= 0) {
         console.log('Reached first');
-        let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-        let listOfVisitors:any = uploadArray['visitorDetails'];
-        if (listOfVisitors.length > 0) {
-          listOfVisitors.splice(-1, 1);
-        }
-        // listOfVisitors.push(this.aptmDetails);
-        uploadArray['visitorDetails'] = listOfVisitors;
-        localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
-        this._location.back();
+        this.goBack(true);
       } else {
         this.position = this.position - 1;
       }
     }
   }
 
+  goBack(back) {
+    let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+    let listOfVisitors:any = uploadArray['visitorDetails'];
+    const currentVisitor = listOfVisitors[listOfVisitors.length - 1];
+    if (listOfVisitors.length > 0) {
+      listOfVisitors.splice(-1, 1);
+    }
+    // listOfVisitors.push(this.aptmDetails);
+    uploadArray['visitorDetails'] = listOfVisitors;
+    localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
+    if (back) {
+      // this._location.back();
+      this.router.navigate(['/visitorAppointmentDetail'], { queryParams:
+        { resumeData: true,
+          docType: this.docType,
+          visitorData : JSON.stringify(currentVisitor),
+          video: this.videoPath,
+          questions : JSON.stringify(this.QuestionsDisplay),
+        }})
+    } else {
+      this.router.navigateByUrl('/landing');
+    }
+
+  }
+
+  vidEnded() {
+    console.log("Video Ended");
+    if(this._updateVisitorList()){
+      this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
+    } else{
+      const dialogRef = this.dialog.open(DialogAlertBox, {
+        //width: '50vw',
+        data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.goBack(false);
+      });
+    }
+  }
+
+  videoFailed() {
+    console.log("Video Failed");
+    const dialogRef = this.dialog.open(DialogAlertBox, {
+      //width: '50vw',
+      data: {"title": "Error", "subTile":"Error while playing video. Please contact admin." }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.goBack(true);
+    });
+  }
+
   playVideo() {
+    let showVideoBrief = false;
+    if (this.mainModule === 'vcheckin') {
+      showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
+    } else {
+      showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video_preappt'];
+    }
+    if (showVideoBrief && this.videoPath) {
 
-    const Enable_Safety_brief_video = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
-    if (Enable_Safety_brief_video) {
       this.isPlayVideo = true;
-      if (!this.videoPath) {
-        const dialogRef = this.dialog.open(DialogAlertBox, {
-          //width: '50vw',
-          data: {"title": "Video not found", "subTile":"Please contact admin." }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this._location.back();
-        });
-        return;
-      }
-      // this.videoPath = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
-      setTimeout(() => {
-        this.video = this.matVideo.getVideoTag();
-        // // this.renderer.listen(this.video, 'ended', () => console.log('video ended'));
-        this.video.addEventListener('ended', () => {
-          console.log('video ended');
-
-          if(this._updateVisitorList()){
-            this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
-          } else{
-            const dialogRef = this.dialog.open(DialogAlertBox, {
-              //width: '50vw',
-              data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              this._location.back();
-            });
-          }
-        });
-      }, 1000);
+      // this.videoPath = 'http://commondatastorage.googleapis.com/gtv-videos-bucket1/sample/ForBiggerBlazes.mp4';
     } else {
       if(this._updateVisitorList()){
         this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
@@ -203,7 +191,7 @@ export class QuestionnariesComponent implements OnInit {
           data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
         });
         dialogRef.afterClosed().subscribe(result => {
-          this._location.back();
+          this.goBack(false);
         });
       }
     }

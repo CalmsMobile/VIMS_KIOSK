@@ -124,7 +124,9 @@ export class AppointmentSuccessComponent implements OnInit {
     let poReturnVal = "";
     if (this.CheckInVisitorData != undefined) {
       if (this.CheckInVisitorData.length > 0) {
-        if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
+        if (this.CheckInVisitorData[0].IsDynamicQR) {
+          poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
+        } else if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
           switch (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field']) {
               case "NRIC":
                   poReturnVal = this.getFieldValue("VisitorNRIC", 30, "L") || "";
@@ -260,18 +262,18 @@ export class AppointmentSuccessComponent implements OnInit {
     appointment.CategoryId = appointment1.categoryId? appointment1.categoryId: '';
     appointment.CompanyId = appointment1.company? appointment1.company: '';
     appointment.Contact = appointment1.contact? appointment1.contact: '';
-    appointment.CountryId = appointment1.Country? appointment1.Country: '';
+    appointment.CountryId = appointment1.countryId? appointment1.countryId: '';
     appointment.Email = appointment1.email? appointment1.email: '';
     appointment.EndDateTime = endTime;
     appointment.FloorId = '';
     appointment.FullName = appointment1.name? appointment1.name: '';
-    appointment.GenderId = appointment1.gender? appointment1.gender: '';
+    appointment.GenderId = appointment1.genderId? appointment1.genderId: '';
 
     appointment.HostDeptId = appointment1.hostDetails.HostDeptId?appointment1.hostDetails.HostDeptId:'';
     appointment.HostId = appointment1.hostDetails.id?appointment1.hostDetails.id:'';
     appointment.IdentityNo = appointment1.id? appointment1.id: '';
     appointment.Photo = appointment1.visitorB64Image? appointment1.visitorB64Image: '';
-    appointment.PurposeId = appointment1.purpose? appointment1.purpose: '';
+    appointment.PurposeId = appointment1.purposeId? appointment1.purposeId: '';
     appointment.Remarks = '';
     appointment.RoomId = '';
 
@@ -308,7 +310,8 @@ export class AppointmentSuccessComponent implements OnInit {
           this.isLoading = false;
 
           let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
-          this.RESULT_MSG = Data["Table"][0].description;
+          // this.RESULT_MSG = Data["Table"][0].description;
+          this.RESULT_MSG = 'Your appointment has been submitted successfully, please wait for approval email once your appointment has been approved';
           this.DisplayImageHandlerURL=this.getImageHandlerURL();
           this.qrcodeProcessed = true;
           _timeout = parseInt(_timeout) * 1000;
@@ -353,11 +356,16 @@ export class AppointmentSuccessComponent implements OnInit {
     if(uploadArray['visitorDetails'] != undefined && uploadArray['visitorDetails'].length > 0){
       vbookingseqid = uploadArray['visitorDetails'][0]['vbookingseqid'];
     }
-    let prepareData = {"att_id":att_id,"att_card_serialno": att_card_serialno,
-     "vbookingseqid":vbookingseqid}
+    let prepareData = {
+     "att_id":att_id,"att_card_serialno": att_card_serialno,
+     "vbookingseqid":vbookingseqid,
+     "QRCodeField" : this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'],
+     "CurrentDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
+    }
      this.EnableAcsQrCode = (typeof(this.KIOSK_PROPERTIES['modules']['ACS'])=='undefined'?false:this.KIOSK_PROPERTIES['modules']['ACS']['EnableAcsQrCode']);
      this.LabelPrintEnable = this.KIOSK_PROPERTIES['modules']['printer']['enable'];
      this.LabelPrintManualOrAuto = typeof(this.KIOSK_PROPERTIES['modules']['printer']['print_option'])=='undefined'?20:this.KIOSK_PROPERTIES['modules']['printer']['print_option'];
+
       this.apiServices.localPostMethod("visitorIndividualCheckIn", prepareData).subscribe((data:any) => {
         console.log(data);
         if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){

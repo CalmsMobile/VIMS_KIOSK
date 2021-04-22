@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings} from './app.settings';
 import { Http } from '@angular/http';
+import { DatePipe } from '@angular/common';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,7 +16,7 @@ const httpOptions = {
 };
 @Injectable()
 export class ApiServices {
-  constructor(public http: HttpClient, public myhttp:Http) {
+  constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp:Http) {
 
   }
   public _getAPIURL():string {
@@ -65,14 +66,13 @@ export class ApiServices {
   {
     let URL = this._getAPIURL();
     postData =  this._postMethodAuth(postData);
-    console.log("postData:" + JSON.stringify(postData));
+    console.log("API:"+ serviceName + "----> Post Data: " + JSON.stringify(postData));
     return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions );
   }
   localGetMethod(serviceName:string, appendURL:string )
   {
-        //let URL = this._getAPIURL();
-    let URL = "http://localhost/Portal/";
-        //let URL = "http://localhost:54402/";
+ let URL = "http://localhost/Portal/";
+  //  let URL = this._getAPIURL();
 
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
@@ -88,12 +88,14 @@ export class ApiServices {
     //   "AuMAppDevSeqId":_scanData['MAppSeqId'],
     //   "AuDeviceUID":MAC_ID
     // });
+    console.log("API:"+ URL + AppSettings['APP_SERVICES'][serviceName] + appendURL);
     return this.http.get(URL + AppSettings['APP_SERVICES'][serviceName] + appendURL);
   }
   getApiDeviceConnectionRequest(service:string)
   {
-    //let URL = this._getAPIURL();
-    let URL = "http://localhost/Portal/";
+ let URL = "http://localhost/Portal/";
+  //  let URL = this._getAPIURL();
+// let URL = this._getAPIURL();
     console.log(URL + service);
     return this.http.get(URL + service);
   }
@@ -122,7 +124,9 @@ export class ApiServices {
   }
   getStaffTemperature(data:any)
   {
-    let URL = "http://localhost/Portal/";
+ let URL = "http://localhost/Portal/";
+  //  let URL = this._getAPIURL();
+// let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions );
   }
@@ -141,7 +145,13 @@ export class ApiServices {
   }
   visitorIndividualCheckIn(data:any)
   {
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    if(setngs != undefined && setngs != ""){
+      const KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      data.QRCodeField = KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'];
+    }
     let URL = this._getAPIURL();
+    data.CurrentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorIndividualCheckIn'], data, httpOptions );
   }
@@ -151,12 +161,16 @@ export class ApiServices {
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions );
   }
   PrintVisitorLabel(data:any){
-    let URL = "http://localhost/Portal/";
+ let URL = "http://localhost/Portal/";
+  //  let URL = this._getAPIURL();
+// let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions );
   }
   PrintVisitorReceipt(data:any){
-    let URL = "http://localhost/Portal/";
+ let URL = "http://localhost/Portal/";
+  //  let URL = this._getAPIURL();
+// let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions );
   }

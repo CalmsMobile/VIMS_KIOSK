@@ -22,6 +22,7 @@ export class RegistrationTypeComponent implements OnInit {
     localStorage.setItem("VISI_SCAN_DOC_DATA","");
     let getVisi = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     this.totalVisitors =  getVisi['visitorDetails'].length;
+    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     this._updateKioskSettings();
   }
 
@@ -105,6 +106,11 @@ export class RegistrationTypeComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      if (this.mainModule === 'vcheckin') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
+      } else {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
+      }
     }
   }
 }

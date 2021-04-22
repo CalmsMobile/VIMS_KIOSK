@@ -4,8 +4,7 @@
     <i class="siva-icon-users-1"></i> </button> -->
 </div>
 <div style="text-align:center;padding:30px;">
-  <p info-title no-margin-top margin-bottom [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' ,
-  'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'capitalize': ''}">
+  <p info-title no-margin-top margin-bottom [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
     {{KIOSK_PROPERTIES.modules.only_visitor.appointment_screen_title}}
   </p>
   <div>
@@ -52,7 +51,7 @@
         *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1))">
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory"
-          [(ngModel)]="aptmDetails.id"
+          [(ngModel)]="aptmDetails.id" #box (keyup)="onKey(box.value, $event)"
           (blur)="textDataBindTemp($event.target.value, 'id')"
           (focusout)="itFocusOut($event.target.value, 'id')"
           [disabled]="docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
@@ -203,9 +202,9 @@
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
-  || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.Gender == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.gender == ''))
   || (mainModule === 'vcheckinapproval' && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory && !aptmDetails.meetingHours)
-  || (KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory && (aptmDetails.Country == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory && (aptmDetails.country == ''))
   ">{{(showFirstPageFields && this.NUMBER_OF_INPUTS > 7)? 'Next' : KIOSK_PROPERTIES.modules.only_visitor.checkin.in_act_but_label}}</button>
 
   <button mat-raised-button my-theme-button *ngIf="!showFirstPageFields"
@@ -220,9 +219,9 @@
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
-  || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.Gender == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.gender == ''))
   || (mainModule === 'vcheckinapproval' && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory && !aptmDetails.meetingHours)
-  || (KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory && (aptmDetails.Country == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory && (aptmDetails.country == ''))
   ">{{(showFirstPageFields && this.NUMBER_OF_INPUTS > 7)? 'Next' : KIOSK_PROPERTIES.modules.only_visitor.checkin.in_act_but_label}}</button>
 </div>
 <!--

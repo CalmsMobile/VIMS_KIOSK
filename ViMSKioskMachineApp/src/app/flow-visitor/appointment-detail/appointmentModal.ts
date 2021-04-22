@@ -4,12 +4,15 @@ export class AppointmentModal  {
     public email:string = '';
     public contact:string = '';
     public purpose:string = '';
+    public purposeId:string = '';
     public company:string = '';
     public category:string = '';
     public categoryId:string = '';
     public address:string = '';
     public country:string = '';
+    public countryId:string = '';
     public gender:string = '';
+    public genderId:string = '';
     public vehicle:string = '';
     public visitorB64Image:string = '';
     public checkinCounter:string = '';

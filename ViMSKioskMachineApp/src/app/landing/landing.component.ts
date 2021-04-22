@@ -241,41 +241,44 @@ export class LandingComponent implements OnInit {
       let app_bg = this.KIOSK_PROPERTIES['commonsetup']['app_background'];
       document.querySelector("body[app-bg]")['style']['background'] = "url('"+app_bg+"') no-repeat center";
       this.composeRunTimeCss();
-      this.KIOSK_AVAL_CARDS = this.KIOSK_PROPERTIES['kioskAvalCards'];
-
-      document.getElementById("bodyloader").style.display = "block";
-      this.apiServices.localGetMethod("GetMACAddress","").subscribe((data:any) => {
-        document.getElementById("bodyloader").style.display = "none";
-        let MacDetails = data;
-        if(MacDetails.length > 0 && MacDetails[0]['Status'] === true){
-          let MAC_ID = MacDetails[0]['Data'];
-          localStorage.setItem("MY_MAC_ID", MAC_ID);
-          document.getElementById("bodyloader").style.display = "block";
-          this.settingsServices._kiosk_getAvalCards((status,cards)=>{
-            document.getElementById("bodyloader").style.display = "none";
-            if(status){
-              this.IF_CONNECT_WITH_SERVER = true;
-              this.KIOSK_AVAL_CARDS = cards;
-              if(setngs != undefined && setngs != ""){
-                setngs = JSON.parse(setngs);
-                setngs['kioskAvalCards'] = cards;
-                localStorage.setItem('KIOSK_PROPERTIES',JSON.stringify(setngs));
+      if (this.KIOSK_PROPERTIES.modules.card_dispenser.enable) {
+        this.KIOSK_AVAL_CARDS = this.KIOSK_PROPERTIES['kioskAvalCards'];
+        document.getElementById("bodyloader").style.display = "block";
+        this.apiServices.localGetMethod("GetMACAddress","").subscribe((data:any) => {
+          document.getElementById("bodyloader").style.display = "none";
+          let MacDetails = data;
+          if(MacDetails.length > 0 && MacDetails[0]['Status'] === true){
+            let MAC_ID = MacDetails[0]['Data'];
+            localStorage.setItem("MY_MAC_ID", MAC_ID);
+            // document.getElementById("bodyloader").style.display = "block";
+            this.settingsServices._kiosk_getAvalCards((status,cards)=>{
+              // document.getElementById("bodyloader").style.display = "none";
+              if(status){
+                this.IF_CONNECT_WITH_SERVER = true;
+                this.KIOSK_AVAL_CARDS = cards;
+                if(setngs != undefined && setngs != ""){
+                  setngs = JSON.parse(setngs);
+                  setngs['kioskAvalCards'] = cards;
+                  localStorage.setItem('KIOSK_PROPERTIES',JSON.stringify(setngs));
+                }
+              } else{
+                this.dialog.open(DialogAppCommonDialog, {
+                  width: '350px',
+                  disableClose:true,
+                  data: {title: "Connect to server problem ! please contact admin.", subTile:"", enbCancel:false, canceltext: "", oktext:"OK"}
+                });
               }
-            } else{
-              this.dialog.open(DialogAppCommonDialog, {
-                width: '350px',
-                disableClose:true,
-                data: {title: "Connect to server problem ! please contact admin.", subTile:"", enbCancel:false, canceltext: "", oktext:"OK"}
-              });
-            }
-          });
-        }
-      },
-      err => {
-        document.getElementById("bodyloader").style.display = "none";
-        this.router.navigateByUrl('/getKioskCode');
-        return false;
-      });
+            });
+          }
+        },
+        err => {
+          document.getElementById("bodyloader").style.display = "none";
+          this.router.navigateByUrl('/getKioskCode');
+          return false;
+        });
+      } else {
+        this.IF_CONNECT_WITH_SERVER = true;
+      }
     } else{
       this.router.navigateByUrl('/getKioskCode');
     }
@@ -288,6 +291,22 @@ export class LandingComponent implements OnInit {
     [my-theme-round-button], [my-theme-button] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
       background: linear-gradient(to top left, ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1']+`) !important;
+    }
+    [sp-button-red-in], [sp-button-red-out],[sp-button-green-in], [sp-button-green-out],[sp-button-violet-out],[sp-button-violet-in],
+    [sp-button-rose-in], [sp-button-rose-out],[sp-button-yellow-in], [sp-button-yellow-out],[sp-button-blue-in],[sp-button-blue-out]
+    {
+      color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: 3px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
+      border-radius: 60px !important;
+    }
+    [sp-button-red-out1], [sp-button-green-out1], [sp-button-green-out1] {
+      color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: 3px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
+      border-radius: 60px !important;
     }
     [theme-border-input-big],
     [theme-border-input-small]{

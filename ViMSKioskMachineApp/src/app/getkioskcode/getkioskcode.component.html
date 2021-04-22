@@ -19,34 +19,34 @@
         <input matInput style="font-size: 1.5rem;" [(ngModel)]="KIOSK_CODE" placeholder="">
       </mat-form-field>
       <!-- (blur)="textDataBindTemp($event.target.value, 'KIOSK_CODE')"
-          ng-virtual-keyboard ng-virtual-keyboard-layout="numeric" 
+          ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
           ng-virtual-keyboard- -->
       <p info-title style="font-size: 3vh;margin: 1vh auto;">
         -------- OR ---------
       </p>
-      <button mat-raised-button my-theme-button sp-button-yellow-out style="margin-top:30px;min-width: 30vw;"
+      <button mat-raised-button my-theme-button style="margin-top:30px;min-width: 30vw;"
         (click)="takeActFor('scanNow')">Scan QRCode</button>
 
     </div>
     <div horizontal-divider style="width:50%;float: left;min-height:60vh;" margin-top>
-      <button mat-raised-button my-theme-button sp-button-blue-out [disabled]="KIOSK_CODE.toString().length <=0 "
+      <button mat-raised-button my-theme-button [disabled]="KIOSK_CODE.toString().length <=0 "
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('update')">Validate License</button>
       <br>
-      <button mat-raised-button my-theme-button sp-button-green-out [disabled]="UPDATE_SETTINGS_SHOW"
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('update')">Update Settings</button>
       <br>
-      <button mat-raised-button my-theme-button sp-button-green-out [disabled]="UPDATE_SETTINGS_SHOW"
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('testing')">Troubleshoot</button>
       <br>
-      <button mat-raised-button my-theme-button sp-button-red-out [disabled]="UPDATE_SETTINGS_SHOW"
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('clearAccount')">Clear Account</button>
       <br>
-      <button mat-raised-button my-theme-button sp-button-red-out style="margin-top:30px;min-width: calc(100% - 100px);"
+      <button mat-raised-button my-theme-button style="margin-top:30px;min-width: calc(100% - 100px);"
         (click)="closeWindow('exit')">Exit App</button>
 
     </div>
   </div>
 </div>
 <!-- <div my-footer-toolbar>
-  
+
 </div> -->

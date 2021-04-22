@@ -44,9 +44,9 @@ export class ScanRLoadingComponent implements OnInit {
           } else if(this.docType == 'PASSPORT'){
             this.getDeviceConnectionData('GetPassportDetail');
           } else if(this.docType == 'MYCARD'){
-            this.getMyCardDetails('GetMyKadDetails');
+            this.getMyCardDetails('MYCARD');
           } else if(this.docType == 'BUSINESS'){
-            this.getBusinessCardDetails('getBusinessCardData');
+            this.getBusinessCardDetails('BUSINESS');
           }
         }
       });
@@ -173,7 +173,7 @@ export class ScanRLoadingComponent implements OnInit {
     });
   }
   getBusinessCardDetails(action:string){
-    let req = AppSettings['APP_SERVICES'][action];
+    // let req = AppSettings['APP_SERVICES'][action];
     this.apiServices.localGetMethod("getBusinessCardData","").subscribe((data:any) => {
       console.log(data);
       if((action == "BUSINESS") && data.length > 0 ) {

@@ -5,7 +5,7 @@
     <i class="siva-icon-users-1"></i> </button>
 </div>
 <div style="text-align:center;padding:30px;">
-  <p info-title no-margin-top>
+  <p info-title no-margin-top [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
     {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_landing_label1}}
   </p>
   <div style="padding-top: 8vh;">

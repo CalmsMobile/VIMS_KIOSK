@@ -273,7 +273,7 @@ export class AppointmentSuccessComponent implements OnInit {
     appointment.HostId = appointment1.hostDetails.id?appointment1.hostDetails.id:'';
     appointment.IdentityNo = appointment1.id? appointment1.id: '';
     appointment.Photo = appointment1.visitorB64Image? appointment1.visitorB64Image: '';
-    appointment.PurposeId = appointment1.purposeId? appointment1.purposeId: '';
+    appointment.PurposeId = appointment1.purposeId? appointment1.purposeId: (appointment1.purpose? appointment1.purpose: '');
     appointment.Remarks = '';
     appointment.RoomId = '';
 

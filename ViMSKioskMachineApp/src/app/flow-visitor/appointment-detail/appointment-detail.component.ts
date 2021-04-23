@@ -98,6 +98,7 @@ export class AppointmentDetailComponent implements OnInit {
       this._initUpdateScanDataValues();
       if (!this.NUMBER_OF_INPUTS || this.NUMBER_OF_INPUTS === 0) {
         this._updateKioskSettings();
+        this.aptmDetails.purpose = this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.default;
       }
       this._updateVisitorCheckINSettings();
       this._getAllPurposeOfVisit();

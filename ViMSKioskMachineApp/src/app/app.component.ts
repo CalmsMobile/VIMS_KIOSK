@@ -140,7 +140,7 @@ export class AppComponent {
   selector: 'dialog-app-common-dialog',
   template: `
         <h2 mat-dialog-title margin-top>{{data.title}}</h2>
-        <h1 mat-dialog-title margin-top style="margin-bottom: 3vw;">You will be logged out in {{timeOutCount}} seconds.</h1>
+        <h1 mat-dialog-title margin-top style="margin-bottom: 3vw;">{{getMessage()}}.</h1>
         <div mat-dialog-actions margin>
           <button *ngIf="data.enbCancel" style="margin:0px 4vw 0px auto"
           mat-raised-button my-theme-alt-button margin-right [mat-dialog-close]="false" > {{data.canceltext}}</button>
@@ -167,6 +167,12 @@ export class DialogAppSessionTimeOutDialog {
           this.dialogRef.close(false);
         }
       },1000);
+    }
+
+    getMessage() {
+      if(this.data.subTile) {
+        return this.data.subTile.replace("{{timeOutCount}}", (this.timeOutCount + ' '));
+      }
     }
 
   onNoClick(): void {

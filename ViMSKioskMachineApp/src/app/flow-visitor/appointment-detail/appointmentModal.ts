@@ -14,6 +14,7 @@ export class AppointmentModal  {
     public gender:string = '';
     public genderId:string = '';
     public vehicle:string = '';
+    public visitor_blacklist:any = '';
     public visitorB64Image:string = '';
     public checkinCounter:string = '';
     public visitorDocB64Image:string = '';

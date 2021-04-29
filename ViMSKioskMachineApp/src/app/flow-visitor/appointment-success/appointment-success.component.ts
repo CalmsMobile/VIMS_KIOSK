@@ -192,7 +192,13 @@ export class AppointmentSuccessComponent implements OnInit {
       uploadArray['visitorDetails'][0]['temperature']=localStorage.getItem("Temperature");
       uploadArray['visitorDetails'][0].category = uploadArray['visitorDetails'][0].categoryId;
     }
-
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    let CheckINLocation = "";
+    if(setngs != undefined && setngs != ""){
+      CheckINLocation = JSON.parse(setngs)['kioskName'] || "";
+    }
+    uploadArray.Location = CheckINLocation;
+    uploadArray.CheckinBy = 'SSK';
     if (this.mainModule === 'vcheckinapproval') {
       this.callApitoSaveAppointment(uploadArray['visitorDetails'][0]);
       return;

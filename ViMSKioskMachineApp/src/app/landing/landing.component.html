@@ -58,7 +58,7 @@ min-width: 15vh;z-index: 999999999;">
     (click)="takeActFor('vcheckout')"
     [disabled]="!IF_CONNECT_WITH_SERVER">
 
-      <img src="assets/images/cus_icons/checkout.png" style="    width: 100px;
+      <img src="{{KIOSK_PROPERTIES.commonsetup.company_logo3}}" onError="src ='assets/images/cus_icons/checkout.png'"  style="    width: 100px;
       height: 100px;
       padding-bottom: 10px;
       margin: 0 auto;
@@ -73,7 +73,7 @@ min-width: 15vh;z-index: 999999999;">
     value="CHECKIN" [ngStyle]="{'font-weight': KIOSK_PROPERTIES.CheckinSettings.CaptionBold? 'bold': '' ,
     'text-transform': KIOSK_PROPERTIES.CheckinSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
     (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    <img src="assets/images/cus_icons/checkin.png" style="    width: 100px;
+    <img src="{{CheckIn}}" onError="src ='assets/images/cus_icons/checkin.png'" style="    width: 100px;
     height: 100px;
     padding-bottom: 10px;
     margin: 0 auto;
@@ -87,7 +87,7 @@ min-width: 15vh;z-index: 999999999;">
     *ngIf="KIOSK_PROPERTIES.ApptFieldSettings && KIOSK_PROPERTIES.ApptFieldSettings.Enable" [ngStyle]="{'font-weight': KIOSK_PROPERTIES.ApptFieldSettings.CaptionBold? 'bold': '' ,
     'text-transform': KIOSK_PROPERTIES.ApptFieldSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
     (click)="takeActFor('vcheckinapproval')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    <img src="assets/images/cus_icons/register.png" style="   width: 100px;
+    <img src="{{RequestAppointment}}" onError="src ='assets/images/cus_icons/register.png'" style="   width: 100px;
     height: 100px;
     padding-bottom: 10px;
     margin: 0 auto;

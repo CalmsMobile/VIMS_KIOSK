@@ -4,6 +4,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { SettingsService } from 'src/services/settings.service';
 import { appConfirmDialog } from '../flow-visitor/flow-visitor.component';
 import { DialogAppCommonDialog } from '../app.common.dialog';
+import { ApiServices } from 'src/services/apiService';
 
 @Component({
   selector: 'app-getkioskcode',
@@ -18,8 +19,9 @@ export class GetkioskcodeComponent implements OnInit {
   constructor(private router:Router,
      private route: ActivatedRoute,
      private settingServices:SettingsService,
+     private apiServices: ApiServices,
      public snackBar: MatSnackBar,
-     private dialog:MatDialog) { 
+     private dialog:MatDialog) {
     this.KIOSK_CODE = localStorage.getItem("APP_KIOSK_CODE") || '';
     if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != ""
     && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""
@@ -27,9 +29,9 @@ export class GetkioskcodeComponent implements OnInit {
       this.UPDATE_SETTINGS_SHOW = false;
     }
     if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != ""
-    && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != "" 
+    && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""
     && localStorage.getItem("KIOSK_PROPERTIES") != undefined && localStorage.getItem("KIOSK_PROPERTIES") != ""){
-      document.getElementById("homeButton").style.display = "block"; 
+      document.getElementById("homeButton").style.display = "block";
     } else {
       document.getElementById("homeButton").style.display = "none";
     }
@@ -53,18 +55,14 @@ export class GetkioskcodeComponent implements OnInit {
         localStorage.setItem("APP_KIOSK_CODE", this.KIOSK_CODE);
         document.getElementById("bodyloader").style.display = "block";
         this.settingServices._verifyKioskMachineCode((status:boolean)=>{
-          document.getElementById("bodyloader").style.display = "none";
-          if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" && 
+          if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
           localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){
             this.UPDATE_SETTINGS_SHOW = false;
           }
           if(status){
-            this.dialog.open(appConfirmDialog, {
-              width: '250px',
-              data: {title: "Kiosk Properties Updated !", btn_ok:"Ok"}
-            });
-            this.router.navigate(['/landing'],{ queryParams: { }});
+            this.getIconSrc();
           } else{
+            document.getElementById("bodyloader").style.display = "none";
             this.dialog.open(appConfirmDialog, {
               width: '250px',
               data: {title: "Connect to server problem ! please contact admin.", btn_ok:"Ok"}
@@ -74,7 +72,7 @@ export class GetkioskcodeComponent implements OnInit {
       }
     } else if(action === "settingsUpdate"){
       if((this.KIOSK_CODE).toString().length > 0){
-        if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" && 
+        if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
           localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){
           this.settingServices._getThisLicenceSetupProperties((status:boolean)=>{
             if(status){
@@ -98,7 +96,7 @@ export class GetkioskcodeComponent implements OnInit {
         data: {"title": "Are you sure want to clear this account?", "subTile":"",
         "enbCancel":true,"oktext":"Yes","canceltext":"No"}
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
          if(result){
           localStorage.clear();
@@ -116,17 +114,89 @@ export class GetkioskcodeComponent implements OnInit {
       this.router.navigate(['/scanQRCode'], {queryParams: { scanType: 'LICENCEQR' }});
     }
   }
-  textDataBindTemp(value : string, elm:string ) {  
+  textDataBindTemp(value : string, elm:string ) {
     console.log(value);
     this[elm] = value;
   }
   KIOSK_PROPERTIES:any = {};
   _updateKioskSettings(){
-    let setngs = localStorage.getItem('KIOSK_PROPERTIES'); 
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       this.KIOSK_AVAL_CARDS = this.KIOSK_PROPERTIES['kioskAvalCards'];
     }
+  }
+
+  getIconSrc() {
+    localStorage.setItem('KIOSK_RequestAppointment', '');
+    localStorage.setItem('KIOSK_CheckIn', '');
+    localStorage.setItem('KIOSK_MyKad', '');
+    localStorage.setItem('KIOSK_IDScanner', '');
+    localStorage.setItem('KIOSK_Passport', '');
+    localStorage.setItem('KIOSK_BusinessCard', '');
+    localStorage.setItem('KIOSK_Appointment', '');
+    localStorage.setItem('KIOSK_ManualRegistration', '');
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    if(setngs != undefined && setngs != ""){
+      this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      const logoSrcs = this.KIOSK_PROPERTIES['commonsetup']['button_background_image'];
+      if (logoSrcs) {
+        const apiUrl = this.apiServices._getAPIURL() + '/FS/';
+        let downloadCount = 0;
+        for (let i = 0; i < logoSrcs.length; i++) {
+          const locaItem = logoSrcs[i];
+          console.log(locaItem.Type + " --> Request Position:" + i);
+          this.getBase64ImageFromUrl(apiUrl+ locaItem.imgpathurl)
+          .then(result => {
+            downloadCount = downloadCount + 1;
+            console.log(locaItem.Type + " --> Base64: completed downloadCount:" + downloadCount);
+            localStorage.setItem('KIOSK_'+locaItem.Type, result+'');
+            if (downloadCount === logoSrcs.length) {
+              console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:"+ downloadCount);
+              this.callBackSuccess();
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            downloadCount = downloadCount + 1;
+            if (downloadCount === logoSrcs.length) {
+              console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:"+ downloadCount);
+              this.callBackSuccess();
+            }
+          });
+        }
+      } else {
+        this.callBackSuccess();
+      }
+    } else {
+      this.callBackSuccess();
+    }
+
+  }
+
+  callBackSuccess() {
+    document.getElementById("bodyloader").style.display = "none";
+    console.log("Image download success");
+    this.dialog.open(appConfirmDialog, {
+      width: '250px',
+      data: {title: "Kiosk Properties Updated !", btn_ok:"Ok"}
+    });
+    this.router.navigate(['/landing'],{ queryParams: { }});
+  }
+
+  async getBase64ImageFromUrl(imageUrl) {
+    var res = await fetch(imageUrl);
+    var blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      var reader  = new FileReader();
+      reader.addEventListener("load", () => {
+          resolve(reader.result);
+      }, false);
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    })
   }
   closeWindow(action:String){
     // const remote = require('electron').remote;
@@ -137,7 +207,7 @@ export class GetkioskcodeComponent implements OnInit {
         data: {"title": "Are you sure want to exit from App?", "subTile":"",
         "enbCancel":true,"oktext":"Yes","canceltext":"No"}
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
          if(result){
           window.close();

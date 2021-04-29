@@ -22,6 +22,8 @@ export class LandingComponent implements OnInit {
   GO_SETTINGS_TIMER:any = null;
   IF_CONNECT_WITH_SERVER:boolean = false;
   StaffCardNo:any='';
+  RequestAppointment = '';
+  CheckIn = '';
   constructor(
     private apiServices:ApiServices,
     private settingsServices:SettingsService,
@@ -284,6 +286,15 @@ export class LandingComponent implements OnInit {
     }
   }
   composeRunTimeCss(){
+    this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
+    this.CheckIn = localStorage.getItem('KIOSK_CheckIn');
+    const MyKad = localStorage.getItem('KIOSK_MyKad');
+    const KIOSK_IDScanner = localStorage.getItem('KIOSK_IDScanner');
+    const KIOSK_Passport = localStorage.getItem('KIOSK_Passport');
+    const KIOSK_BusinessCard = localStorage.getItem('KIOSK_BusinessCard');
+    const KIOSK_Appointment = localStorage.getItem('KIOSK_Appointment');
+    const KIOSK_ManualRegistration = localStorage.getItem('KIOSK_ManualRegistration');
+    console.log("apply image css ->>" + this.CheckIn);
     let _css = `
     [welcome-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header1'] +  ` !important; }
     [info-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] +  ` !important; }
@@ -295,17 +306,17 @@ export class LandingComponent implements OnInit {
     [sp-button-red-in], [sp-button-red-out],[sp-button-green-in], [sp-button-green-out],[sp-button-violet-out],[sp-button-violet-in],
     [sp-button-rose-in], [sp-button-rose-out],[sp-button-yellow-in], [sp-button-yellow-out],[sp-button-blue-in],[sp-button-blue-out]
     {
-      color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
+      color: ` + this.KIOSK_PROPERTIES['commonsetup']['kiosk_button_text_color'] +  ` !important;
       background: transparent !important;
       box-shadow: none !important;
-      border: 3px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
+      border: 5px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
       border-radius: 60px !important;
     }
     [sp-button-red-out1], [sp-button-green-out1], [sp-button-green-out1] {
-      color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
+      color: ` + this.KIOSK_PROPERTIES['commonsetup']['kiosk_button_text_color'] +  ` !important;
       background: transparent !important;
       box-shadow: none !important;
-      border: 3px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
+      border: 5px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
       border-radius: 60px !important;
     }
     [theme-border-input-big],
@@ -315,6 +326,36 @@ export class LandingComponent implements OnInit {
     [theme-border-input-big].mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
     [theme-border-input-small].mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_input_caption'] +  ` !important;
+    }
+    [my-reg-option-radio][value="MYCARD"]::before {
+      background: url(` + (MyKad ? MyKad: '../assets/images/cus_icons/my_card.png') + `) no-repeat !important;
+      background-size: 50% !important;
+      background-position: center 28% !important;
+    }
+    [my-reg-option-radio][value="SING_NRICrDRIV"]::before {
+      background: url(` + (KIOSK_IDScanner ? KIOSK_IDScanner: '../assets/images/cus_icons/driving_card.png') + `) no-repeat !important;
+      background-size: 50% !important;
+      background-position: center 28% !important;
+    }
+    [my-reg-option-radio][value="PASSPORT"]::before {
+      background: url(` + (KIOSK_Passport ? KIOSK_Passport: '../assets/images/cus_icons/passport.png') + `) no-repeat !important;
+      background-size: 50% !important;
+      background-position: center 28% !important;
+    }
+    [my-reg-option-radio][value="BUSINESS"]::before {
+      background: url(` + (KIOSK_BusinessCard ? KIOSK_BusinessCard: '../assets/images/cus_icons/business_card.png') + `) no-repeat !important;
+      background-size: 50% !important;
+      background-position: center 28% !important;
+    }
+    [my-reg-option-radio][value="PREAPPOINTMT"]::before {
+      background: url(` + (KIOSK_Appointment ? KIOSK_Appointment: '../assets/images/cus_icons/pre_appointment.png') + `) no-repeat !important;
+      background-size: 50% !important;
+      background-position: center 28% !important;
+    }
+    [my-reg-option-radio][value="OTHER"]::before {
+      background: url(` + (KIOSK_ManualRegistration ? KIOSK_ManualRegistration: '../assets/images/cus_icons/manual_keyboard.png') + `) no-repeat !important;
+      background-size: 50% !important;
+      background-position: center 28% !important;
     }
     .mat-badge-content{
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
@@ -334,6 +375,8 @@ export class LandingComponent implements OnInit {
     `;
     document.getElementById("MY_RUNTIME_CSS").innerHTML = _css;
   }
+
+
   checkCardPosition(_callback){
     if(this.KIOSK_PROPERTIES['modules']['card_dispenser']['enable']){
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data:any) => {

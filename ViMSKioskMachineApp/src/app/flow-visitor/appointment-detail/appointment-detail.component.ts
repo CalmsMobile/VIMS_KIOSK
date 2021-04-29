@@ -7,6 +7,7 @@ import {Observable, Subject} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { AppointmentModal } from './appointmentModal';
 import { AppSettings } from 'src/services/app.settings';
+import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -14,6 +15,7 @@ import { AppSettings } from 'src/services/app.settings';
 })
 export class AppointmentDetailComponent implements OnInit {
   aptmDetails:AppointmentModal;
+  isDisablePurpose = false;
   docType:any = '';
   mainModule = '';
   totalVisitors:number = 0;
@@ -138,6 +140,9 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.hostDetails.contact = doc_detail["host_contact"];
       this.aptmDetails.hostDetails.company = doc_detail["host_company_id"];
       //localStorage.setItem("VISI_SCAN_DOC_DATA","");
+      if (this.aptmDetails.purpose) {
+        this.isDisablePurpose = true;
+      }
 
     } else if((this.docType == "BUSINESS") && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
     && localStorage.getItem("VISI_SCAN_DOC_DATA") != ""){
@@ -219,6 +224,18 @@ export class AppointmentDetailComponent implements OnInit {
         });
       }
     } else if(action === "confirm"){
+
+      if (this.aptmDetails.visitor_blacklist === 'true' || this.aptmDetails.visitor_blacklist === true || this.aptmDetails.visitor_blacklist === 1 || this.aptmDetails.visitor_blacklist === '1') {
+        const dialogRef = this.dialog.open(DialogAppCommonDialog, {
+          //width: '250px',
+          data: {"title": "Notification", "subTile":"You are not authorize to enter.Please contact host or receiptionist.",
+          "enbCancel":false,"oktext":"Ok","canceltext":"Cancel"}
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.router.navigateByUrl('/landing');
+        });
+        return;
+      }
       if (this.showFirstPageFields && this.NUMBER_OF_INPUTS > 7) {
         this.showFirstPageFields = false;
         return;
@@ -331,13 +348,16 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
   openBottomPurposeSheet(): void {
-    const purpose = this.bottomSheet.open(BottomSheetPurposeSheet);
-    purpose.afterDismissed().subscribe(result => {
-      if(result != undefined){
-        this.aptmDetails.purpose = result['visitpurpose_desc'];
-        this.aptmDetails.purposeId = result['visitpurpose_id'];
-      }
-    });
+    if (!this.isDisablePurpose) {
+      const purpose = this.bottomSheet.open(BottomSheetPurposeSheet);
+      purpose.afterDismissed().subscribe(result => {
+        if(result != undefined){
+          this.aptmDetails.purpose = result['visitpurpose_desc'];
+          this.aptmDetails.purposeId = result['visitpurpose_id'];
+        }
+      });
+    }
+
   }
   openBottomCategorySelect(): void {
     const category = this.bottomSheet.open(BottomSheetCategorySelect);
@@ -901,6 +921,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.email = "";
       this.aptmDetails.contact = "";
       this.aptmDetails.vehicle = "";
+      this.aptmDetails.visitor_blacklist = false;
     }
   }
 
@@ -929,7 +950,10 @@ export class AppointmentDetailComponent implements OnInit {
             this.aptmDetails.email = visitorInfo.visitor_email || "";
             this.aptmDetails.contact = visitorInfo.visitor_mobile_no || "";
             this.aptmDetails.vehicle = visitorInfo.visitor_vehicle_no || "";
+            this.aptmDetails.visitor_blacklist = visitorInfo.visitor_blacklist || "";
            // console.log(visitorInfo);
+          } else {
+            this.aptmDetails.visitor_blacklist = false;
           }
         }
       }

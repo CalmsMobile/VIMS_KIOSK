@@ -328,32 +328,32 @@ export class LandingComponent implements OnInit {
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_input_caption'] +  ` !important;
     }
     [my-reg-option-radio][value="MYCARD"]::before {
-      background: url(` + (MyKad ? MyKad: '../assets/images/cus_icons/my_card.png') + `) no-repeat !important;
+      background: url(` + (MyKad ? MyKad: 'assets/images/cus_icons/my_card.png') + `) no-repeat !important;
       background-size: 50% !important;
       background-position: center 28% !important;
     }
     [my-reg-option-radio][value="SING_NRICrDRIV"]::before {
-      background: url(` + (KIOSK_IDScanner ? KIOSK_IDScanner: '../assets/images/cus_icons/driving_card.png') + `) no-repeat !important;
+      background: url(` + (KIOSK_IDScanner ? KIOSK_IDScanner: 'assets/images/cus_icons/driving_card.png') + `) no-repeat !important;
       background-size: 50% !important;
       background-position: center 28% !important;
     }
     [my-reg-option-radio][value="PASSPORT"]::before {
-      background: url(` + (KIOSK_Passport ? KIOSK_Passport: '../assets/images/cus_icons/passport.png') + `) no-repeat !important;
+      background: url(` + (KIOSK_Passport ? KIOSK_Passport: 'assets/images/cus_icons/passport.png') + `) no-repeat !important;
       background-size: 50% !important;
       background-position: center 28% !important;
     }
     [my-reg-option-radio][value="BUSINESS"]::before {
-      background: url(` + (KIOSK_BusinessCard ? KIOSK_BusinessCard: '../assets/images/cus_icons/business_card.png') + `) no-repeat !important;
+      background: url(` + (KIOSK_BusinessCard ? KIOSK_BusinessCard: 'assets/images/cus_icons/business_card.png') + `) no-repeat !important;
       background-size: 50% !important;
       background-position: center 28% !important;
     }
     [my-reg-option-radio][value="PREAPPOINTMT"]::before {
-      background: url(` + (KIOSK_Appointment ? KIOSK_Appointment: '../assets/images/cus_icons/pre_appointment.png') + `) no-repeat !important;
+      background: url(` + (KIOSK_Appointment ? KIOSK_Appointment: 'assets/images/cus_icons/pre_appointment.png') + `) no-repeat !important;
       background-size: 50% !important;
       background-position: center 28% !important;
     }
     [my-reg-option-radio][value="OTHER"]::before {
-      background: url(` + (KIOSK_ManualRegistration ? KIOSK_ManualRegistration: '../assets/images/cus_icons/manual_keyboard.png') + `) no-repeat !important;
+      background: url(` + (KIOSK_ManualRegistration ? KIOSK_ManualRegistration: 'assets/images/cus_icons/manual_keyboard.png') + `) no-repeat !important;
       background-size: 50% !important;
       background-position: center 28% !important;
     }

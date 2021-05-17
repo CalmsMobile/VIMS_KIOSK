@@ -140,7 +140,7 @@ export class GetkioskcodeComponent implements OnInit {
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       const logoSrcs = this.KIOSK_PROPERTIES['commonsetup']['button_background_image'];
-      if (logoSrcs) {
+      if (logoSrcs && logoSrcs.length > 0) {
         const apiUrl = this.apiServices._getAPIURL() + '/FS/';
         let downloadCount = 0;
         for (let i = 0; i < logoSrcs.length; i++) {

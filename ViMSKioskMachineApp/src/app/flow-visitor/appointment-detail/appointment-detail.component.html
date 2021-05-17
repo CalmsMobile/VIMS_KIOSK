@@ -29,6 +29,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Category.Caption}}</mat-label>
           <input matInput readonly theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
+          oninput="this.value = this.value.toUpperCase()"
           [(ngModel)]="aptmDetails.category" >
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -41,6 +42,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption}}</mat-label>
           <input matInput readonly theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
+          oninput="this.value = this.value.toUpperCase()"
           [(ngModel)]="aptmDetails.hostDetails.name">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -53,6 +55,7 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory"
           [(ngModel)]="aptmDetails.id" #box (keyup)="onKey(box.value, $event)"
           (blur)="textDataBindTemp($event.target.value, 'id')"
+          oninput="this.value = this.value.toUpperCase()"
           (focusout)="itFocusOut($event.target.value, 'id')"
           [disabled]="docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
             spellcheck="false" autocomplete="off"
@@ -67,6 +70,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory"
           [(ngModel)]="aptmDetails.name" (blur)="textDataBindTemp($event.target.value, 'name')"
+          oninput="this.value = this.value.toUpperCase()"
             spellcheck="false"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption">
@@ -79,9 +83,10 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
           [(ngModel)]="aptmDetails.company" (blur)="textDataBindTemp($event.target.value, 'company')"
-            spellcheck="false"
-            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-            [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption">
+          oninput="this.value = this.value.toUpperCase()"
+          spellcheck="false"
+          ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+          [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption">
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
@@ -92,6 +97,7 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
           [(ngModel)]="aptmDetails.contact" (blur)="textDataBindTemp($event.target.value, 'contact')"
             spellcheck="false"
+            oninput="this.value = this.value.toUpperCase()"
             ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption">
         </mat-form-field>
@@ -104,6 +110,7 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory"
           [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')"
             spellcheck="false"
+            oninput="this.value = this.value.toLowerCase()"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption">
         </mat-form-field>
@@ -116,6 +123,7 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
           [(ngModel)]="aptmDetails.vehicle" (blur)="textDataBindTemp($event.target.value, 'vehicle')"
             spellcheck="false"
+            oninput="this.value = this.value.toUpperCase()"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption">
         </mat-form-field>
@@ -128,6 +136,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.purpose"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory"
+          oninput="this.value = this.value.toUpperCase()"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -140,6 +149,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.gender"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory"
+          oninput="this.value = this.value.toUpperCase()"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -152,6 +162,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Country.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.country"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory"
+          oninput="this.value = this.value.toUpperCase()"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -163,6 +174,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.meetingHours"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory"
+          oninput="this.value = this.value.toUpperCase()"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>

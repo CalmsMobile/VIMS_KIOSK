@@ -100,7 +100,7 @@ export class ScanRLoadingComponent implements OnInit {
   }
   getDeviceConnectionData(action:string){
     let req = AppSettings['APP_SERVICES'][action];
-    this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data:any) => {
+    this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data: any) => {
       if((action == "GetPassportDetail" || action == "getIdScanerData" ) && data.length > 0 ) {
         if(data[0].Status){
           let resData = JSON.parse(data[0]["Data"]) || {};

@@ -210,8 +210,12 @@ export class AppointmentDetailComponent implements OnInit {
         }
     } else if(action === "addVisitor"){
       if(this._updateVisitorList()){
-        const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
-
+        let Questionnaries = false;
+        if (this.mainModule === 'vcheckin') {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        } else {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+        }
         if (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief) {
           this.router.navigate(['/questionarie'] , {queryParams:{docType: this.docType, video: this.videoPath, questions: JSON.stringify(this.QuestionsDisplay)}});
           return;
@@ -296,7 +300,12 @@ export class AppointmentDetailComponent implements OnInit {
 
   confirmAfterTakePhoto() {
     if(this._updateVisitorList()){
-      const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+      let Questionnaries = false;
+      if (this.mainModule === 'vcheckin') {
+        Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+      } else {
+        Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+      }
       if (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief) {
         this.router.navigate(['/questionarie'] , {queryParams:{docType: this.docType, video: this.videoPath, questions: JSON.stringify(this.QuestionsDisplay)}});
         return;
@@ -366,7 +375,12 @@ export class AppointmentDetailComponent implements OnInit {
         this.aptmDetails.category = result['visitor_ctg_desc'];
         this.aptmDetails.categoryId = result['visitor_ctg_id'];
         //this.VisitorCategoryChange(result['visitor_ctg_id'],result['visitor_ctg_desc']);
-        const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        let Questionnaries = false;
+        if (this.mainModule === 'vcheckin') {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        } else {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+        }
         if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
           this.getQuestionsOrVideo();
         }
@@ -392,7 +406,12 @@ export class AppointmentDetailComponent implements OnInit {
       } catch (error) {
 
       }
-      const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+      let Questionnaries = false;
+      if (this.mainModule === 'vcheckin') {
+        Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+      } else {
+        Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+      }
       if (Questionnaries) {
         this.QuestionsDisplay= JSON.parse(data[0].Data).Table;
         console.log("QuestionsDisplay",data);

@@ -9,21 +9,21 @@
     </p>
     <div style="margin-top:10vh;text-align: center;">
         <div style="width:46%;display: inline-block;min-height: 45vh;
-        vertical-align: top;" margin-top>
+        vertical-align: top;" margin-top *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'QRCode'">
           <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.screen_label}}</p>
           <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="width:35vw;">
             <mat-label>Appintment ID</mat-label>
-            <input matInput 
-              [(ngModel)]="APONTMNT_CODE" maxlength="10"  
+            <input matInput
+              [(ngModel)]="APONTMNT_CODE" maxlength="10"
               (blur)="textDataBindTemp($event.target.value, 'APONTMNT_CODE')"
-              ng-virtual-keyboard ng-virtual-keyboard-layout="extended" 
+              ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
               ng-virtual-keyboard-placeholder="Appintment ID">
           </mat-form-field>
         </div>
         <div horizontal-divider style="width:46%;display: inline-block;min-height: 45vh;
-        vertical-align: top;" margin-top>
+        vertical-align: top;" margin-top *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'manual'">
           <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.screen_label2}}</p>
-          <button mat-raised-button my-theme-button 
+          <button mat-raised-button my-theme-button
             (click)="takeActFor('scanNow')">Scan</button>
         </div>
       </div>
@@ -32,7 +32,7 @@
     <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
       <i class="siva-icon-left-big"></i>
     </button>
-  
+
     <button mat-raised-button my-theme-button [disabled]="APONTMNT_CODE.toString().length < 1"
     style="float: right;"
       (click)="takeActFor('getAppointmentDetail')">{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.proceed_act_but_label}}</button>

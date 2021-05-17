@@ -362,11 +362,18 @@ export class AppointmentSuccessComponent implements OnInit {
     if(uploadArray['visitorDetails'] != undefined && uploadArray['visitorDetails'].length > 0){
       vbookingseqid = uploadArray['visitorDetails'][0]['vbookingseqid'];
     }
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+      let CheckINLocation = "";
+      if(setngs != undefined && setngs != ""){
+        CheckINLocation = JSON.parse(setngs)['kioskName'] || "";
+      }
     let prepareData = {
      "att_id":att_id,"att_card_serialno": att_card_serialno,
      "vbookingseqid":vbookingseqid,
      "QRCodeField" : this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'],
-     "CurrentDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
+     "CurrentDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+     "Location" : CheckINLocation,
+     "CheckinBy": 'SSK'
     }
      this.EnableAcsQrCode = (typeof(this.KIOSK_PROPERTIES['modules']['ACS'])=='undefined'?false:this.KIOSK_PROPERTIES['modules']['ACS']['EnableAcsQrCode']);
      this.LabelPrintEnable = this.KIOSK_PROPERTIES['modules']['printer']['enable'];

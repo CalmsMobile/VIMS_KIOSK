@@ -11,7 +11,7 @@
        <div *ngIf="position > -1" style="margin-top: 5vh;">
         <div class="badge badge-info" style="color: white;
         font-size: 35px; text-align: left;"></div>
-          <h1 style="color: white; font-size: 45px;"><span [innerHTML]="QuestionsDisplay[position].Description"></span></h1>
+          <h1 info-title style="font-size: 45px;"><span [innerHTML]="QuestionsDisplay[position].Description"></span></h1>
           <div style="display: inline-block;
           margin: 0 auto;margin-top: 5vh;">
             <button mat-raised-button my-theme-button (click)="takeActFor('yes')" style="float: left;margin-right: 20px;">

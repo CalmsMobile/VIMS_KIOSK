@@ -41,18 +41,20 @@ export class QuestionnariesComponent implements OnInit {
         }
 
     });
+    let Questionnaries = false;
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
+        Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
       } else {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
+        Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
       }
     }
 
-    const Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
     if (Questionnaries) {
       if (this.QuestionsDisplay.length > 0) {
         this.position = 0;

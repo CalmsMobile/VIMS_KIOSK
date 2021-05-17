@@ -111,6 +111,7 @@
           [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')"
             spellcheck="false"
             oninput="this.value = this.value.toLowerCase()"
+            pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption">
         </mat-form-field>

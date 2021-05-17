@@ -955,6 +955,18 @@ export class AppointmentDetailComponent implements OnInit {
     console.log("update: " + value);
   }
 
+  validateAndReturnEmail() {
+    var EMAIL_REGEXP = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (EMAIL_REGEXP.test(this.aptmDetails.email)) {
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailIdValidated = true;
+    } else {
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailIdValidated = false;
+    }
+
+   return this.aptmDetails.email.toLowerCase();
+  }
+
   getVisitorDetails(att_visitor_id:string){
     let uploadarray = {"att_visitor_id": att_visitor_id}
     this.apiServices.localPostMethod('getVisitorInformation',uploadarray).subscribe((data:any) => {

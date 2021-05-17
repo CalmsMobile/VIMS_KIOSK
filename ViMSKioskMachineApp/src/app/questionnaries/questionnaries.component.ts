@@ -81,7 +81,7 @@ export class QuestionnariesComponent implements OnInit {
       this.QuestionsDisplay[this.position].Answer = 1;
       const currentQuestion = this.QuestionsDisplay[this.position];
       if (currentQuestion) {
-        if (currentQuestion && (currentQuestion.AcceptedAns === '1' || currentQuestion.AcceptedAns === 1)) {
+        if (currentQuestion && (!currentQuestion.ValidationRequired || (currentQuestion.AcceptedAns === '1' || currentQuestion.AcceptedAns === 1))) {
           if (this.position + 1 === this.QuestionsDisplay.length) {
             console.log('Reached End');
             this.playVideo();
@@ -97,7 +97,7 @@ export class QuestionnariesComponent implements OnInit {
       this.QuestionsDisplay[this.position].Answer = 0;
       const currentQuestion = this.QuestionsDisplay[this.position];
       if (currentQuestion) {
-        if (currentQuestion && (currentQuestion.AcceptedAns === '0' || currentQuestion.AcceptedAns === 0)) {
+        if (currentQuestion && (!currentQuestion.ValidationRequired || (currentQuestion.AcceptedAns === '0' || currentQuestion.AcceptedAns === 0))) {
           if (this.position + 1 === this.QuestionsDisplay.length) {
             console.log('Reached End');
             this.playVideo();

@@ -259,9 +259,9 @@ export class AppointmentSuccessComponent implements OnInit {
 
   callApitoSaveAppointment(appointment1) {
     const cDate = new Date();
-    const startTime = this.datePipe.transform(cDate+"", "yyyy-MM-ddTHH:mm:ss");
+    const startTime = this.datePipe.transform(cDate+"", "MM-dd-yyyy HH:mm:ss");
     const endDate = new Date().setTime(new Date().getTime() + (appointment1.meetingHoursValue? appointment1.meetingHoursValue: 1) *60*60*1000);
-    const endTime = this.datePipe.transform(endDate+"", "yyyy-MM-ddTHH:mm:ss");
+    const endTime = this.datePipe.transform(endDate+"", "MM-dd-yyyy HH:mm:ss");
     const appointment : any = {};
     appointment.SEQ_ID = '';
     appointment.Address = '';

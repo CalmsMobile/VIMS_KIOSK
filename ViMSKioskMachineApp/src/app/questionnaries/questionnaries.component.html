@@ -39,7 +39,7 @@
 </div>
 <div *ngIf="isPlayVideo" style="height: 100%">
   <!-- <mat-video #video [autoplay]="true" [fullscreen]="true" [overlay]="false" [download]="false" src="{{videoPath}}"></mat-video> -->
-  <video id="videoTag" controls="false" autoplay="true" style="height: 100%; width: 100%;"  (ended)="vidEnded()">
+  <video id="videoTag" controls="false" autoplay="true" style="height: 98%; width: 100%;"  (ended)="vidEnded()">
     <source src="{{videoPath}}" type="video/mp4" (error)="videoFailed()"/>
 </video>
 </div>

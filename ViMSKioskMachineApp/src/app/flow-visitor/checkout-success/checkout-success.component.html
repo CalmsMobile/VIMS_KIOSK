@@ -1,0 +1,39 @@
+<div loader-page style="text-align:center;padding:30px;">
+  <div *ngIf="isLoading && !isFinished" style="padding-top:20vh">
+    <p info-title [innerHTML]="KIOSK_PROPERTIES['commonsetup']['Register_loading_msg'] | safeHtml">
+
+    </p>
+    <div class='loading'>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+    </div>
+  </div>
+  <div *ngIf="!isLoading && !isFinished">
+
+    <div *ngIf="attendanceData" style="display: inline-grid;">
+      <img [src]="attendanceData.SEQ_ID ? DisplayImageHandlerURL + attendanceData.SEQ_ID + imageURLType: 'assets/images/cus_icons/user.png'"
+       style='width:185px;height:185px;    margin: 0 auto;    border-radius: 50%;border: 5px solid white; padding: 3px;' *ngIf="DisplayImageHandlerURL">
+      <p info-title><i style="margin-right: 15px;" class="siva-icon-user-1"></i>{{attendanceData.VISITOR_NAME}}</p>
+      <div sub-title>CheckIn Time
+        <p info-title><i style="margin-right: 15px;" class="siva-icon-back-in-time"></i>{{checkindisplayTime | date:'dd MMM yyyy hh:mm a'}}</p></div>
+      <button style="margin-top: 25px;" mat-raised-button my-theme-button (click)="callApitoCheckout()">
+        {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}
+      </button>
+    </div>
+  </div>
+  <div *ngIf="isFinished" style="padding-top:12vh">
+
+    <p info-title
+    [innerHTML]="RESULT_MSG | safeHtml"></p>
+    <p info-title *ngIf="RESULT_MSG2"
+    [innerHTML]="RESULT_MSG2 | safeHtml"></p>
+    <p info-title *ngIf="RESULT_MSG3"
+    [innerHTML]="RESULT_MSG3 | safeHtml"></p>
+
+    <img width="100px" alt="Angular Logo" [src]="LOGO_IMG">
+  </div>
+</div>
+

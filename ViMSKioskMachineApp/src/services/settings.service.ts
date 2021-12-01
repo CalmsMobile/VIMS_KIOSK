@@ -50,11 +50,12 @@ export class SettingsService {
                 if(data.length > 0 && data[0]['Status'] === true){
                   let _details = JSON.parse(data[0]['Data']);
                   console.log(_details);
-                  if(_details['Table'] != undefined && _details['Table'].length > 0 
+                  if(_details['Table'] != undefined && _details['Table'].length > 0
                   && _details['Table'][0]['Code'] == 10){
+                    localStorage.setItem(AppSettings.LOCAL_STORAGE.BRANCH_ID, _details['Table1'][0]['RefBranchSeqid']);
                     if(_details['Table2'] != undefined && _details['Table2'].length > 0){
                       console.log(_details['Table2']);
-                      if(_details['Table2'][0]['DeviceUID'] != undefined && _details['Table2'][0]['DeviceUID'] != null 
+                      if(_details['Table2'][0]['DeviceUID'] != undefined && _details['Table2'][0]['DeviceUID'] != null
                         && _details['Table2'][0]['DeviceUID'] != "" && _details['Table2'][0]['DeviceUID'] == this.MAC_ID){
                           document.getElementById("bodyloader").style.display = "none";
                           this.dialog.open(DialogAppCommonDialog, {
@@ -69,13 +70,13 @@ export class SettingsService {
                               document.getElementById("bodyloader").style.display = "none";
                             }
                         });
-                      } else{ 
+                      } else{
                         _callBack(false);
                         return false;
                       }
                     } else {
                       if(_details['Table1'] != undefined && _details['Table1'].length > 0){
-                        if(_details['Table1'][0]['DeviceUID'] == undefined || _details['Table1'][0]['DeviceUID'] == null 
+                        if(_details['Table1'][0]['DeviceUID'] == undefined || _details['Table1'][0]['DeviceUID'] == null
                           || _details['Table1'][0]['DeviceUID'] == ""){
                             document.getElementById("bodyloader").style.display = "none";
                             this.dialog.open(DialogAppCommonDialog, {
@@ -106,24 +107,24 @@ export class SettingsService {
                         } else if(_details['Table1'][0]['DeviceUID'] == this.MAC_ID){
                           this._getThisLicenceSetupProperties(_callBack);
                         }
-                      } else { 
+                      } else {
                         _callBack(false);
                         return false;
                       }
                     }
-                  } else{ 
+                  } else{
                     _callBack(false);
                     return false;
                   }
-                } 
+                }
               },
-              err => { 
+              err => {
                 _callBack(false);
                 return false;
               });
             }
           },
-          err => { 
+          err => {
             _callBack(false);
             return false;
           });
@@ -154,22 +155,22 @@ export class SettingsService {
     this.apiServices.localPostMethod("SaveKIOSKDeviceInfo",_prepare).subscribe((data:any) => {
       if(data.length > 0 && data[0]['Status'] === true){
         let _details = JSON.parse(data[0]['Data']);
-        if(_details['Table'] != undefined && _details['Table'].length > 0 
+        if(_details['Table'] != undefined && _details['Table'].length > 0
         && _details['Table'][0]['Code'] == 10){
           if(_details['Table1'] != undefined && _details['Table1'].length > 0){
             console.log("asdasdasda" + JSON.stringify(_details['Table1']));
           }
           this._getThisLicenceSetupProperties(_callBack);
-        }else{ 
+        }else{
           _callBack(false);
           return false;
         }
-      } else{ 
+      } else{
         _callBack(false);
         return false;
       }
     },
-    err => { 
+    err => {
       _callBack(false);
       return false;
     });
@@ -190,7 +191,7 @@ export class SettingsService {
       console.log(data);
       if(data.length > 0 && data[0]['Status'] === true){
         let _details = JSON.parse(data[0]['Data']);
-        if(_details['Table'] != undefined && _details['Table'].length > 0 
+        if(_details['Table'] != undefined && _details['Table'].length > 0
         && _details['Table'][0]['Code'] == 10){
           if(_details['Table1'] != undefined && _details['Table1'].length > 0){
             let _kiosk_info = _details['Table1'][0];
@@ -202,33 +203,33 @@ export class SettingsService {
             if(_details['Table2'] != undefined && _details['Table2'].length > 0){
               _prepare['kioskName'] = _details['Table2'][0]['Name'];
             }
-            
+
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
-            
+
             this._initCardDispenserModule();
             //this.snackBar.open("Kiosk Properties Updated !","",{duration: 2000});
             _callBack(true);
             return true;
-          } else{ 
+          } else{
             _callBack(false);
             return false;
           }
-        } else{ 
+        } else{
           _callBack(false);
           return false;
         }
-      } else{ 
+      } else{
         _callBack(false);
         return false;
       }
     },
-    err => { 
+    err => {
       _callBack(false);
       return false;
     });
   }
   public _initCardDispenserModule(){
-    let setngs = localStorage.getItem('KIOSK_PROPERTIES'); 
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       setngs = JSON.parse(setngs)['kioskSetup'];
     }
@@ -254,7 +255,7 @@ export class SettingsService {
             let _closeCardD = JSON.parse(data[0]['Data']) || {"ResponseStatus":"1","ResponseMessage":"Invalid JSON"};
             _cardDStatus.close = _closeCardD;
             if(_closeCardD['ResponseStatus'] === "0" || _closeCardD['ResponseStatus'] === "1"){
-              // ---------- Call Card Dispenser COM Open ---------- 
+              // ---------- Call Card Dispenser COM Open ----------
               this.apiServices.localGetMethod("SD_OpenCOM",_cardDcom).subscribe((data:any) => {
                 if(data.length > 0 && data[0]['Data'] != ""){
                   let _openCardD = JSON.parse(data[0]['Data']) || {"ResponseStatus":"1","ResponseMessage":"Invalid JSON"};
@@ -292,7 +293,7 @@ export class SettingsService {
             }
             localStorage.setItem("CARD_D_STATUS",JSON.stringify(_cardDStatus));
           }
-        }, err => { 
+        }, err => {
           _cardDStatus.close = {"ResponseStatus":"1","ResponseMessage":"API Call Error Problem"};
           localStorage.setItem("CARD_D_STATUS",JSON.stringify(_cardDStatus));
           return false;
@@ -301,11 +302,11 @@ export class SettingsService {
     }
   }
   public _kiosk_Minus1AvailCard(_callBack:any){
-    if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" && 
+    if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
     localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){
       let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
       this.APP_KIOSK_CODE_DECRIPTED = JSON.parse(_scanData);
-      this.MAC_ID = localStorage.getItem("MY_MAC_ID"); 
+      this.MAC_ID = localStorage.getItem("MY_MAC_ID");
 
       let _passData = {
         "ID":this.APP_KIOSK_CODE_DECRIPTED['MAppSeqId'],
@@ -316,14 +317,14 @@ export class SettingsService {
       this.apiServices.localPostMethod("kioskCardUpdate", _passData).subscribe((data:any) => {
         if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
           let _res_data = JSON.parse(data[0]["Data"]);
-          if(_res_data['Table'] != undefined && _res_data['Table'][0]['Code'] != undefined 
+          if(_res_data['Table'] != undefined && _res_data['Table'][0]['Code'] != undefined
           && _res_data['Table'][0]['Code'] == '10'){
             // if(_res_data['Table1'] != undefined && _res_data['Table1'].length > 0){
-              
+
             // }
             _callBack(true);
             return false;
-          }  else if(_res_data['Table'] != undefined && _res_data['Table'].length > 0 
+          }  else if(_res_data['Table'] != undefined && _res_data['Table'].length > 0
             && _res_data['Table'][0]['Code'] == 50){
               document.getElementById("bodyloader").style.display = "none";
             this.dialog.open(DialogAppCommonDialog, {
@@ -342,18 +343,18 @@ export class SettingsService {
           return false;
         }
       },
-      err => { 
+      err => {
         _callBack(false);
         return false;
       });
     }
   }
   public _kiosk_getAvalCards(_callBack:any){
-    if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" && 
+    if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
     localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){
       let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
       this.APP_KIOSK_CODE_DECRIPTED = JSON.parse(_scanData);
-      this.MAC_ID = localStorage.getItem("MY_MAC_ID"); 
+      this.MAC_ID = localStorage.getItem("MY_MAC_ID");
 
       let _passData = {
         "ID":this.APP_KIOSK_CODE_DECRIPTED['MAppSeqId'],
@@ -364,14 +365,14 @@ export class SettingsService {
       this.apiServices.localPostMethod("kioskCardUpdate", _passData).subscribe((data:any) => {
         if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
           let _res_data = JSON.parse(data[0]["Data"]);
-          if(_res_data['Table'] != undefined && _res_data['Table'][0]['Code'] != undefined 
+          if(_res_data['Table'] != undefined && _res_data['Table'][0]['Code'] != undefined
           && _res_data['Table'][0]['Code'] == '10'){
             if(_res_data['Table1'] != undefined && _res_data['Table1'].length > 0){
               let avail_cards = _res_data['Table1'][0]['kioskAvalCards'];
               _callBack(true, avail_cards);
               return;
             }
-          } else if(_res_data['Table'] != undefined && _res_data['Table'].length > 0 
+          } else if(_res_data['Table'] != undefined && _res_data['Table'].length > 0
             && _res_data['Table'][0]['Code'] == 50){
             document.getElementById("bodyloader").style.display = "none";
             this.dialog.open(DialogAppCommonDialog, {
@@ -390,7 +391,7 @@ export class SettingsService {
           return;
         }
       },
-      err => { 
+      err => {
         _callBack(false,0);
         return false;
       });

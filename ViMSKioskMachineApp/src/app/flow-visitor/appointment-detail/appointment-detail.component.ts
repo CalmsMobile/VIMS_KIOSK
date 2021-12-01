@@ -958,13 +958,7 @@ export class AppointmentDetailComponent implements OnInit {
   validateAndReturnEmail() {
     var EMAIL_REGEXP = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (EMAIL_REGEXP.test(this.aptmDetails.email)) {
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailIdValidated = true;
-    } else {
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailIdValidated = false;
-    }
-
-   return this.aptmDetails.email.toLowerCase();
+    return this.aptmDetails.email? (EMAIL_REGEXP.test(this.aptmDetails.email)? false: true) : false;
   }
 
   getVisitorDetails(att_visitor_id:string){

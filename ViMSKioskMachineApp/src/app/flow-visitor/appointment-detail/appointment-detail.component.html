@@ -190,7 +190,7 @@
   </button>
   <button mat-raised-button my-theme-button (click)="takeActFor('addVisitor')"
   *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_registration_action_type != 'single'"
-  [disabled]="
+  [disabled]="validateAndReturnEmail() ||
   (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email == ''))
@@ -205,7 +205,7 @@
 
     <button mat-raised-button my-theme-button *ngIf="showFirstPageFields"
   style="float: right;" (click)="takeActFor('confirm')"
-  [disabled]="
+  [disabled]="validateAndReturnEmail() ||
   (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email == ''))

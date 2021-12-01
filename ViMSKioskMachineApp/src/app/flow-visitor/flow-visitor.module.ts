@@ -19,6 +19,8 @@ export const ROUTES: Routes = [
   { path: 'visitorSummaryDetail', component: VisitorSummaryComponent },
   { path: 'visitorMsgSuceess', component: AppointmentSuccessComponent },
   { path: 'visitorPreApontmnt', component: VisitorPreApontmntComponent },
+  { path: 'visitorCheckout', component: VisitorCheckoutComponent},
+  { path: 'checkoutSuccess', component: CheckoutSuccessComponent},
   { path: 'staffDetailForTemp', component: staffDetailForTempComponent },
   { path: 'visitorDetailForTemp', component: visitorDetailForTempComponent },
   { path: 'staffTemperature', component: staffTemperatureComponent },
@@ -42,6 +44,8 @@ import {
 import { VisitorSummaryComponent } from './visitor-summary/visitor-summary.component';
 import { MainPipeModule } from '../main-pipe/main-pipe.module';
 import { VisitorPreApontmntComponent } from './visitor-pre-apontmnt/visitor-pre-apontmnt.component';
+import { VisitorCheckoutComponent } from './visitor-checkout/visitor-checkout.component';
+import { CheckoutSuccessComponent } from './checkout-success/checkout-success.component';
 import { staffDetailForTempComponent } from './staffDetailForTemp/staffDetailForTemp.component';
 import { staffTemperatureComponent } from './staffTemperature/staffTemperature.component';
 import { visitorDetailForTempComponent } from './visitorDetailForTemp/visitorDetailForTemp.component';
@@ -54,7 +58,7 @@ import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnarie
       ScanRLoadingComponent,AppTermsAndCondtion, DialogAlertBox,BottomSheetHoursSelect,
       AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
       AppointmentSuccessComponent,DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
-      VisitorPreApontmntComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
+      VisitorPreApontmntComponent, VisitorCheckoutComponent,CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
     staffTemperatureComponent,visitorDetailForTempComponent,visitorTemperatureComponent,BottomSheetCountrySelect, BottomSheetGenderSelect],
   imports: [
     RouterModule.forChild(ROUTES),

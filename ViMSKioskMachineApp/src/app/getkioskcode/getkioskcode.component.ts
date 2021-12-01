@@ -130,6 +130,7 @@ export class GetkioskcodeComponent implements OnInit {
   getIconSrc() {
     localStorage.setItem('KIOSK_RequestAppointment', '');
     localStorage.setItem('KIOSK_CheckIn', '');
+    localStorage.setItem('KIOSK_CheckOut', '');
     localStorage.setItem('KIOSK_MyKad', '');
     localStorage.setItem('KIOSK_IDScanner', '');
     localStorage.setItem('KIOSK_Passport', '');

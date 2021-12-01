@@ -50,21 +50,6 @@ min-width: 15vh;z-index: 999999999;">
     </mat-radio-button>
   </mat-radio-group> -->
 
-  <button my-reg-option-btn sp-button-violet-out1 matRipple
-  matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
-  font-size: 20px;
-  font-weight: 700;"
-*ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
-    (click)="takeActFor('vcheckout')"
-    [disabled]="!IF_CONNECT_WITH_SERVER">
-
-      <img src="{{KIOSK_PROPERTIES.commonsetup.company_logo3}}" onError="src ='assets/images/cus_icons/checkout.png'"  style="    width: 100px;
-      height: 100px;
-      padding-bottom: 10px;
-      margin: 0 auto;
-      display: block;"/>
- {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}</button>
-
     <button my-reg-option-btn sp-button-red-out1 matRipple
     matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
     font-size: 20px;
@@ -93,6 +78,23 @@ min-width: 15vh;z-index: 999999999;">
     margin: 0 auto;
     display: block;"/>
       {{KIOSK_PROPERTIES.ApptFieldSettings.Caption}}</button>
+
+
+  <button my-reg-option-btn sp-button-violet-out1 matRipple
+  matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
+  font-size: 20px;
+  font-weight: 700;"
+*ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
+    (click)="takeActFor('vcheckout')"
+    [disabled]="!IF_CONNECT_WITH_SERVER">
+
+      <img src="{{CheckOut}}" onError="src ='assets/images/cus_icons/checkout.png'"  style="    width: 100px;
+      height: 100px;
+      padding-bottom: 10px;
+      margin: 0 auto;
+      display: block;"/>
+ {{KIOSK_PROPERTIES.modules.only_visitor.visitor_landing_out_btn_label}}</button>
+
 
       <!-- <button mat-raised-button my-theme-button style="margin-right: 5vh;"
       *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor"

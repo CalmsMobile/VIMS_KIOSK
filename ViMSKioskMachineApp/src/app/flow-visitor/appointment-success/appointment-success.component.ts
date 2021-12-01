@@ -912,7 +912,7 @@ export class AppointmentSuccessComponent implements OnInit {
         "VisitorVehicle":poReturnData[0]['VisitorVehicle'] || "",
         "HostPurpose":this.getFieldValue("HostPurpose", 30, "L"),
         "CheckInTime":this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm a') || "",
-        "PermittedTime":this.datePipe.transform(new Date((poReturnData[0]['PermittedTime']).toString()), 'dd-MM-yyyy hh:mm a') || "",
+        "PermittedTime":poReturnData[0]['PermittedTime'] ? this.datePipe.transform(new Date((poReturnData[0]['PermittedTime']).toString()), 'dd-MM-yyyy hh:mm a') || "": "",
         "PassNo":poReturnData[0]['PassNo'] || "",
         "CheckINLocation": CheckINLocation,
         "CheckINBy": "VISITOR",

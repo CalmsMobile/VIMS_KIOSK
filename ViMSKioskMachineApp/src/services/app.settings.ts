@@ -30,6 +30,10 @@ export const AppSettings = Object.freeze({
         "getIdScanerData":"api/kiosk/getIdScanerData",
         "GetMyKadDetails":"api/kiosk/GetMyKadDetails",
         "getBusinessCardData":"api/kiosk/getBusinessCardData",
+
+        //----Checkout --------------
+        "VimsAppGetAppointmentByAttHexCode": "api/kiosk/VimsAppGetAppointmentByAttHexCode",
+        "VimsAppUpdateVisitorCheckOut": "api/kiosk/VimsAppUpdateVisitorCheckOut",
         //----CardDispenser 1-----------
         "SetCardIn":"api/kiosk/SetCardIn?ComPort=",
         "EjectCard":"api/kiosk/EjectCard",
@@ -114,7 +118,8 @@ export const AppSettings = Object.freeze({
     },
 
     LOCAL_STORAGE: {
-      "MAIN_MODULE": "MAIN_MODULE"
+      "MAIN_MODULE": "MAIN_MODULE",
+      "BRANCH_ID": "KIOSK_BRANCH_ID"
     },
 
     SHOW_START_WIZARD: false, // Intro wizard Show / Hide Option

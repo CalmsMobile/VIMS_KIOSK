@@ -24,6 +24,7 @@ export class LandingComponent implements OnInit {
   StaffCardNo:any='';
   RequestAppointment = '';
   CheckIn = '';
+  CheckOut = '';
   constructor(
     private apiServices:ApiServices,
     private settingsServices:SettingsService,
@@ -203,7 +204,7 @@ export class LandingComponent implements OnInit {
         }
       });
     } else if(action === "vcheckout"){
-      //this.router.navigateByUrl('/visitorAgree');
+      this.router.navigateByUrl('/visitorCheckout');
     }
   }
   _clearAllLocalData(){
@@ -288,6 +289,7 @@ export class LandingComponent implements OnInit {
   composeRunTimeCss(){
     this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
     this.CheckIn = localStorage.getItem('KIOSK_CheckIn');
+    this.CheckOut = localStorage.getItem('KIOSK_CheckOut');
     const MyKad = localStorage.getItem('KIOSK_MyKad');
     const KIOSK_IDScanner = localStorage.getItem('KIOSK_IDScanner');
     const KIOSK_Passport = localStorage.getItem('KIOSK_Passport');
@@ -312,7 +314,7 @@ export class LandingComponent implements OnInit {
       border: 5px solid ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`;
       border-radius: 60px !important;
     }
-    [sp-button-red-out1], [sp-button-green-out1], [sp-button-green-out1] {
+    [sp-button-red-out1], [sp-button-green-out1], [sp-button-violet-out1], [sp-button-green-out1] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['kiosk_button_text_color'] +  ` !important;
       background: transparent !important;
       box-shadow: none !important;

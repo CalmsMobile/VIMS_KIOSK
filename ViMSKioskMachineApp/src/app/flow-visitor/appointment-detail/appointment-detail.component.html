@@ -30,6 +30,7 @@
           <input matInput readonly theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
           oninput="this.value = this.value.toUpperCase()"
+          [disabled]="isDisablecategory"
           [(ngModel)]="aptmDetails.category" >
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -43,6 +44,7 @@
           <input matInput readonly theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
           oninput="this.value = this.value.toUpperCase()"
+          [disabled]="isDisableHost"
           [(ngModel)]="aptmDetails.hostDetails.name">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -57,7 +59,10 @@
           (blur)="textDataBindTemp($event.target.value, 'id')"
           oninput="this.value = this.value.toUpperCase()"
           (focusout)="itFocusOut($event.target.value, 'id')"
-          [disabled]="docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
+          (ngModelChange)='onChange($event)'
+          [minlength]="VISITOR_ID_MIN_LENGTH"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength"
+          [disabled]="isDisableid || docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
             spellcheck="false" autocomplete="off"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption">
@@ -70,8 +75,10 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory"
           [(ngModel)]="aptmDetails.name" (blur)="textDataBindTemp($event.target.value, 'name')"
+          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.MaxLength"
           oninput="this.value = this.value.toUpperCase()"
-            spellcheck="false"
+            spellcheck="false" [disabled]="isDisablename"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption">
         </mat-form-field>
@@ -85,6 +92,9 @@
           [(ngModel)]="aptmDetails.company" (blur)="textDataBindTemp($event.target.value, 'company')"
           oninput="this.value = this.value.toUpperCase()"
           spellcheck="false"
+          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength"
+          [disabled]="isDisablecompany"
           ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
           [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption">
         </mat-form-field>
@@ -97,6 +107,9 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
           [(ngModel)]="aptmDetails.contact" (blur)="textDataBindTemp($event.target.value, 'contact')"
             spellcheck="false"
+            [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength"
+            [disabled]="isDisablecontact"
             oninput="this.value = this.value.toUpperCase()"
             ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption">
@@ -110,6 +123,9 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory"
           [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')"
             spellcheck="false"
+            [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MaxLength"
+            [disabled]="isDisableemail"
             oninput="this.value = this.value.toLowerCase()"
             pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
@@ -124,6 +140,9 @@
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
           [(ngModel)]="aptmDetails.vehicle" (blur)="textDataBindTemp($event.target.value, 'vehicle')"
             spellcheck="false"
+            [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength"
+            [disabled]="isDisablevehicle"
             oninput="this.value = this.value.toUpperCase()"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption">
@@ -137,6 +156,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Caption}}</mat-label>
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.purpose"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory"
+          [disabled]="isDisablePurpose"
           oninput="this.value = this.value.toUpperCase()"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
@@ -151,6 +171,7 @@
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.gender"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory"
           oninput="this.value = this.value.toUpperCase()"
+          [disabled]="isDisableGender"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -164,6 +185,7 @@
           <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.country"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory"
           oninput="this.value = this.value.toUpperCase()"
+          [disabled]="isDisableCountry"
           spellcheck="false">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>
@@ -193,6 +215,12 @@
   [disabled]="validateAndReturnEmail() ||
   (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory && (aptmDetails.id == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory && (aptmDetails.name == ''))
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && aptmDetails.email && aptmDetails.email.length < KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && aptmDetails.contact && aptmDetails.contact.length < KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && aptmDetails.company && aptmDetails.company.length < KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && aptmDetails.name && aptmDetails.name.length < KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && aptmDetails.id && aptmDetails.id.length < VISITOR_ID_MIN_LENGTH)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && aptmDetails.vehicle && aptmDetails.vehicle.length < KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)
   || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory && (aptmDetails.email == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory && (aptmDetails.contact == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && (aptmDetails.purpose == ''))
@@ -214,6 +242,14 @@
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory && (aptmDetails.company == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 && aptmDetails.email && aptmDetails.email.length < KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 && aptmDetails.contact && aptmDetails.contact.length < KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 && aptmDetails.company && aptmDetails.company.length < KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 && aptmDetails.name && aptmDetails.name.length < KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 && aptmDetails.id && aptmDetails.id.length < VISITOR_ID_MIN_LENGTH)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && aptmDetails.vehicle && aptmDetails.vehicle.length < KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)
+
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.gender == ''))
   || (mainModule === 'vcheckinapproval' && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory && !aptmDetails.meetingHours)
@@ -231,6 +267,15 @@
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory && (aptmDetails.company == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory && (aptmDetails.category == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory && (aptmDetails.vehicle == ''))
+
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 && aptmDetails.email && aptmDetails.email.length < KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1 && aptmDetails.contact && aptmDetails.contact.length < KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1 && aptmDetails.company && aptmDetails.company.length < KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1 && aptmDetails.name && aptmDetails.name.length < KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 && aptmDetails.id && aptmDetails.id.length < VISITOR_ID_MIN_LENGTH)
+  || (KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 && aptmDetails.vehicle && aptmDetails.vehicle.length < KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)
+
+
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory && (aptmDetails.hostDetails.name == ''))
   || (KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory && (aptmDetails.gender == ''))
   || (mainModule === 'vcheckinapproval' && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show && !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1 && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory && !aptmDetails.meetingHours)

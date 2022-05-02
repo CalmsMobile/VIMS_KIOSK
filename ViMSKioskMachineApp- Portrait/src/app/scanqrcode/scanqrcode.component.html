@@ -1,0 +1,13 @@
+
+<div my-video-placeholder [style.backgroundImage]="'url(' +temp_take_pic + ')'" ></div>
+<qr-scanner
+        [debug]="false"
+        [canvasWidth]="720" 
+        [canvasHeight]="720"
+        [stopAfterScan]="true"
+        [updateTime]="500">
+</qr-scanner>
+
+<div my-footer-toolbar>
+<button mat-raised-button my-theme-button (click)="takeActFor('back')">Back</button>
+</div>

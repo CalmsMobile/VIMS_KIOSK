@@ -1,0 +1,15 @@
+<div style="text-align:center;padding:30px;">
+  <p info-title>
+    Please enter SMS-OTP received
+  </p>
+  <img width="150px" alt="Angular Logo" [src]="LOGO_IMG">
+  <div style="margin-top:40px;">
+    <input type="number" big-textbox [(ngModel)]="HOST_OTP_PIN" maxlength="6" (blur)="textDataBindTemp($event.target.value, 'HOST_OTP_PIN')"
+      ng-virtual-keyboard ng-virtual-keyboard-layout="numeric" ng-virtual-keyboard-placeholder="SMS-OTP Pin" />
+  </div>
+
+</div>
+<div my-footer-toolbar>
+  <button mat-raised-button my-theme-button (click)="takeActFor('back')" style="margin-right:100px;">Back</button>
+  <button mat-raised-button my-theme-button [disabled]="HOST_OTP_PIN.toString().length < 6" (click)="takeActFor('next')">Next</button>
+</div>

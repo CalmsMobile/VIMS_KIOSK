@@ -1,0 +1,47 @@
+<div loader-page style="text-align:center;padding:30px;">
+  <div *ngIf="isLoading" style="padding-top:10vh">
+    <p info-title [innerHTML]="KIOSK_PROPERTIES['commonsetup']['Register_loading_msg'] | safeHtml">
+
+    </p>
+    <div class='loading'>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+      <div class='bullet'></div>
+    </div>
+    <mat-form-field class="example-full-width" style="opacity:0;">
+        <input #cardSerInput matInput (keydown.enter)="onKeydown($event)" placeholder="Card Serial Number" value="">
+      </mat-form-field>
+  </div>
+  <div *ngIf="!isLoading">
+
+    <div *ngIf="!qrcodeProcessed && EnableAcsQrCode && DisplayImageHandlerURL" style="display: inline-grid;">
+      <img [src]="DisplayImageHandlerURL" style='width:500px;height:500px;    margin: 0 auto;' *ngIf="EnableAcsQrCode && DisplayImageHandlerURL">
+      <button style="margin: 0 auto;
+      margin-top: 25px;
+      margin-bottom: 25px;" mat-icon-button my-theme-round-button *ngIf="LabelPrintEnable && LabelPrintManualOrAuto==20" (click)="triggerLabelPrint()">
+        <i class="material-icons icon-image-preview">print</i>
+    </button>
+      <button style="margin-top: 25px;" mat-raised-button my-theme-button (click)="processNexttoSuccess()">
+        Proceed
+      </button>
+    </div>
+
+    <div *ngIf="qrcodeProcessed" style="padding-top:12vh">
+      <img *ngIf="DisplaySuccessImageHandlerURL" [src]="DisplaySuccessImageHandlerURL" style='width:185px;height:185px;'>
+
+      <p info-title
+      [innerHTML]="RESULT_MSG | safeHtml"></p>
+      <p info-title *ngIf="RESULT_MSG2"  style="margin-top: 2vh !important;"
+      [innerHTML]="RESULT_MSG2 | safeHtml"></p>
+      <p info-title *ngIf="RESULT_MSG3"  style="margin-top: 2vh !important;"
+      [innerHTML]="RESULT_MSG3 | safeHtml"></p>
+
+      <p info-title *ngIf='TEST_PIN != ""'> Your Test OTP : {{TEST_PIN}}</p>
+      <img width="100px" alt="Angular Logo" [src]="LOGO_IMG">
+    </div>
+
+  </div>
+</div>
+

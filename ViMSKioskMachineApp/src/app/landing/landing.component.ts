@@ -423,6 +423,7 @@ export class LandingComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   clickout(event) {
     const _this=this;
+    console.log("clicked inside landing");
     setTimeout(()=>{
       _this.readStaffCardElement.nativeElement.focus();
     },50);

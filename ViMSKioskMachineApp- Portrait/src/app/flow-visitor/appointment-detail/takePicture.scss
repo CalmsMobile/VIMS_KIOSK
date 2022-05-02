@@ -1,0 +1,31 @@
+$tablet:687;
+@mixin tablet {
+    @media screen and (max-width:#{$tablet}px) {
+        @content;
+    }
+}
+.PictureDialog{
+    h3{
+        margin: -18px 0px 7px 0px;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: Frutiger-LT-75-Roman;
+        color: #d40511;
+        @include tablet(){
+            font-size: 13px !important;
+        }
+    }
+    .defaultImg{
+        @include tablet(){
+            width: 273px !important;
+            height: 205px !important;
+        }
+    }
+    .webcamparentdiv{
+        @include tablet(){
+            width: 273px !important;
+            overflow: hidden !important;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+<div loader-pagetemp style="text-align:center;padding-top: 12vh;">
+    <p info-title>
+      Name : {{VM.HOSTNAME}}
+    </p>
+    <p info-title>
+      Time : {{VM.ServerTime}}
+    </p>
+    <p info-title [innerHTML]="VM.WaitMessage"></p>
+    <br/>
+    <div class='loading'>
+        <div class='bullet'></div>
+        <div class='bullet'></div>
+        <div class='bullet'></div> 
+        <div class='bullet'></div>
+        <div class='bullet'></div>
+    </div>
+</div>

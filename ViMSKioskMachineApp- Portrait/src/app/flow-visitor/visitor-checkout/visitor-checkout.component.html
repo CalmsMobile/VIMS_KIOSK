@@ -1,0 +1,39 @@
+<div my-headerbar-visitorlist>
+    <button *ngIf="totalVisitors > 0" (click)="takeActFor('visitorSummary')" mat-icon-button my-theme-round-button
+      [matBadge]="totalVisitors" matBadgePosition="before" matBadgeColor="accent">
+      <i class="siva-icon-users-1"></i> </button>
+  </div>
+  <div style="text-align:center;padding:30px;">
+    <p info-title no-margin-top margin-bottom>
+      {{KIOSK_PROPERTIES.modules.only_visitor.checkout.out_act_but_label}}
+    </p>
+    <div style="margin-top:10vh;text-align: center;">
+        <div style="display: inline-block;
+        vertical-align: top;" margin-top *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type !== 'QRCode'">
+          <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkout.out_screen_label}}</p>
+          <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="width:35vw;">
+            <mat-label>CheckIn ID</mat-label>
+            <input matInput
+              [(ngModel)]="APONTMNT_CODE" maxlength="10"
+              (blur)="textDataBindTemp($event.target.value, 'APONTMNT_CODE')"
+              ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+              ng-virtual-keyboard-placeholder="CheckIn ID">
+          </mat-form-field>
+        </div>
+        <div style="display: inline-block;
+        vertical-align: top;" margin-top *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type !== 'manual'">
+          <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkout.out_screen_label2}}</p>
+          <button mat-raised-button my-theme-button
+            (click)="takeActFor('scanNow')">Scan</button>
+        </div>
+      </div>
+  </div>
+  <div my-footer-toolbar>
+    <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
+      <i class="siva-icon-left-big"></i>
+    </button>
+
+    <button mat-raised-button my-theme-button [disabled]="APONTMNT_CODE.toString().length < 1"
+    style="float: right;"
+      (click)="takeActFor('getAppointmentDetail')">{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.proceed_act_but_label}}</button>
+  </div>

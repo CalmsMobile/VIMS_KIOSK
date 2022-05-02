@@ -1,10 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiServices } from 'src/services/apiService';
-import { AppSettings} from "../../../services/app.settings";
 import {MatSnackBar, MatDialog} from '@angular/material';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
-import { DialogPrepareForScanComponent } from '../registration-type/registration-type.component';
 
 @Component({
   selector: 'app-visitorTemperature',

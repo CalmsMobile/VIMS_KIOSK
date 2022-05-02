@@ -7,21 +7,55 @@
     <p info-title no-margin-top margin-bottom>
       {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label}}
     </p>
-    <div style="margin-top:10vh;text-align: center;">
-        <div style="width:46%;display: inline-block;min-height: 45vh;
-        vertical-align: top;" margin-top *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'QRCode'">
-          <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.screen_label}}</p>
-          <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="width:35vw;">
+
+    <div style="text-align: center; margin-top: 15vh;">
+        <div style="display: inline-block;
+        vertical-align: top;margin-right: 40px;" *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'QRCode'">
+            <mat-radio-group style="    padding: 20px;
+            background: whitesmoke;
+            border-radius: 20px;" aria-labelledby="example-radio-group-label"
+            class="example-radio-group" [(ngModel)]="selectedType" name="selectedCountry">
+             <mat-radio-button class="example-radio-button" [value]="'appint_id'">
+                 {{ 'Appintment ID' }}
+             </mat-radio-button>
+             <mat-radio-button class="example-radio-button" [value]="'contact'">
+              {{ 'CONTACT' }}
+          </mat-radio-button>
+          <mat-radio-button class="example-radio-button" [value]="'email'">
+            {{ 'EMAIL' }}
+        </mat-radio-button>
+             </mat-radio-group>
+          <p sub-title>{{selectedType == "appint_id" ? KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.screen_label: selectedType == "contact" ?  "Please enter your contact number": "Please enter your email address"}}</p>
+          <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="display: block;" *ngIf="selectedType == 'appint_id'">
             <mat-label>Appintment ID</mat-label>
             <input matInput
               [(ngModel)]="APONTMNT_CODE" maxlength="10"
-              (blur)="textDataBindTemp($event.target.value, 'APONTMNT_CODE')"
+              (blur)="textDataBindTemp($event.target.value)"
               ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
               ng-virtual-keyboard-placeholder="Appintment ID">
           </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="display: block;" *ngIf="selectedType == 'contact'">
+            <mat-label>Contact</mat-label>
+            <input matInput
+              [(ngModel)]="APONTMNT_CONTACT" maxlength="15"
+              (blur)="textDataBindContact($event.target.value)"
+              ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
+              ng-virtual-keyboard-placeholder="Contact">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="display: block;" *ngIf="selectedType == 'email'">
+            <mat-label>Email</mat-label>
+            <input matInput
+              [(ngModel)]="APONTMNT_EMAIL"
+              (blur)="textDataBindEmail($event.target.value)"
+              ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+              pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+              ng-virtual-keyboard-placeholder="Email">
+          </mat-form-field>
         </div>
         <div horizontal-divider style="width:46%;display: inline-block;min-height: 45vh;
-        vertical-align: top;" margin-top *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'manual'">
+        vertical-align: top;" *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'manual'">
           <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.screen_label2}}</p>
           <button mat-raised-button my-theme-button
             (click)="takeActFor('scanNow')">Scan</button>
@@ -33,7 +67,7 @@
       <i class="siva-icon-left-big"></i>
     </button>
 
-    <button mat-raised-button my-theme-button [disabled]="APONTMNT_CODE.toString().length < 1"
+    <button mat-raised-button my-theme-button [disabled]="((selectedType == 'appint_id' && APONTMNT_CODE.toString().length < 1) || (selectedType == 'contact' && APONTMNT_CONTACT.toString().length < 1) || (selectedType == 'email' && APONTMNT_EMAIL.toString().length < 1))"
     style="float: right;"
       (click)="takeActFor('getAppointmentDetail')">{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.proceed_act_but_label}}</button>
   </div>

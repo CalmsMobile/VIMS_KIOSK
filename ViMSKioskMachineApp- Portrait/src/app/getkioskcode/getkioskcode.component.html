@@ -1,0 +1,56 @@
+<div my-headerbar-homeButton
+  *ngIf="KIOSK_PROPERTIES.modules != undefined && KIOSK_PROPERTIES.modules.card_dispenser.enable">
+  <button disabled mat-icon-button my-theme-round-button [matBadge]="KIOSK_AVAL_CARDS" matBadgePosition="before"
+    matBadgeColor="accent">
+    <i class="siva-icon-docs-1"></i> </button>
+</div>
+<div style="text-align:center;padding:20px;">
+  <p info-title style="margin: 0 auto;margin-top: 2vh !important;
+  margin-bottom: 2vh !important;">
+    Setup
+  </p>
+  <div>
+    <div style="width:75%;margin: 0 auto;">
+      <button mat-raised-button my-theme-button style="margin-top:30px;margin-bottom:30px;min-width: 30vw;"
+      (click)="takeActFor('scanNow')">Scan QRCode</button>
+      <p info-title style="font-size: 3vh;margin: 0 auto;
+      margin-bottom: 2vh;
+      margin-top: 2vh !important;
+      color: #37474f !important;
+      font-weight: bolder;">
+        -------- OR ---------
+      </p>
+      <p info-title style="font-size: 3vh;margin: 0 auto;line-height: 4vh; margin-top: 2vh !important;">
+        Copy paste or Type your registered Kiosk License Code
+      </p>
+      <mat-form-field appearance="outline" floatLabel="always" theme-border-input-small
+        style="width:40vw;font-size: 1.5rem;">
+        <mat-label></mat-label>
+        <input matInput style="font-size: 2.5rem;" [(ngModel)]="KIOSK_CODE" placeholder="">
+      </mat-form-field>
+      <!-- (blur)="textDataBindTemp($event.target.value, 'KIOSK_CODE')"
+          ng-virtual-keyboard ng-virtual-keyboard-layout="numeric"
+          ng-virtual-keyboard- -->
+
+
+        <button mat-raised-button my-theme-button [disabled]="KIOSK_CODE.toString().length <=0 "
+        style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="takeActFor('update')">Validate License</button>
+      <br>
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
+        style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="takeActFor('update')">Update Settings</button>
+      <br>
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
+        style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="takeActFor('testing')">Troubleshoot</button>
+      <br>
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
+        style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="takeActFor('clearAccount')">Clear Account</button>
+      <br>
+      <button mat-raised-button my-theme-button style="margin-top:4vh;min-width: calc(100% - 100px);"
+        (click)="closeWindow('exit')">Exit App</button>
+
+    </div>
+  </div>
+</div>
+<!-- <div my-footer-toolbar>
+
+</div> -->

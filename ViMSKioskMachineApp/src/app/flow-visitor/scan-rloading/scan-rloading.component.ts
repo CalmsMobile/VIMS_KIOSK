@@ -4,7 +4,6 @@ import { AppSettings } from 'src/services/app.settings';
 import { ApiServices } from 'src/services/apiService';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { appConfirmDialog } from '../flow-visitor.component';
-import { DialogPrepareForScanComponent } from '../registration-type/registration-type.component';
 @Component({
   selector: 'app-scan-rloading',
   templateUrl: './scan-rloading.component.html',

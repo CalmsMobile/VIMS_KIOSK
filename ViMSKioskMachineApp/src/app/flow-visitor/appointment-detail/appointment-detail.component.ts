@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {MatBottomSheet, MatBottomSheetRef, MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {MatBottomSheet, MatBottomSheetRef, MatDialogRef, MAT_DIALOG_DATA, MatDialog, MAT_BOTTOM_SHEET_DATA} from '@angular/material';
 import { ApiServices } from 'src/services/apiService';
-
 import {Observable, Subject} from 'rxjs';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { AppointmentModal } from './appointmentModal';
@@ -14,8 +13,36 @@ import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
   styleUrls: ['./appointment-detail.component.scss']
 })
 export class AppointmentDetailComponent implements OnInit {
+  @ViewChild('box') fondovalor:ElementRef;
+  cClassMain = this;
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    switch (event.target.innerText) {
+      case "backspace":
+        this.cClassMain.changeDetectorRef.detectChanges();
+        setTimeout(() => {
+          this.cClassMain.updateNRICMinLength();
+        }, 100);
+        break;
+
+      default:
+        break;
+    }
+  }
   aptmDetails:AppointmentModal;
   isDisablePurpose = false;
+  isDisableHost = false;
+  isDisablevehicle = false;
+  isDisableemail = false;
+  isDisablecontact = false;
+  isDisablecategory = false;
+  isDisablecompany = false;
+  isDisableid = false;
+  isDisablename = false;
+  isDisableCountry = false;
+  isDisableGender = false;
+  vis_country = [{name:"Afghanistan",code:"AF"},{name:"Åland Islands",code:"AX"},{name:"Albania",code:"AL"},{name:"Algeria",code:"DZ"},{name:"American Samoa",code:"AS"},{name:"AndorrA",code:"AD"},{name:"Angola",code:"AO"},{name:"Anguilla",code:"AI"},{name:"Antarctica",code:"AQ"},{name:"Antigua and Barbuda",code:"AG"},{name:"Argentina",code:"AR"},{name:"Armenia",code:"AM"},{name:"Aruba",code:"AW"},{name:"Australia",code:"AU"},{name:"Austria",code:"AT"},{name:"Azerbaijan",code:"AZ"},{name:"Bahamas",code:"BS"},{name:"Bahrain",code:"BH"},{name:"Bangladesh",code:"BD"},{name:"Barbados",code:"BB"},{name:"Belarus",code:"BY"},{name:"Belgium",code:"BE"},{name:"Belize",code:"BZ"},{name:"Benin",code:"BJ"},{name:"Bermuda",code:"BM"},{name:"Bhutan",code:"BT"},{name:"Bolivia",code:"BO"},{name:"Bosnia and Herzegovina",code:"BA"},{name:"Botswana",code:"BW"},{name:"Bouvet Island",code:"BV"},{name:"Brazil",code:"BR"},{name:"British Indian Ocean Territory",code:"IO"},{name:"Brunei Darussalam",code:"BN"},{name:"Bulgaria",code:"BG"},{name:"Burkina Faso",code:"BF"},{name:"Burundi",code:"BI"},{name:"Cambodia",code:"KH"},{name:"Cameroon",code:"CM"},{name:"Canada",code:"CA"},{name:"Cape Verde",code:"CV"},{name:"Cayman Islands",code:"KY"},{name:"Central African Republic",code:"CF"},{name:"Chad",code:"TD"},{name:"Chile",code:"CL"},{name:"China",code:"CN"},{name:"Christmas Island",code:"CX"},{name:"Cocos (Keeling) Islands",code:"CC"},{name:"Colombia",code:"CO"},{name:"Comoros",code:"KM"},{name:"Congo",code:"CG"},{name:"Congo, The Democratic Republic of the",code:"CD"},{name:"Cook Islands",code:"CK"},{name:"Costa Rica",code:"CR"},{name:"Cote D'Ivoire",code:"CI"},{name:"Croatia",code:"HR"},{name:"Cuba",code:"CU"},{name:"Cyprus",code:"CY"},{name:"Czech Republic",code:"CZ"},{name:"Denmark",code:"DK"},{name:"Djibouti",code:"DJ"},{name:"Dominica",code:"DM"},{name:"Dominican Republic",code:"DO"},{name:"Ecuador",code:"EC"},{name:"Egypt",code:"EG"},{name:"El Salvador",code:"SV"},{name:"Equatorial Guinea",code:"GQ"},{name:"Eritrea",code:"ER"},{name:"Estonia",code:"EE"},{name:"Ethiopia",code:"ET"},{name:"Falkland Islands (Malvinas)",code:"FK"},{name:"Faroe Islands",code:"FO"},{name:"Fiji",code:"FJ"},{name:"Finland",code:"FI"},{name:"France",code:"FR"},{name:"French Guiana",code:"GF"},{name:"French Polynesia",code:"PF"},{name:"French Southern Territories",code:"TF"},{name:"Gabon",code:"GA"},{name:"Gambia",code:"GM"},{name:"Georgia",code:"GE"},{name:"Germany",code:"DE"},{name:"Ghana",code:"GH"},{name:"Gibraltar",code:"GI"},{name:"Greece",code:"GR"},{name:"Greenland",code:"GL"},{name:"Grenada",code:"GD"},{name:"Guadeloupe",code:"GP"},{name:"Guam",code:"GU"},{name:"Guatemala",code:"GT"},{name:"Guernsey",code:"GG"},{name:"Guinea",code:"GN"},{name:"Guinea-Bissau",code:"GW"},{name:"Guyana",code:"GY"},{name:"Haiti",code:"HT"},{name:"Heard Island and Mcdonald Islands",code:"HM"},{name:"Holy See (Vatican City State)",code:"VA"},{name:"Honduras",code:"HN"},{name:"Hong Kong",code:"HK"},{name:"Hungary",code:"HU"},{name:"Iceland",code:"IS"},{name:"India",code:"IN"},{name:"Indonesia",code:"ID"},{name:"Iran, Islamic Republic Of",code:"IR"},{name:"Iraq",code:"IQ"},{name:"Ireland",code:"IE"},{name:"Isle of Man",code:"IM"},{name:"Israel",code:"IL"},{name:"Italy",code:"IT"},{name:"Jamaica",code:"JM"},{name:"Japan",code:"JP"},{name:"Jersey",code:"JE"},{name:"Jordan",code:"JO"},{name:"Kazakhstan",code:"KZ"},{name:"Kenya",code:"KE"},{name:"Kiribati",code:"KI"},{name:"Korea, Democratic People'S Republic of",code:"KP"},{name:"Korea, Republic of",code:"KR"},{name:"Kuwait",code:"KW"},{name:"Kyrgyzstan",code:"KG"},{name:"Lao People'S Democratic Republic",code:"LA"},{name:"Latvia",code:"LV"},{name:"Lebanon",code:"LB"},{name:"Lesotho",code:"LS"},{name:"Liberia",code:"LR"},{name:"Libyan Arab Jamahiriya",code:"LY"},{name:"Liechtenstein",code:"LI"},{name:"Lithuania",code:"LT"},{name:"Luxembourg",code:"LU"},{name:"Macao",code:"MO"},{name:"Macedonia, The Former Yugoslav Republic of",code:"MK"},{name:"Madagascar",code:"MG"},{name:"Malawi",code:"MW"},{name:"Malaysia",code:"MY"},{name:"Maldives",code:"MV"},{name:"Mali",code:"ML"},{name:"Malta",code:"MT"},{name:"Marshall Islands",code:"MH"},{name:"Martinique",code:"MQ"},{name:"Mauritania",code:"MR"},{name:"Mauritius",code:"MU"},{name:"Mayotte",code:"YT"},{name:"Mexico",code:"MX"},{name:"Micronesia, Federated States of",code:"FM"},{name:"Moldova, Republic of",code:"MD"},{name:"Monaco",code:"MC"},{name:"Mongolia",code:"MN"},{name:"Montserrat",code:"MS"},{name:"Morocco",code:"MA"},{name:"Mozambique",code:"MZ"},{name:"Myanmar",code:"MM"},{name:"Namibia",code:"NA"},{name:"Nauru",code:"NR"},{name:"Nepal",code:"NP"},{name:"Netherlands",code:"NL"},{name:"Netherlands Antilles",code:"AN"},{name:"New Caledonia",code:"NC"},{name:"New Zealand",code:"NZ"},{name:"Nicaragua",code:"NI"},{name:"Niger",code:"NE"},{name:"Nigeria",code:"NG"},{name:"Niue",code:"NU"},{name:"Norfolk Island",code:"NF"},{name:"Northern Mariana Islands",code:"MP"},{name:"Norway",code:"NO"},{name:"Oman",code:"OM"},{name:"Pakistan",code:"PK"},{name:"Palau",code:"PW"},{name:"Palestinian Territory, Occupied",code:"PS"},{name:"Panama",code:"PA"},{name:"Papua New Guinea",code:"PG"},{name:"Paraguay",code:"PY"},{name:"Peru",code:"PE"},{name:"Philippines",code:"PH"},{name:"Pitcairn",code:"PN"},{name:"Poland",code:"PL"},{name:"Portugal",code:"PT"},{name:"Puerto Rico",code:"PR"},{name:"Qatar",code:"QA"},{name:"Reunion",code:"RE"},{name:"Romania",code:"RO"},{name:"Russian Federation",code:"RU"},{name:"RWANDA",code:"RW"},{name:"Saint Helena",code:"SH"},{name:"Saint Kitts and Nevis",code:"KN"},{name:"Saint Lucia",code:"LC"},{name:"Saint Pierre and Miquelon",code:"PM"},{name:"Saint Vincent and the Grenadines",code:"VC"},{name:"Samoa",code:"WS"},{name:"San Marino",code:"SM"},{name:"Sao Tome and Principe",code:"ST"},{name:"Saudi Arabia",code:"SA"},{name:"Senegal",code:"SN"},{name:"Serbia and Montenegro",code:"CS"},{name:"Seychelles",code:"SC"},{name:"Sierra Leone",code:"SL"},{name:"Singapore",code:"SG"},{name:"Slovakia",code:"SK"},{name:"Slovenia",code:"SI"},{name:"Solomon Islands",code:"SB"},{name:"Somalia",code:"SO"},{name:"South Africa",code:"ZA"},{name:"South Georgia and the South Sandwich Islands",code:"GS"},{name:"Spain",code:"ES"},{name:"Sri Lanka",code:"LK"},{name:"Sudan",code:"SD"},{name:"Suriname",code:"SR"},{name:"Svalbard and Jan Mayen",code:"SJ"},{name:"Swaziland",code:"SZ"},{name:"Sweden",code:"SE"},{name:"Switzerland",code:"CH"},{name:"Syrian Arab Republic",code:"SY"},{name:"Taiwan, Province of China",code:"TW"},{name:"Tajikistan",code:"TJ"},{name:"Tanzania, United Republic of",code:"TZ"},{name:"Thailand",code:"TH"},{name:"Timor-Leste",code:"TL"},{name:"Togo",code:"TG"},{name:"Tokelau",code:"TK"},{name:"Tonga",code:"TO"},{name:"Trinidad and Tobago",code:"TT"},{name:"Tunisia",code:"TN"},{name:"Turkey",code:"TR"},{name:"Turkmenistan",code:"TM"},{name:"Turks and Caicos Islands",code:"TC"},{name:"Tuvalu",code:"TV"},{name:"Uganda",code:"UG"},{name:"Ukraine",code:"UA"},{name:"United Arab Emirates",code:"AE"},{name:"United Kingdom",code:"GB"},{name:"United States",code:"US"},{name:"United States Minor Outlying Islands",code:"UM"},{name:"Uruguay",code:"UY"},{name:"Uzbekistan",code:"UZ"},{name:"Vanuatu",code:"VU"},{name:"Venezuela",code:"VE"},{name:"Viet Nam",code:"VN"},{name:"Virgin Islands, British",code:"VG"},{name:"Virgin Islands, U.S.",code:"VI"},{name:"Wallis and Futuna",code:"WF"},{name:"Western Sahara",code:"EH"},{name:"Yemen",code:"YE"},{name:"Zambia",code:"ZM"},{name:"Zimbabwe",code:"ZW"}];
+  vis_gender= [{name:"Male",code:"1"},{name:"Female",code:"0"},{name:"Other",code:"2"}];
   docType:any = '';
   mainModule = '';
   totalVisitors:number = 0;
@@ -27,6 +54,7 @@ export class AppointmentDetailComponent implements OnInit {
      private bottomSheet: MatBottomSheet,
      private route: ActivatedRoute,
      private dialog:MatDialog,
+     private changeDetectorRef: ChangeDetectorRef,
      private apiServices:ApiServices) {
 
     this.aptmDetails = new AppointmentModal();
@@ -97,13 +125,13 @@ export class AppointmentDetailComponent implements OnInit {
         }
       });
 
-      this._initUpdateScanDataValues();
       if (!this.NUMBER_OF_INPUTS || this.NUMBER_OF_INPUTS === 0) {
         this._updateKioskSettings();
-        if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory) {
+        if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && !this.aptmDetails.purpose) {
           this.aptmDetails.purpose = this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.default;
         }
       }
+      this._initUpdateScanDataValues();
       this._updateVisitorCheckINSettings();
       this._getAllPurposeOfVisit();
   }
@@ -126,13 +154,15 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.id = doc_detail["id"];
       this.aptmDetails.company = doc_detail["company"] || "";
       this.aptmDetails.category = doc_detail["category"] || "";
+      this.aptmDetails.countryId = doc_detail["Country"] || "";
+      this.aptmDetails.genderId = doc_detail["Gender"] || "";
       this.aptmDetails.contact = doc_detail["contact"] || "";
       this.aptmDetails.email = doc_detail["email"] || "";
       this.aptmDetails.purpose = doc_detail["purpose"] || "";
       this.aptmDetails.vehicle = doc_detail["vehicle"] || "";
       this.aptmDetails.visitorB64Image = (doc_detail["visitorB64Image"].toString().trim() != "") ?
       ("data:image/jpeg;base64," + doc_detail["visitorB64Image"]) : "" ;
-      this.aptmDetails.vbookingseqid = doc_detail['aptid'];
+      this.aptmDetails.aptid = doc_detail['aptid'];
 
       this.aptmDetails.hostDetails.name = doc_detail["host_name"];
       this.aptmDetails.hostDetails.id = doc_detail["host_id"];
@@ -143,7 +173,71 @@ export class AppointmentDetailComponent implements OnInit {
       if (this.aptmDetails.purpose) {
         this.isDisablePurpose = true;
       }
+      if (this.aptmDetails.name){
+        this.isDisablename = true;
+      }
+      if (this.aptmDetails.id){
+        this.isDisableid = true;
+      }
+      if (this.aptmDetails.company){
+        this.isDisablecompany = true;
+      }
+      if (this.aptmDetails.category){
+        this.aptmDetails.categoryId = this.aptmDetails.category;
+        if(localStorage.getItem('_CATEGORY_OF_VISIT') != undefined && localStorage.getItem('_CATEGORY_OF_VISIT') != ''){
+          const categroyList = JSON.parse(localStorage.getItem('_CATEGORY_OF_VISIT'));
+          for(let i = 0 ; i< categroyList.length; i++){
+            if(categroyList[i].visitor_ctg_id === this.aptmDetails.category || categroyList[i].visitor_ctg_desc === this.aptmDetails.category){
+              this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
+              this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
+              break;
+            }
+          }
+        }
+        this.isDisablecategory = true;
 
+        let Questionnaries = false;
+        if (this.mainModule === 'vcheckin') {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        } else {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+        }
+        if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
+          this.getQuestionsOrVideo();
+        }
+      }
+      if (this.aptmDetails.contact){
+        this.isDisablecontact = true;
+      }
+      if (this.aptmDetails.email){
+        this.isDisableemail = true;
+      }
+      if (this.aptmDetails.vehicle){
+        this.isDisablevehicle = true;
+      }
+      if (this.aptmDetails.hostDetails.id){
+        this.isDisableHost = true;
+      }
+      if (this.aptmDetails.countryId){
+        for(let i = 0 ; i< this.vis_country.length; i++){
+          if(this.vis_country[i].name === this.aptmDetails.countryId || this.vis_country[i].code === this.aptmDetails.countryId){
+            this.aptmDetails.country = this.vis_country[i].name;
+            this.aptmDetails.countryId = this.vis_country[i].code;
+            break;
+          }
+        }
+        this.isDisableCountry = true;
+      }
+      if (this.aptmDetails.genderId != undefined && this.aptmDetails.genderId != null && this.aptmDetails.genderId != ''){
+        for(let i = 0 ; i< this.vis_gender.length; i++){
+          if(this.vis_gender[i].name === this.aptmDetails.genderId || this.vis_gender[i].code === this.aptmDetails.genderId){
+            this.aptmDetails.gender = this.vis_gender[i].name;
+            this.aptmDetails.genderId = this.vis_gender[i].code;
+            break;
+          }
+        }
+        this.isDisableGender = true;
+      }
     } else if((this.docType == "BUSINESS") && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
     && localStorage.getItem("VISI_SCAN_DOC_DATA") != ""){
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
@@ -369,6 +463,9 @@ export class AppointmentDetailComponent implements OnInit {
 
   }
   openBottomCategorySelect(): void {
+    if (this.isDisablecategory){
+      return;
+    }
     const category = this.bottomSheet.open(BottomSheetCategorySelect);
     category.afterDismissed().subscribe(result => {
       if(result != undefined){
@@ -420,6 +517,9 @@ export class AppointmentDetailComponent implements OnInit {
     });
   }
   openBottomCountrySelect(): void {
+    if (this.isDisableCountry){
+      return;
+    }
     const country = this.bottomSheet.open(BottomSheetCountrySelect);
     country.afterDismissed().subscribe(result => {
       if(result != undefined){
@@ -440,6 +540,9 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   openBottomGenderSelect(): void {
+    if (this.isDisableGender){
+      return;
+    }
     const country = this.bottomSheet.open(BottomSheetGenderSelect);
     country.afterDismissed().subscribe(result => {
       if(result != undefined){
@@ -892,7 +995,12 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
   openBottomHostSelect(): void {
-    const host = this.bottomSheet.open(BottomSheetHostSelect);
+    if (this.isDisableHost){
+      return;
+    }
+    const host = this.bottomSheet.open(BottomSheetHostSelect, {
+      data: this.KIOSK_PROPERTIES
+    });
     host.afterDismissed().subscribe(result => {
       if(result != undefined){
         console.log(result);
@@ -912,6 +1020,16 @@ export class AppointmentDetailComponent implements OnInit {
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
         localStorage.setItem('_PURPOSE_OF_VISIT', data[0]["Data"]);
         console.log("--- Purpose of Visit Updated");
+        if (this.aptmDetails.purpose){
+          const purposeList = JSON.parse(data[0]["Data"]);
+          for (var i = 0; i <= purposeList.length - 1; i++) {
+            if(purposeList[i].visitpurpose_id === this.aptmDetails.purpose || purposeList[i].visitpurpose_desc === this.aptmDetails.purpose){
+              this.aptmDetails.purpose = purposeList[i].visitpurpose_desc;
+              this.aptmDetails.purposeId = purposeList[i].visitpurpose_id;
+              break;
+            }
+          }
+        }
       }
     },
     err => {
@@ -926,22 +1044,52 @@ export class AppointmentDetailComponent implements OnInit {
   itFocusOut(value : any, elm:string ){
     if(elm === "id" && value != "" ){
       console.log("itFocusOut" + value);
+      this.updateNRICMinLength();
       this.getVisitorDetails(value);
     }
   }
+
+  onChange(event: any) {
+    console.log("onChange: " + event);
+  }
+
   onKey(value: string, event: any) {
     console.log("onKey: " + value);
-    if (value.length > 1) {
-      this.getVisitorDetails(value);
+
+    this.updateNRICMinLength();
+    // if (value.length > 1) {
+    //   this.getVisitorDetails(value);
+    // } else {
+    //   this.aptmDetails.visitorB64Image = "";
+    //   this.aptmDetails.name = "";
+    //   this.aptmDetails.company =  "";
+    //   this.aptmDetails.email = "";
+    //   this.aptmDetails.contact = "";
+    //   this.aptmDetails.vehicle = "";
+    //   this.aptmDetails.visitor_blacklist = false;
+    // }
+  }
+
+  updateNRICMinLength() {
+    const valueInput = this.fondovalor.nativeElement.value;
+    console.log('this.aptmDetails.id: ' + valueInput + '--' + this.cClassMain.aptmDetails.id);
+    this.cClassMain.aptmDetails.id = valueInput;
+    this.cClassMain.changeDetectorRef.detectChanges();
+    if (this.KIOSK_PROPERTIES.IsKeyMansIdValidate && !this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength){
+      if (this.aptmDetails.id){
+        if (isNaN(+this.aptmDetails.id)) {
+          this.VISITOR_ID_MIN_LENGTH = 8;
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
+        } else {
+          this.VISITOR_ID_MIN_LENGTH = 12;
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 12;
+        }
+      }
     } else {
-      this.aptmDetails.visitorB64Image = "";
-      this.aptmDetails.name = "";
-      this.aptmDetails.company =  "";
-      this.aptmDetails.email = "";
-      this.aptmDetails.contact = "";
-      this.aptmDetails.vehicle = "";
-      this.aptmDetails.visitor_blacklist = false;
+      this.VISITOR_ID_MIN_LENGTH = this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
     }
+    this.cClassMain.changeDetectorRef.detectChanges();
   }
 
   onKeydown(event) {
@@ -996,11 +1144,14 @@ export class AppointmentDetailComponent implements OnInit {
   WEB_CAM_BADG_MARGIN = "calc(" + this.WEB_CAM_HEIGHT + "vh - 30px)";
   KIOSK_PROPERTIES:any = {};
   KIOSK_CHECKIN_COUNTER_NAME:string = "";
+  VISITOR_ID_MIN_LENGTH = 0;
+  VISITOR_ID_MAX_LENGTH = 30;
   _updateKioskSettings(){
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_CHECKIN_COUNTER_NAME = JSON.parse(setngs)['kioskName'];
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      this.KIOSK_PROPERTIES.IsKeyMansIdValidate = JSON.parse(setngs).IsKeyMansIdValidate;
       this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
@@ -1013,6 +1164,23 @@ export class AppointmentDetailComponent implements OnInit {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
         this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video_preappt']
       }
+      this.VISITOR_ID_MIN_LENGTH = this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength = this.KIOSK_PROPERTIES.CheckinSettings.VisitorId.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength = this.KIOSK_PROPERTIES.CheckinSettings.EmailId.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength = this.KIOSK_PROPERTIES.CheckinSettings.Contact.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength = this.KIOSK_PROPERTIES.CheckinSettings.Company.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength = this.KIOSK_PROPERTIES.CheckinSettings.Name.MinLength;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength = this.KIOSK_PROPERTIES.CheckinSettings.Vehicle.MinLength;
+
+
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MaxLength = 50;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength = 20;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength = 100;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.MaxLength = 50;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength = 15;
+
+
       this.calculateNumberofInputs();
     }
   }
@@ -1178,10 +1346,21 @@ export class BottomSheetGenderSelect {
 @Component({
   selector: 'bottom-sheet-host-select',
   template: `
-            <!-- <div style="background:red;">
-              <input [(ngModel)]="searchText" placeholder="search text goes here">
-            </div>| myContains : 'HOSTNAME' : searchText>-->
-            <mat-nav-list >
+            <div>
+              <!-- <input matInput style="    width: -webkit-fill-available;padding: 10px;border-radius: 10px;" [(ngModel)]="searchText" placeholder="search"> -->
+              <mat-form-field style="width: -webkit-fill-available;" appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)" theme-border-input-small app-detail-grid-input>
+          <mat-label>{{"Search " + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption}}</mat-label>
+          <input matInput theme-input-button (keyup)="onKey(box.value, $event)"
+          [(ngModel)]="searchText" #box
+          (blur)="textDataBindTemp($event.target.value, 'id')"
+          oninput="this.value = this.value.toUpperCase()"
+            spellcheck="false" autocomplete="off"
+            ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            [ng-virtual-keyboard-placeholder]="'Search ' + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption">
+        </mat-form-field>
+            </div>
+            <mat-nav-list>
               <mat-list-item style="height: 4.5vw;border-bottom: 1px solid rgba(0,0,0,0.07);color: #3e5763;"
               *ngFor="let host of host_list" (click)="selectThisItem($event,host)">
                 <span mat-line style="font-size:1.8vw;line-height: 2vw;">{{host.HOSTNAME}}</span>
@@ -1190,14 +1369,43 @@ export class BottomSheetGenderSelect {
 })
 export class BottomSheetHostSelect {
   host_list:any;
+  host_listClone:any;
   searchText:string = '';
+  KIOSK_PROPERTIES: any;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetHostSelect>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private apiServices:ApiServices) {
+      this.KIOSK_PROPERTIES = data;
     this.host_list = [];
+    this.host_listClone = [];
     if(localStorage.getItem('_LIST_OF_HOST') != undefined && localStorage.getItem('_LIST_OF_HOST') != ''){
-      this.host_list = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
+      // this.host_list = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
+      this.host_listClone = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
     }
     this._getAllHostList();
+  }
+
+  textDataBindTemp(value : string, elm:string ) {
+    console.log(value);
+    // this.searchText = value;
+  }
+
+  onKey(value: string, event: any) {
+    console.log("onKey: " + value);
+    this.searchText = value;
+    if (this.host_listClone && this.host_listClone.length > 0 && this.searchText.length > 2) {
+      var final = [];
+      for(let i=0 ; i<this.host_listClone.length; i++){
+        var data = this.host_listClone[i];
+        if(data.HOSTNAME && this.searchText && data.HOSTNAME.toLowerCase().lastIndexOf(this.searchText.toLowerCase()) > -1){
+          final.push(data);
+      }
+      }
+      this.host_list = final;
+      console.log(final)
+    } else {
+      this.host_list = final;
+    }
   }
 
   selectThisItem(event: MouseEvent, purpose:any): void {
@@ -1207,7 +1415,8 @@ export class BottomSheetHostSelect {
   _getAllHostList(){
     this.apiServices.localPostMethod('getHostName',{}).subscribe((data:any) => {
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
-        this.host_list = JSON.parse(data[0]["Data"]);
+        // this.host_list = JSON.parse(data[0]["Data"]);
+        this.host_listClone = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
         //{"HOSTNAME":"awang","SEQID":225,"COMPANY_REFID":"1","DEPARTMENT_REFID":"","HOSTIC":"awang","HostExt":"","HostFloor":"","HostCardSerialNo":"","HOST_ID":"awang","HOST_EMAIL":"","EMAIL_ALERT":true,"AD_ACTIVE_USER_STATUS":true,"dept_id":null,"dept_desc":null}
         console.log("--- List Of Host Updated");

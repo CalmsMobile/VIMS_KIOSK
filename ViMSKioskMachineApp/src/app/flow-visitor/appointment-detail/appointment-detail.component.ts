@@ -265,43 +265,73 @@ export class AppointmentDetailComponent implements OnInit {
         this.showFirstPageFields = true;
         return;
       }
-      if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
+      if (this.mainModule === 'vcheckinapproval'){
+        if (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            this.router.navigateByUrl('/landing');
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            this.router.navigateByUrl('/landing');
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            this.router.navigateByUrl('/landing');
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            this.router.navigateByUrl('/landing');
+        } else {
+          this.router.navigateByUrl('/visitorRegisType');
+        }
+      } else {
+        if (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC && !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          (this.mainModule === 'vcheckinapproval' || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor)  &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigateByUrl('/landing');
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          (this.mainModule === 'vcheckinapproval' || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigateByUrl('/landing');
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          (this.mainModule === 'vcheckinapproval' || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigateByUrl('/landing');
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          (this.mainModule === 'vcheckinapproval' || this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigateByUrl('/landing');
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          (this.mainModule === 'vcheckinapproval' || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor) &&
           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigateByUrl('/landing');
         } else {
           this.router.navigateByUrl('/visitorRegisType');
         }
+      }
     } else if(action === "addVisitor"){
       if(this._updateVisitorList()){
         let Questionnaries = false;

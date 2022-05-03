@@ -56,43 +56,7 @@ export class ScanRLoadingComponent implements OnInit {
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
     }
-    if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-        } else {
-          this.router.navigateByUrl('/visitorRegisType');
-        }
+    this.router.navigateByUrl('/landing');
   }
   ngOnDestroy() {
     this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});

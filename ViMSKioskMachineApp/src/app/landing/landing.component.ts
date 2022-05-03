@@ -85,7 +85,7 @@ export class LandingComponent implements OnInit {
       //this.router.navigateByUrl('/staffFlow');
     } else if(action === "visitor"){
       //this.router.navigateByUrl('/visitorAgree');
-    } else if(action === "vcheckin" || action === 'vcheckinapproval'){
+    } else if(action === "vcheckin"){
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status:boolean)=>{
         if(status){
@@ -195,6 +195,113 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+                  this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
+              } else {
+                this.router.navigateByUrl('/visitorRegisType');
+              }
+            }
+          }
+        }
+      });
+    }else if(action == 'vcheckinapproval'){
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.checkCardPosition((status:boolean)=>{
+        if(status){
+          if(this.KIOSK_PROPERTIES['modules']['T_adn_C']['enable']){
+            this.router.navigateByUrl('/visitorAgree');
+          }else{
+            if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
+              this.router.navigateByUrl('/visitorDetailForTemp');
+            else {
+              console.log('button clicked:' + action)
+              if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license) &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+                  const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
+                  this.apiServices.localGetMethod("setLEDON",
+                  this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
+
+                  const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+                    width: '250px',
+                    disableClose:false,
+                    data: {
+                      "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
+                      "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
+                      "scanImage":_imgsrc,
+                      "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
+                      "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
+                    }
+                  });
+
+                  dialogRef.afterClosed().subscribe(result => {
+                    if(result){
+                        this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'SING_NRICrDRIV' }});
+                    } else{
+                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                    }
+                  });
+              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+                  const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
+                  this.apiServices.localGetMethod("setLEDON",
+                  this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
+
+                  const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+                    width: '250px',
+                    disableClose:false,
+                    data: {
+                      "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
+                      "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
+                      "scanImage":_imgsrc,
+                      "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
+                      "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
+                    }
+                  });
+
+                  dialogRef.afterClosed().subscribe(result => {
+                    if(result){
+                        this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'PASSPORT' }});
+                    } else{
+                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                    }
+                  });
+              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+                  const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
+                  this.apiServices.localGetMethod("setLEDON",
+                  this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
+
+                  const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+                    width: '250px',
+                    disableClose:false,
+                    data: {
+                      "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
+                      "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
+                      "scanImage":_imgsrc,
+                      "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
+                      "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
+                    }
+                  });
+
+                  dialogRef.afterClosed().subscribe(result => {
+                    if(result){
+                        this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'BUSINESS' }});
+                    } else{
+                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                    }
+                  });
+              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
                   this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
               } else {
                 this.router.navigateByUrl('/visitorRegisType');

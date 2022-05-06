@@ -317,7 +317,9 @@ export class AppointmentSuccessComponent implements OnInit {
 
           let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
           // this.RESULT_MSG = Data["Table"][0].description;
-          this.RESULT_MSG = 'Your appointment has been submitted successfully, please wait for approval email once your appointment has been approved';
+          this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['apptreg_success_message_first'];
+          this.RESULT_MSG2 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['apptreg_success_message_mid'];
+          this.RESULT_MSG3 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['apptreg_success_message_last'];
           this.DisplayImageHandlerURL=this.getImageHandlerURL();
           this.qrcodeProcessed = true;
           _timeout = parseInt(_timeout) * 1000;

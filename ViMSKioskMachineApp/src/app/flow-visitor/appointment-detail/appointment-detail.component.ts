@@ -252,6 +252,22 @@ export class AppointmentDetailComponent implements OnInit {
       //localStorage.setItem("VISI_SCAN_DOC_DATA","");
 
     }
+
+    if(!this.aptmDetails.category){
+      if(localStorage.getItem('_CATEGORY_OF_VISIT') != undefined && localStorage.getItem('_CATEGORY_OF_VISIT') != ''){
+        const categroyList = JSON.parse(localStorage.getItem('_CATEGORY_OF_VISIT'));
+        for(let i = 0 ; i< categroyList.length; i++){
+          if(categroyList[i].visitor_default === 1){
+            this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
+            this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
+            break;
+          }
+        }
+      }
+      this._getAllCategoryOfVisit();
+
+    }
+
     let listOFvisitors:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     this.totalVisitors = listOFvisitors['visitorDetails'].length;
 
@@ -259,6 +275,27 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.purpose = listOFvisitors['visitorDetails'][0]['purpose'];
     }
   }
+
+  _getAllCategoryOfVisit(){
+    this.apiServices.localPostMethod("getVisitorCategory",{}).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        const categroyList = JSON.parse(data[0]["Data"]);
+        localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
+        for(let i = 0 ; i< categroyList.length; i++){
+          if(categroyList[i].visitor_default === 1){
+            this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
+            this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
+            break;
+          }
+        }
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
+    });
+  }
+
   takeActFor(action:string){
     if(action === "back"){
       if (!this.showFirstPageFields){

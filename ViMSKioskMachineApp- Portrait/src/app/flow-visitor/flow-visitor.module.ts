@@ -53,6 +53,7 @@ import { visitorDetailForTempComponent } from './visitorDetailForTemp/visitorDet
 import { visitorTemperatureComponent } from './visitorTemperature/visitorTemperature.component';
 import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnaries/questionnaries.component';
 import { AppointmentListComponent } from './appointment-list/appointment-list.component';
+import { SearchHostComponent } from './search-host/search-host.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
@@ -61,7 +62,7 @@ import { AppointmentListComponent } from './appointment-list/appointment-list.co
       AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
       AppointmentSuccessComponent,DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
       VisitorPreApontmntComponent, VisitorCheckoutComponent,CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
-    staffTemperatureComponent,visitorDetailForTempComponent,visitorTemperatureComponent,BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent],
+    staffTemperatureComponent,visitorDetailForTempComponent,visitorTemperatureComponent,BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, SearchHostComponent],
   imports: [
     RouterModule.forChild(ROUTES),
     CommonModule,

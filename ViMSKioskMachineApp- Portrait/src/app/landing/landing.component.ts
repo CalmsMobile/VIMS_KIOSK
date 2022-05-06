@@ -341,7 +341,8 @@ export class LandingComponent implements OnInit {
   KIOSK_PROPERTIES:any = {};
   _updateKioskSettings(){
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    let setngsPortrait = localStorage.getItem('KIOSK_PROPERTIES_PORT');
+    if(setngs != undefined && setngs != "" && setngsPortrait){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       this.LOGO_IMG = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
       let app_bg = this.KIOSK_PROPERTIES['commonsetup']['app_background'];

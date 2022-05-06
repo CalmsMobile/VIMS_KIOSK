@@ -39,6 +39,24 @@ export class GetkioskcodeComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    let setngsPortrait = localStorage.getItem('KIOSK_PROPERTIES_PORT');
+    if(setngs != undefined && setngs != "" && !setngsPortrait){
+      // document.getElementById("bodyloader").style.display = "block";
+      // localStorage.setItem('KIOSK_PROPERTIES_PORT', "true");
+      // setTimeout(() => {
+      //   this.router.navigateByUrl('/landing');
+      //   document.getElementById("bodyloader").style.display = "none";
+      // }, 5000);
+      this.KIOSK_CODE = localStorage.getItem("APP_KIOSK_CODE");
+      // this.takeActFor('update');
+      localStorage.clear();
+      localStorage.setItem('KIOSK_PROPERTIES_PORT', "true");
+      this.UPDATE_SETTINGS_SHOW = true;
+      this.takeActFor('update', true);
+      // this.router.navigateByUrl('/landing');
+    }
     this.route
       .queryParams
       .subscribe(params => {
@@ -49,7 +67,7 @@ export class GetkioskcodeComponent implements OnInit {
         }
       });
   }
-  takeActFor(action:string){
+  takeActFor(action:string, showAlert:boolean){
     if(action === "update"){
       if((this.KIOSK_CODE).toString().length > 0){
         localStorage.setItem("APP_KIOSK_CODE", this.KIOSK_CODE);
@@ -60,7 +78,7 @@ export class GetkioskcodeComponent implements OnInit {
             this.UPDATE_SETTINGS_SHOW = false;
           }
           if(status){
-            this.getIconSrc();
+            this.getIconSrc(showAlert);
           } else{
             document.getElementById("bodyloader").style.display = "none";
             this.dialog.open(appConfirmDialog, {
@@ -127,7 +145,7 @@ export class GetkioskcodeComponent implements OnInit {
     }
   }
 
-  getIconSrc() {
+  getIconSrc(showAlert) {
     localStorage.setItem('KIOSK_RequestAppointment', '');
     localStorage.setItem('KIOSK_CheckIn', '');
     localStorage.setItem('KIOSK_CheckOut', '');
@@ -154,7 +172,7 @@ export class GetkioskcodeComponent implements OnInit {
             localStorage.setItem('KIOSK_'+locaItem.Type, result+'');
             if (downloadCount === logoSrcs.length) {
               console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:"+ downloadCount);
-              this.callBackSuccess();
+              this.callBackSuccess(showAlert);
             }
           })
           .catch(err => {
@@ -162,26 +180,28 @@ export class GetkioskcodeComponent implements OnInit {
             downloadCount = downloadCount + 1;
             if (downloadCount === logoSrcs.length) {
               console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:"+ downloadCount);
-              this.callBackSuccess();
+              this.callBackSuccess(showAlert);
             }
           });
         }
       } else {
-        this.callBackSuccess();
+        this.callBackSuccess(showAlert);
       }
     } else {
-      this.callBackSuccess();
+      this.callBackSuccess(showAlert);
     }
 
   }
 
-  callBackSuccess() {
+  callBackSuccess(showAlert) {
     document.getElementById("bodyloader").style.display = "none";
     console.log("Image download success");
-    this.dialog.open(appConfirmDialog, {
-      width: '250px',
-      data: {title: "Kiosk Properties Updated !", btn_ok:"Ok"}
-    });
+    // if (!showAlert){
+      this.dialog.open(appConfirmDialog, {
+        width: '250px',
+        data: {title: "Kiosk Properties Updated !", btn_ok:"Ok"}
+      });
+    // }
     this.router.navigate(['/landing'],{ queryParams: { }});
   }
 
@@ -199,6 +219,7 @@ export class GetkioskcodeComponent implements OnInit {
       reader.readAsDataURL(blob);
     })
   }
+
   closeWindow(action:String){
     // const remote = require('electron').remote;
     // var window = remote.getCurrentWindow();
@@ -211,6 +232,7 @@ export class GetkioskcodeComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
          if(result){
+          localStorage.setItem('KIOSK_PROPERTIES_PORT', '');
           window.close();
           //window.open('','_self').close();
          }

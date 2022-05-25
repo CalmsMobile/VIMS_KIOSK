@@ -45,11 +45,24 @@ export class LandingComponent implements OnInit {
   }
   ngAfterViewInit() {
     document.getElementById("homeButton").style.display = "none";
+    this.getConfigData();
   }
   ngOnDestroy() {
     this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
     document.getElementById("homeButton").style.display = "block";
     console.log("%c ---------- Landing Screen Distroy: %s", AppSettings.LOG_FAILED, this.datePipe.transform(new Date(), 'medium'));
+  }
+
+  getConfigData() {
+    this.apiServices.getConfigFile()
+    .subscribe((data:any) => {
+      console.log(data);
+      this.KIOSK_LOCAL_PROPERTIES = JSON.parse(data);
+      let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+      if(setngs != undefined && setngs != ""){
+        this.KIOSK_LOCAL_PROPERTIES['OrganizationName'] = JSON.parse(setngs)['OrganizationName'];
+      }
+    });
   }
   readStaffCardEnter(){
     const StaffCardValue=this.StaffCardNo;
@@ -339,6 +352,7 @@ export class LandingComponent implements OnInit {
   }
 
   KIOSK_PROPERTIES:any = {};
+  KIOSK_LOCAL_PROPERTIES:any = {};
   _updateKioskSettings(){
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     let setngsPortrait = localStorage.getItem('KIOSK_PROPERTIES_PORT');

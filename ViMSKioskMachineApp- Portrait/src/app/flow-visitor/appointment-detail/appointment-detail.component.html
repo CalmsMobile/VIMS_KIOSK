@@ -65,6 +65,7 @@
           [disabled]="isDisableid || docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
             spellcheck="false" autocomplete="off"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
+            (ng-virtual-keyboard-close)="closeVisitorIDKeyboard()"
             [ng-virtual-keyboard-placeholder]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption">
         </mat-form-field>
 

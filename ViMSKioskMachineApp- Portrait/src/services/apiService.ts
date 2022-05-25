@@ -187,6 +187,9 @@ export class ApiServices {
     };
     return this.http.get("../assets/tandc.html", htmlHeader);
   }
+  getConfigFile() {
+    return  this.http.get('assets/config.txt?time='+ new Date().getTime(), { responseType: 'text' });
+  }
   getKioskBalance(request)
   {
     var xmlhttp = new XMLHttpRequest();

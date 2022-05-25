@@ -204,6 +204,9 @@ export class SettingsService {
             if(_details['Table2'] != undefined && _details['Table2'].length > 0){
               _prepare['kioskName'] = _details['Table2'][0]['Name'];
             }
+            if(_details['Table3'] != undefined && _details['Table3'].length > 0){
+              _prepare['OrganizationName'] = _details['Table3'][0]['Name'];
+            }
 
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
 

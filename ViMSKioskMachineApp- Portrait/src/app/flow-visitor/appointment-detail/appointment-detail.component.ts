@@ -20,15 +20,13 @@ export class AppointmentDetailComponent implements OnInit {
     switch (event.target.innerText) {
       case "backspace":
         this.cClassMain.changeDetectorRef.detectChanges();
-        setTimeout(() => {
-          this.cClassMain.updateNRICMinLength();
-        }, 100);
         break;
 
       default:
         break;
     }
   }
+  slectedInput = "";
   aptmDetails:AppointmentModal;
   isDisablePurpose = false;
   isDisableHost = false;
@@ -246,6 +244,11 @@ export class AppointmentDetailComponent implements OnInit {
       }
       this._getAllCategoryOfVisit();
 
+    } else {
+      if (!localStorage.getItem('_CATEGORY_OF_VISIT')){
+        this._getAllCategoryOfVisit();
+      }
+
     }
     let listOFvisitors:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     this.totalVisitors = listOFvisitors['visitorDetails'].length;
@@ -260,13 +263,39 @@ export class AppointmentDetailComponent implements OnInit {
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
         const categroyList = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
-        for(let i = 0 ; i< categroyList.length; i++){
-          if(categroyList[i].visitor_default === 1){
-            this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
-            this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
-            break;
+
+        if (this.aptmDetails.category){
+          this.aptmDetails.categoryId = this.aptmDetails.category;
+          if(localStorage.getItem('_CATEGORY_OF_VISIT') != undefined && localStorage.getItem('_CATEGORY_OF_VISIT') != ''){
+            const categroyList = JSON.parse(localStorage.getItem('_CATEGORY_OF_VISIT'));
+            for(let i = 0 ; i< categroyList.length; i++){
+              if(categroyList[i].visitor_ctg_id === this.aptmDetails.category || categroyList[i].visitor_ctg_desc === this.aptmDetails.category){
+                this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
+                this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
+                break;
+              }
+            }
+          }
+          let Questionnaries = false;
+          if (this.mainModule === 'vcheckin') {
+            Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+          } else {
+            Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+          }
+          if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
+            this.getQuestionsOrVideo();
+          }
+        } else {
+          for(let i = 0 ; i< categroyList.length; i++){
+            if(categroyList[i].visitor_default === 1){
+              this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
+              this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
+              break;
+            }
           }
         }
+
+
       }
     },
     err => {
@@ -1095,9 +1124,14 @@ export class AppointmentDetailComponent implements OnInit {
   itFocusOut(value : any, elm:string ){
     if(elm === "id" && value != "" ){
       console.log("itFocusOut" + value);
-      this.updateNRICMinLength();
+      this.updateNRICMinLength(this);
       this.getVisitorDetails(value);
     }
+  }
+
+  closeVisitorIDKeyboard(){
+    this.updateNRICMinLength(this);
+    this.getVisitorDetails(this.aptmDetails.id);
   }
 
   onChange(event: any) {
@@ -1107,7 +1141,7 @@ export class AppointmentDetailComponent implements OnInit {
   onKey(value: string, event: any) {
     console.log("onKey: " + value);
 
-    this.updateNRICMinLength();
+    this.updateNRICMinLength(this);
     // if (value.length > 1) {
     //   this.getVisitorDetails(value);
     // } else {
@@ -1121,26 +1155,26 @@ export class AppointmentDetailComponent implements OnInit {
     // }
   }
 
-  updateNRICMinLength() {
-    const valueInput = this.fondovalor.nativeElement.value;
-    console.log('this.aptmDetails.id: ' + valueInput + '--' + this.cClassMain.aptmDetails.id);
-    this.cClassMain.aptmDetails.id = valueInput;
-    this.cClassMain.changeDetectorRef.detectChanges();
-    if (this.KIOSK_PROPERTIES.IsKeyMansIdValidate && !this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength){
-      if (this.aptmDetails.id){
-        if (isNaN(+this.aptmDetails.id)) {
-          this.VISITOR_ID_MIN_LENGTH = 8;
-          this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
+  updateNRICMinLength(cClassMain) {
+    const valueInput = cClassMain.fondovalor.nativeElement.value;
+    console.log('this.aptmDetails.id: ' + valueInput + '--' + cClassMain.aptmDetails.id);
+    cClassMain.aptmDetails.id = valueInput;
+    cClassMain.changeDetectorRef.detectChanges();
+    if (cClassMain.KIOSK_PROPERTIES.IsKeyMansIdValidate && !cClassMain.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength){
+      if (cClassMain.aptmDetails.id){
+        if (isNaN(+cClassMain.aptmDetails.id)) {
+          cClassMain.VISITOR_ID_MIN_LENGTH = 8;
+          cClassMain.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
         } else {
-          this.VISITOR_ID_MIN_LENGTH = 12;
-          this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 12;
+          cClassMain.VISITOR_ID_MIN_LENGTH = 12;
+          cClassMain.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 12;
         }
       }
     } else {
-      this.VISITOR_ID_MIN_LENGTH = this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
+      cClassMain.VISITOR_ID_MIN_LENGTH = cClassMain.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength;
+      cClassMain.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
     }
-    this.cClassMain.changeDetectorRef.detectChanges();
+    cClassMain.cClassMain.changeDetectorRef.detectChanges();
   }
 
   onKeydown(event) {
@@ -1161,6 +1195,9 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   getVisitorDetails(att_visitor_id:string){
+    if (!att_visitor_id){
+      return;
+    }
     let uploadarray = {"att_visitor_id": att_visitor_id}
     this.apiServices.localPostMethod('getVisitorInformation',uploadarray).subscribe((data:any) => {
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"]){

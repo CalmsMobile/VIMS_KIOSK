@@ -45,8 +45,8 @@
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
           oninput="this.value = this.value.toUpperCase()"
           [disabled]="isDisableHost"
-          [(ngModel)]="aptmDetails.hostDetails.name">
-          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+          [(ngModel)]="aptmDetails.hostDetails.PatientName? aptmDetails.hostDetails.PatientName: aptmDetails.hostDetails.name">
+          <mat-icon matSuffix *ngIf="!isDisableHost">keyboard_arrow_down</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" floatLabel="auto" no-padding

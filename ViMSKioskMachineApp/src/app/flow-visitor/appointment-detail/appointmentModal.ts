@@ -31,5 +31,6 @@ export class AppointmentModal  {
     public contact:string = '';
     public company:string = '';
     public HostDeptId:string = '';
+    public PatientName:string;
   }
 

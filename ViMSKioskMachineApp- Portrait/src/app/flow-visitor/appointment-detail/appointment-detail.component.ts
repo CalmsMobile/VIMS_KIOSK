@@ -20,13 +20,18 @@ export class AppointmentDetailComponent implements OnInit {
     switch (event.target.innerText) {
       case "backspace":
         this.cClassMain.changeDetectorRef.detectChanges();
+        if (this.selectedInput && this.selectedInput == 'id'){
+          setTimeout(() => {
+            this.cClassMain.updateNRICMinLength(this.cClassMain);
+          }, 100);
+        }
         break;
 
       default:
         break;
     }
   }
-  slectedInput = "";
+  selectedInput = "";
   aptmDetails:AppointmentModal;
   isDisablePurpose = false;
   isDisableHost = false;
@@ -1119,9 +1124,15 @@ export class AppointmentDetailComponent implements OnInit {
   }
   textDataBindTemp(value : string, elm:string ) {
     console.log(value);
+    if (elm){
+      this.selectedInput = elm;
+    }
     this['aptmDetails'][elm] = value;
   }
   itFocusOut(value : any, elm:string ){
+    if (elm){
+      this.selectedInput = elm;
+    }
     if(elm === "id" && value != "" ){
       console.log("itFocusOut" + value);
       this.updateNRICMinLength(this);
@@ -1134,8 +1145,11 @@ export class AppointmentDetailComponent implements OnInit {
     this.getVisitorDetails(this.aptmDetails.id);
   }
 
-  onChange(event: any) {
+  onChange(event: any, elm:string) {
     console.log("onChange: " + event);
+    if (elm){
+      this.selectedInput = elm;
+    }
   }
 
   onKey(value: string, event: any) {

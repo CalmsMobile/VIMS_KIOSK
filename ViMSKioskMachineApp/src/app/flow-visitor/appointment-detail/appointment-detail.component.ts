@@ -169,6 +169,8 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.hostDetails.email = doc_detail["hots_email"];
       this.aptmDetails.hostDetails.contact = doc_detail["host_contact"];
       this.aptmDetails.hostDetails.company = doc_detail["host_company_id"];
+      this.aptmDetails.hostDetails.PatientName = doc_detail["PatientName"];
+
       //localStorage.setItem("VISI_SCAN_DOC_DATA","");
       if (this.aptmDetails.purpose) {
         this.isDisablePurpose = true;
@@ -215,7 +217,7 @@ export class AppointmentDetailComponent implements OnInit {
       if (this.aptmDetails.vehicle){
         this.isDisablevehicle = true;
       }
-      if (this.aptmDetails.hostDetails.id){
+      if (this.aptmDetails.hostDetails.id || this.aptmDetails.hostDetails.PatientName){
         this.isDisableHost = true;
       }
       if (this.aptmDetails.countryId){

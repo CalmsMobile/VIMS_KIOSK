@@ -49,6 +49,22 @@ export class GetkioskcodeComponent implements OnInit {
         }
       });
   }
+
+  _getAllHostList(){
+    this.apiServices.localPostMethod('getHostName',{}).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        // this.host_list = JSON.parse(data[0]["Data"]);
+        localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
+        //{"HOSTNAME":"awang","SEQID":225,"COMPANY_REFID":"1","DEPARTMENT_REFID":"","HOSTIC":"awang","HostExt":"","HostFloor":"","HostCardSerialNo":"","HOST_ID":"awang","HOST_EMAIL":"","EMAIL_ALERT":true,"AD_ACTIVE_USER_STATUS":true,"dept_id":null,"dept_desc":null}
+        console.log("--- List Of Host Updated");
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
+    });
+  }
+
   takeActFor(action:string){
     if(action === "update"){
       if((this.KIOSK_CODE).toString().length > 0){
@@ -176,6 +192,7 @@ export class GetkioskcodeComponent implements OnInit {
   }
 
   callBackSuccess() {
+    this._getAllHostList();
     document.getElementById("bodyloader").style.display = "none";
     console.log("Image download success");
     this.dialog.open(appConfirmDialog, {

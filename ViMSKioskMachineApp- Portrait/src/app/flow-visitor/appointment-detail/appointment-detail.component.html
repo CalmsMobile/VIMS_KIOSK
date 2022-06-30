@@ -59,7 +59,7 @@
           (blur)="textDataBindTemp($event.target.value, 'id')"
           oninput="this.value = this.value.toUpperCase()"
           (focusout)="itFocusOut($event.target.value, 'id')"
-          (ngModelChange)='onChange($event)'
+          (ngModelChange)="onChange($event, 'id')"
           [minlength]="VISITOR_ID_MIN_LENGTH"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength"
           [disabled]="isDisableid || docType == 'MYCARD' || docType == 'SING_NRICrDRIV' || docType == 'PASSPORT'"
@@ -76,6 +76,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory"
           [(ngModel)]="aptmDetails.name" (blur)="textDataBindTemp($event.target.value, 'name')"
+          (ngModelChange)="onChange($event, 'name')"
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.MaxLength"
           oninput="this.value = this.value.toUpperCase()"
@@ -91,6 +92,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
           [(ngModel)]="aptmDetails.company" (blur)="textDataBindTemp($event.target.value, 'company')"
+          (ngModelChange)="onChange($event, 'company')"
           oninput="this.value = this.value.toUpperCase()"
           spellcheck="false"
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength"
@@ -107,6 +109,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
           [(ngModel)]="aptmDetails.contact" (blur)="textDataBindTemp($event.target.value, 'contact')"
+          (ngModelChange)="onChange($event, 'contact')"
             spellcheck="false"
             [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength"
             [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength"
@@ -123,6 +126,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory"
           [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')"
+          (ngModelChange)="onChange($event, 'email')"
             spellcheck="false"
             [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength"
             [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MaxLength"
@@ -140,6 +144,7 @@
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption}}</mat-label>
           <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
           [(ngModel)]="aptmDetails.vehicle" (blur)="textDataBindTemp($event.target.value, 'vehicle')"
+          (ngModelChange)="onChange($event, 'vehicle')"
             spellcheck="false"
             [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength"
             [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength"

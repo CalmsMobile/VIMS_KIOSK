@@ -1,4 +1,5 @@
 {
-	"supportMultiBranch": true,
-  "multiBrnachLable": "Tenant"
+	"supportMultiBranch": false,
+  "multiBrnachLable": "Host Company",
+  "alertApproveMessage": "Selected company required further verification, please proceed to reception counter for check-in"
 }

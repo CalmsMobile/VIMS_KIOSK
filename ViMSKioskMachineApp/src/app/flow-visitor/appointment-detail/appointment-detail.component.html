@@ -57,7 +57,7 @@
           <input matInput readonly theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
           oninput="this.value = this.value.toUpperCase()"
-          [disabled]="isDisableHost"
+          [disabled]="isDisableHost || (showMultiBranch && !aptmDetails.branchName)"
           [(ngModel)]="aptmDetails.hostDetails.PatientName? aptmDetails.hostDetails.PatientName: aptmDetails.hostDetails.name">
           <mat-icon matSuffix *ngIf="!isDisableHost">keyboard_arrow_down</mat-icon>
         </mat-form-field>

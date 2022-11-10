@@ -7,6 +7,7 @@ import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { AppointmentModal } from './appointmentModal';
 import { AppSettings } from 'src/services/app.settings';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
+import { DialogAppSessionTimeOutDialog } from 'src/app/app.component';
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -50,6 +51,7 @@ export class AppointmentDetailComponent implements OnInit {
   temp_take_pic = 'assets/images/cus_icons/take_picture.png';
   QuestionsDisplay = [];
   videoPath = '';
+  hostListCount = 0;
   DefaultAddVisitorSettings=JSON.stringify({"AddVisitorsSeqId":0,"NameEnabled":false,"NameRequired":false,"IdProofEnabled":false,"IdProofRequired":false,"EmailEnabled":false,"EmailRequired":false,"CompanyEnabled":false,"CompanyRequired":false,"CategoryEnabled":true,"CategoryRequired":true,"ContactNumberEnabled":false,"ContactNumberRequired":false,"VehicleNumberEnabled":false,"VehicleNumberRequired":false,"GenderEnabled":false,"GenderRequired":false,"ImageUploadEnabled":false,"WorkPermit":false,"WorkPermitRequired":false,"WorkPermitExpiry":false,"WorkPermitExpiryRequired":false,"CountryEnabled":false,"CountryRequired":false,"AddressEnabled":false,"AddressRequired":false,"HostNameEnabled":false,"HostNameRequired":false,"HostDepartmentEnabled":false,"HostDepartmentRequired":false,"AttachmentUploadEnabled":false,"AttachmentUploadRequired":false,"MaxAttachmentAllowed":0,"VisitorCategories":"0","PurposeEnabled":false,"PurposeRequired":false});
   constructor(private router:Router,
      private bottomSheet: MatBottomSheet,
@@ -570,11 +572,16 @@ export class AppointmentDetailComponent implements OnInit {
 
   }
   openBottomBranchSelect(): void {
+    if (!this.aptmDetails.categoryId || this.aptmDetails.categoryId === ''){
+      return;
+    }
     const category = this.bottomSheet.open(BottomSheetBranchSelect);
     category.afterDismissed().subscribe(result => {
       if(result){
         this.aptmDetails.branchID = result['BranchSeqId'];
         this.aptmDetails.branchName = result['Name'];
+        this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
+        this._getAutoApprovalOption(this.aptmDetails.branchID);
 
       }
     });
@@ -599,6 +606,18 @@ export class AppointmentDetailComponent implements OnInit {
         if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
           this.getQuestionsOrVideo();
         }
+        let branch = localStorage.getItem(AppSettings.LOCAL_STORAGE.BRANCH_ID);
+        if (this.showMultiBranch){
+          if (this.aptmDetails.branchID){
+            this._getAutoApprovalOption(this.aptmDetails.branchID);
+          }
+        } else {
+          if(branch){
+            this._getAutoApprovalOption(branch);
+          }
+        }
+
+
       }
     });
   }
@@ -1113,11 +1132,15 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
   openBottomHostSelect(): void {
-    if (this.isDisableHost){
+    if (this.isDisableHost || this.hostListCount === 1 || (this.showMultiBranch && !this.aptmDetails.branchName)){
       return;
     }
+
     const host = this.bottomSheet.open(BottomSheetHostSelect, {
-      data: this.KIOSK_PROPERTIES
+      data: {
+        data: this.KIOSK_PROPERTIES,
+        showMultiBranch : this.showMultiBranch
+      }
     });
     host.afterDismissed().subscribe(result => {
       if(result != undefined){
@@ -1130,6 +1153,76 @@ export class AppointmentDetailComponent implements OnInit {
         this.aptmDetails.hostDetails.HostDeptId = result['DEPARTMENT_REFID'];
         console.log(this.aptmDetails.hostDetails.id);
       }
+    });
+  }
+
+  _getAllHostListBasedOnBranch(branchID){
+    this.apiServices.localPostMethodNew('getHostName', {}, branchID).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
+        const result = JSON.parse(data[0]["Data"]);
+        this.hostListCount = result.length;
+
+        if (this.hostListCount === 1){
+          this.aptmDetails.hostDetails.id = result[0]['HOSTIC'];
+          this.aptmDetails.hostDetails.name = result[0]['HOSTNAME'];
+          this.aptmDetails.hostDetails.company = result[0]['COMPANY_REFID'];
+          this.aptmDetails.hostDetails.contact = result[0]['HostExt'];
+          this.aptmDetails.hostDetails.email = result[0]['HOST_EMAIL'];
+          this.aptmDetails.hostDetails.HostDeptId = result[0]['DEPARTMENT_REFID'];
+          console.log(this.aptmDetails.hostDetails.id);
+        }
+        console.log("--- List Of Host Updated");
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
+    });
+  }
+
+
+  showApproveAlertDialog(){
+    const dialogRef = this.dialog.open(DialogAppSessionTimeOutDialog, {
+      //width: '250px',
+      data: {
+        "title": 'Notification',
+        "subTile": this.KIOSK_PROPERTIES_LOCAL.alertApproveMessage,
+        "enbCancel":false,
+        "oktext": 'Ok',
+        "canceltext": ''
+      },
+      disableClose: false
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+
+      } else{
+      }
+      this.router.navigateByUrl('/landing');
+    });
+  }
+
+
+  _getAutoApprovalOption(branchID){
+    this.apiServices.localPostMethod('GetAutoApprovalOption', {
+      Branch: branchID,
+      Category: this.aptmDetails.categoryId
+    }).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+
+        const result = JSON.parse(data[0]["Data"]);
+        let AutoApproveOption = result.Table1[0]['AutoApproveOption'];
+        if (!AutoApproveOption){
+          this.showApproveAlertDialog();
+        }
+
+        console.log("--- List Of Host Updated");
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
     });
   }
 
@@ -1540,14 +1633,19 @@ export class BottomSheetHostSelect {
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetHostSelect>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private apiServices:ApiServices) {
-      this.KIOSK_PROPERTIES = data;
+      this.KIOSK_PROPERTIES = data.data;
     this.host_list = [];
     this.host_listClone = [];
+    if (data.showMultiBranch){
+
+    } else {
+      this._getAllHostList();
+    }
     if(localStorage.getItem('_LIST_OF_HOST') != undefined && localStorage.getItem('_LIST_OF_HOST') != ''){
       // this.host_list = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
       this.host_listClone = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
     }
-    this._getAllHostList();
+
   }
 
   textDataBindTemp(value : string, elm:string ) {

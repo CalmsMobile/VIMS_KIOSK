@@ -48,6 +48,22 @@ export class ApiServices {
     return data;
   }
 
+  public _postMethodAuthNew(data:any, branchID):any{
+    let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
+    _scanData = JSON.parse(_scanData);
+    let MAC_ID = localStorage.getItem("MY_MAC_ID");
+    let branch = localStorage.getItem(AppSettings.LOCAL_STORAGE.BRANCH_ID);
+
+    data["Branch"]= branchID ? branchID: branch,
+    data["Authorize"] = {
+      "AuMAppDevSeqId":_scanData['MAppSeqId'],
+      "AuDeviceUID":MAC_ID ? MAC_ID: 'WEB',
+      "Branch": branchID ? branchID: branch,
+      "RefBranchSeqId": branchID ? branchID: branch,
+    }
+    return data;
+  }
+
   getMethod(serviceName:string, postData:any)
   {
     console.log("Inside get method");
@@ -71,6 +87,15 @@ export class ApiServices {
     console.log("API:"+ serviceName + "----> Post Data: " + JSON.stringify(postData));
     return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions );
   }
+
+  localPostMethodNew(serviceName:string, postData:any, branchID)
+  {
+    let URL = this._getAPIURL();
+    postData =  this._postMethodAuthNew(postData, branchID);
+    console.log("API:"+ serviceName + "----> Post Data: " + JSON.stringify(postData));
+    return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions );
+  }
+
   localGetMethod(serviceName:string, appendURL:string )
   {
 // let URL = "http://localhost:1010/apifolder/";

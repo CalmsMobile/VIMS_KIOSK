@@ -1,0 +1,26 @@
+<div style="position: fixed;top: 50px;right:50px">
+  <button *ngIf="totalVisitors > 0" (click)="takeActFor('visitorSummary')"
+   mat-icon-button my-theme-round-button 
+   [matBadge]="totalVisitors" matBadgePosition="before" matBadgeColor="accent">
+    <i class="siva-icon-users-1"></i> </button>
+</div>
+<div style="text-align:center;padding:30px;">
+  <p info-title padding-left padding-right>
+    Please enter host mobile number to proceed with sign in
+  </p>
+  <img width="150px" alt="Angular Logo" [src]="LOGO_IMG">
+  <div style="margin-top:8vh;">
+      <h3 info-title mobilenumber-prefix> {{_COUNTRYCODE}} 
+        <input type="number" big-mobiletextbox 
+        maxlength="8" (blur)="textDataBindTemp($event.target.value, 'HOST_MOB_NUMBER')"
+        [(ngModel)]="HOST_MOB_NUMBER"
+        ng-virtual-keyboard
+        ng-virtual-keyboard-layout="numeric" 
+        ng-virtual-keyboard-placeholder="Host mobile number" /></h3>
+  </div>
+</div>
+<div my-footer-toolbar>
+    <button mat-raised-button my-theme-button (click)="takeActFor('back')" style="margin-right:100px;">Back</button>
+    <button mat-raised-button my-theme-button [disabled]="HOST_MOB_NUMBER.toString().length < 8"
+    (click)="takeActFor('next')">Next</button>
+  </div>

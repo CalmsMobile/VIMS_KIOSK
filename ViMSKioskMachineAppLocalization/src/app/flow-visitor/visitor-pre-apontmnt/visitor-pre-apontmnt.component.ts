@@ -1,0 +1,217 @@
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ApiServices } from 'src/services/apiService';
+import { SettingsService} from '../../../services/settings.service';
+import { appConfirmDialog } from '../flow-visitor.component';
+
+@Component({
+  selector: 'app-visitor-pre-apontmnt',
+  templateUrl: './visitor-pre-apontmnt.component.html',
+  styleUrls: ['./visitor-pre-apontmnt.component.scss']
+})
+export class VisitorPreApontmntComponent implements OnInit {
+  scanData:any = '';
+  totalVisitors:number = 0;
+  APONTMNT_CODE:any = "";
+  APONTMNT_CONTACT:any = "";
+  APONTMNT_EMAIL:any = "";
+  selectedType = 'appint_id';
+  purposes = [];
+  constructor(private router:Router,
+    private route: ActivatedRoute,
+    private settingService: SettingsService,
+    private dialog:MatDialog,
+    private apiServices:ApiServices) {
+      let listOFvisitors:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+      this.totalVisitors = listOFvisitors['visitorDetails'].length;
+      this._updateKioskSettings();
+      this.APONTMNT_CODE = '';
+     }
+
+  ngOnInit() {
+    if(localStorage.getItem('_PURPOSE_OF_VISIT') != undefined && localStorage.getItem('_PURPOSE_OF_VISIT') != ''){
+      this.purposes = JSON.parse(localStorage.getItem('_PURPOSE_OF_VISIT'));
+    }
+    this._getAllPurposeOfVisit();
+    this.route
+      .queryParams
+      .subscribe(params => {
+        // Defaults to 0 if no query param provided.
+        this.scanData = params['scanData'];
+        if(this.scanData != undefined && this.scanData != ''){
+          this._goAndGetAppointmentDetails();
+        }
+      });
+  }
+  KIOSK_PROPERTIES:any = {};
+  _updateKioskSettings(){
+    let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    if(setngs != undefined && setngs != ""){
+      this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+    }
+  }
+  takeActFor(action:string){
+    if(action === "getAppointmentDetail"){
+      this.getAppointmentDetails();
+    } else if(action === "back"){
+      if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            this.router.navigateByUrl('/landing')
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            this.router.navigateByUrl('/landing')
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            this.router.navigateByUrl('/landing')
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            this.router.navigateByUrl('/landing')
+        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            this.router.navigateByUrl('/landing');
+        } else {
+          this.router.navigateByUrl('/visitorRegisType');
+        }
+    } else if(action === "home"){
+      this.router.navigateByUrl('/landing')
+    } else if(action =="scanNow"){
+      this.router.navigate(['/scanQRCode'], {queryParams: { scanType: 'PREAPPOINTMT' }});
+    }
+  }
+
+  _getAllPurposeOfVisit(){
+    this.apiServices.localPostMethod('getPurpose',{}).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        this.purposes = JSON.parse(data[0]["Data"]);
+        localStorage.setItem('_PURPOSE_OF_VISIT', data[0]["Data"]);
+        console.log("--- Purpose of Visit Updated");
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
+    });
+  }
+
+  _goAndGetAppointmentDetails(){
+    // {"aptid":"19","aptgid":"20190204110305","cid":"1"}
+    try{
+      //let _scanData:any = this.settingService._decrypt(this.scanData);
+      // _scanData = (_scanData != "") ? JSON.parse(_scanData) : {};
+      //console.log(_scanData);
+      // this.APONTMNT_CODE = _scanData['aptid'] || '';
+
+       this.APONTMNT_CODE = this.scanData;
+       this.APONTMNT_CONTACT = "";
+       this.APONTMNT_EMAIL = "";
+       this.takeActFor('getAppointmentDetail');
+    } catch(ex){
+      console.log("Invalid Code");
+    }
+  }
+  textDataBindTemp(value : string) {
+    console.log(value);
+    this.APONTMNT_CODE = value;
+  }
+
+  textDataBindContact(value : string) {
+    console.log(value);
+    this.APONTMNT_CONTACT = value;
+  }
+
+  textDataBindEmail(value : string) {
+    console.log(value);
+    this.APONTMNT_EMAIL = value;
+  }
+  getAppointmentDetails(){
+    document.getElementById("bodyloader").style.display = "block";
+    let prepareData = {"att_appointment_id": (this.APONTMNT_CODE).toString(),"ContactNo":"","Email":""};
+    if (this.selectedType == "contact"){
+      prepareData = {"att_appointment_id": "","ContactNo":this.APONTMNT_CONTACT,"Email":""};
+    } else if (this.selectedType == "email"){
+      prepareData = {"att_appointment_id": "","ContactNo":"","Email":this.APONTMNT_EMAIL};
+    }
+    this.apiServices.localPostMethod("getAptmentInformation",prepareData ).subscribe((data:any) => {
+      console.log(data);
+      document.getElementById("bodyloader").style.display = "none";
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        let Data = data[0]["Data"];
+        if(Data["Table"]!= undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 10){
+          if(Data["Table1"]!= undefined && Data["Table1"].length > 0){
+            if(Data["Table1"].length == 1){
+              let _app_details = Data["Table1"][0];
+              _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+              _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
+              _app_details['aptid'] =  _app_details.ApptmentId.toString();
+              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
+              this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: "PREAPPOINTMT" }});
+            } else {
+              this.router.navigate(['/appointmentList'], {queryParams: { data: JSON.stringify(Data["Table1"]) }});
+            }
+
+          }else{
+            this.dialog.open(appConfirmDialog, {
+              width: '250px',
+              data: {title: "ไม่พบบันทึกการนัดหมาย", btn_ok:"ตกลง"}
+            });
+          }
+        }else{
+          this.dialog.open(appConfirmDialog, {
+            width: '250px',
+            data: {title: "ไม่พบบันทึกการนัดหมาย", btn_ok:"ตกลง"}
+          });
+        }
+      }else{
+        this.dialog.open(appConfirmDialog, {
+          width: '250px',
+          data: {title: "ไม่พบบันทึกการนัดหมาย", btn_ok:"ตกลง"}
+        });
+      }
+    },
+    err => {
+      document.getElementById("bodyloader").style.display = "none";
+      this.dialog.open(appConfirmDialog, {
+        width: '250px',
+        data: {title: "ไม่พบบันทึกการนัดหมาย", btn_ok:"ตกลง"}
+      });
+      return false;
+    });
+  }
+
+  getPurposeName(purposeId, isID){
+    let purposeTitle = purposeId;
+    console.log(this.purposes);
+    this.purposes.forEach(element => {
+      if (element.visitpurpose_desc == purposeId || element.visitpurpose_id == purposeId){
+        if(isID){
+          purposeTitle = element.visitpurpose_id;
+        } else {
+          purposeTitle = element.visitpurpose_desc;
+        }
+
+        return purposeTitle;
+      }
+    });
+    return purposeTitle
+  }
+}

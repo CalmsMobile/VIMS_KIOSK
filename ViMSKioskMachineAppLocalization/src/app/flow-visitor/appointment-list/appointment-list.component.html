@@ -1,0 +1,24 @@
+<div style="text-align:center;padding:30px;">
+  <p info-title no-margin-top margin-bottom>
+    Total Appointments {{listOFAppointments.length}}
+  </p>
+  <div style="min-height:60vh;max-height:60vh;overflow: auto;width: auto;width: 70vw;margin:auto;margin-top:5vh;">
+  <table my-appointment-table style="width: 100%;" *ngIf="listOFAppointments.length > 0">
+    <tr style="    border-radius: 20%;" *ngFor="let appointments of listOFAppointments; let i = index;" (click)="takeActFor('confirm', appointments)">
+      <td> <div>
+        <h1 class="title">{{appointments.host_name}}</h1>
+        <p class="desc">{{appointments.purposeDesc}}</p>
+        <p class="datetim">{{appointments.START_TIME}} - {{appointments.END_TIME}}</p>
+      </div> </td>
+    </tr>
+  </table>
+  <div info-title *ngIf="listOFAppointments.length <= 0"> No appointments found </div>
+</div>
+</div>
+<div my-footer-toolbar>
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('back', '')" style="float: left;">
+    <i class="siva-icon-left-big"></i>
+  </button>
+
+
+  </div>

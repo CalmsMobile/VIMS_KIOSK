@@ -1,0 +1,89 @@
+<div style="text-align:left;padding:30px;background: white;">
+  <h1>
+    Troubleshoot Hardware & Log
+    <button mat-raised-button margin-top color="accent" (click)="goback()">Go Home</button>
+  </h1>
+  <div>
+    <h3> Place your Document in scanner</h3>
+    <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('GetPassportDetail')">Get Passport Detail</button>
+    <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('getIdScanerData')">Get Driving/IC Data</button>
+    <p style="text-align:left;font-size:10px;">Scan Data : {{result}}</p>
+  </div>
+  <div>
+    <h3>Test Business card</h3>
+  <button mat-raised-button margin-right color="primary" (click)="getBusinessCardDetails()">Test Business Card</button>
+  <div margin-top margin-bottom>{{BUSINESS_CARD_DATA}}</div>
+</div>
+<div>
+  <h3>Test Receipt Print</h3>
+  <button mat-raised-button margin-right color="primary" (click)="testPrintReceipt()">Test Receipt Print</button>
+  <div margin-top margin-bottom>{{RECEIPT_RESPONSE}}</div>
+</div> 
+<div>
+    <h3> card dispenser 1</h3>
+  <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('SetCardIn')">Set Card In</button>
+  <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('EjectCard')">Eject Card</button>
+  <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('RejectCard')">Reject Card</button>
+  <mat-form-field class="example-full-width">
+      <input #input1 matInput placeholder="Card Serial Number" value="">
+    </mat-form-field>
+</div>
+<div>
+    <h3> card dispenser 2</h3>
+    <div margin-bottom>
+        <button mat-raised-button margin-right color="primary" (click)="testCardDType2('move_read_position')">Card Move to Read Position</button>
+        <button mat-raised-button margin-right color="primary" (click)="testCardDType2('get_card_sn')">Get Card Serial No.</button>
+        <button mat-raised-button margin-right color="primary" (click)="testCardDType2('')">Get Card Position</button>
+        <button mat-raised-button margin-right color="primary" (click)="testCardDType2('card_eject')">Eject Card</button>
+        <button mat-raised-button margin-right color="primary" (click)="testCardDType2('card_reject')">Reject Card</button>
+    </div>
+    <table>
+      <tr>
+        <td>Enable<b> : {{MY_CARD_DISPENSER.enable}}</b></td>
+        <td>COM Port<b> : {{MY_CARD_DISPENSER.COM}}</b></td>
+        <td>Type<b> : {{MY_CARD_DISPENSER.type}}</b></td>
+      </tr>
+      <tr>
+          <td>Close</td>
+          <td>Status<b> : {{MY_CARD_DISPENSER.close.ResponseStatus}}</b></td>
+          <td>Message<b> : {{MY_CARD_DISPENSER.close.ResponseMessage}}</b></td>
+        </tr>
+      <tr>
+        <td>Open</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.open.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.open.ResponseMessage}}</b></td>
+      </tr>
+      <tr>
+        <td>Init</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.init.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.init.ResponseMessage}}</b></td>
+      </tr>
+      <tr>
+        <td>Card Serial</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.cardserial.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.cardserial.CardSN}} - {{MY_CARD_DISPENSER.cardserial.ResponseMessage}}</b></td>
+      </tr>
+      <tr *ngIf="MY_CARD_DISPENSER.cardStatus != undefined">
+        <td>Card Position Status</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.cardStatus.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.cardStatus.ResponseMessage}}</b></td>
+      </tr>
+      <tr *ngIf="MY_CARD_DISPENSER.cardMovePostn != undefined">
+        <td>Move Card Read Position</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.cardMovePostn.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.cardMovePostn.ResponseMessage}}</b></td>
+      </tr>
+      <tr *ngIf="MY_CARD_DISPENSER.cardEject != undefined">
+        <td>Card Eject</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.cardEject.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.cardEject.ResponseMessage}}</b></td>
+      </tr>
+      <tr *ngIf="MY_CARD_DISPENSER.cardReject != undefined">
+        <td>Card Reject</td>
+        <td>Status<b> : {{MY_CARD_DISPENSER.cardReject.ResponseStatus}}</b></td>
+        <td>Message<b> : {{MY_CARD_DISPENSER.cardReject.ResponseMessage}}</b></td>
+      </tr>
+    </table>
+</div>
+</div>
+

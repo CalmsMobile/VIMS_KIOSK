@@ -45,7 +45,7 @@ export class AppComponent {
       case 'home':
       const dialogRef = this.dialog.open(DialogAppCommonDialog, {
         //width: '250px',
-        data: {"title": "Are you sure want to go home ?", "subTile":"",
+        data: {"title": "Are you sure you want to return to Home Screen?", "subTile":"",
         "enbCancel":true,"oktext":"Ok","canceltext":"Cancel"}
       });
       dialogRef.afterClosed().subscribe(result => {
@@ -54,7 +54,6 @@ export class AppComponent {
           this.router.navigateByUrl('/landing');
          } else{
           console.log("Result",result)
-
          }
       });
       break;

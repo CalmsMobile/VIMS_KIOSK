@@ -1,0 +1,50 @@
+[my-reg-table-textbox]{
+    font-size: 4vh;
+    color: #d50109;
+    padding: 10px 30px;
+    width: 85%;
+    border: 0px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: left;
+    &:focus{
+        outline: none;
+    }
+    
+}
+[app-detail-grid-input]{
+    width:45%;
+    .mat-form-field-wrapper{
+        padding-bottom: 0.5em;
+    }
+    &:nth-child(even){
+        margin-left:2vh;
+    }
+}
+
+.emptypurpose{background-color: #445e6b};
+
+[visitor-img-capture-button] {
+    height: 15vh;
+    width: 15vh;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  [visitor-img-capture-button] .recapture {
+    padding: 10px;
+    border-radius: 50%;
+    width: 20px;
+    font-size: 20px;
+    height: 20px;
+    color: gray;
+    background: white;
+    line-height: 20px;
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    margin-left: calc(15vh - 30px);
+  }
+
+

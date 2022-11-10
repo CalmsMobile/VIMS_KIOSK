@@ -265,6 +265,16 @@ export class AppointmentDetailComponent implements OnInit {
             break;
           }
         }
+
+        let Questionnaries = false;
+        if (this.mainModule === 'vcheckin') {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        } else {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+        }
+        if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
+          this.getQuestionsOrVideo();
+        }
       }
       this._getAllCategoryOfVisit();
 
@@ -289,6 +299,15 @@ export class AppointmentDetailComponent implements OnInit {
             this.aptmDetails.categoryId = categroyList[i].visitor_ctg_id;
             break;
           }
+        }
+        let Questionnaries = false;
+        if (this.mainModule === 'vcheckin') {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
+        } else {
+          Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
+        }
+        if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
+          this.getQuestionsOrVideo();
         }
       }
     },

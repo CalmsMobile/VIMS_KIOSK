@@ -1,0 +1,27 @@
+
+$font-path: "../assets/fonts";
+
+@import "main";
+
+// Fonts
+// --------------------------------------------------
+@import "fontello";
+// @import "roboto";
+// @import "noto-sans";
+//@import "san-francisco";
+$colors: (
+  primary : #215d00,
+  secondary: #E91E63,
+  primary_whitener: #6fbd45,
+  md-red:#F44336,
+  md-rose:#E91E63,
+  md-green:#4caf50,
+  md-lgreen:  #32db65,
+  md-violet:#673AB7,
+  md-blue:#3f51b5,
+  md-gray:#607d8b,
+  md-sky:#2196F3,
+  md-yellow:#fffb00,
+  md-orange:#ff9800
+);
+

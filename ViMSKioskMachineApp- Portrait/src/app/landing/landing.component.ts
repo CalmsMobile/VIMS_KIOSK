@@ -58,6 +58,7 @@ export class LandingComponent implements OnInit {
     .subscribe((data:any) => {
       console.log(data);
       this.KIOSK_LOCAL_PROPERTIES = JSON.parse(data);
+      localStorage.setItem('KIOSK_LOCAL_PROPERTIES', JSON.stringify(this.KIOSK_LOCAL_PROPERTIES));
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
       if(setngs != undefined && setngs != ""){
         this.KIOSK_LOCAL_PROPERTIES['OrganizationName'] = JSON.parse(setngs)['OrganizationName'];

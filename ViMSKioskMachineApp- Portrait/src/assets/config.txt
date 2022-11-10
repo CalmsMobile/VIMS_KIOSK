@@ -1,5 +1,6 @@
 {
 "showOrganization": true,
 "homePageSubTitle": "Visitor Management System",
-"homePageBottomNote": "For assistance, please call +65 6715 7800"
+"homePageBottomNote": "For assistance, please call +65 6715 7800",
+"hardwareBaseUrl": "http://localhost/Portal/"
 }

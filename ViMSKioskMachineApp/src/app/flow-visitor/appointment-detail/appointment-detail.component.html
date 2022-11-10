@@ -38,6 +38,19 @@
         <mat-form-field appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)"
         theme-border-input-small app-detail-grid-input
+        (click)="openBottomBranchSelect()"
+        *ngIf="showMultiBranch">
+          <mat-label>{{KIOSK_PROPERTIES_LOCAL.multiBrnachLable}}</mat-label>
+          <input matInput readonly theme-input-button
+          [required]="true"
+          oninput="this.value = this.value.toUpperCase()"
+          [(ngModel)]="aptmDetails.branchName">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="auto" no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small app-detail-grid-input
         (click)="openBottomHostSelect()"
         *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show && ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1) || (!showFirstPageFields && !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1))">
           <mat-label>{{KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption}}</mat-label>

@@ -68,7 +68,8 @@ export const AppSettings = Object.freeze({
         "PrintVisitorReceipt":"api/kiosk/PrintVisitorReceipt",
         "getTemplateData":"api/kiosk/getTemplateData",
 
-        "VisitorAckSave":"api/vims/VisitorAckSave"
+        "VisitorAckSave":"api/vims/VisitorAckSave",
+        "GetAllBranch": "api/kiosk/GetAllBranch"
 
         // "getKioskSetupData":"api/Device/CRUDKioskMachine",
         // "kioskCardUpdate":"api/Device/kioskCardUpdate",

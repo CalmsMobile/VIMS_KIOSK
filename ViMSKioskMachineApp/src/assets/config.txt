@@ -1,0 +1,4 @@
+{
+	"supportMultiBranch": true,
+  "multiBrnachLable": "Tenant"
+}

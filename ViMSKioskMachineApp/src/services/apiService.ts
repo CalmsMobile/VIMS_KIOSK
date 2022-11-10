@@ -41,7 +41,7 @@ export class ApiServices {
     data["Branch"]= branch,
     data["Authorize"] = {
       "AuMAppDevSeqId":_scanData['MAppSeqId'],
-      "AuDeviceUID":MAC_ID,
+      "AuDeviceUID":MAC_ID ? MAC_ID: 'WEB',
       "Branch": branch,
       "RefBranchSeqId": branch
     }
@@ -205,6 +205,10 @@ let URL = "http://localhost:1010/apifolder/";
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.send(request.data);
     return;
+  }
+
+  getConfigFile() {
+    return  this.http.get('assets/config.txt?time='+ new Date().getTime(), { responseType: 'text' });
   }
 
   // getVisitorInfo(request:any)

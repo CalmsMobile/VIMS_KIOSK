@@ -7,7 +7,7 @@ import { FlowVisitorComponent, AppTermsAndCondtion, appConfirmDialog } from './f
 import { HostMobileComponent, DialogMobileVerifyComponent } from './host-mobile/host-mobile.component';
 import { RegistrationTypeComponent, DialogPrepareForScanComponent } from './registration-type/registration-type.component';
 import { ScanRLoadingComponent } from './scan-rloading/scan-rloading.component';
-import { AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect, BottomSheetGenderSelect, BottomSheetHoursSelect } from './appointment-detail/appointment-detail.component';
+import { AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect, BottomSheetGenderSelect, BottomSheetHoursSelect, BottomSheetBranchSelect } from './appointment-detail/appointment-detail.component';
 import { AppointmentSuccessComponent, DialogSuccessMessagePage } from './appointment-success/appointment-success.component';
 import { NgVirtualKeyboardModule }  from '@protacon/ng-virtual-keyboard';
 export const ROUTES: Routes = [
@@ -58,7 +58,7 @@ import { AppointmentListComponent } from './appointment-list/appointment-list.co
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
      RegistrationTypeComponent, DialogPrepareForScanComponent, DialogPrepareForScanComponent1,
       ScanRLoadingComponent,AppTermsAndCondtion, DialogAlertBox,BottomSheetHoursSelect,
-      AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
+      AppointmentDetailComponent, BottomSheetPurposeSheet,BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
       AppointmentSuccessComponent,DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
       VisitorPreApontmntComponent, VisitorCheckoutComponent,CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
     staffTemperatureComponent,visitorDetailForTempComponent,visitorTemperatureComponent,BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent],
@@ -85,7 +85,7 @@ import { AppointmentListComponent } from './appointment-list/appointment-list.co
     WebcamModule
   ],
   entryComponents: [
-    BottomSheetPurposeSheet,BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect,
+    BottomSheetPurposeSheet,BottomSheetBranchSelect, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect,
     BottomSheetGenderSelect,
     BottomSheetHoursSelect,
     DialogAlertBox,

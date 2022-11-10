@@ -29,6 +29,7 @@ export class AppointmentDetailComponent implements OnInit {
         break;
     }
   }
+  branchMasters = [];
   aptmDetails:AppointmentModal;
   isDisablePurpose = false;
   isDisableHost = false;
@@ -134,6 +135,9 @@ export class AppointmentDetailComponent implements OnInit {
       this._initUpdateScanDataValues();
       this._updateVisitorCheckINSettings();
       this._getAllPurposeOfVisit();
+      if (this.showMultiBranch){
+        this._getAllBranchMasters();
+      }
   }
   _initUpdateScanDataValues(){
     if((this.docType == "PASSPORT" || this.docType == "SING_NRICrDRIV" || this.docType == "MYCARD")
@@ -309,6 +313,21 @@ export class AppointmentDetailComponent implements OnInit {
         if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
           this.getQuestionsOrVideo();
         }
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
+    });
+  }
+
+  _getAllBranchMasters(){
+    this.apiServices.localPostMethod("GetAllBranch",{}).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        this.branchMasters = JSON.parse(data[0]["Data"]);
+        localStorage.setItem('_BRANCH_MASTER', data[0]["Data"]);
+        //{"visitor_ctg_desc":"ATTENDANT","visitor_ctg_id":"ATT"}
+        console.log("--- _BRANCH_MASTER Updated");
       }
     },
     err => {
@@ -550,6 +569,17 @@ export class AppointmentDetailComponent implements OnInit {
     }
 
   }
+  openBottomBranchSelect(): void {
+    const category = this.bottomSheet.open(BottomSheetBranchSelect);
+    category.afterDismissed().subscribe(result => {
+      if(result){
+        this.aptmDetails.branchID = result['BranchSeqId'];
+        this.aptmDetails.branchName = result['Name'];
+
+      }
+    });
+  }
+
   openBottomCategorySelect(): void {
     if (this.isDisablecategory){
       return;
@@ -1231,14 +1261,21 @@ export class AppointmentDetailComponent implements OnInit {
   WEB_CAM_WIDTH:string = "15";
   WEB_CAM_BADG_MARGIN = "calc(" + this.WEB_CAM_HEIGHT + "vh - 30px)";
   KIOSK_PROPERTIES:any = {};
+  KIOSK_PROPERTIES_LOCAL:any = {};
   KIOSK_CHECKIN_COUNTER_NAME:string = "";
   VISITOR_ID_MIN_LENGTH = 0;
   VISITOR_ID_MAX_LENGTH = 30;
+  showMultiBranch = false;
   _updateKioskSettings(){
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_CHECKIN_COUNTER_NAME = JSON.parse(setngs)['kioskName'];
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+      if(this.KIOSK_PROPERTIES_LOCAL){
+        this.showMultiBranch = this.KIOSK_PROPERTIES_LOCAL.supportMultiBranch;
+      }
       this.KIOSK_PROPERTIES.IsKeyMansIdValidate = JSON.parse(setngs).IsKeyMansIdValidate;
       this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
       if (this.mainModule === 'vcheckin') {
@@ -1344,6 +1381,46 @@ export class BottomSheetCategorySelect {
         localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
         //{"visitor_ctg_desc":"ATTENDANT","visitor_ctg_id":"ATT"}
         console.log("--- Category of Visitor Updated");
+      }
+    },
+    err => {
+      console.log("Failed...");
+      return false;
+    });
+  }
+}
+
+@Component({
+  selector: 'bottom-sheet-branch-select',
+  template: `<mat-nav-list >
+              <mat-list-item style="height: 4.5vw;border-bottom: 1px solid rgba(0,0,0,0.07);color: #3e5763;"
+              *ngFor="let branchItem of branchMasters" (click)="selectThisItem($event,branchItem)" >
+                <span mat-line style="font-size:1.8vw;line-height: 2vw;">{{branchItem.Name}}</span>
+              </mat-list-item>
+            </mat-nav-list>`,
+})
+export class BottomSheetBranchSelect {
+  branchMasters:any;
+  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetBranchSelect>,
+    private apiServices:ApiServices) {
+    this.branchMasters = [];
+    if(localStorage.getItem('_BRANCH_MASTER') != undefined && localStorage.getItem('_BRANCH_MASTER') != ''){
+      this.branchMasters = JSON.parse(localStorage.getItem('_BRANCH_MASTER'))['Table1'];
+    }
+    this._getAllBranchMasters();
+  }
+
+  selectThisItem(event: MouseEvent, branch:any): void {
+    this.bottomSheetRef.dismiss(branch);
+    event.preventDefault();
+  }
+  _getAllBranchMasters(){
+    this.apiServices.localPostMethod("GetAllBranch",{}).subscribe((data:any) => {
+      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+        this.branchMasters = JSON.parse(data[0]["Data"]);
+        localStorage.setItem('_BRANCH_MASTER', data[0]["Data"]);
+        //{"visitor_ctg_desc":"ATTENDANT","visitor_ctg_id":"ATT"}
+        console.log("--- _BRANCH_MASTER Updated");
       }
     },
     err => {

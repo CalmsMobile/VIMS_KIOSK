@@ -23,6 +23,8 @@ export class AppointmentModal  {
     public aptid?:string = '';
     public meetingHours:string = '';
     public meetingHoursValue:string = '';
+    public branchID:string = '';
+    public branchName:string = '';
 }
   export class HostDetails  {
     public id:string = '';

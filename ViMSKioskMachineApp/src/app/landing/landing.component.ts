@@ -45,7 +45,22 @@ export class LandingComponent implements OnInit {
   }
   ngAfterViewInit() {
     document.getElementById("homeButton").style.display = "none";
+    this.getConfigData();
   }
+
+  getConfigData() {
+    this.apiServices.getConfigFile()
+    .subscribe((data:any) => {
+      console.log(data);
+      if (data){
+        const item = JSON.stringify(JSON.parse(data));
+        localStorage.setItem('KIOSK_PROPERTIES_LOCAL', item);
+      }
+      // this.KIOSK_PROPERTIES.LOCAL_DATA = JSON.parse(data);
+      // localStorage.setItem('KIOSK_PROPERTIES_LOCAL', JSON.stringify(JSON.parse(data)));
+    });
+  }
+
   ngOnDestroy() {
     this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
     document.getElementById("homeButton").style.display = "block";

@@ -52,6 +52,7 @@ export class AppointmentDetailComponent implements OnInit {
   QuestionsDisplay = [];
   videoPath = '';
   hostListCount = 0;
+  branchMastersCount = 0;
   DefaultAddVisitorSettings=JSON.stringify({"AddVisitorsSeqId":0,"NameEnabled":false,"NameRequired":false,"IdProofEnabled":false,"IdProofRequired":false,"EmailEnabled":false,"EmailRequired":false,"CompanyEnabled":false,"CompanyRequired":false,"CategoryEnabled":true,"CategoryRequired":true,"ContactNumberEnabled":false,"ContactNumberRequired":false,"VehicleNumberEnabled":false,"VehicleNumberRequired":false,"GenderEnabled":false,"GenderRequired":false,"ImageUploadEnabled":false,"WorkPermit":false,"WorkPermitRequired":false,"WorkPermitExpiry":false,"WorkPermitExpiryRequired":false,"CountryEnabled":false,"CountryRequired":false,"AddressEnabled":false,"AddressRequired":false,"HostNameEnabled":false,"HostNameRequired":false,"HostDepartmentEnabled":false,"HostDepartmentRequired":false,"AttachmentUploadEnabled":false,"AttachmentUploadRequired":false,"MaxAttachmentAllowed":0,"VisitorCategories":"0","PurposeEnabled":false,"PurposeRequired":false});
   constructor(private router:Router,
      private bottomSheet: MatBottomSheet,
@@ -324,18 +325,32 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   _getAllBranchMasters(){
-    this.apiServices.localPostMethod("GetAllBranch",{}).subscribe((data:any) => {
-      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
-        this.branchMasters = JSON.parse(data[0]["Data"]);
-        localStorage.setItem('_BRANCH_MASTER', data[0]["Data"]);
-        //{"visitor_ctg_desc":"ATTENDANT","visitor_ctg_id":"ATT"}
-        console.log("--- _BRANCH_MASTER Updated");
-      }
-    },
-    err => {
-      console.log("Failed...");
-      return false;
-    });
+    console.log("docType == "+this.docType)
+    
+      this.apiServices.localPostMethod("GetAllBranch",{}).subscribe((data:any) => {
+        if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+          this.branchMasters = JSON.parse(data[0]["Data"]);
+          localStorage.setItem('_BRANCH_MASTER', data[0]["Data"]);
+          //{"visitor_ctg_desc":"ATTENDANT","visitor_ctg_id":"ATT"}
+          console.log("--- _BRANCH_MASTER Updated");
+          this.branchMastersCount =this.branchMasters['Table1'].length;
+
+        if (this.branchMastersCount === 1){
+          //this.aptmDetails.hostDetails.id = result[0]['HOSTIC']
+          this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
+        this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
+        this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
+        this._getAutoApprovalOption(this.aptmDetails.branchID);
+          console.log(this.aptmDetails.hostDetails.id);
+        }
+        }
+      },
+      err => {
+        console.log("Failed...");
+        return false;
+      });
+    
+   
   }
 
   takeActFor(action:string){
@@ -1205,6 +1220,9 @@ export class AppointmentDetailComponent implements OnInit {
 
 
   _getAutoApprovalOption(branchID){
+    if(this.docType === "PREAPPOINTMT" || this.mainModule !== 'vcheckin'){
+     return false;
+    }
     this.apiServices.localPostMethod('GetAutoApprovalOption', {
       Branch: branchID,
       Category: this.aptmDetails.categoryId

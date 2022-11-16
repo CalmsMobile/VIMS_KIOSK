@@ -4,3 +4,20 @@
   font-size: 14px;
   font-weight: bold;
 }
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  color:rgb(255, 255, 255);
+  font-size: 28px;
+  font-weight: bold;
+  }
+  
+  ::ng-deep .mat-tab-list .mat-tab-labels {
+  color:rgb(255, 255, 255);
+  background-color:  rgba(0, 0, 0, 0);
+  font-size: 24px;
+  }
+
+  ::ng-deep .mat-ink-bar {
+    background-color: #d65600 !important;
+    //width: 300px !important;
+    height: 2pt !important;
+}

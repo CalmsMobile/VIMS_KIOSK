@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ApiServices } from 'src/services/apiService';
@@ -28,7 +28,16 @@ export class VisitorPreApontmntComponent implements OnInit {
       this._updateKioskSettings();
       this.APONTMNT_CODE = '';
      }
-
+     selectedTabValue(event){
+      console.log(event.index);
+      if(event.index == 0)
+      this.selectedType = "appint_id";
+      if(event.index == 1)
+      this.selectedType = "contact";
+      if(event.index == 2)
+      this.selectedType = "email";
+      console.log(this.selectedType)
+    }
   ngOnInit() {
     if(localStorage.getItem('_PURPOSE_OF_VISIT') != undefined && localStorage.getItem('_PURPOSE_OF_VISIT') != ''){
       this.purposes = JSON.parse(localStorage.getItem('_PURPOSE_OF_VISIT'));

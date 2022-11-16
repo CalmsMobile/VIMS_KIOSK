@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiServices } from 'src/services/apiService';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog,MatTabsModule } from '@angular/material';
 import { DialogPrepareForScanComponent } from './registration-type/registration-type.component';
 
 @Component({

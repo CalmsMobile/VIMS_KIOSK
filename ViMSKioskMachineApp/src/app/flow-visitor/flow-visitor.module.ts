@@ -40,7 +40,8 @@ import {
   MatRadioModule,
   MatDialogModule,
   MatBottomSheetModule,
-  MatRippleModule
+  MatRippleModule,
+  MatTabsModule
 } from '@angular/material';
 import { VisitorSummaryComponent } from './visitor-summary/visitor-summary.component';
 import { MainPipeModule } from '../main-pipe/main-pipe.module';
@@ -80,6 +81,7 @@ import { AppointmentListComponent } from './appointment-list/appointment-list.co
     MatBottomSheetModule,
     MatDialogModule,
     MatRippleModule,
+    MatTabsModule,
     NgVirtualKeyboardModule,
     MainPipeModule,
     WebcamModule

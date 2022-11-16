@@ -68,8 +68,9 @@ export class ApiServices {
   {
     console.log("Inside get method");
 
-    //let URL = this._getAPIURL();
-    let URL = "http://localhost/Portal/api/kiosk/";
+    let URL = this._getAPIURL();
+    //let URL = "http://localhost/Portal/api/kiosk/";
+    // let URL = "http://localhost:1010/apifolder/";
 
     console.log("URL",URL);
     console.log("serviceName",serviceName);
@@ -98,8 +99,9 @@ export class ApiServices {
 
   localGetMethod(serviceName:string, appendURL:string )
   {
-// let URL = "http://localhost:1010/apifolder/";
-    let URL = this._getAPIURL();
+    //var URL = "http://localhost/Portal/";
+ let URL = "http://localhost:1010/apifolder/";
+//    let URL = this._getAPIURL();
 
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
@@ -120,6 +122,7 @@ export class ApiServices {
   }
   getApiDeviceConnectionRequest(service:string)
   {
+    //var URL = "http://localhost/Portal/";
 let URL = "http://localhost:1010/apifolder/";
  //    let URL = this._getAPIURL();
     console.log(URL + service);
@@ -150,6 +153,7 @@ let URL = "http://localhost:1010/apifolder/";
   }
   getStaffTemperature(data:any)
   {
+    //var URL = "http://localhost/Portal/";
 let URL = "http://localhost:1010/apifolder/";
  //    let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
@@ -186,12 +190,14 @@ let URL = "http://localhost:1010/apifolder/";
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions );
   }
   PrintVisitorLabel(data:any){
+    //var URL = "http://localhost/Portal/";
 let URL = "http://localhost:1010/apifolder/";
  //    let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions );
   }
   PrintVisitorReceipt(data:any){
+    //var URL = "http://localhost/Portal/";
 let URL = "http://localhost:1010/apifolder/";
  //    let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);

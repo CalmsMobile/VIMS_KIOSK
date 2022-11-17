@@ -32,7 +32,7 @@
               [(ngModel)]="APONTMNT_CODE" maxlength="10"
               (blur)="textDataBindTemp($event.target.value)"
               ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
-              ng-virtual-keyboard-placeholder="Appintment ID">
+              ng-virtual-keyboard-placeholder="Appointment ID">
           </mat-form-field>
 
           <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="display: block;" *ngIf="selectedType == 'contact'">

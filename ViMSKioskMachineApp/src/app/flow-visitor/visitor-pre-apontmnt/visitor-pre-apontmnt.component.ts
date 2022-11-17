@@ -161,7 +161,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       prepareData = {"att_appointment_id": "","ContactNo":"","Email":this.APONTMNT_EMAIL};
     }
     this.apiServices.localPostMethod("getAptmentInformation",prepareData ).subscribe((data:any) => {
-      console.log(data);
+      console.log("getAppointmentDetails "+JSON.stringify(data));
       document.getElementById("bodyloader").style.display = "none";
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
         let Data = data[0]["Data"];

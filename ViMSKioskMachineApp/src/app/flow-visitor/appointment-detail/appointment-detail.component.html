@@ -44,6 +44,7 @@
           <input matInput readonly theme-input-button
           [required]="true"
           oninput="this.value = this.value.toUpperCase()"
+          [disabled]="isDisableBranch"
           [(ngModel)]="aptmDetails.branchName">
           <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
         </mat-form-field>

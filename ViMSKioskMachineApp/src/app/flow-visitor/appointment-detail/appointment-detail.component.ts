@@ -8,6 +8,7 @@ import { AppointmentModal } from './appointmentModal';
 import { AppSettings } from 'src/services/app.settings';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 import { DialogAppSessionTimeOutDialog } from 'src/app/app.component';
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -38,6 +39,7 @@ export class AppointmentDetailComponent implements OnInit {
   isDisableemail = false;
   isDisablecontact = false;
   isDisablecategory = false;
+  isDisableBranch = false;
   isDisablecompany = false;
   isDisableid = false;
   isDisablename = false;
@@ -157,6 +159,7 @@ export class AppointmentDetailComponent implements OnInit {
     } else if(this.docType == "PREAPPOINTMT" && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
     && localStorage.getItem("VISI_SCAN_DOC_DATA") != ""){
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
+      console.log("doc_detail  "+ JSON.stringify(doc_detail))
       this.aptmDetails.name = doc_detail["name"];
       this.aptmDetails.id = doc_detail["id"];
       this.aptmDetails.company = doc_detail["company"] || "";
@@ -214,6 +217,12 @@ export class AppointmentDetailComponent implements OnInit {
         if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
           this.getQuestionsOrVideo();
         }
+      }
+      
+      if(this.aptmDetails.hostDetails.company){
+        //this.aptmDetails.hostDetails.HostDeptId = this.aptmDetails.hostDetails.company;
+        //debugger;
+        this.isDisableBranch = true;
       }
       if (this.aptmDetails.contact){
         this.isDisablecontact = true;
@@ -325,7 +334,7 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   _getAllBranchMasters(){
-    console.log("docType == "+this.docType)
+    console.log("docType == "+this.docType + this.aptmDetails.hostDetails.company);
     
       this.apiServices.localPostMethod("GetAllBranch",{}).subscribe((data:any) => {
         if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
@@ -335,13 +344,23 @@ export class AppointmentDetailComponent implements OnInit {
           console.log("--- _BRANCH_MASTER Updated");
           this.branchMastersCount =this.branchMasters['Table1'].length;
 
-        if (this.branchMastersCount === 1){
+        if (this.branchMastersCount === 1 && this.docType !== "PREAPPOINTMT"){
           //this.aptmDetails.hostDetails.id = result[0]['HOSTIC']
           this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
         this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
         this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
         this._getAutoApprovalOption(this.aptmDetails.branchID);
           console.log(this.aptmDetails.hostDetails.id);
+        }
+        else{
+          
+          for(let i = 0 ; i< this.branchMasters['Table1'].length; i++){
+            if(this.aptmDetails.hostDetails.company == this.branchMasters['Table1'][i]['BranchSeqId']){
+              this.aptmDetails.branchID = this.branchMasters['Table1'][i]['BranchSeqId'];
+              this.aptmDetails.branchName = this.branchMasters['Table1'][i]['Name'];
+              break;
+            }
+          }
         }
         }
       },
@@ -588,6 +607,9 @@ export class AppointmentDetailComponent implements OnInit {
   }
   openBottomBranchSelect(): void {
     if (!this.aptmDetails.categoryId || this.aptmDetails.categoryId === ''){
+      return;
+    }
+    if(this.docType === "PREAPPOINTMT" && this.aptmDetails.hostDetails.company !== ""){
       return;
     }
     const category = this.bottomSheet.open(BottomSheetBranchSelect);

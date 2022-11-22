@@ -204,7 +204,7 @@ export class SettingsService {
             if(_details['Table2'] != undefined && _details['Table2'].length > 0){
               _prepare['kioskName'] = _details['Table2'][0]['Name'];
             }
-
+console.log("KIOSK_PROPERTIES "+ JSON.stringify(_prepare));
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
 
             this._initCardDispenserModule();

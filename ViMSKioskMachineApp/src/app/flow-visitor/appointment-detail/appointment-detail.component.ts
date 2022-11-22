@@ -1242,16 +1242,19 @@ export class AppointmentDetailComponent implements OnInit {
 
 
   _getAutoApprovalOption(branchID){
+    console.log("auto approval branch id === "+branchID);
     if(this.docType === "PREAPPOINTMT" || this.mainModule !== 'vcheckin'){
      return false;
     }
     this.apiServices.localPostMethod('GetAutoApprovalOption', {
-      Branch: branchID,
+      BranchId: branchID,
       Category: this.aptmDetails.categoryId
     }).subscribe((data:any) => {
       if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
-
+//debugger;
         const result = JSON.parse(data[0]["Data"]);
+        console.log("branchId "+branchID);
+        console.log("branchId dataauto "+ JSON.stringify(result));
         let AutoApproveOption = result.Table1[0]['AutoApproveOption'];
         if (!AutoApproveOption){
           this.showApproveAlertDialog();
@@ -1565,7 +1568,7 @@ export class BottomSheetBranchSelect {
 
 @Component({
   selector: 'bottom-sheet-country-select',
-  template: `<mat-nav-list >
+  template: `<mat-nav-list>
               <mat-list-item style="height: 4.5vw;border-bottom: 1px solid rgba(0,0,0,0.07);color: #3e5763;"
               *ngFor="let hour of hours" (click)="selectThisItem($event,hour)" >
                 <span mat-line style="font-size:1.8vw;line-height: 2vw;">{{hour.name}}</span>

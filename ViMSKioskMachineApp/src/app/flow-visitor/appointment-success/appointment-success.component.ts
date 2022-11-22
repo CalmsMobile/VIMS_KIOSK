@@ -381,7 +381,7 @@ export class AppointmentSuccessComponent implements OnInit {
      this.EnableAcsQrCode = (typeof(this.KIOSK_PROPERTIES['modules']['ACS'])=='undefined'?false:this.KIOSK_PROPERTIES['modules']['ACS']['EnableAcsQrCode']);
      this.LabelPrintEnable = this.KIOSK_PROPERTIES['modules']['printer']['enable'];
      this.LabelPrintManualOrAuto = typeof(this.KIOSK_PROPERTIES['modules']['printer']['print_option'])=='undefined'?20:this.KIOSK_PROPERTIES['modules']['printer']['print_option'];
-
+console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelPrintEnable );
       this.apiServices.localPostMethod("visitorIndividualCheckIn", prepareData).subscribe((data:any) => {
         console.log(data);
         if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
@@ -416,6 +416,7 @@ export class AppointmentSuccessComponent implements OnInit {
   }
   //-------------------- Hardware Services --------------------
   private chk_hardwares_to_finish(att_id:string, _visitorData:any, _nextElemcallBack:any){
+    debugger;
     let _Modules = this.KIOSK_PROPERTIES['modules'];
     let _get_cardSerial_number = (_callback:any) => {
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data:any) => {

@@ -34,6 +34,7 @@ export class AppointmentSuccessComponent implements OnInit {
   base64Image = '';
   GScopeValue:any = ""; GVisitorPass:any = ""; GPermittedTime:any = "";
   LabelPrintEnable:any = false;
+  ReceiptPrintEnable:any = false;
   LabelPrintManualOrAuto:any = 10;
   @ViewChild('cardSerInput') cardSerInput:ElementRef;
 
@@ -121,12 +122,15 @@ export class AppointmentSuccessComponent implements OnInit {
     }
   }
   getImageHandlerURL() {
+    debugger
     let poReturnVal = "";
     if (this.CheckInVisitorData != undefined) {
       if (this.CheckInVisitorData.length > 0) {
         if (this.CheckInVisitorData[0].IsDynamicQR) {
+          debugger
           poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
         } else if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
+          debugger
           switch (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field']) {
               case "NRIC":
                   poReturnVal = this.getFieldValue("VisitorNRIC", 30, "L") || "";
@@ -168,7 +172,15 @@ export class AppointmentSuccessComponent implements OnInit {
     },_timeout);
   }
   triggerLabelPrint() {
-    this.loadlblprint(this.CheckInVisitorData,(pri_status:boolean)=>{});
+    
+    if (this.LabelPrintEnable) {
+      debugger
+      this.loadlblprint(this.CheckInVisitorData,(pri_status:boolean)=>{});
+    }
+    if (this.ReceiptPrintEnable) {
+      debugger
+      this.loadreceiptprint(this.CheckInVisitorData);
+    }
   }
   _registerVisitors(isRetry?:boolean){
     let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
@@ -380,8 +392,10 @@ export class AppointmentSuccessComponent implements OnInit {
     }
      this.EnableAcsQrCode = (typeof(this.KIOSK_PROPERTIES['modules']['ACS'])=='undefined'?false:this.KIOSK_PROPERTIES['modules']['ACS']['EnableAcsQrCode']);
      this.LabelPrintEnable = this.KIOSK_PROPERTIES['modules']['printer']['enable'];
+     this.ReceiptPrintEnable = this.KIOSK_PROPERTIES['modules']['printer']['recipt_enable'];
      this.LabelPrintManualOrAuto = typeof(this.KIOSK_PROPERTIES['modules']['printer']['print_option'])=='undefined'?20:this.KIOSK_PROPERTIES['modules']['printer']['print_option'];
 console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelPrintEnable );
+console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
       this.apiServices.localPostMethod("visitorIndividualCheckIn", prepareData).subscribe((data:any) => {
         console.log(data);
         if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
@@ -521,7 +535,7 @@ console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelP
                 if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto==10) {
                     this.loadlblprint(visitorData,(pri_status:boolean)=>{});
                 }
-                if (_Modules['printer']['recipt_enable']) {
+                if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto==10) {
                   this.loadreceiptprint(visitorData);
                 }
                 _nextElemcallBack(true);
@@ -603,6 +617,7 @@ console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelP
         }
       });
     } else if((_Modules['printer']['enable'] || _Modules['printer']['recipt_enable']) && !_Modules['card_dispenser']['enable']){
+      debugger
       this.visitorIndividualCheckIn(att_id, "", (status:any, visitorData:any)=>{
         // If Success Eject Visitor Card
         this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
@@ -622,9 +637,11 @@ console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelP
         if(status['s'] === true){
           if (visitorData.length > 0) {
             if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto==10) {
+              debugger
               this.loadlblprint(visitorData,(pri_status:boolean)=>{});
             }
-            if (_Modules['printer']['recipt_enable']) {
+            if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto==10) {
+              debugger
               this.loadreceiptprint(visitorData);
             }
             _nextElemcallBack(true);
@@ -874,8 +891,14 @@ console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelP
       //Required Print Data
       //{"CompanyName":"","Address1":"","Address2":"","Address3":"","CompanyMobile":"","SlipTitle":"","SlipSubTitle_1":"VISITOR DETAILS","SlipSubTitle_2":"CHECK-IN DETAILS","SlipSubTitle_3":"HOST DETAILS","VisitorName":"","VisitorIC":"","VisitorCompany":"","VisitorCategory":"","VisitorContact":"","VisitorVehicle":"","HostPurpose":"","CheckInTime":"","PermittedTime":"","PassNo":"","CheckINLocation":"","CheckINBy":"","NoOfPersons":"","HostName":"","HostCompany":"","HostDepartment":"","Floor":"","PrintType":"OR","Terms1":"","Terms2":"","Terms3":"","Terms4":"","Terms5":"","Message1":"","Message2":"","PrintField":""}
 
-      let poReturnVal = "";
-      if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
+      let poReturnVal = ""; 
+      if (this.CheckInVisitorData != undefined) {
+        if (this.CheckInVisitorData.length > 0) {
+          if (this.CheckInVisitorData[0].IsDynamicQR) {
+            debugger
+            poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
+          } else if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
+        debugger
           switch (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field']) {
               case "NRIC":
                   poReturnVal = this.getFieldValue("VisitorNRIC", 30, "L") || "";
@@ -896,6 +919,8 @@ console.log("LabelPrintManualOrAuto " +this.LabelPrintManualOrAuto + this.LabelP
                   poReturnVal = parseInt(poReturnData[0].DynamicHex, 16).toString();
                   break;
           }
+        }
+      }
       }
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
       let CheckINLocation = "";

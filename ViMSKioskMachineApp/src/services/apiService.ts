@@ -68,7 +68,7 @@ export class ApiServices {
   {
     console.log("Inside get method");
 
-    // let URL = "http://localhost/Portal/api/kiosk/";
+   //let URL = "http://localhost/Portal/api/kiosk/";
     let URL = this._getAPIURL();
 
     console.log("URL",URL);
@@ -99,7 +99,7 @@ export class ApiServices {
 
   localGetMethod(serviceName:string, appendURL:string )
   {
-   // var URL = "http://localhost/Portal/";
+    //var URL = "http://localhost/Portal/";
     let URL = this._getAPIURL();
 
 
@@ -151,7 +151,7 @@ export class ApiServices {
   }
   getStaffTemperature(data:any)
   {
-   // var URL = "http://localhost/Portal/";
+    //var URL = "http://localhost/Portal/";
    let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions );
@@ -187,14 +187,14 @@ export class ApiServices {
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions );
   }
   PrintVisitorLabel(data:any){
-    var URL = "http://localhost/Portal/";
-   //let URL = this._getAPIURL();
+    //var URL = "http://localhost/Portal/";
+   let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions );
   }
   PrintVisitorReceipt(data:any){
-    var URL = "http://localhost/Portal/";
-    //let URL = this._getAPIURL();
+    //var URL = "http://localhost/Portal/";
+  let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions );
   }

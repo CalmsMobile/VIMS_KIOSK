@@ -68,8 +68,8 @@ export class ApiServices {
   {
     console.log("Inside get method");
 
-   //let URL = "http://localhost/Portal/api/kiosk/";
-    let URL = this._getAPIURL();
+   let URL = "http://localhost/Portal/api/kiosk/";
+    //let URL = this._getAPIURL();
 
     console.log("URL",URL);
     console.log("serviceName",serviceName);
@@ -99,8 +99,8 @@ export class ApiServices {
 
   localGetMethod(serviceName:string, appendURL:string )
   {
-    //var URL = "http://localhost/Portal/";
-    let URL = this._getAPIURL();
+    var URL = "http://localhost/Portal/";
+    //let URL = this._getAPIURL();
 
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
@@ -121,8 +121,8 @@ export class ApiServices {
   }
   getApiDeviceConnectionRequest(service:string)
   {
-    //var URL = "http://localhost/Portal/";
-    let URL = this._getAPIURL();
+    var URL = "http://localhost/Portal/";
+    //let URL = this._getAPIURL();
     console.log(URL + service);
     return this.http.get(URL + service);
   }
@@ -151,8 +151,8 @@ export class ApiServices {
   }
   getStaffTemperature(data:any)
   {
-    //var URL = "http://localhost/Portal/";
-   let URL = this._getAPIURL();
+    var URL = "http://localhost/Portal/";
+   //let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions );
   }
@@ -187,14 +187,14 @@ export class ApiServices {
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions );
   }
   PrintVisitorLabel(data:any){
-    //var URL = "http://localhost/Portal/";
-   let URL = this._getAPIURL();
+    var URL = "http://localhost/Portal/";
+   //let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions );
   }
   PrintVisitorReceipt(data:any){
-    //var URL = "http://localhost/Portal/";
-  let URL = this._getAPIURL();
+    var URL = "http://localhost/Portal/";
+  //let URL = this._getAPIURL();
     data =  this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions );
   }

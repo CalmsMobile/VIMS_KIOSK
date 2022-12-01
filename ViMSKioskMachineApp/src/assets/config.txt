@@ -1,5 +1,5 @@
 {
 	"supportMultiBranch": true,
   "multiBrnachLable": "Host Company",
-  "alertApproveMessage": "Selected company required further verification, please proceed to reception counter for check-in"
+  "alertApproveMessage": "Your registration is pending approval. Please proceed to the reception counter."
 }

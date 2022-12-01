@@ -451,6 +451,10 @@ export class LandingComponent implements OnInit {
     [theme-border-input-small].mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_input_caption'] +  ` !important;
     }
+    [theme-border-input-small].mat-form-field-appearance-outline .mat-form-field-label,
+    [theme-border-input-small].mat-form-field-appearance-outline .mat-form-field-label{
+      color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_input_caption'] +  ` !important;
+    }
     [my-reg-option-radio][value="MYCARD"]::before {
       background: url(` + (MyKad ? MyKad: 'assets/images/cus_icons/my_card.png') + `) no-repeat !important;
       background-size: 50% !important;

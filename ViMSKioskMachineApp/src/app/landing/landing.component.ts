@@ -22,6 +22,7 @@ export class LandingComponent implements OnInit {
   GO_SETTINGS_TIMER:any = null;
   IF_CONNECT_WITH_SERVER:boolean = false;
   StaffCardNo:any='';
+  Appointment = '';
   RequestAppointment = '';
   CheckIn = '';
   CheckOut = '';
@@ -431,6 +432,7 @@ export class LandingComponent implements OnInit {
       shadow = "none"
     }
     
+    this.Appointment = localStorage.getItem('KIOSK_Appointment');
     this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
     this.CheckIn = localStorage.getItem('KIOSK_CheckIn');
     this.CheckOut = localStorage.getItem('KIOSK_CheckOut');

@@ -309,6 +309,12 @@ export class AppointmentDetailComponent implements OnInit {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         const categroyList = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
+        if(categroyList.length == 1)
+        {
+          debugger
+          this.aptmDetails.category = categroyList[0].visitor_ctg_desc;
+          this.aptmDetails.categoryId = categroyList[0].visitor_ctg_id;
+        }
         for (let i = 0; i < categroyList.length; i++) {
           if (categroyList[i].visitor_default === 1) {
             this.aptmDetails.category = categroyList[i].visitor_ctg_desc;
@@ -1279,6 +1285,10 @@ export class AppointmentDetailComponent implements OnInit {
         console.log("--- Purpose of Visit Updated");
         if (this.aptmDetails.purpose) {
           const purposeList = JSON.parse(data[0]["Data"]);
+          if(purposeList.length == 1){
+            this.aptmDetails.purpose = purposeList[0].visitpurpose_desc;
+              this.aptmDetails.purposeId = purposeList[0].visitpurpose_id;
+          }
           for (var i = 0; i <= purposeList.length - 1; i++) {
             if (purposeList[i].visitpurpose_id === this.aptmDetails.purpose || purposeList[i].visitpurpose_desc === this.aptmDetails.purpose) {
               this.aptmDetails.purpose = purposeList[i].visitpurpose_desc;

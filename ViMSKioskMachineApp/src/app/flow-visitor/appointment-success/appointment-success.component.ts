@@ -122,15 +122,15 @@ export class AppointmentSuccessComponent implements OnInit {
     }
   }
   getImageHandlerURL() {
-    debugger
+    
     let poReturnVal = "";
     if (this.CheckInVisitorData != undefined) {
       if (this.CheckInVisitorData.length > 0) {
         if (this.CheckInVisitorData[0].IsDynamicQR) {
-          debugger
+          
           poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
         } else if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
-          debugger
+          
           switch (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field']) {
               case "NRIC":
                   poReturnVal = this.getFieldValue("VisitorNRIC", 30, "L") || "";
@@ -174,11 +174,11 @@ export class AppointmentSuccessComponent implements OnInit {
   triggerLabelPrint() {
     
     if (this.LabelPrintEnable) {
-      debugger
+      
       this.loadlblprint(this.CheckInVisitorData,(pri_status:boolean)=>{});
     }
     if (this.ReceiptPrintEnable) {
-      debugger
+      
       this.loadreceiptprint(this.CheckInVisitorData);
     }
   }
@@ -430,7 +430,7 @@ console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
   }
   //-------------------- Hardware Services --------------------
   private chk_hardwares_to_finish(att_id:string, _visitorData:any, _nextElemcallBack:any){
-    debugger;
+    
     let _Modules = this.KIOSK_PROPERTIES['modules'];
     let _get_cardSerial_number = (_callback:any) => {
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data:any) => {
@@ -617,7 +617,7 @@ console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
         }
       });
     } else if((_Modules['printer']['enable'] || _Modules['printer']['recipt_enable']) && !_Modules['card_dispenser']['enable']){
-      debugger
+      
       this.visitorIndividualCheckIn(att_id, "", (status:any, visitorData:any)=>{
         // If Success Eject Visitor Card
         this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
@@ -637,11 +637,11 @@ console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
         if(status['s'] === true){
           if (visitorData.length > 0) {
             if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto==10) {
-              debugger
+              
               this.loadlblprint(visitorData,(pri_status:boolean)=>{});
             }
             if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto==10) {
-              debugger
+              
               this.loadreceiptprint(visitorData);
             }
             _nextElemcallBack(true);
@@ -895,10 +895,10 @@ console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
       if (this.CheckInVisitorData != undefined) {
         if (this.CheckInVisitorData.length > 0) {
           if (this.CheckInVisitorData[0].IsDynamicQR) {
-            debugger
+            
             poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
           } else if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
-        debugger
+        
           switch (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field']) {
               case "NRIC":
                   poReturnVal = this.getFieldValue("VisitorNRIC", 30, "L") || "";

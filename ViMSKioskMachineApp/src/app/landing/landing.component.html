@@ -70,7 +70,7 @@ min-width: 15vh;z-index: 999999999;">
     [ngStyle]="{'font-weight': KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_lbl_bold? 'bold': '400' ,
         'text-transform': KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_lbl_capital? 'uppercase': 'capitalize'}"
     (click)="takeActFor('preAppointment')">
-    <img src="assets/images/cus_icons/pre_appointment.png" style="width: 100px;
+    <img src="{{Appointment}}" onError="src ='assets/images/cus_icons/pre_appointment.png'" style="   width: 100px;
     height: 100px;
     padding-bottom: 10px;
     margin: 0 auto;

@@ -34,9 +34,11 @@ export class AppointmentListComponent implements OnInit {
         if(passData != undefined && passData.length > 0){
           const list  = JSON.parse(passData);
           list.forEach(element => {
+            element.START_TIME = this.datePipe.transform(element.START_TIME, 'EEEE, MMMM d, y, h:mm a');
+            element.END_TIME = this.datePipe.transform(element.END_TIME, 'EEEE, MMMM d, y, h:mm a');
             if (element.purpose){
-              element.START_TIME = this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm a');
-              element.END_TIME = this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm a');
+              //element.START_TIME = this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm a');
+              //element.END_TIME = this.datePipe.transform(new Date(), 'dd-MM-yyyy hh:mm a');
               element.purposeDesc = this.getPurposeName(element.purpose, false);
               element.purposeId = this.getPurposeName(element.purpose, true);
             }

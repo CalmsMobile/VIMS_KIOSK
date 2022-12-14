@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiServices } from 'src/services/apiService';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog,MatTabsModule } from '@angular/material';
 import { DialogPrepareForScanComponent } from './registration-type/registration-type.component';
+import { AppSettings} from '../../services/app.settings';
 
 @Component({
   selector: 'app-flow-visitor',
@@ -33,6 +34,7 @@ export class FlowVisitorComponent implements OnInit {
 
   takeActFor(action:string){
     if(action === "agree"){
+      
       // const dialogRef = this.dialog.open(appConfirmDialog, {
       //   width: '250px',
       //   data: {title: "CCTV monitoring in progress", btn_ok:"Ok"}
@@ -50,6 +52,7 @@ export class FlowVisitorComponent implements OnInit {
       if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
         this.router.navigateByUrl('/visitorDetailForTemp');
       else {
+        
         if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
@@ -151,7 +154,14 @@ export class FlowVisitorComponent implements OnInit {
           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
         } else {
-          this.router.navigateByUrl('/visitorRegisType');
+          
+          if(localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE) === "preAppointment"){
+            localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, 'vcheckin');
+            this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: "PREAPPOINTMT" }});
+          }else{
+            this.router.navigateByUrl('/visitorRegisType');
+          }
+          
         }
       }
 

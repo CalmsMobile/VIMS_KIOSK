@@ -25,6 +25,7 @@ export class LandingComponent implements OnInit {
   RequestAppointment = '';
   CheckIn = '';
   CheckOut = '';
+  KIOSK_PROPERTIES_LOCAL: any = {};
   constructor(
     private apiServices:ApiServices,
     private settingsServices:SettingsService,
@@ -101,6 +102,7 @@ export class LandingComponent implements OnInit {
     } else if(action === "visitor"){
       //this.router.navigateByUrl('/visitorAgree');
     } else if(action === "vcheckin"){
+      
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status:boolean)=>{
         if(status){
@@ -327,6 +329,18 @@ export class LandingComponent implements OnInit {
       });
     } else if(action === "vcheckout"){
       this.router.navigateByUrl('/visitorCheckout');
+    } else if(action === "preAppointment"){
+      debugger
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.checkCardPosition((status:boolean)=>{
+        if(status){
+          if(this.KIOSK_PROPERTIES['modules']['T_adn_C']['enable']){
+            this.router.navigateByUrl('/visitorAgree');
+          }else{
+            this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: "PREAPPOINTMT" }});
+          }
+        }});
+     
     }
   }
   _clearAllLocalData(){
@@ -409,6 +423,14 @@ export class LandingComponent implements OnInit {
     }
   }
   composeRunTimeCss(){
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+    let shadow = "0px 0px 0px 4px white";
+    if(!this.KIOSK_PROPERTIES_LOCAL.buttonsRoundBorder){
+      this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] = "#6633ff00"
+      shadow = "none"
+    }
+    
     this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
     this.CheckIn = localStorage.getItem('KIOSK_CheckIn');
     this.CheckOut = localStorage.getItem('KIOSK_CheckOut');
@@ -426,6 +448,9 @@ export class LandingComponent implements OnInit {
     [my-theme-round-button], [my-theme-button] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] +  ` !important;
       background: linear-gradient(to top left, ` +this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] +`, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1']+`) !important;
+    }
+    [my-theme-round-button]::before, [my-theme-button]::before {
+      box-shadow: `+shadow+` !important;
     }
     [sp-button-red-in], [sp-button-red-out],[sp-button-green-in], [sp-button-green-out],[sp-button-violet-out],[sp-button-violet-in],
     [sp-button-rose-in], [sp-button-rose-out],[sp-button-yellow-in], [sp-button-yellow-out],[sp-button-blue-in],[sp-button-blue-out]

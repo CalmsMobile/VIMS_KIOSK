@@ -2,18 +2,62 @@
   <p info-title no-margin-top margin-bottom>
     Total Appointments {{listOFAppointments.length}}
   </p>
-  <div style="min-height:60vh;max-height:60vh;overflow: auto;width: auto;width: 70vw;margin:auto;margin-top:5vh;">
-  <table my-appointment-table style="width: 100%;" *ngIf="listOFAppointments.length > 0">
-    <tr style="    border-radius: 20%;" *ngFor="let appointments of listOFAppointments; let i = index;" (click)="takeActFor('confirm', appointments)">
-      <td> <div>
-        <h1 class="title">{{appointments.host_name}}</h1>
-        <p class="desc">{{appointments.purposeDesc}}</p>
-        <p class="datetim">{{appointments.START_TIME}} - {{appointments.END_TIME}}</p>
-      </div> </td>
-    </tr>
-  </table>
-  <div info-title *ngIf="listOFAppointments.length <= 0"> No appointments found </div>
-</div>
+  <div class="bg-div">
+    <table my-appointment-table style="width: 100%; background: white;" *ngIf="listOFAppointments.length > 0">
+      <!-- <thead>
+        <tr>
+          <th class="title"><u>Host</u></th>
+          <th class="title"><u>Location</u></th>
+          <th class="title"><u>Purpose</u></th>
+          <th class="title"><u>Start time</u></th>
+          <th class="title"><u>End time</u></th>
+          <th class="title"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointments of listOFAppointments; let i = index;"
+        (click)="takeActFor('confirm', appointments)">
+          <td class="subtitle">{{appointments.host_name}}</td>
+          <td class="subtitle">{{appointments.MeetingLoc}}</td>
+          <td class="subtitle">{{appointments.purposeDesc}}</td>
+          <td class="subtitle">{{appointments.START_TIME}}</td>
+          <td class="subtitle">{{appointments.END_TIME}}</td>
+          <td class="subtitle"><button mat-raised-button class = "my-theme-alt-button">Select</button></td>
+        </tr>
+      </tbody> -->
+      <tr style="border-radius: 20%;" *ngFor="let appointments of listOFAppointments; let i = index;"
+        (click)="takeActFor('confirm', appointments)">
+        <td>
+          <div class="row">
+            <div class="columnleft">
+              <h1 class="title">Meeting Person - <span class="subtitle">{{appointments.host_name}}</span></h1>
+              <h1 class="title" *ngIf="appointments.purposeDesc" >Purpose - <span class="subtitle">{{appointments.purposeDesc}}</span></h1>
+              <h1 class="title" *ngIf="appointments.MeetingLoc" >Meeting Location - <span class="subtitle">{{appointments.MeetingLoc}}</span></h1>
+              <h1 class="title">Start time     - <span class="subtitle">{{appointments.START_TIME}}</span></h1>
+              <h1 class="title">End time       - <span class="subtitle">{{appointments.END_TIME}}</span></h1>
+            </div>
+            <div class="columnright">
+              <button mat-raised-button class = "my-theme-alt-button">Select</button>
+            </div>
+          </div>
+          
+          <!-- <div>
+              <h1 class="title" ><img src="assets/images/cus_icons/host.png" style="width: 30px;
+                height: 30px;
+                margin: 0 auto;
+                " alt="">Meeting Person - {{appointments.host_name}}</h1>
+                
+            <p class="desc">{{appointments.purposeDesc}}</p>
+            <p class="datetim">START TIME - {{appointments.START_TIME}}</p>
+            <p class="datetim">END TIME - {{appointments.END_TIME}}</p>
+            
+          </div> -->
+          
+        </td>
+      </tr>
+    </table>
+    <div info-title *ngIf="listOFAppointments.length <= 0"> No appointments found </div>
+  </div>
 </div>
 <div my-footer-toolbar>
   <button mat-icon-button my-theme-round-button (click)="takeActFor('back', '')" style="float: left;">
@@ -21,4 +65,4 @@
   </button>
 
 
-  </div>
+</div>

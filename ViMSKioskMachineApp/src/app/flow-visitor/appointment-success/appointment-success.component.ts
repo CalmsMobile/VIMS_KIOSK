@@ -963,7 +963,8 @@ console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
         "Terms5":poReturnData[0]['Terms5'] || "",
         "Message1":poReturnData[0]['Message1'] || "",
         "Message2":poReturnData[0]['Message2'] || "",
-        "PrintField":  poReturnVal || ""
+        "PrintField":  poReturnVal || "",
+        "MeetingLoc":poReturnData[0]['MeetingLoc'] ||""
       }
       let uploadArray = {
         psJSON: JSON.stringify(preparePrintData),
@@ -978,7 +979,7 @@ console.log("ReceiptPrintEnable " +this.ReceiptPrintEnable );
           printerName:this.KIOSK_PROPERTIES['modules']['printer']['printer_receipt_name'],
         }
       }
-      //console.log(uploadArray);
+      console.log(JSON.stringify(uploadArray));
       this.apiServices.PrintVisitorReceipt(uploadArray)
       .subscribe((data:any) => {
           this.GVisitorPass = "";

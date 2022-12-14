@@ -1,7 +1,14 @@
 .title {
+  margin: 10px;
+  font-size: 26px;
+  font-style: bold;
+  text-align: left;
+  color: rgb(255, 255, 255) !important;
+}
+.subtitle {
   margin: 0px;
-  padding: 0px;
-  font-size: 36px;
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.849);
 }
 .desc {
   margin: 0px;
@@ -15,3 +22,62 @@
   font-size: 20px;
   font-weight: bold;
 }
+.bg-div{
+  align-self: center;
+  overflow: auto;
+  width: 70vw;
+  margin:auto;
+}
+.columnleft {
+  float: left;
+  width: 70%;
+}
+.columnright {
+  float: right;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.my-theme-alt-button {
+  background: whitesmoke;
+  //etter-spacing: 1px;
+  min-height: 4vh;
+  color: theme-colors();
+  font-size: 2.2vh;
+  //padding: 0px 5vw !important;
+  border-radius: 6vh !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.4);
+  // box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),
+  //  0 2px 2px 0 rgba(0,0,0,.14),
+  //  0 1px 5px 0 rgba(0,0,0,.12),
+  //  0px 0px 0px 7px theme-colors('blendModes','primary_whitener'),
+  //  0px 0px 0px 12px whitesmoke !important;
+}
+th {
+  padding: 10px 20px;
+  background: rgb(224, 224, 224);
+}
+/* .my-appointment-table {
+  width: auto;
+  text-align: left;
+  font-size: 2.8vw;
+  color: rgb(8, 8, 8);
+  background-color: white;
+  tr:nth-child(odd) {
+    background: rgb(255, 255, 255);
+  }
+  tr:nth-child(even) {
+    background: gray;
+  }
+  tr td:nth-child(odd) {
+    font-weight: 500;
+    color: whitesmoke;
+  }
+  td {
+    border: solid 1px;
+    padding: 10px 20px;
+  }
+} */

@@ -34,13 +34,13 @@
             value="BUSINESS" (click)="regTypeChangeEvent($event)">
             {{mainModule === 'vcheckin' ? KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card_label: KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card_label}}
           </mat-radio-button>
-          <mat-radio-button my-reg-option-radio sp-button-violet-out
+          <!-- <mat-radio-button my-reg-option-radio sp-button-violet-out
           *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor && mainModule != 'vcheckinapproval'"
             matRipple matRippleColor="rgba(255,255,255,0.1)"
             value="PREAPPOINTMT" (click)="regTypeChangeEvent($event)">
             <div [ngStyle]="{'font-weight': KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_lbl_bold? 'bold': '400' ,
             'text-transform': KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_lbl_capital? 'uppercase': 'capitalize'}">{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label}}</div>
-          </mat-radio-button>
+          </mat-radio-button> -->
           <mat-radio-button my-reg-option-radio sp-button-yellow-out
           *ngIf="mainModule === 'vcheckin' ? KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual: KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual"
             matRipple matRippleColor="rgba(255,255,255,0.1)"

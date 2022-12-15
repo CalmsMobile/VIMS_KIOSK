@@ -33,8 +33,8 @@
         <mat-tab label="{{ 'Email' }}">
           <p sub-title>Please enter your <br>Email address</p>
         </mat-tab>
-        <mat-tab label="{{ 'Appointment ID' }}">
-          <p sub-title>Please enter your <br>Appointment ID</p>
+        <mat-tab label="{{ 'Appointment ID/QR Code' }}">
+          <p sub-title>Please enter<br>Appointment ID or scan QR Code</p>
         </mat-tab>
         
       </mat-tab-group>
@@ -54,7 +54,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big style="display: block;"
       *ngIf="selectedType == 'appint_id'">
-      <mat-label>Appointment ID</mat-label>
+      <mat-label>Appointment ID/QR Code</mat-label>
       <input matInput [(ngModel)]="APONTMNT_CODE" maxlength="10" (blur)="textDataBindTemp($event.target.value)"
         ng-virtual-keyboard ng-virtual-keyboard-layout="extended" ng-virtual-keyboard-placeholder="Appointment ID" #appint_id>
     </mat-form-field>

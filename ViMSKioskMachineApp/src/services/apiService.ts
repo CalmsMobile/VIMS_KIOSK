@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AppSettings} from './app.settings';
+import { AppSettings } from './app.settings';
 import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
 
@@ -16,92 +16,91 @@ const httpOptions = {
 };
 @Injectable()
 export class ApiServices {
-  constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp:Http) {
+  isTest = false;
+  constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp: Http) {
 
   }
-  public _getAPIURL():string {
+  public _getAPIURL(): string {
     let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
-    if(_scanData != undefined && _scanData != ""){
+    if (_scanData != undefined && _scanData != "") {
       _scanData = JSON.parse(_scanData);
-      if(_scanData['ApiUrl'] != undefined && _scanData['ApiUrl'] != "" ){
+      if (_scanData['ApiUrl'] != undefined && _scanData['ApiUrl'] != "") {
         return _scanData['ApiUrl'];
-      } else{
+      } else {
         return AppSettings['APP_API_SETUP']['api_url'];
       }
-    } else{
+    } else {
       return AppSettings['APP_API_SETUP']['api_url'];
     }
   }
-  public _postMethodAuth(data:any):any{
+  public _postMethodAuth(data: any): any {
     let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
     _scanData = JSON.parse(_scanData);
     let MAC_ID = localStorage.getItem("MY_MAC_ID");
     let branch = localStorage.getItem(AppSettings.LOCAL_STORAGE.BRANCH_ID);
 
-    data["Branch"]= branch,
-    data["Authorize"] = {
-      "AuMAppDevSeqId":_scanData['MAppSeqId'],
-      "AuDeviceUID":MAC_ID ? MAC_ID: 'WEB',
-      "Branch": branch,
-      "RefBranchSeqId": branch
-    }
+    data["Branch"] = branch,
+      data["Authorize"] = {
+        "AuMAppDevSeqId": _scanData['MAppSeqId'],
+        "AuDeviceUID": MAC_ID ? MAC_ID : 'WEB',
+        "Branch": branch,
+        "RefBranchSeqId": branch
+      }
     return data;
   }
 
-  public _postMethodAuthNew(data:any, branchID):any{
+  public _postMethodAuthNew(data: any, branchID): any {
     let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
     _scanData = JSON.parse(_scanData);
     let MAC_ID = localStorage.getItem("MY_MAC_ID");
     let branch = localStorage.getItem(AppSettings.LOCAL_STORAGE.BRANCH_ID);
 
-    data["Branch"]= branchID ? branchID: branch,
-    data["Authorize"] = {
-      "AuMAppDevSeqId":_scanData['MAppSeqId'],
-      "AuDeviceUID":MAC_ID ? MAC_ID: 'WEB',
-      "Branch": branchID ? branchID: branch,
-      "RefBranchSeqId": branchID ? branchID: branch,
-    }
+    data["Branch"] = branchID ? branchID : branch,
+      data["Authorize"] = {
+        "AuMAppDevSeqId": _scanData['MAppSeqId'],
+        "AuDeviceUID": MAC_ID ? MAC_ID : 'WEB',
+        "Branch": branchID ? branchID : branch,
+        "RefBranchSeqId": branchID ? branchID : branch,
+      }
     return data;
   }
 
-  getMethod(serviceName:string, postData:any)
-  {
+  getMethod(serviceName: string, postData: any) {
     console.log("Inside get method");
+    if (this.isTest)
+      var URL = this._getAPIURL();
+    else
+      var URL = "http://localhost/Portal/api/kiosk/";
 
-   let URL = "http://localhost/Portal/api/kiosk/";
-    //let URL = this._getAPIURL();
-
-    console.log("URL",URL);
-    console.log("serviceName",serviceName);
+    console.log("URL", URL);
+    console.log("serviceName", serviceName);
 
     if (postData) {
-      postData =  this._postMethodAuth(postData);
+      postData = this._postMethodAuth(postData);
     }
 
-    return this.http.get(URL +serviceName , postData );
+    return this.http.get(URL + serviceName, postData);
   }
-  localPostMethod(serviceName:string, postData:any)
-  {
+  localPostMethod(serviceName: string, postData: any) {
     let URL = this._getAPIURL();
-    postData =  this._postMethodAuth(postData);
-    console.log("API URL: "+this._getAPIURL());
-    console.log("API:"+ serviceName + "----> Post Data: " + JSON.stringify(postData));
-    return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions );
+    postData = this._postMethodAuth(postData);
+    console.log("API URL: " + this._getAPIURL());
+    console.log("API:" + serviceName + "----> Post Data: " + JSON.stringify(postData));
+    return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions);
   }
 
-  localPostMethodNew(serviceName:string, postData:any, branchID)
-  {
+  localPostMethodNew(serviceName: string, postData: any, branchID) {
     let URL = this._getAPIURL();
-    postData =  this._postMethodAuthNew(postData, branchID);
-    console.log("API:"+ serviceName + "----> Post Data: " + JSON.stringify(postData));
-    return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions );
+    postData = this._postMethodAuthNew(postData, branchID);
+    console.log("API:" + serviceName + "----> Post Data: " + JSON.stringify(postData));
+    return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions);
   }
 
-  localGetMethod(serviceName:string, appendURL:string )
-  {
+  localGetMethod(serviceName: string, appendURL: string) {
+    if(this.isTest)
+    var URL = this._getAPIURL();
+    else
     var URL = "http://localhost/Portal/";
-    //let URL = this._getAPIURL();
-
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
     // _scanData = JSON.parse(_scanData);
@@ -116,13 +115,14 @@ export class ApiServices {
     //   "AuMAppDevSeqId":_scanData['MAppSeqId'],
     //   "AuDeviceUID":MAC_ID
     // });
-    console.log("API:"+ URL + AppSettings['APP_SERVICES'][serviceName] + appendURL);
+    console.log("API:" + URL + AppSettings['APP_SERVICES'][serviceName] + appendURL);
     return this.http.get(URL + AppSettings['APP_SERVICES'][serviceName] + appendURL);
   }
-  getApiDeviceConnectionRequest(service:string)
-  {
+  getApiDeviceConnectionRequest(service: string) {
+    if(this.isTest)
+    var URL = this._getAPIURL();
+    else
     var URL = "http://localhost/Portal/";
-    //let URL = this._getAPIURL();
     console.log(URL + service);
     return this.http.get(URL + service);
   }
@@ -143,88 +143,88 @@ export class ApiServices {
   //   return this.myhttp.post(URL + AppSettings['APP_SERVICES']['getVisitorInfo'], data, option );
   // }
 
-  getStaffInfo(data:any)
-  {
+  getStaffInfo(data: any) {
     let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffInfo'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffInfo'], data, httpOptions);
   }
-  getStaffTemperature(data:any)
-  {
+  getStaffTemperature(data: any) {
+    if(this.isTest)
+    var URL = this._getAPIURL();
+    else
     var URL = "http://localhost/Portal/";
-   //let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions);
   }
-  SaveStaffTemperature(data:any)
-  {
+  SaveStaffTemperature(data: any) {
     let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['SaveStaffTemperature'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['SaveStaffTemperature'], data, httpOptions);
   }
 
-  getVisitorInfo(data:any)
-  {
+  getVisitorInfo(data: any) {
     let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['getVisitorInfo'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['getVisitorInfo'], data, httpOptions);
   }
-  visitorIndividualCheckIn(data:any)
-  {
+  visitorIndividualCheckIn(data: any) {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    if (setngs != undefined && setngs != "") {
       const KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       data.QRCodeField = KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'];
     }
     let URL = this._getAPIURL();
     data.CurrentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['visitorIndividualCheckIn'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['visitorIndividualCheckIn'], data, httpOptions);
   }
-  visitorCheckOut(data:any){
+  visitorCheckOut(data: any) {
     let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions);
   }
-  PrintVisitorLabel(data:any){
+  PrintVisitorLabel(data: any) {
+    if(this.isTest)
+    var URL = this._getAPIURL();
+    else
     var URL = "http://localhost/Portal/";
-   //let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions);
   }
-  PrintVisitorReceipt(data:any){
+  PrintVisitorReceipt(data: any) {
+    if(this.isTest)
+    var URL = this._getAPIURL();
+    else
     var URL = "http://localhost/Portal/";
-  //let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions);
   }
-  getPrintTemplateData(data:any){
+  getPrintTemplateData(data: any) {
     let URL = this._getAPIURL();
-    data =  this._postMethodAuth(data);
-    return this.http.post(URL + AppSettings['APP_SERVICES']['getTemplateData'], data, httpOptions );
+    data = this._postMethodAuth(data);
+    return this.http.post(URL + AppSettings['APP_SERVICES']['getTemplateData'], data, httpOptions);
   }
 
-  getTermsAndConditions(){
+  getTermsAndConditions() {
     const htmlHeader = {
       headers: new HttpHeaders({
-        'Content-Type':  'text/plain',
+        'Content-Type': 'text/plain',
         //'Authorization': 'my-auth-token'
       })
     };
     return this.http.get("../assets/tandc.html", htmlHeader);
   }
-  getKioskBalance(request)
-  {
+  getKioskBalance(request) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', request.api, true);
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
-            request.calBack(true, xmlhttp.responseText);
-        } else{
+          request.calBack(true, xmlhttp.responseText);
+        } else {
           request.calBack(false);
         }
-      } else{
+      } else {
         request.calBack(false);
       }
     }
@@ -234,7 +234,7 @@ export class ApiServices {
   }
 
   getConfigFile() {
-    return  this.http.get('assets/config.txt?time='+ new Date().getTime(), { responseType: 'text' });
+    return this.http.get('assets/config.txt?time=' + new Date().getTime(), { responseType: 'text' });
   }
 
   // getVisitorInfo(request:any)

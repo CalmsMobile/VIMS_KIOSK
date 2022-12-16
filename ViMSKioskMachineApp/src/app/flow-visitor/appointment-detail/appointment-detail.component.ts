@@ -309,8 +309,7 @@ export class AppointmentDetailComponent implements OnInit {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         const categroyList = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
-        if(categroyList.length == 1)
-        {
+        if (categroyList.length == 1) {
           debugger
           this.aptmDetails.category = categroyList[0].visitor_ctg_desc;
           this.aptmDetails.categoryId = categroyList[0].visitor_ctg_id;
@@ -1185,7 +1184,7 @@ export class AppointmentDetailComponent implements OnInit {
       data: {
         data: this.KIOSK_PROPERTIES,
         showMultiBranch: this.showMultiBranch,
-        branchID:this.aptmDetails.branchID
+        branchID: this.aptmDetails.branchID
       }
     });
     host.afterDismissed().subscribe(result => {
@@ -1208,7 +1207,6 @@ export class AppointmentDetailComponent implements OnInit {
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
         const result = JSON.parse(data[0]["Data"]);
         this.hostListCount = result.length;
-
         if (this.hostListCount === 1) {
           this.aptmDetails.hostDetails.id = result[0]['HOSTIC'];
           this.aptmDetails.hostDetails.name = result[0]['HOSTNAME'];
@@ -1218,6 +1216,15 @@ export class AppointmentDetailComponent implements OnInit {
           this.aptmDetails.hostDetails.HostDeptId = result[0]['DEPARTMENT_REFID'];
           console.log(this.aptmDetails.hostDetails.id);
         }
+        else {
+          this.aptmDetails.hostDetails.id = "";
+          this.aptmDetails.hostDetails.name = "";
+          this.aptmDetails.hostDetails.company = "";
+          this.aptmDetails.hostDetails.contact = "";
+          this.aptmDetails.hostDetails.email = "";
+          this.aptmDetails.hostDetails.HostDeptId = "";
+        }
+
         console.log("--- List Of Host Updated");
       }
     },
@@ -1285,9 +1292,9 @@ export class AppointmentDetailComponent implements OnInit {
         console.log("--- Purpose of Visit Updated");
         if (this.aptmDetails.purpose) {
           const purposeList = JSON.parse(data[0]["Data"]);
-          if(purposeList.length == 1){
+          if (purposeList.length == 1) {
             this.aptmDetails.purpose = purposeList[0].visitpurpose_desc;
-              this.aptmDetails.purposeId = purposeList[0].visitpurpose_id;
+            this.aptmDetails.purposeId = purposeList[0].visitpurpose_id;
           }
           for (var i = 0; i <= purposeList.length - 1; i++) {
             if (purposeList[i].visitpurpose_id === this.aptmDetails.purpose || purposeList[i].visitpurpose_desc === this.aptmDetails.purpose) {
@@ -1740,7 +1747,7 @@ export class BottomSheetHostSelect {
         //this.host_list = this.host_listClone;
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
         //{"HOSTNAME":"awang","SEQID":225,"COMPANY_REFID":"1","DEPARTMENT_REFID":"","HOSTIC":"awang","HostExt":"","HostFloor":"","HostCardSerialNo":"","HOST_ID":"awang","HOST_EMAIL":"","EMAIL_ALERT":true,"AD_ACTIVE_USER_STATUS":true,"dept_id":null,"dept_desc":null}
-        console.log("--- List Of Host Updated " +JSON.stringify(data[0]["Data"]));
+        console.log("--- List Of Host Updated " + JSON.stringify(data[0]["Data"]));
       }
     },
       err => {
@@ -1749,14 +1756,14 @@ export class BottomSheetHostSelect {
       });
   }
   _getAllHostListNew(branchID) {
-    this.apiServices.localPostMethodNew('getHostName', {},branchID).subscribe((data: any) => {
+    this.apiServices.localPostMethodNew('getHostName', {}, branchID).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         // this.host_list = JSON.parse(data[0]["Data"]);
         this.host_listClone = JSON.parse(data[0]["Data"]);
         this.host_list = this.host_listClone;
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
         //{"HOSTNAME":"awang","SEQID":225,"COMPANY_REFID":"1","DEPARTMENT_REFID":"","HOSTIC":"awang","HostExt":"","HostFloor":"","HostCardSerialNo":"","HOST_ID":"awang","HOST_EMAIL":"","EMAIL_ALERT":true,"AD_ACTIVE_USER_STATUS":true,"dept_id":null,"dept_desc":null}
-        console.log("--- List Of Host Updated multibranch " +JSON.stringify(data[0]["Data"]));
+        console.log("--- List Of Host Updated multibranch " + JSON.stringify(data[0]["Data"]));
       }
     },
       err => {

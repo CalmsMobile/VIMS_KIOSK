@@ -55,13 +55,13 @@ export class ApiServices {
     let MAC_ID = localStorage.getItem("MY_MAC_ID");
     let branch = localStorage.getItem(AppSettings.LOCAL_STORAGE.BRANCH_ID);
 
-    data["Branch"] = branchID ? branchID : branch,
+    data["Branch"] = branch,
       data["Authorize"] = {
         "AuMAppDevSeqId": _scanData['MAppSeqId'],
         "AuDeviceUID": MAC_ID ? MAC_ID : 'WEB',
-        "Branch": branchID ? branchID : branch,
-        "RefBranchSeqId": branchID ? branchID : branch,
-      }
+        "Branch":branch,
+      },
+      data["RefBranchSeqId"] = branchID 
     return data;
   }
 

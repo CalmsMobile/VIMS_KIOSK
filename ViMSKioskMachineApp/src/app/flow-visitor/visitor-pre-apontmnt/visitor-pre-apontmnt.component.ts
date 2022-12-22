@@ -19,6 +19,8 @@ export class VisitorPreApontmntComponent implements OnInit {
   APONTMNT_EMAIL: any = "";
   selectedType = 'contact';
   purposes = [];
+  qrScanAppointmentId = true;
+  KIOSK_PROPERTIES_LOCAL: any = {};
   @ViewChild("contact") contact: ElementRef;
   @ViewChild('email') email: ElementRef;
   @ViewChild('appint_id') appint_id: ElementRef;
@@ -58,6 +60,11 @@ export class VisitorPreApontmntComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem('_PURPOSE_OF_VISIT') != undefined && localStorage.getItem('_PURPOSE_OF_VISIT') != '') {
       this.purposes = JSON.parse(localStorage.getItem('_PURPOSE_OF_VISIT'));
+    }
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+    if(this.KIOSK_PROPERTIES_LOCAL!= undefined){
+      this.qrScanAppointmentId = this.KIOSK_PROPERTIES_LOCAL.qrScanAppointmentId;
     }
     this._getAllPurposeOfVisit();
     this.route

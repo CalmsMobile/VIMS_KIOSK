@@ -2,5 +2,6 @@
 	"supportMultiBranch": true,
   "multiBrnachLable": "Host Company",
   "alertApproveMessage": "Your registration is pending approval. Please proceed to the reception counter.",
-  "buttonsRoundBorder":false
+  "buttonsRoundBorder":false,
+  "qrScanAppointmentId":true
 }

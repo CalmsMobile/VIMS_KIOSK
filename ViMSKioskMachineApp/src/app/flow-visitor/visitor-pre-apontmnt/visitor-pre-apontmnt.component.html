@@ -74,7 +74,7 @@
   </div>
 </div>
 <div my-footer-toolbar>
-  <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
+  <button *ngIf="this.isBackButtonVisible" mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left;">
     <i class="siva-icon-left-big"></i>
   </button>
 

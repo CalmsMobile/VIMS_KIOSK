@@ -1744,7 +1744,7 @@ export class BottomSheetHostSelect {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         // this.host_list = JSON.parse(data[0]["Data"]);
         this.host_listClone = JSON.parse(data[0]["Data"]);
-        //this.host_list = this.host_listClone;
+        this.host_list = this.host_listClone;
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
         //{"HOSTNAME":"awang","SEQID":225,"COMPANY_REFID":"1","DEPARTMENT_REFID":"","HOSTIC":"awang","HostExt":"","HostFloor":"","HostCardSerialNo":"","HOST_ID":"awang","HOST_EMAIL":"","EMAIL_ALERT":true,"AD_ACTIVE_USER_STATUS":true,"dept_id":null,"dept_desc":null}
         console.log("--- List Of Host Updated " + JSON.stringify(data[0]["Data"]));

@@ -21,6 +21,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   purposes = [];
   qrScanAppointmentId = true;
   KIOSK_PROPERTIES_LOCAL: any = {};
+  isBackButtonVisible = false;
   @ViewChild("contact") contact: ElementRef;
   @ViewChild('email') email: ElementRef;
   @ViewChild('appint_id') appint_id: ElementRef;
@@ -125,7 +126,7 @@ export class VisitorPreApontmntComponent implements OnInit {
         this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
         this.router.navigateByUrl('/landing');
       } else {
-        this.router.navigateByUrl('/visitorRegisType');
+        this.router.navigateByUrl('/landing');
       }
     } else if (action === "home") {
       this.router.navigateByUrl('/landing')

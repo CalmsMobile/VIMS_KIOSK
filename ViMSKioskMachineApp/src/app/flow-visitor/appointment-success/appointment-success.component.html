@@ -20,10 +20,16 @@
       <img [src]="DisplayImageHandlerURL" style='width:500px;height:500px;    margin: 0 auto;' *ngIf="EnableAcsQrCode && DisplayImageHandlerURL">
       <button style="margin: 0 auto;
       margin-top: 25px;
-      margin-bottom: 25px;"mat-raised-button my-theme-button *ngIf="LabelPrintEnable || ReceiptPrintEnable" (click)="triggerLabelPrint()">
+      margin-bottom: 25px;"mat-raised-button my-theme-button *ngIf="(LabelPrintEnable || ReceiptPrintEnable) && LabelPrintManualOrAuto == 20" (click)="triggerLabelPrint()">
         <!-- <i class="material-icons icon-image-preview">print</i> -->
         Print
     </button>
+    <!-- <button style="margin: 0 auto;
+    margin-top: 25px;
+    margin-bottom: 25px;"mat-raised-button my-theme-button *ngIf="LabelPrintEnable || ReceiptPrintEnable" (click)="triggerLabelPrint()">
+      
+      Print
+  </button> -->
    <!--  <button style="margin: 0 auto;
       margin-top: 25px;
       margin-bottom: 25px;" mat-icon-button my-theme-round-button  (click)="triggerLabelPrint()">

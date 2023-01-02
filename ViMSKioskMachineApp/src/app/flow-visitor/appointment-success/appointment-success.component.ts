@@ -24,6 +24,7 @@ export class AppointmentSuccessComponent implements OnInit {
   RESULT_MSG2 = "";
   RESULT_MSG3 = "";
   AVAL_VISITORS: any = [];
+  KIOSK_PROPERTIES_LOCAL: any = {};
   mainModule = '';
   CURRENT_VISTOR_CHCKIN_DATA_FOR_PRINT: any;
   EnableAcsQrCode: any = false;
@@ -36,6 +37,7 @@ export class AppointmentSuccessComponent implements OnInit {
   LabelPrintEnable: any = false;
   ReceiptPrintEnable: any = false;
   LabelPrintManualOrAuto: any = 10;
+  proceedToPrint = false;
   @ViewChild('cardSerInput') cardSerInput: ElementRef;
 
   constructor(private route: ActivatedRoute,
@@ -165,6 +167,9 @@ export class AppointmentSuccessComponent implements OnInit {
   }
   processNexttoSuccess() {
     this.qrcodeProcessed = true;
+    if(this.proceedToPrint){
+      this.triggerLabelPrint();
+    }
     let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
     _timeout = parseInt(_timeout) * 1000;
     setTimeout(() => {
@@ -266,9 +271,14 @@ export class AppointmentSuccessComponent implements OnInit {
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
     }
+    this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+      if (this.KIOSK_PROPERTIES_LOCAL) {
+        this.proceedToPrint = this.KIOSK_PROPERTIES_LOCAL.proceedToPrint;
+      }
   }
 
   callApitoSaveAppointment(appointment1) {
@@ -536,10 +546,10 @@ export class AppointmentSuccessComponent implements OnInit {
               this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
               this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
               if (visitorData.length > 0) {
-                if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+                if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
                   this.loadlblprint(visitorData, (pri_status: boolean) => { });
                 }
-                if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
+                if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
                   this.loadreceiptprint(visitorData);
                 }
                 _nextElemcallBack(true);
@@ -640,11 +650,11 @@ export class AppointmentSuccessComponent implements OnInit {
 
         if (status['s'] === true) {
           if (visitorData.length > 0) {
-            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
 
               this.loadlblprint(visitorData, (pri_status: boolean) => { });
             }
-            if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
+            if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
 
               this.loadreceiptprint(visitorData);
             }
@@ -707,6 +717,7 @@ export class AppointmentSuccessComponent implements OnInit {
   // --------------- Print Label -------------------
   /*Load Dynamic Template Start*/
   loadlblprint(poReturnData, _callback: any) {
+    debugger
     var postData = {}, poReturnVal = "";
     this.apiServices.getPrintTemplateData(postData).subscribe((data: any) => {
       //console.log(data);
@@ -898,7 +909,7 @@ export class AppointmentSuccessComponent implements OnInit {
     return (psCase == "L" ? lsReturn.toLowerCase() : (psCase == "U" ? lsReturn.toUpperCase() : lsReturn));
   }
   loadreceiptprint(poReturnData) {
-
+debugger
     if (poReturnData.length > 0) {
       //Required Print Data
       //{"CompanyName":"","Address1":"","Address2":"","Address3":"","CompanyMobile":"","SlipTitle":"","SlipSubTitle_1":"VISITOR DETAILS","SlipSubTitle_2":"CHECK-IN DETAILS","SlipSubTitle_3":"HOST DETAILS","VisitorName":"","VisitorIC":"","VisitorCompany":"","VisitorCategory":"","VisitorContact":"","VisitorVehicle":"","HostPurpose":"","CheckInTime":"","PermittedTime":"","PassNo":"","CheckINLocation":"","CheckINBy":"","NoOfPersons":"","HostName":"","HostCompany":"","HostDepartment":"","Floor":"","PrintType":"OR","Terms1":"","Terms2":"","Terms3":"","Terms4":"","Terms5":"","Message1":"","Message2":"","PrintField":""}

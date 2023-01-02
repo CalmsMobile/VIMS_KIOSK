@@ -1653,6 +1653,7 @@ export class BottomSheetCountrySelect {
 })
 export class BottomSheetGenderSelect {
   vis_gender: any;
+  searchHostOption:false;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetGenderSelect>,
     private apiServices: ApiServices) {
     this.vis_gender = [{ name: "Male", code: "1" }, { name: "Female", code: "0" }, { name: "Other", code: "2" }];
@@ -1667,7 +1668,7 @@ export class BottomSheetGenderSelect {
 @Component({
   selector: 'bottom-sheet-host-select',
   template: `
-           <!--  <div>
+            <div *ngIf="this.searchHostOption">
               
               <mat-form-field style="width: -webkit-fill-available;" appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)" theme-border-input-small app-detail-grid-input>
@@ -1680,7 +1681,7 @@ export class BottomSheetGenderSelect {
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="'Search ' + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption">
         </mat-form-field>
-            </div> -->
+            </div>
             <mat-nav-list>
               <mat-list-item style="height: 4.5vw;border-bottom: 1px solid rgba(0,0,0,0.07);color: #3e5763;"
               *ngFor="let host of host_list" (click)="selectThisItem($event,host)">
@@ -1693,12 +1694,19 @@ export class BottomSheetHostSelect {
   host_listClone: any;
   searchText: string = '';
   KIOSK_PROPERTIES: any;
+  KIOSK_PROPERTIES_LOCAL: any = {};
+  searchHostOption:false;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetHostSelect>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private apiServices: ApiServices) {
     this.KIOSK_PROPERTIES = data.data;
     this.host_list = [];
     this.host_listClone = [];
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+      if (this.KIOSK_PROPERTIES_LOCAL) {
+        this.searchHostOption = this.KIOSK_PROPERTIES_LOCAL.searchHostOption;
+      }
     if (data.showMultiBranch) {
       this._getAllHostListNew(data.branchID);
     } else {

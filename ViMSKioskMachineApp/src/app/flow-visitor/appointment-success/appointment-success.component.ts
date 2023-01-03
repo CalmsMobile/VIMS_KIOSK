@@ -24,7 +24,6 @@ export class AppointmentSuccessComponent implements OnInit {
   RESULT_MSG2 = "";
   RESULT_MSG3 = "";
   AVAL_VISITORS: any = [];
-  KIOSK_PROPERTIES_LOCAL: any = {};
   mainModule = '';
   CURRENT_VISTOR_CHCKIN_DATA_FOR_PRINT: any;
   EnableAcsQrCode: any = false;
@@ -37,7 +36,6 @@ export class AppointmentSuccessComponent implements OnInit {
   LabelPrintEnable: any = false;
   ReceiptPrintEnable: any = false;
   LabelPrintManualOrAuto: any = 10;
-  proceedToPrint = false;
   @ViewChild('cardSerInput') cardSerInput: ElementRef;
 
   constructor(private route: ActivatedRoute,
@@ -167,9 +165,6 @@ export class AppointmentSuccessComponent implements OnInit {
   }
   processNexttoSuccess() {
     this.qrcodeProcessed = true;
-    if(this.proceedToPrint){
-      this.triggerLabelPrint();
-    }
     let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
     _timeout = parseInt(_timeout) * 1000;
     setTimeout(() => {
@@ -271,14 +266,9 @@ export class AppointmentSuccessComponent implements OnInit {
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
     }
-    this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
-      if (this.KIOSK_PROPERTIES_LOCAL) {
-        this.proceedToPrint = this.KIOSK_PROPERTIES_LOCAL.proceedToPrint;
-      }
   }
 
   callApitoSaveAppointment(appointment1) {
@@ -546,10 +536,10 @@ export class AppointmentSuccessComponent implements OnInit {
               this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
               this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
               if (visitorData.length > 0) {
-                if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
+                if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
                   this.loadlblprint(visitorData, (pri_status: boolean) => { });
                 }
-                if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
+                if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
                   this.loadreceiptprint(visitorData);
                 }
                 _nextElemcallBack(true);
@@ -650,11 +640,11 @@ export class AppointmentSuccessComponent implements OnInit {
 
         if (status['s'] === true) {
           if (visitorData.length > 0) {
-            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
+            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10 ) {
 
               this.loadlblprint(visitorData, (pri_status: boolean) => { });
             }
-            if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10 && !this.proceedToPrint) {
+            if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
 
               this.loadreceiptprint(visitorData);
             }

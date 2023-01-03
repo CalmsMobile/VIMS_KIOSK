@@ -19,8 +19,8 @@ export class VisitorPreApontmntComponent implements OnInit {
   APONTMNT_EMAIL: any = "";
   selectedType = 'contact';
   purposes = [];
-  qrScanAppointmentId = true;
-  KIOSK_PROPERTIES_LOCAL: any = {};
+  qrScanAppointmentId = false;
+  //KIOSK_PROPERTIES_LOCAL: any = {};
   isBackButtonVisible = false;
   @ViewChild("contact") contact: ElementRef;
   @ViewChild('email') email: ElementRef;
@@ -62,11 +62,11 @@ export class VisitorPreApontmntComponent implements OnInit {
     if (localStorage.getItem('_PURPOSE_OF_VISIT') != undefined && localStorage.getItem('_PURPOSE_OF_VISIT') != '') {
       this.purposes = JSON.parse(localStorage.getItem('_PURPOSE_OF_VISIT'));
     }
-    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    /* let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
     if(this.KIOSK_PROPERTIES_LOCAL!= undefined){
       this.qrScanAppointmentId = this.KIOSK_PROPERTIES_LOCAL.qrScanAppointmentId;
-    }
+    } */
     this._getAllPurposeOfVisit();
     this.route
       .queryParams
@@ -85,6 +85,9 @@ export class VisitorPreApontmntComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      if(this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'] != undefined){
+        this.qrScanAppointmentId = this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'];
+      }
     }
   }
   takeActFor(action: string) {

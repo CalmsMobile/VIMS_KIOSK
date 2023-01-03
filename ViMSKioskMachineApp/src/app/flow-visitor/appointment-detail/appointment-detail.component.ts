@@ -1702,10 +1702,13 @@ export class BottomSheetHostSelect {
     this.KIOSK_PROPERTIES = data.data;
     this.host_list = [];
     this.host_listClone = [];
-    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    /* let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
       if (this.KIOSK_PROPERTIES_LOCAL) {
         this.searchHostOption = this.KIOSK_PROPERTIES_LOCAL.searchHostOption;
+      } */
+      if(this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'] != undefined){
+        this.searchHostOption = this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'];
       }
     if (data.showMultiBranch) {
       this._getAllHostListNew(data.branchID);

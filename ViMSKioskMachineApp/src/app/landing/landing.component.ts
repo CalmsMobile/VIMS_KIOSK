@@ -427,7 +427,7 @@ export class LandingComponent implements OnInit {
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
     let shadow = "0px 0px 0px 4px white";
-    if(this.KIOSK_PROPERTIES_LOCAL!= undefined && !this.KIOSK_PROPERTIES_LOCAL.buttonsRoundBorder){
+    if(this.KIOSK_PROPERTIES!= undefined && !this.KIOSK_PROPERTIES['modules']['Enable_Round_border_button']){
       this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] = "#6633ff00"
       shadow = "none"
     }

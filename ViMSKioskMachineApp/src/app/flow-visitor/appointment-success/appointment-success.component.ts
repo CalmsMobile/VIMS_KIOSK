@@ -75,6 +75,7 @@ export class AppointmentSuccessComponent implements OnInit {
       HostDepartment: "",
       HostFloor: "",
       CheckInLocation: "",
+      MeetingLoc: "",
       otherInfo: {
         isView: false,
         departname: "",
@@ -434,7 +435,8 @@ export class AppointmentSuccessComponent implements OnInit {
   }
   //-------------------- Hardware Services --------------------
   private chk_hardwares_to_finish(att_id: string, _visitorData: any, _nextElemcallBack: any) {
-
+    debugger
+    console.log(JSON.stringify(_visitorData));
     let _Modules = this.KIOSK_PROPERTIES['modules'];
     let _get_cardSerial_number = (_callback: any) => {
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data: any) => {
@@ -516,6 +518,7 @@ export class AppointmentSuccessComponent implements OnInit {
 
     }
     if (_Modules['card_dispenser']['enable'] && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
+      debugger
       _get_cardSerial_number((status: boolean, serial: string) => {
         if (status) {
           //Update Visitor Card Serial Number
@@ -535,6 +538,7 @@ export class AppointmentSuccessComponent implements OnInit {
               this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
               this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
               this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
+              this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
               if (visitorData.length > 0) {
                 if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
                   this.loadlblprint(visitorData, (pri_status: boolean) => { });
@@ -581,6 +585,7 @@ export class AppointmentSuccessComponent implements OnInit {
         }
       });
     } else if (_Modules['card_dispenser']['enable'] && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
+      debugger
       _get_cardSerial_number((status: boolean, serial: string) => {
         if (status) {
           //Update Visitor Card Serial Number
@@ -621,7 +626,7 @@ export class AppointmentSuccessComponent implements OnInit {
         }
       });
     } else if ((_Modules['printer']['enable'] || _Modules['printer']['recipt_enable']) && !_Modules['card_dispenser']['enable']) {
-
+      debugger
       this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
         // If Success Eject Visitor Card
         this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
@@ -637,10 +642,11 @@ export class AppointmentSuccessComponent implements OnInit {
         this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
         this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
         this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
+        this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
 
         if (status['s'] === true) {
           if (visitorData.length > 0) {
-            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10 ) {
+            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
 
               this.loadlblprint(visitorData, (pri_status: boolean) => { });
             }
@@ -771,7 +777,7 @@ export class AppointmentSuccessComponent implements OnInit {
           Data["Table"][0].LABLE9_VALUE = this.getFieldValue(Data["Table"][0].LABLE9_ASSIGNTO, Data["Table"][0].LABLE9_TEXT_MAX, '');
           Data["Table"][0].LABLE10_VALUE = this.getFieldValue(Data["Table"][0].LABLE10_ASSIGNTO, Data["Table"][0].LABLE10_TEXT_MAX, '');
 
-          //console.log(Data["Table"][0]);
+          console.log(Data["Table"][0]);
           let uploadArray = {
             psJSON: JSON.stringify(Data["Table"][0]),
             appSettings: {
@@ -889,6 +895,9 @@ export class AppointmentSuccessComponent implements OnInit {
       case "CheckInLocation":
         lsReturn = (this.GScopeValue.infoData.CheckInLocation).toString().trim().substring(0, psLength);
         break;
+      case "MeetingLocation":
+        lsReturn = (this.GScopeValue.infoData.MeetingLoc).toString().trim().substring(0, psLength);
+        break;
       case "ProjectLink":
         lsReturn = "GProURL";
         break;
@@ -899,7 +908,7 @@ export class AppointmentSuccessComponent implements OnInit {
     return (psCase == "L" ? lsReturn.toLowerCase() : (psCase == "U" ? lsReturn.toUpperCase() : lsReturn));
   }
   loadreceiptprint(poReturnData) {
-debugger
+    debugger
     if (poReturnData.length > 0) {
       //Required Print Data
       //{"CompanyName":"","Address1":"","Address2":"","Address3":"","CompanyMobile":"","SlipTitle":"","SlipSubTitle_1":"VISITOR DETAILS","SlipSubTitle_2":"CHECK-IN DETAILS","SlipSubTitle_3":"HOST DETAILS","VisitorName":"","VisitorIC":"","VisitorCompany":"","VisitorCategory":"","VisitorContact":"","VisitorVehicle":"","HostPurpose":"","CheckInTime":"","PermittedTime":"","PassNo":"","CheckINLocation":"","CheckINBy":"","NoOfPersons":"","HostName":"","HostCompany":"","HostDepartment":"","Floor":"","PrintType":"OR","Terms1":"","Terms2":"","Terms3":"","Terms4":"","Terms5":"","Message1":"","Message2":"","PrintField":""}
@@ -977,7 +986,7 @@ debugger
         "Message1": poReturnData[0]['Message1'] || "",
         "Message2": poReturnData[0]['Message2'] || "",
         "PrintField": poReturnVal || "",
-        "MeetingLoc": poReturnData[0]['MeetingLoc'] || ""
+        "MeetingLoc": this.getFieldValue("MeetingLoc", 30, "L") || ""
       }
       let uploadArray = {
         psJSON: JSON.stringify(preparePrintData),

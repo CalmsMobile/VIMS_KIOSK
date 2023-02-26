@@ -57,7 +57,7 @@ export class RegistrationTypeComponent implements OnInit {
     this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD'
     || this.SEL_REGISTRATION_TYPE == 'BUSINESS'){
       let _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-
+      
       if(this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV'){
         _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
         this.apiServices.localGetMethod("setLEDON",

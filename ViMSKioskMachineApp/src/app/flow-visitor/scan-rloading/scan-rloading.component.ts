@@ -13,6 +13,7 @@ export class ScanRLoadingComponent implements OnInit {
 
   sub:any;
   docType:any = '';
+  websocket:any;
   constructor(private router:Router,
      private route: ActivatedRoute,
      public snackBar: MatSnackBar,
@@ -62,7 +63,11 @@ export class ScanRLoadingComponent implements OnInit {
     this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
   }
   getDeviceConnectionData(action:string){
-    let req = AppSettings['APP_SERVICES'][action];
+    if(AppSettings.APP_DEFAULT_SETTIGS.Passport_Scanner == "SINOSECURE"){
+    let loData=this.SinosecureGetPassportDetail();
+    }
+    else{
+      let req = AppSettings['APP_SERVICES'][action];
     this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data: any) => {
       if((action == "GetPassportDetail" || action == "getIdScanerData" ) && data.length > 0 ) {
         if(data[0].Status){
@@ -96,7 +101,69 @@ export class ScanRLoadingComponent implements OnInit {
       this.showErrorMsg();
       return false;
     });
+    }
     //{"PassportNo":"S8076606H","FullNameName":"ZHANG JINMING","State":"","City":"","Address":"","Country":"CHINESE","DocType":"3362","Gender":"Male","PostCode":"","IDImgByte":"R0
+  }
+  SinosecureGetPassportDetail(){
+    console.log("Sinosecure started..");
+        try{
+          const _this=this;
+          //const readyState = new Array("on connection", "Connection established", "Closing connection", "Close connection");
+          var host = AppSettings.APP_DEFAULT_SETTIGS.SinosecureWebsocketUrl;
+
+          this.websocket = new WebSocket(host);
+
+          this.websocket.onopen = function(){ 
+            console.log('Open state :'+ _this.websocket.readyState);
+          }
+          this.websocket.onmessage  = function(event:any){
+          var str = event.data;
+          var strsub = str;
+          if(strsub!="")
+          {
+            let strwhite = ""; 
+            let strhead="";
+            let strChipHead="";
+            str = strsub.replace(/\*/g,"\r\n");
+            let parseData = JSON.parse(str);
+            console.log("Receive notification 2:"+str);
+              if(typeof(parseData.Param["Passport number"])!="undefined"){
+                let userData = {
+                  "visName":parseData.Param["National name"],
+                  "visDOCID":parseData.Param["Passport number"],
+                  "visDocImage":null,
+                }
+                localStorage.setItem("VISI_SCAN_DOC_DATA",JSON.stringify(userData));
+                _this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: _this.docType }});
+              }
+              else if(typeof(parseData.Param["White"])=="undefined"){
+                _this.showErrorMsg();
+                _this.gotoRegistrationScreen();
+              }
+              /*var seek=str.split("data:image/jpeg;base64,"); 
+              var len = seek.length;
+              for(var i = 1; i<len ;i++)
+              {
+                var strType = seek[i][0] + seek[i][1];
+                seek[i] = seek[i].substr(2);
+                if(strType == "01")
+                strwhite ="data:image/jpeg;base64," + seek[i];
+                else if(strType == "08")
+                strhead ="data:image/jpeg;base64," + seek[i];
+                else if(strType == "16")
+                strChipHead ="data:image/jpeg;base64," + seek[i];
+              }*/
+          }
+
+          }
+          this.websocket.onclose　= function(){
+            console.log('close state'+ _this.websocket.readyState);
+          }
+    }
+    catch(exception){
+          console.log("Error");
+    }
+    return [];
   }
   getMyCardDetails(action:string){
     // let req = AppSettings['APP_SERVICES'][action];

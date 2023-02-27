@@ -126,11 +126,11 @@ export class ScanRLoadingComponent implements OnInit {
             let strChipHead="";
             str = strsub.replace(/\*/g,"\r\n");
             let parseData = JSON.parse(str);
-            console.log("Receive notification 2:"+str);
-              if(typeof(parseData.Param["Passport number"])!="undefined"){
+            //console.log("Receive notification 2:"+str);
+              if(typeof(parseData.Param["Passport number"])!="undefined" || typeof(parseData.Param["ID Number"])!="undefined"){
                 let userData = {
-                  "visName":parseData.Param["National name"],
-                  "visDOCID":parseData.Param["Passport number"],
+                  "visName":parseData.Param["National name"]?parseData.Param["National name"]:parseData.Param["Name"],
+                  "visDOCID":parseData.Param["Passport number"]?parseData.Param["Passport number"]:parseData.Param["ID Number"],
                   "visDocImage":null,
                 }
                 localStorage.setItem("VISI_SCAN_DOC_DATA",JSON.stringify(userData));

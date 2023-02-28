@@ -16,7 +16,7 @@ const httpOptions = {
 };
 @Injectable()
 export class ApiServices {
-  isTest = false;
+  isTest = true;
   constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp: Http) {
 
   }
@@ -61,7 +61,7 @@ export class ApiServices {
         "AuDeviceUID": MAC_ID ? MAC_ID : 'WEB',
         "Branch":branch,
       },
-      data["RefBranchSeqId"] = branchID 
+      data["RefBranchSeqId"] = branchID
     return data;
   }
 
@@ -97,9 +97,9 @@ export class ApiServices {
   }
 
   localGetMethod(serviceName: string, appendURL: string) {
-    if(this.isTest)
-    var URL = this._getAPIURL();
-    else
+    //if(this.isTest)
+    //var URL = this._getAPIURL();
+    //else
     var URL = "http://localhost/Portal/";
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");

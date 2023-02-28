@@ -300,8 +300,14 @@ console.log("KIOSK_PROPERTIES "+ JSON.stringify(_prepare));
           return false;
         });
       }
-    }
-  }
+    else{
+              _cardDStatus.close = {"ResponseStatus":"1","ResponseMessage":"API Call Result Problem"};
+            }
+            localStorage.setItem("CARD_D_STATUS",JSON.stringify(_cardDStatus));
+          }
+      }
+
+
   public _kiosk_Minus1AvailCard(_callBack:any){
     if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
     localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){

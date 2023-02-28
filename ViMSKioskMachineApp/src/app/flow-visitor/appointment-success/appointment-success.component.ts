@@ -100,10 +100,10 @@ export class AppointmentSuccessComponent implements OnInit {
     this.GScopeValue.getDate = function () {
       return getDateTime();
     }
-    // setInterval(()=>{
-    // if(this.cardSerInput != undefined)
-    //   this.cardSerInput.nativeElement.focus();
-    // },100);
+     setInterval(()=>{
+     if(this.cardSerInput != undefined)
+       this.cardSerInput.nativeElement.focus();
+     },100);
   }
   ngOnInit() {
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
@@ -438,6 +438,8 @@ export class AppointmentSuccessComponent implements OnInit {
     debugger
     console.log(JSON.stringify(_visitorData));
     let _Modules = this.KIOSK_PROPERTIES['modules'];
+    let IsCardDispenserNotAllowedCateg = (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser?(AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser).split(','):[]);
+    const IsCardDispenserNotAllowed = (IsCardDispenserNotAllowedCateg.indexOf(_visitorData.Category)>-1?true:false);
     let _get_cardSerial_number = (_callback: any) => {
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data: any) => {
         if (data.length > 0 && data[0]['Data'] != "") {
@@ -517,74 +519,199 @@ export class AppointmentSuccessComponent implements OnInit {
         });
 
     }
-    if (_Modules['card_dispenser']['enable'] && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
+    let _get_cardSerial_number_type1 = (_callback: any) => {
       debugger
-      _get_cardSerial_number((status: boolean, serial: string) => {
-        if (status) {
-          //Update Visitor Card Serial Number
-          this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
-            let _preparePrintLabel = (cardDProcessStatus: boolean) => {
-              this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
-              this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
-              this.GScopeValue.visitorInfo.Name = _visitorData.vis_name || "";
-              this.GScopeValue.infoData.VisitorCompany = _visitorData.vis_company || "";
-              this.GScopeValue.infoData.VisitorCategoryText = _visitorData.Category || "";
-              this.GScopeValue.infoData.Contact = _visitorData.vis_contact || "";
-              this.GScopeValue.infoData.Email = _visitorData.vis_email || "";
-              this.GScopeValue.infoData.HostNameText = _visitorData.host_name || "";
-              this.GScopeValue.infoData.HostCompany = _visitorData.host_company_name || "";
-              this.GScopeValue.infoData.HostDepartment = _visitorData.host_department_name || "";
-              this.GScopeValue.infoData.HostFloor = _visitorData.host_floor_name || "";
-              this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
-              this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
-              this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
-              this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
-              if (visitorData.length > 0) {
-                if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
-                  this.loadlblprint(visitorData, (pri_status: boolean) => { });
-                }
-                if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
-                  this.loadreceiptprint(visitorData);
-                }
-                _nextElemcallBack(true);
-                return;
-              } else {
-                _nextElemcallBack(false);
-                return;
-              }
-            }
-            // If Success Eject Visitor Card
-            if (status['s'] === true) {
-              this.apiServices.localGetMethod("SD_EjectCard", "").subscribe((data: any) => {
+      let _this=this;
+      let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+      let _cardDcom = JSON.parse(setngs)["kioskSetup"].modules['card_dispenser']['COM_Port'] || "";
+      this.apiServices.localGetMethod("CD_OpenPort",_cardDcom).subscribe((data: any) => {
+        debugger
+        if (data.length > 0 && data[0]['Data'] != "") {
+          let cardStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
+          if (cardStatus['ResponseStatus'] > 0) {
+            if (cardStatus["ResponseStatus"] > 0) {
+              this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
+                debugger
                 if (data.length > 0 && data[0]['Data'] != "") {
-                  let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
-                  if (cardEjectStatus['ResponseStatus'] == "0") {
-                    // If Eject Success Proceed Next Visitor attendance ID
-                    _preparePrintLabel(true);
+                  let cardMoveStatus = JSON.parse(data[0]['Data']);
+                  if (cardMoveStatus['ResponseStatus'] == "0") {
+                    setTimeout(function(){
+                      _callback(true,_this.cardSerInput.nativeElement.value);
+                    },5000);
                   } else {
-                    _preparePrintLabel(false);
+                    _callback(false, "0");
+                    return;
                   }
                 } else {
-                  _preparePrintLabel(false);
+                  _callback(false, "0");
+                  return;
                 }
               },
                 err => {
-                  _preparePrintLabel(false);
+                  _callback(false, "0");
+                  return false;
                 });
             }
-          });
-
+            else {
+              _callback(false, "0");
+              return;
+            }
+          } else {
+            _callback(false, "0");
+            return;
+          }
         } else {
-          const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-            data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
-            disableClose: true
-          });
-          dialogRef.afterClosed().subscribe((data) => {
-            this.router.navigate(['/landing']);
-          });
+          _callback(false, "0");
+          return;
         }
-      });
-    } else if (_Modules['card_dispenser']['enable'] && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
+      },
+        err => {
+          debugger
+          _callback(false, "0");
+          return false;
+        });
+
+    }
+    if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
+      debugger
+      if(_Modules['card_dispenser']['dispenser_type'] == 'TYPE1'){
+        _get_cardSerial_number_type1((status: boolean, serial: string) => {
+          debugger
+          if (status) {
+            //Update Visitor Card Serial Number
+            this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
+              let _preparePrintLabel = (cardDProcessStatus: boolean) => {
+                this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
+                this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
+                this.GScopeValue.visitorInfo.Name = _visitorData.vis_name || "";
+                this.GScopeValue.infoData.VisitorCompany = _visitorData.vis_company || "";
+                this.GScopeValue.infoData.VisitorCategoryText = _visitorData.Category || "";
+                this.GScopeValue.infoData.Contact = _visitorData.vis_contact || "";
+                this.GScopeValue.infoData.Email = _visitorData.vis_email || "";
+                this.GScopeValue.infoData.HostNameText = _visitorData.host_name || "";
+                this.GScopeValue.infoData.HostCompany = _visitorData.host_company_name || "";
+                this.GScopeValue.infoData.HostDepartment = _visitorData.host_department_name || "";
+                this.GScopeValue.infoData.HostFloor = _visitorData.host_floor_name || "";
+                this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
+                this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
+                this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
+                this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
+                if (visitorData.length > 0) {
+                  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+                    this.loadlblprint(visitorData, (pri_status: boolean) => { });
+                  }
+                  if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
+                    this.loadreceiptprint(visitorData);
+                  }
+                  _nextElemcallBack(true);
+                  return;
+                } else {
+                  _nextElemcallBack(false);
+                  return;
+                }
+              }
+              // If Success Eject Visitor Card
+              debugger
+              if (status['s'] === true) {
+                this.apiServices.localGetMethod("CD_DispenseCard", "").subscribe((data: any) => {
+                  if (data.length > 0 && data[0]['Data'] != "") {
+                    let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
+                    if (cardEjectStatus['ResponseStatus'] == "0") {
+                      // If Eject Success Proceed Next Visitor attendance ID
+                      _preparePrintLabel(true);
+                    } else {
+                      _preparePrintLabel(false);
+                    }
+                  } else {
+                    _preparePrintLabel(false);
+                  }
+                },
+                  err => {
+                    _preparePrintLabel(false);
+                  });
+              }
+            });
+
+          } else {
+            this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {},err => {});
+            const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+              data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
+              disableClose: true
+            });
+            dialogRef.afterClosed().subscribe((data) => {
+              this.router.navigate(['/landing']);
+            });
+          }
+        });
+      }else{
+        _get_cardSerial_number((status: boolean, serial: string) => {
+          if (status) {
+            //Update Visitor Card Serial Number
+            this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
+              let _preparePrintLabel = (cardDProcessStatus: boolean) => {
+                this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
+                this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
+                this.GScopeValue.visitorInfo.Name = _visitorData.vis_name || "";
+                this.GScopeValue.infoData.VisitorCompany = _visitorData.vis_company || "";
+                this.GScopeValue.infoData.VisitorCategoryText = _visitorData.Category || "";
+                this.GScopeValue.infoData.Contact = _visitorData.vis_contact || "";
+                this.GScopeValue.infoData.Email = _visitorData.vis_email || "";
+                this.GScopeValue.infoData.HostNameText = _visitorData.host_name || "";
+                this.GScopeValue.infoData.HostCompany = _visitorData.host_company_name || "";
+                this.GScopeValue.infoData.HostDepartment = _visitorData.host_department_name || "";
+                this.GScopeValue.infoData.HostFloor = _visitorData.host_floor_name || "";
+                this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
+                this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
+                this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
+                this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
+                if (visitorData.length > 0) {
+                  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+                    this.loadlblprint(visitorData, (pri_status: boolean) => { });
+                  }
+                  if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
+                    this.loadreceiptprint(visitorData);
+                  }
+                  _nextElemcallBack(true);
+                  return;
+                } else {
+                  _nextElemcallBack(false);
+                  return;
+                }
+              }
+              // If Success Eject Visitor Card
+              if (status['s'] === true) {
+                this.apiServices.localGetMethod("SD_EjectCard", "").subscribe((data: any) => {
+                  if (data.length > 0 && data[0]['Data'] != "") {
+                    let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
+                    if (cardEjectStatus['ResponseStatus'] == "0") {
+                      // If Eject Success Proceed Next Visitor attendance ID
+                      _preparePrintLabel(true);
+                    } else {
+                      _preparePrintLabel(false);
+                    }
+                  } else {
+                    _preparePrintLabel(false);
+                  }
+                },
+                  err => {
+                    _preparePrintLabel(false);
+                  });
+              }
+            });
+
+          } else {
+            const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+              data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
+              disableClose: true
+            });
+            dialogRef.afterClosed().subscribe((data) => {
+              this.router.navigate(['/landing']);
+            });
+          }
+        });
+      }
+
+    } else if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
       debugger
       _get_cardSerial_number((status: boolean, serial: string) => {
         if (status) {
@@ -625,7 +752,7 @@ export class AppointmentSuccessComponent implements OnInit {
           });
         }
       });
-    } else if ((_Modules['printer']['enable'] || _Modules['printer']['recipt_enable']) && !_Modules['card_dispenser']['enable']) {
+    } else if ((_Modules['printer']['enable'] || _Modules['printer']['recipt_enable']) && (!_Modules['card_dispenser']['enable'] || IsCardDispenserNotAllowed)) {
       debugger
       this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
         // If Success Eject Visitor Card
@@ -663,7 +790,7 @@ export class AppointmentSuccessComponent implements OnInit {
           _nextElemcallBack(false);
         }
       });
-    } else if (!_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable'] && !_Modules['card_dispenser']['enable']) {
+    } else if (!_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable'] && (!_Modules['card_dispenser']['enable'] || IsCardDispenserNotAllowed)) {
       this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
         if (status['s'] === true) {
           _nextElemcallBack(true);

@@ -11,7 +11,7 @@
       <div class='bullet'></div>
     </div>
     <mat-form-field class="example-full-width" style="opacity:0;">
-        <input #cardSerInput matInput (keydown.enter)="onKeydown($event)" placeholder="Card Serial Number" value="">
+        <input #cardSerInput matInput maxlength="10" (keydown.enter)="onKeydown($event)" placeholder="Card Serial Number" value="">
       </mat-form-field>
   </div>
   <div *ngIf="!isLoading">

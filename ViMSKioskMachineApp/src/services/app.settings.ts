@@ -13,7 +13,7 @@ export const AppSettings = Object.freeze({
         "card_showTimeOutMsgAfter":"30",
         "Passport_Scanner":"SINOSECURE",
         "SinosecureWebsocketUrl":"ws://127.0.0.1:90/echo",
-        "Disable_CardDispenser":"CONTRACTOR,VISITOR"
+        "Disable_CardDispenser":"PARTICIPANTS"
     },
     APP_API_SETUP:{
         api_url:"http://localhost:57080/",
@@ -26,14 +26,14 @@ export const AppSettings = Object.freeze({
         "SaveKIOSKDeviceInfo": "api/kiosk/SaveKIOSKDeviceInfo",
         "GetKIOSKSettings":"api/kiosk/GetKIOSKSettings",
         "GetAddVisitorSettings":"api/kiosk/GetAddVisitorSettings",
-  
+
         "getKioskSetupData":"api/kiosk/CRUDKioskMachine",
         "kioskCardUpdate":"api/kiosk/kioskCardUpdate",
         "GetPassportDetail":"api/kiosk/GetPassportDetail",
         "getIdScanerData":"api/kiosk/getIdScanerData",
         "GetMyKadDetails":"api/kiosk/GetMyKadDetails",
         "getBusinessCardData":"api/kiosk/getBusinessCardData",
-  
+
         //----Checkout --------------
         "VimsAppGetAppointmentByAttHexCode": "api/kiosk/VimsAppGetAppointmentByAttHexCode",
         "VimsAppUpdateVisitorCheckOut": "api/kiosk/VimsAppUpdateVisitorCheckOut",
@@ -50,14 +50,14 @@ export const AppSettings = Object.freeze({
         "SD_EjectCard":"api/kiosk/SD_EjectCard",
         "SD_RejectCard":"api/kiosk/SD_RejectCard",
         "SD_CloseCOM":"api/kiosk/SD_CloseCOM",
-  
+
         //----CardDispenser 3------
         "CD_DispenserStatus":"api/kiosk/CD_DispenserStatus",
         "CD_OpenPort":"api/kiosk/CD_OpenPort?ComPort=",
         "CD_PreSend":"api/kiosk/CD_PreSend",
         "CD_DispenseCard":"api/kiosk/CD_DispenseCard",
         "CD_RecycleBack":"api/kiosk/CD_RecycleBack",
-  
+
         //----LED ON/OFF 1-----------
         "setLEDON":"api/kiosk/setLEDON?ComPort=",
         "setLEDOFF":"api/kiosk/setLEDOFF",
@@ -78,11 +78,11 @@ export const AppSettings = Object.freeze({
         "PrintVisitorLabel":"api/kiosk/PrintVisitorLabel",
         "PrintVisitorReceipt":"api/kiosk/PrintVisitorReceipt",
         "getTemplateData":"api/kiosk/getTemplateData",
-  
+
         "VisitorAckSave":"api/vims/VisitorAckSave",
         "GetAllBranch": "api/kiosk/GetAllBranch",
         "GetAutoApprovalOption": "api/kiosk/GetAutoApprovalOption",
-  
+
         // "getKioskSetupData":"api/Device/CRUDKioskMachine",
         // "kioskCardUpdate":"api/Device/kioskCardUpdate",
         // "GetPassportDetail":"api/Device/GetPassportDetail",
@@ -129,14 +129,14 @@ export const AppSettings = Object.freeze({
         "enb_version_choose": true,
         "enb_language_choose": true,
     },
-  
+
     LOCAL_STORAGE: {
       "MAIN_MODULE": "MAIN_MODULE",
       "BRANCH_ID": "KIOSK_BRANCH_ID"
     },
-  
+
     SHOW_START_WIZARD: false, // Intro wizard Show / Hide Option
-  
+
     // -------- Language Setup ------------
     AVAILABLE_LANGUAGE:[
         {"id" : "en", "TCODE": "LANGUAGE.ENGLISH"},
@@ -186,4 +186,3 @@ export const AppSettings = Object.freeze({
         'text-align: center'
        ].join(';')
   });
-  

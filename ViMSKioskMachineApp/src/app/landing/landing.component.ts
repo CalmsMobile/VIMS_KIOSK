@@ -44,10 +44,13 @@ export class LandingComponent implements OnInit {
     localStorage.setItem("Temperature",this.KIOSK_PROPERTIES['General']['AllowedTemperatureLimit']);
     localStorage.setItem("WaitMessage",this.KIOSK_PROPERTIES['General']['WaitMessage']);
     console.log("%c ---------- Landing Screen Init: %s", AppSettings.LOG_SUCCESS, this.datePipe.transform(new Date(), 'medium'));
+
+
   }
   ngAfterViewInit() {
     document.getElementById("homeButton").style.display = "none";
     this.getConfigData();
+    //checkWebsocket();
   }
 
   getConfigData() {
@@ -103,7 +106,7 @@ export class LandingComponent implements OnInit {
     } else if(action === "visitor"){
       //this.router.navigateByUrl('/visitorAgree');
     } else if(action === "vcheckin"){
-      
+
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status:boolean)=>{
         if(status){
@@ -341,7 +344,7 @@ export class LandingComponent implements OnInit {
             this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: "PREAPPOINTMT" }});
           }
         }});
-     
+
     }
   }
   _clearAllLocalData(){
@@ -431,7 +434,7 @@ export class LandingComponent implements OnInit {
       this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] = "#6633ff00"
       shadow = "none"
     }
-    
+
     this.Appointment = localStorage.getItem('KIOSK_Appointment');
     this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
     this.CheckIn = localStorage.getItem('KIOSK_CheckIn');
@@ -588,3 +591,25 @@ export class LandingComponent implements OnInit {
     },50);
   }
 }
+function checkWebsocket() {
+  //throw new Error('Function not implemented.');
+  try{
+    const _this=this;
+    //const readyState = new Array("on connection", "Connection established", "Closing connection", "Close connection");
+    var host = AppSettings.APP_DEFAULT_SETTIGS.SinosecureWebsocketUrl;
+
+    _this.websocket = new WebSocket(host);
+    debugger
+    if(_this.websocket.readyState == 1 || _this.websocket.readyState == 2){
+      debugger
+      _this.websocket.onclose= function(){
+        debugger
+        console.log('close state'+ _this.websocket.readyState);
+      }
+    }
+} catch(exception){
+debugger
+    console.log("Websocket erroe");
+}
+}
+

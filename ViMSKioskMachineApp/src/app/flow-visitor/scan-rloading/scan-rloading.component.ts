@@ -105,29 +105,33 @@ export class ScanRLoadingComponent implements OnInit {
     //{"PassportNo":"S8076606H","FullNameName":"ZHANG JINMING","State":"","City":"","Address":"","Country":"CHINESE","DocType":"3362","Gender":"Male","PostCode":"","IDImgByte":"R0
   }
   SinosecureGetPassportDetail(){
+
     console.log("Sinosecure started..");
         try{
           const _this=this;
           //const readyState = new Array("on connection", "Connection established", "Closing connection", "Close connection");
           var host = AppSettings.APP_DEFAULT_SETTIGS.SinosecureWebsocketUrl;
 
-          this.websocket = new WebSocket(host);
+          _this.websocket = new WebSocket(host);
 
-          this.websocket.onopen = function(){ 
+          _this.websocket.onopen = function(){
             console.log('Open state :'+ _this.websocket.readyState);
+            debugger
           }
-          this.websocket.onmessage  = function(event:any){
+          _this.websocket.onmessage  = function(event:any){
+            debugger
           var str = event.data;
           var strsub = str;
           if(strsub!="")
           {
-            let strwhite = ""; 
+            let strwhite = "";
             let strhead="";
             let strChipHead="";
             str = strsub.replace(/\*/g,"\r\n");
             let parseData = JSON.parse(str);
             //console.log("Receive notification 2:"+str);
               if(typeof(parseData.Param["Passport number"])!="undefined" || typeof(parseData.Param["ID Number"])!="undefined"){
+                debugger
                 let userData = {
                   "visName":parseData.Param["National name"]?parseData.Param["National name"]:parseData.Param["Name"],
                   "visDOCID":parseData.Param["Passport number"]?parseData.Param["Passport number"]:parseData.Param["ID Number"],
@@ -137,10 +141,12 @@ export class ScanRLoadingComponent implements OnInit {
                 _this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: _this.docType }});
               }
               else if(typeof(parseData.Param["White"])=="undefined"){
-                _this.showErrorMsg();
-                _this.gotoRegistrationScreen();
+               // _this.showErrorMsg();
+               // _this.gotoRegistrationScreen();
               }
-              /*var seek=str.split("data:image/jpeg;base64,"); 
+              debugger
+
+              /*var seek=str.split("data:image/jpeg;base64,");
               var len = seek.length;
               for(var i = 1; i<len ;i++)
               {
@@ -156,14 +162,16 @@ export class ScanRLoadingComponent implements OnInit {
           }
 
           }
-          this.websocket.onclose　= function(){
+          _this.websocket.onclose= function(){
+            debugger
             console.log('close state'+ _this.websocket.readyState);
           }
     }
     catch(exception){
+      debugger
           console.log("Error");
     }
-    return [];
+    //return [];
   }
   getMyCardDetails(action:string){
     // let req = AppSettings['APP_SERVICES'][action];

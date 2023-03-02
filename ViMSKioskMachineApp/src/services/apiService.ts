@@ -59,7 +59,7 @@ export class ApiServices {
       data["Authorize"] = {
         "AuMAppDevSeqId": _scanData['MAppSeqId'],
         "AuDeviceUID": MAC_ID ? MAC_ID : 'WEB',
-        "Branch":branch,
+        "Branch": branch,
       },
       data["RefBranchSeqId"] = branchID
     return data;
@@ -97,10 +97,10 @@ export class ApiServices {
   }
 
   localGetMethod(serviceName: string, appendURL: string) {
-    //if(this.isTest)
-    //var URL = this._getAPIURL();
-    //else
-    var URL = "http://localhost/Portal/";
+    if (this.isTest)
+      var URL = this._getAPIURL();
+    else
+      var URL = "http://localhost/Portal/";
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
     // _scanData = JSON.parse(_scanData);
@@ -119,10 +119,10 @@ export class ApiServices {
     return this.http.get(URL + AppSettings['APP_SERVICES'][serviceName] + appendURL);
   }
   getApiDeviceConnectionRequest(service: string) {
-    if(this.isTest)
-    var URL = this._getAPIURL();
+    if (this.isTest)
+      var URL = this._getAPIURL();
     else
-    var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/Portal/";
     console.log(URL + service);
     return this.http.get(URL + service);
   }
@@ -149,10 +149,10 @@ export class ApiServices {
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffInfo'], data, httpOptions);
   }
   getStaffTemperature(data: any) {
-    if(this.isTest)
-    var URL = this._getAPIURL();
+    if (this.isTest)
+      var URL = this._getAPIURL();
     else
-    var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/Portal/";
     data = this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions);
   }
@@ -184,18 +184,18 @@ export class ApiServices {
     return this.http.post(URL + AppSettings['APP_SERVICES']['visitorCheckOut'], data, httpOptions);
   }
   PrintVisitorLabel(data: any) {
-    if(this.isTest)
-    var URL = this._getAPIURL();
+    if (this.isTest)
+      var URL = this._getAPIURL();
     else
-    var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/Portal/";
     data = this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions);
   }
   PrintVisitorReceipt(data: any) {
-    if(this.isTest)
-    var URL = this._getAPIURL();
+    if (this.isTest)
+      var URL = this._getAPIURL();
     else
-    var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/Portal/";
     data = this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions);
   }

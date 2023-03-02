@@ -48,6 +48,7 @@ export class GetkioskcodeComponent implements OnInit {
           //this.takeActFor('update');
         }
       });
+     console.log(this.route.snapshot.url[0].path);
   }
 
   _getAllHostList(){

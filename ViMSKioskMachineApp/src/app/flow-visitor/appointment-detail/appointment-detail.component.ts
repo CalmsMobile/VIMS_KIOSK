@@ -354,6 +354,7 @@ export class AppointmentDetailComponent implements OnInit {
           this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
           this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
           this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
+          if(!this.apiServices.isTest)
           this._getAutoApprovalOption(this.aptmDetails.branchID);
           console.log(this.aptmDetails.hostDetails.id);
         }
@@ -1669,7 +1670,7 @@ export class BottomSheetGenderSelect {
   selector: 'bottom-sheet-host-select',
   template: `
             <div *ngIf="this.searchHostOption">
-              
+
               <mat-form-field style="width: -webkit-fill-available;" appearance="outline" floatLabel="auto" no-padding
         matRipple matRippleColor="rgba(255,255,255,0.1)" theme-border-input-small app-detail-grid-input>
           <mat-label>{{"Search " + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption}}</mat-label>

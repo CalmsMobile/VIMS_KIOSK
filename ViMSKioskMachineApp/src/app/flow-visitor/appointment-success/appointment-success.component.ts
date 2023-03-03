@@ -36,6 +36,7 @@ export class AppointmentSuccessComponent implements OnInit {
   LabelPrintEnable: any = false;
   ReceiptPrintEnable: any = false;
   LabelPrintManualOrAuto: any = 10;
+  cardDispenserNotAllowed = false;
   @ViewChild('cardSerInput') cardSerInput: ElementRef;
 
   constructor(private route: ActivatedRoute,
@@ -440,6 +441,7 @@ export class AppointmentSuccessComponent implements OnInit {
     let _Modules = this.KIOSK_PROPERTIES['modules'];
     let IsCardDispenserNotAllowedCateg = (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser?(AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser).split(','):[]);
     const IsCardDispenserNotAllowed = (IsCardDispenserNotAllowedCateg.indexOf(_visitorData.Category)>-1?true:false);
+    this.cardDispenserNotAllowed = IsCardDispenserNotAllowed;
     let _get_cardSerial_number = (_callback: any) => {
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data: any) => {
         if (data.length > 0 && data[0]['Data'] != "") {
@@ -597,12 +599,14 @@ export class AppointmentSuccessComponent implements OnInit {
                 this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
                 this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
                 if (visitorData.length > 0) {
-                  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
-                    this.loadlblprint(visitorData, (pri_status: boolean) => { });
+
+                  this.processNexttoSuccess();
+                 /*  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+                      this.loadlblprint(visitorData, (pri_status: boolean) => { });
                   }
                   if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
                     this.loadreceiptprint(visitorData);
-                  }
+                  } */
                   _nextElemcallBack(true);
                   return;
                 } else {
@@ -665,12 +669,14 @@ export class AppointmentSuccessComponent implements OnInit {
                 this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
                 this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
                 if (visitorData.length > 0) {
-                  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+
+                  this.processNexttoSuccess();
+                  /* if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
                     this.loadlblprint(visitorData, (pri_status: boolean) => { });
                   }
                   if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
                     this.loadreceiptprint(visitorData);
-                  }
+                  } */
                   _nextElemcallBack(true);
                   return;
                 } else {
@@ -711,7 +717,48 @@ export class AppointmentSuccessComponent implements OnInit {
         });
       }
 
-    } else if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
+    }else if ((_Modules['card_dispenser']['enable'] && IsCardDispenserNotAllowed) && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
+      debugger
+
+      this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
+        // If Success Eject Visitor Card
+        this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
+        this.GScopeValue.visitorInfo.Name = _visitorData.vis_name || "";
+        this.GScopeValue.infoData.VisitorCompany = _visitorData.vis_company || "";
+        this.GScopeValue.infoData.VisitorCategoryText = _visitorData.Category || "";
+        this.GScopeValue.infoData.Contact = _visitorData.vis_contact || "";
+        this.GScopeValue.infoData.Email = _visitorData.vis_email || "";
+        this.GScopeValue.infoData.HostNameText = _visitorData.host_name || "";
+        this.GScopeValue.infoData.HostCompany = _visitorData.host_company_name || "";
+        this.GScopeValue.infoData.HostDepartment = _visitorData.host_department_name || "";
+        this.GScopeValue.infoData.HostFloor = _visitorData.host_floor_name || "";
+        this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
+        this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
+        this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
+        this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || "";
+
+        if (status['s'] === true) {
+          if (visitorData.length > 0) {
+            if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+
+              this.loadlblprint(visitorData, (pri_status: boolean) => { });
+            }
+            if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
+
+              this.loadreceiptprint(visitorData);
+            }
+            _nextElemcallBack(true);
+            return;
+          } else {
+            _nextElemcallBack(false);
+          }
+        } else {
+          _nextElemcallBack(false);
+        }
+      });
+
+      }
+    else if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
       debugger
       _get_cardSerial_number((status: boolean, serial: string) => {
         if (status) {
@@ -819,9 +866,14 @@ export class AppointmentSuccessComponent implements OnInit {
     _callNext();
   }
   private _finish_with_success_msg() {
+    debugger
     this.isLoading = false;
     this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_sccess_msg1'];
+
     this.RESULT_MSG2 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_mid'];
+    if(!this.cardDispenserNotAllowed){
+      this.RESULT_MSG2 =  'Please Take Your Card'
+    }
     this.RESULT_MSG3 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_last'];
     const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
     if (image && !this.DisplayImageHandlerURL) {

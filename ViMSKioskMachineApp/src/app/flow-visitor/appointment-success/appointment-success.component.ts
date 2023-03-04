@@ -538,7 +538,19 @@ export class AppointmentSuccessComponent implements OnInit {
                   let cardMoveStatus = JSON.parse(data[0]['Data']);
                   if (cardMoveStatus['ResponseStatus'] == "0") {
                     setTimeout(function(){
-                      _callback(true,_this.cardSerInput.nativeElement.value);
+                      if(_this.cardSerInput.nativeElement.value!=""){
+                        _callback(true,_this.cardSerInput.nativeElement.value);
+                      }
+                      else{
+                        this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {},err => {});
+                        const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+                          data: { "title": "Please Contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
+                          disableClose: true
+                        });
+                        dialogRef.afterClosed().subscribe((data) => {
+                          this.router.navigate(['/landing']);
+                        });
+                      }
                     },5000);
                   } else {
                     _callback(false, "0");

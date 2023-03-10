@@ -1,0 +1,28 @@
+<div my-headerbar-homeButton>
+  <button mat-icon-button (click)="takeActFor('home')"> <img
+    src="assets/type50/images/icons/ico_home.png"
+    onError="src ='assets/type50/images/icons/ico_home.png'"
+    style="
+      width: 80px;
+      height: 80px;
+      padding-bottom: 0;
+      margin: 0 auto;
+      display: block;
+    "
+  /></button>
+</div>
+<div
+style="position: absolute; right: 0;top: 0;">
+<img style="margin: 40px;" src="assets\type50\images\Logo_small.png">
+</div>
+
+<div style="text-align:center;padding:30px; margin-top: 10%;">
+  <h1 info-title>
+    {{KIOSK_PROPERTIES['modules']['T_adn_C']['title']}}
+  </h1>
+  <h3 style="color: #00769d;">I agree to allow the management of Gleneagles Singapore<br>to process my personal data to verify identity for access into the building.</h3>
+</div>
+<div my-footer-toolbar>
+  <button style='background: #00769d !important;' mat-raised-button my-theme-button (click)="takeActFor('scan')">
+    {{KIOSK_PROPERTIES['modules']['T_adn_C']['agree_btn_label']}}</button>
+</div>

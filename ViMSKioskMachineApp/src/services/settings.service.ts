@@ -205,6 +205,7 @@ export class SettingsService {
               _prepare['kioskName'] = _details['Table2'][0]['Name'];
             }
 console.log("KIOSK_PROPERTIES "+ JSON.stringify(_prepare));
+
 _prepare['kioskSetup']['General']['AppType'] = 50;
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
 

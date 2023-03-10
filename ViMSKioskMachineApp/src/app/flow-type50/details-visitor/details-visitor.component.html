@@ -1,0 +1,267 @@
+<div my-headerbar-homeButton>
+  <button mat-icon-button (click)="takeActFor('home')"> <img
+    src="assets/type50/images/icons/ico_home.png"
+    onError="src ='assets/type50/images/icons/ico_home.png'"
+    style="
+      width: 80px;
+      height: 80px;
+      padding-bottom: 0;
+      margin: 0 auto;
+      display: block;
+    "
+  /></button>
+</div>
+<div
+style="position: absolute; right: 0;top: 0;">
+<img style="margin: 40px;" src="assets\type50\images\Logo_small.png">
+</div>
+<div style="text-align: center; padding: 30px">
+  <p info-title no-margin-top margin-bottom>Visitor Details</p>
+  <div>
+    <div style="padding-top: 15vh">
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        *ngIf="
+          KIOSK_PROPERTIES.COMMON_CONFIG.Name.Show &&
+          ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1) ||
+            (!showFirstPageFields &&
+              !KIOSK_PROPERTIES.COMMON_CONFIG.Name.Page1))
+        "
+      >
+        <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption }}</mat-label>
+        <input
+          matInput
+          theme-input-button
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.Mandatory"
+          [(ngModel)]="aptmDetails.name"
+          (blur)="textDataBindTemp($event.target.value, 'name')"
+          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Name.MaxLength"
+          oninput="this.value = this.value.toUpperCase()"
+          spellcheck="false"
+          [disabled]="isDisablename"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended"
+          [ng-virtual-keyboard-placeholder]="
+            KIOSK_PROPERTIES.COMMON_CONFIG.Name.Caption
+          "
+        />
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        *ngIf="
+          KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show &&
+          ((showFirstPageFields &&
+            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1) ||
+            (!showFirstPageFields &&
+              !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1))
+        "
+      >
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption
+        }}</mat-label>
+        <input
+          matInput
+          theme-input-button
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory"
+          [(ngModel)]="aptmDetails.id"
+          #box
+          (keyup)="onKey(box.value, $event)"
+          (blur)="textDataBindTemp($event.target.value, 'id')"
+          oninput="this.value = this.value.toUpperCase()"
+          (focusout)="itFocusOut($event.target.value, 'id')"
+          (ngModelChange)="onChange($event)"
+          [minlength]="VISITOR_ID_MIN_LENGTH"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength"
+          spellcheck="false"
+          autocomplete="off"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended"
+          [ng-virtual-keyboard-placeholder]="
+            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption
+          "
+        />
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        *ngIf="
+          KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show &&
+          ((showFirstPageFields &&
+            KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1) ||
+            (!showFirstPageFields &&
+              !KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1))
+        "
+      >
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption
+        }}</mat-label>
+        <input
+          matInput
+          theme-input-button
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
+          [(ngModel)]="aptmDetails.contact"
+          (blur)="textDataBindTemp($event.target.value, 'contact')"
+          spellcheck="false"
+          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength"
+          oninput="this.value = this.value.toUpperCase()"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="numeric"
+          [ng-virtual-keyboard-placeholder]="
+            KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption
+          "
+        />
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+      >
+        <mat-label>Location of Visit</mat-label>
+        <input
+          matInput
+          theme-input-button
+          required
+          oninput="this.value = this.value.toUpperCase()"
+          spellcheck="false"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended"
+          ng-virtual-keyboard-placeholder="Enter Visit Location"
+        />
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        (click)="openBottomPurposeSheet()"
+      >
+        <mat-label>Purpose of Visit</mat-label>
+        <input
+          matInput
+          readonly
+          theme-input-button
+          [(ngModel)]="aptmDetails.purpose"
+          [required]="true"
+          oninput="this.value = this.value.toUpperCase()"
+          spellcheck="false"
+        />
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+      >
+        <mat-label>Person-In-Charge</mat-label>
+        <input
+          matInput
+          theme-input-button
+          oninput="this.value = this.value.toUpperCase()"
+          spellcheck="false"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended"
+          ng-virtual-keyboard-placeholder="Enter Person-In-Charge"
+        />
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        *ngIf="
+          KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show &&
+          ((showFirstPageFields &&
+            KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1) ||
+            (!showFirstPageFields &&
+              !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1))
+        "
+      >
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption
+        }}</mat-label>
+        <input
+          matInput
+          theme-input-button
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
+          [(ngModel)]="aptmDetails.vehicle"
+          (blur)="textDataBindTemp($event.target.value, 'vehicle')"
+          spellcheck="false"
+          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength"
+          oninput="this.value = this.value.toUpperCase()"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended"
+          [ng-virtual-keyboard-placeholder]="
+            KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption
+          "
+        />
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div my-footer-toolbar>
+  <button
+    mat-icon-button
+    (click)="takeActFor('back')"
+    style="float: left; margin-bottom: 50px"
+  >
+    <img
+      src="assets/type50/images/icons/ico_back.png"
+      onError="src ='assets/type50/images/icons/ico_back.png'"
+      style="
+        width: 80px;
+        height: 80px;
+        padding-bottom: 10px;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+  </button>
+  <button
+    style="
+      position: absolute;
+      background: #00769d !important;
+      right: 0;
+      bottom: 0;
+      margin: 10px;
+    "
+    mat-raised-button
+    my-theme-button
+    (click)="takeActFor('submit')"
+  >
+    CONFIRM
+  </button>
+</div>

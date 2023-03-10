@@ -23,6 +23,14 @@ import { NgVirtualKeyboardModule } from '@protacon/ng-virtual-keyboard';
 import { ScanqrcodeComponent } from './scanqrcode/scanqrcode.component';
 import { QuestionnariesComponent } from './questionnaries/questionnaries.component';
 import { MatVideoModule } from 'mat-video';
+import { TermsComponent } from './flow-type50/terms/terms.component';
+import { SuccessComponent } from './flow-type50/success/success.component';
+import { ScanComponent } from './flow-type50/scan/scan.component';
+import { MainPipeModule } from './main-pipe/main-pipe.module';
+import { DetailsVisitorComponent } from './flow-type50/details-visitor/details-visitor.component';
+import { DetailsContractorComponent } from './flow-type50/details-contractor/details-contractor.component';
+import { DetailsVendorComponent } from './flow-type50/details-vendor/details-vendor.component';
+import { DetailsContractorStaffComponent } from './flow-type50/details-contractor-staff/details-contractor-staff.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +42,14 @@ import { MatVideoModule } from 'mat-video';
     DialogAppSessionTimeOutDialog,
     GetkioskcodeComponent,
     ScanqrcodeComponent,
-    QuestionnariesComponent
+    QuestionnariesComponent,
+    TermsComponent,
+    SuccessComponent,
+    ScanComponent,
+    DetailsVisitorComponent,
+    DetailsContractorComponent,
+    DetailsVendorComponent,
+    DetailsContractorStaffComponent
   ],
   imports: [
     HttpModule,
@@ -53,7 +68,8 @@ import { MatVideoModule } from 'mat-video';
     MatSnackBarModule,
     BrowserAnimationsModule,
     NgVirtualKeyboardModule,
-    MatVideoModule
+    MatVideoModule,
+    MainPipeModule
  ],
   providers: [ApiServices, DatePipe , SettingsService],
   bootstrap: [AppComponent],

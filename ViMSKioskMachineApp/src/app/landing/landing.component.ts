@@ -101,11 +101,23 @@ export class LandingComponent implements OnInit {
     }
   }
   takeActFor(action: string) {
-    if (action === "staff") {
-      //this.router.navigateByUrl('/staffFlow');
-    } else if (action === "visitor") {
-      //this.router.navigateByUrl('/visitorAgree');
-    } else if (action === "vcheckin") {
+    console.log(action);
+    if (action === "visitor50" && this.KIOSK_PROPERTIES.General.AppType == 50) {
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.router.navigateByUrl('/terms');
+    } else if (action === "contractor" && this.KIOSK_PROPERTIES.General.AppType == 50) {
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.router.navigateByUrl('/terms');
+    }
+     else if (action === "vendor" && this.KIOSK_PROPERTIES.General.AppType == 50) {
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.router.navigateByUrl('/terms');
+    }
+     else if (action === "contractor_staff" && this.KIOSK_PROPERTIES.General.AppType == 50) {
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.router.navigateByUrl('/terms');
+    }
+    else if (action === "vcheckin") {
 
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status: boolean) => {

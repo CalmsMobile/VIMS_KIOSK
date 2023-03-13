@@ -82,6 +82,7 @@ export const AppSettings = Object.freeze({
         "VisitorAckSave":"api/vims/VisitorAckSave",
         "GetAllBranch": "api/kiosk/GetAllBranch",
         "GetAutoApprovalOption": "api/kiosk/GetAutoApprovalOption",
+        "AddAttendanceForVisitor_Glen": "api/kiosk/AddAttendanceForVisitor_Glen",
 
         // "getKioskSetupData":"api/Device/CRUDKioskMachine",
         // "kioskCardUpdate":"api/Device/kioskCardUpdate",

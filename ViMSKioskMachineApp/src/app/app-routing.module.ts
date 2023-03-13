@@ -1,7 +1,4 @@
-import { DetailsContractorStaffComponent } from './flow-type50/details-contractor-staff/details-contractor-staff.component';
-import { DetailsContractorComponent } from './flow-type50/details-contractor/details-contractor.component';
-import { DetailsVendorComponent } from './flow-type50/details-vendor/details-vendor.component';
-import { DetailsVisitorComponent } from './flow-type50/details-visitor/details-visitor.component';
+import { DetailsComponent } from './flow-type50/details/details.component';
 import { ScanComponent } from './flow-type50/scan/scan.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -26,10 +23,7 @@ const routes: Routes = [
    {path: 'terms',component:TermsComponent},
    {path: 'scan',component:ScanComponent},
    {path: 'success',component:SuccessComponent},
-   {path: 'detailsVisitor',component:DetailsVisitorComponent},
-   {path: 'detailsVendor',component:DetailsVendorComponent},
-   {path: 'detailsContractor',component:DetailsContractorComponent},
-   {path: 'detailsContractorStaff',component:DetailsContractorStaffComponent},
+   {path: 'details',component:DetailsComponent},
 
    //{path: '**', component: LandingComponent},
   // {

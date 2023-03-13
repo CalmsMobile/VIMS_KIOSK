@@ -20,7 +20,13 @@ style="position: absolute; right: 0;top: 0;">
   <h1 info-title>
     {{KIOSK_PROPERTIES['modules']['T_adn_C']['title']}}
   </h1>
-  <h3 style="color: #00769d;">I agree to allow the management of Gleneagles Singapore<br>to process my personal data to verify identity for access into the building.</h3>
+  <!-- <h3 style="color: #00769d;">I agree to allow the management of Gleneagles Singapore<br>to process my personal data to verify identity for access into the building.</h3> -->
+
+    <div terms-condition-body>
+      <!-- <app-terms-and-condition></app-terms-and-condition> -->
+      <div [innerHTML]="KIOSK_PROPERTIES['modules']['T_adn_C']['template'] | safeHtml"></div>
+    
+  </div>
 </div>
 <div my-footer-toolbar>
   <button style='background: #00769d !important;' mat-raised-button my-theme-button (click)="takeActFor('scan')">

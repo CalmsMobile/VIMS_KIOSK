@@ -28,25 +28,26 @@ export class ScanComponent implements OnInit {
     if(action == 'cancel' || action == 'home'){
       this.router.navigateByUrl('/landing');
     }else if(action == 'start'){
-      this.router.navigateByUrl('/success');
+      //this.router.navigateByUrl('/details');
+      this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: "PASSPORT" }});
 
-      switch (localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE)) {
-        case "visitor50":
+      /* switch (localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE)) {
+        case "Visitor":
           this.router.navigateByUrl('/detailsVisitor');
           break;
-        case "contractor":
+        case "Contractor":
           this.router.navigateByUrl('/detailsContractor');
           break;
-        case "vendor":
+        case "Vendor":
           this.router.navigateByUrl('/detailsVendor');
           break;
-        case "contractor_staff":
+        case "Contractor Staff":
           this.router.navigateByUrl('/detailsContractorStaff');
           break;
 
         default:
           break;
-      }
+      } */
     }
   }
 }

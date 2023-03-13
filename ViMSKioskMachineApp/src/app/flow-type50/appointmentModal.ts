@@ -25,6 +25,9 @@ export class AppointmentModal  {
     public meetingHoursValue:string = '';
     public branchID:string = '';
     public branchName:string = '';
+    public Department:string='';
+    public WorkPermit:string='';
+    public MeetingLoc:string='';
 }
   export class HostDetails  {
     public id:string = '';

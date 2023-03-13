@@ -42,8 +42,8 @@ style="position: absolute; right: 0;top: 0;">
       [innerHTML]="RESULT_MSG2 | safeHtml"></label>
       <label style="font-size: 18px;font-style: italic; color: #d60e0e; margin-top: 20px;" *ngIf="RESULT_MSG2"
       [innerHTML]="RESULT_MSG3 | safeHtml"></label>
-      <div *ngIf="mainModule === 'contractor'">
-        <button style="background: #00769d !important; margin: 25px; width: 300px;text-align: center;" mat-raised-button my-theme-button (click)="takeActFor('addWorker')">
+      <div *ngIf="mainModule === 'Contractor'">
+        <button (click)="takeActFor('addWorker')" style="background: #00769d !important; margin: 25px; width: 300px;text-align: center;" mat-raised-button my-theme-button (click)="takeActFor('addWorker')">
           ADD WORKER
         </button>
         <button style="background: #00769d !important; margin: 25px; width: 300px;text-align: center;" mat-raised-button my-theme-button (click)="takeActFor('ok')">
@@ -51,7 +51,7 @@ style="position: absolute; right: 0;top: 0;">
         </button>
       </div>
 
-      <button *ngIf="mainModule !== 'contractor'" style="position: absolute;
+      <button *ngIf="mainModule !== 'Contractor'" style="position: absolute;
       background: #00769d !important;
       right:    0;
       bottom:   0;

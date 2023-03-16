@@ -404,7 +404,6 @@ export class LandingComponent implements OnInit {
                   setngs = JSON.parse(setngs);
                   setngs['kioskAvalCards'] = cards;
                   localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(setngs));
-                  debugger
                 }
               } else {
                 this.dialog.open(DialogAppCommonDialog, {

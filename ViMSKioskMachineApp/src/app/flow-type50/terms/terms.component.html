@@ -16,7 +16,7 @@ style="position: absolute; right: 0;top: 0;">
 <img style="margin: 40px;" src="assets\type50\images\Logo_small.png">
 </div>
 
-<div style="text-align:center;padding:30px; margin-top: 10%;">
+<div style="text-align:center;padding:30px; margin-top: 20%;margin-left: auto;margin-right: auto;">
   <h1 info-title>
     {{KIOSK_PROPERTIES['modules']['T_adn_C']['title']}}
   </h1>
@@ -25,10 +25,37 @@ style="position: absolute; right: 0;top: 0;">
     <div terms-condition-body>
       <!-- <app-terms-and-condition></app-terms-and-condition> -->
       <div [innerHTML]="KIOSK_PROPERTIES['modules']['T_adn_C']['template'] | safeHtml"></div>
-    
+      <button
+      mat-raised-button
+      my-theme-button
+      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+      (click)="takeActFor('scan')"
+      style="
+        margin-top: 100px;
+        background: #00bfff !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 80px !important;
+        padding-right: 80px !important;
+        border-radius: 10px;
+        text-align: center;
+        border-radius: 2vh !important;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+        "
+      >
+        <p style="margin: 0px;"> {{KIOSK_PROPERTIES['modules']['T_adn_C']['agree_btn_label']}}</p>
+
+      </div>
+    </button>
+
   </div>
 </div>
 <div my-footer-toolbar>
-  <button style='background: #00769d !important;' mat-raised-button my-theme-button (click)="takeActFor('scan')">
-    {{KIOSK_PROPERTIES['modules']['T_adn_C']['agree_btn_label']}}</button>
+  <!-- <button style='background: #00769d !important;' mat-raised-button my-theme-button (click)="takeActFor('scan')">
+    {{KIOSK_PROPERTIES['modules']['T_adn_C']['agree_btn_label']}}</button> -->
 </div>

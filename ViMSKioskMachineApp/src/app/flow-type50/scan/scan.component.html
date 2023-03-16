@@ -1,21 +1,22 @@
 <div my-headerbar-homeButton>
-  <button mat-icon-button (click)="takeActFor('home')"> <img
-    src="assets/type50/images/icons/ico_home.png"
-    onError="src ='assets/type50/images/icons/ico_home.png'"
-    style="
-      width: 80px;
-      height: 80px;
-      padding-bottom: 0;
-      margin: 0 auto;
-      display: block;
-    "
-  /></button>
+  <button mat-icon-button (click)="takeActFor('home')">
+    <img
+      src="assets/type50/images/icons/ico_home.png"
+      onError="src ='assets/type50/images/icons/ico_home.png'"
+      style="
+        width: 80px;
+        height: 80px;
+        padding-bottom: 0;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+  </button>
 </div>
-<div
-style="position: absolute; right: 0;top: 0;">
-<img style="margin: 40px;" src="assets\type50\images\Logo_small.png">
+<div style="position: absolute; right: 0; top: 0">
+  <img style="margin: 40px" src="assets\type50\images\Logo_small.png" />
 </div>
-<div style="text-align: center; padding: 30px">
+<div style="text-align: center; padding: 30px; margin-top: 10%">
   <p
     style="
       text-align: center;
@@ -31,12 +32,85 @@ style="position: absolute; right: 0;top: 0;">
 <div margin-bottom style="text-align: center">
   <img
     src="assets\type50\gifs\Passport.gif"
-    style="height: 17vw"
+    style="height: 35vw"
     margin-bottom
   />
+  <div>
+    <button
+      mat-raised-button
+      my-theme-button
+      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+      (click)="takeActFor('cancel')"
+      style="
+      background: red !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 80px !important;
+        padding-right: 80px !important;
+        margin-top: 10px;
+        border-radius: 10px;
+        text-align: center;
+        border-radius: 2vh !important;
+        min-width: 200px;
+      "
+    >
+      <div style="display: flex; align-items: center">
+        <p style="margin: 0px">Cancel</p>
+      </div>
+    </button>
+    <!--  <button
+      mat-raised-button
+      my-theme-button
+      style="
+        background: red !important;
+        margin: 15px;
+        width: 200px;
+        text-align: center;
+      "
+      (click)="takeActFor('cancel')"
+    >
+      Cancel
+    </button> -->
+  </div>
+  <div>
+    <button
+      mat-raised-button
+      my-theme-button
+      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+      (click)="takeActFor('start')"
+      style="
+        background: #00bfff !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 90px !important;
+        padding-right: 90px !important;
+        margin-top: 10px;
+        border-radius: 10px;
+        text-align: center;
+        border-radius: 2vh !important;
+      "
+    >
+      <div style="display: flex; align-items: center">
+        <p style="margin: 0px">Start</p>
+      </div>
+    </button>
+    <!--  <button
+      mat-raised-button
+      my-theme-button
+      style="
+        background: #00769d !important;
+        margin: 15px;
+        width: 200px;
+        text-align: center;
+      "
+      (click)="takeActFor('start')"
+    >
+      Start
+    </button> -->
+  </div>
 </div>
 <div my-footer-toolbar>
-  <button
+  <!-- <button
     mat-raised-button
     my-theme-button
     style="
@@ -61,5 +135,5 @@ style="position: absolute; right: 0;top: 0;">
     (click)="takeActFor('start')"
   >
     Start
-  </button>
+  </button> -->
 </div>

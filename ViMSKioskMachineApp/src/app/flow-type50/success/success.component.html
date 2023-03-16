@@ -1,22 +1,23 @@
 <div my-headerbar-homeButton>
-  <button mat-icon-button (click)="takeActFor('home')"> <img
-    src="assets/type50/images/icons/ico_home.png"
-    onError="src ='assets/type50/images/icons/ico_home.png'"
-    style="
-      width: 80px;
-      height: 80px;
-      padding-bottom: 0;
-      margin: 0 auto;
-      display: block;
-    "
-  /></button>
+  <button mat-icon-button (click)="takeActFor('home')">
+    <img
+      src="assets/type50/images/icons/ico_home.png"
+      onError="src ='assets/type50/images/icons/ico_home.png'"
+      style="
+        width: 80px;
+        height: 80px;
+        padding-bottom: 0;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+  </button>
 </div>
-<div
-style="position: absolute; right: 0;top: 0;">
-<img style="margin: 40px;" src="assets\type50\images\Logo_small.png">
+<div style="position: absolute; right: 0; top: 0">
+  <img style="margin: 40px" src="assets\type50\images\Logo_small.png" />
 </div>
-<div loader-page style="text-align:center;padding:30px;">
- <!--  <div *ngIf="isLoading" style="padding-top:20vh">
+<div loader-page style="text-align: center; padding: 30px">
+  <!--  <div *ngIf="isLoading" style="padding-top:20vh">
     <p info-title [innerHTML]="KIOSK_PROPERTIES['commonsetup']['Register_loading_msg'] | safeHtml">
 
     </p>
@@ -32,34 +33,98 @@ style="position: absolute; right: 0;top: 0;">
       </mat-form-field>
   </div> -->
   <div *ngIf="!isLoading">
-
-    <div style="display: inline-grid;">
-      <label style="font-weight: normal; font-size: 32px; color: #00769d;"
-      [innerHTML]="RESULT_MSG | safeHtml"></label>
-      <img src="assets\type50\images\icons\ico_right.png" style='width: 80px;height: 80px;margin: 10px auto;'>
-      <img src="assets\type50\images\image_pass_card.png" style='margin: 10px auto;'>
-      <label style="font-size: 18px;font-weight: bold; color: #00769d;margin-top: 20px;" *ngIf="RESULT_MSG2"
-      [innerHTML]="RESULT_MSG2 | safeHtml"></label>
-      <label style="font-size: 18px;font-style: italic; color: #d60e0e; margin-top: 20px;" *ngIf="RESULT_MSG2"
-      [innerHTML]="RESULT_MSG3 | safeHtml"></label>
+    <div style="display: inline-grid; margin-top: 20%">
+      <label
+        style="font-weight: normal; font-size: 32px; color: #00769d"
+        [innerHTML]="RESULT_MSG | safeHtml"
+      ></label>
+      <img
+        src="assets\type50\images\icons\ico_right.png"
+        style="width: 80px; height: 80px; margin: 10px auto"
+      />
+      <img
+        src="assets\type50\images\image_pass_card.png"
+        style="margin: 10px auto"
+      />
+      <label
+        style="
+          font-size: 18px;
+          font-weight: bold;
+          color: #00769d;
+          margin-top: 20px;
+        "
+        *ngIf="RESULT_MSG2"
+        [innerHTML]="RESULT_MSG2 | safeHtml"
+      ></label>
+      <label
+        style="
+          font-size: 18px;
+          font-style: italic;
+          color: #d60e0e;
+          margin-top: 20px;
+        "
+        *ngIf="RESULT_MSG2"
+        [innerHTML]="RESULT_MSG3 | safeHtml"
+      ></label>
       <div *ngIf="mainModule === 'Contractor'">
-        <button (click)="takeActFor('addWorker')" style="background: #00769d !important; margin: 25px; width: 300px;text-align: center;" mat-raised-button my-theme-button (click)="takeActFor('addWorker')">
+        <button
+          (click)="takeActFor('addWorker')"
+          style="
+            background: #00769d !important;
+            margin: 25px;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 80px !important;
+        padding-right: 80px !important;
+        border-radius: 10px;
+        text-align: center;
+        border-radius: 2vh !important;
+          "
+          mat-raised-button
+          my-theme-button
+          (click)="takeActFor('addWorker')"
+        >
           ADD WORKER
         </button>
-        <button style="background: #00769d !important; margin: 25px; width: 300px;text-align: center;" mat-raised-button my-theme-button (click)="takeActFor('ok')">
+        <button
+          style="
+            background: #00bfff !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        padding-left: 80px !important;
+        padding-right: 80px !important;
+        border-radius: 10px;
+        text-align: center;
+        border-radius: 2vh !important;
+          "
+          mat-raised-button
+          my-theme-button
+          (click)="takeActFor('ok')"
+        >
           OK
         </button>
       </div>
-
-      <button *ngIf="mainModule !== 'Contractor'" style="position: absolute;
-      background: #00769d !important;
-      right:    0;
-      bottom:   0;
-      margin: 10px;" mat-raised-button my-theme-button (click)="takeActFor('ok')">
-        OK
-      </button>
-    </div>
-
-  </div>
+<div>
+  <button
+  *ngIf="mainModule !== 'Contractor'"
+  style="
+     background: #00bfff !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  border-radius: 10px;
+  text-align: center;
+  border-radius: 2vh !important;
+  margin: 25px;
+  width: fit-content !important;
+  "
+  mat-raised-button
+  my-theme-button
+  (click)="takeActFor('ok')"
+>
+  OK
+</button>
 </div>
 
+    </div>
+  </div>
+</div>

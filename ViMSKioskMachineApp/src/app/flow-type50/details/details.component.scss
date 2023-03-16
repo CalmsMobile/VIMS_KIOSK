@@ -13,12 +13,12 @@
 
 }
 [app-detail-grid-input]{
-  width:45%;
+  width:80%;
   .mat-form-field-wrapper{
       padding-bottom: 0.5em;
   }
   &:nth-child(even){
-      margin-left:2vh;
+      margin-left:0vh;
   }
 }
 

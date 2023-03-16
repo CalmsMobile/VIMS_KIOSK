@@ -7,6 +7,16 @@
     <div class="bullet"></div>
     <div class="bullet"></div>
   </div>
+  <mat-form-field class="example-full-width" style="opacity: 0">
+    <input
+      #cardSerInput
+      matInput
+      maxlength="10"
+      (keydown.enter)="onKeydown($event)"
+      placeholder="Card Serial Number"
+      value=""
+    />
+  </mat-form-field>
 </div>
 
 <div *ngIf="!isLoading" my-headerbar-homeButton>
@@ -28,10 +38,10 @@
   <img style="margin: 40px" src="assets\type50\images\Logo_small.png" />
 </div>
 
-<div *ngIf="!isLoading" style="text-align: center; padding: 30px">
+<div *ngIf="!isLoading" style="text-align: center; padding: 30px;margin-top: 10%;">
   <p info-title no-margin-top margin-bottom>{{ title }}</p>
   <div>
-    <div style="padding-top: 10vh">
+    <div style="padding-top: 2vh">
       <!--Full Name -->
       <mat-form-field
         appearance="outline"
@@ -334,10 +344,73 @@
           [ng-virtual-keyboard-placeholder]="departmentCaption"
         />
       </mat-form-field>
+
+      <button
+        style="
+          margin-top: 10px;
+          background: #00bfff !important;
+          padding-top: 10px !important;
+          padding-bottom: 10px !important;
+          padding-left: 80px !important;
+          padding-right: 80px !important;
+          border-radius: 10px;
+          text-align: center;
+          border-radius: 2vh !important;
+        "
+        mat-raised-button
+        my-theme-button
+        (click)="takeActFor('submit')"
+        [disabled]="
+          (mainModule == 'Visitor' &&
+            (aptmDetails.name.length <
+              KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
+              aptmDetails.id.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength ||
+              aptmDetails.contact.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
+              aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
+              aptmDetails.purpose == '')) ||
+          (mainModule == 'Contractor' &&
+            (aptmDetails.name.length <
+              KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
+              aptmDetails.id.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength ||
+              aptmDetails.contact.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
+              aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
+              aptmDetails.company.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength ||
+              aptmDetails.purpose == '')) ||
+          (mainModule == 'Vendor' &&
+            (aptmDetails.name.length <
+              KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
+              aptmDetails.id.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength ||
+              aptmDetails.contact.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
+              aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
+              aptmDetails.company.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength ||
+              aptmDetails.purpose == '')) ||
+          (mainModule == 'Contractor Staff' &&
+            (aptmDetails.name.length <
+              KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
+              aptmDetails.id.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength ||
+              aptmDetails.contact.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
+              aptmDetails.Host.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Host.MinLength ||
+              aptmDetails.Department.length < departmentMinLength))
+        "
+      >
+        CONFIRM
+      </button>
     </div>
   </div>
 </div>
-<div *ngIf="!isLoading" my-footer-toolbar>
+
+<!-- <div *ngIf="!isLoading" my-footer-toolbar>
   <button
     mat-icon-button
     (click)="takeActFor('back')"
@@ -412,4 +485,4 @@
   >
     CONFIRM
   </button>
-</div>
+</div> -->

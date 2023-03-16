@@ -9,7 +9,7 @@
     z-index: 999999999;
   "
 ></button>
-<div
+<!-- <div
   my-headerbar-homeButton
   *ngIf="KIOSK_PROPERTIES.modules.card_dispenser.enable"
 >
@@ -23,49 +23,315 @@
   >
     <i class="siva-icon-docs-1"></i>
   </button>
-</div>
+</div> -->
 <div style="text-align: center; padding: 30px">
   <div *ngIf="KIOSK_PROPERTIES.General.AppType != 50">
-  <h1
-    welcome-title
-    *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
-  >
-    {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
-  </h1>
-  <img
-    style="height: 24vh; margin-top: 2vh"
-    alt="Angular Logo"
-    [src]="LOGO_IMG"
-  />
-  <h3
-    info-title
-    *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''"
-    style="margin-top: 10vh"
-  >
-    {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 }}
-  </h3>
-</div>
-<div *ngIf="KIOSK_PROPERTIES.General.AppType == 50">
+    <h1
+      welcome-title
+      *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
+    >
+      {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
+    </h1>
+    <img
+      style="height: 24vh; margin-top: 2vh"
+      alt="Angular Logo"
+      [src]="LOGO_IMG"
+    />
+    <h3
+      info-title
+      *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''"
+      style="margin-top: 10vh"
+    >
+      {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 }}
+    </h3>
+  </div>
+  <div *ngIf="KIOSK_PROPERTIES.General.AppType == 50">
+    <!-- <img
+      style="height: 10vh; margin-top: 2vh"
+      alt="Angular Logo"
+      src="assets\type50\images\Logo_big.png"
+    />
+    <h1
+      welcome-title
+      style="margin-top: 10vh; font-weight: normal"
+      *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
+    >
+      {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
+    </h1>
+    <h3
+      info-title
+      style="font-weight: normal !important"
+      *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''"
+      style="margin-top: 10vh"
+    >
+      {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 }}
+    </h3> -->
+    <div style="text-align: center; padding: 30px">
+      <img
+        style="height: 7vh; margin-top: 4vh"
+        alt="Angular Logo"
+        src="assets/images/cus_icons/logo_only.png"
+      />
+      <p
+        info-title
+        no-margin-top
+        style="margin-top: 4vh !important; font-size: 8vmin;"
+        [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+        *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
+      >
+        {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
+      </p>
+      <div
+        style="padding-top: 5vh; display: inline-grid"
+        *ngIf="KIOSK_PROPERTIES.General.AppType == 50"
+      >
+        <button
+          mat-raised-button
+          my-theme-button
+          [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+          (click)="takeActFor('Visitor')"
+          style="
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            margin-bottom: 20px;
+            background: #00769d !important;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+            "
+          >
+          <img
+          src="assets/images/cus_icons/ico_visitor.png"
+          style="
+            width: 100px;
+            height: 100px;
+            display: block;
+          "
+        />
+            <p style="margin: 0px; margin-left: 50px">Visitor</p>
 
-  <img
-    style="height: 10vh; margin-top: 2vh"
-    alt="Angular Logo"
-    src="assets\type50\images\Logo_big.png"
+          </div>
+        </button>
+        <button
+        mat-raised-button
+        my-theme-button
+        [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+        (click)="takeActFor('Contractor')"
+        style="
+          padding-top: 10px !important;
+          padding-bottom: 10px !important;
+          margin-bottom: 20px;
+          background: #009d93 !important;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+          "
+        >
+        <img
+        src="assets/images/cus_icons/ico_contractor.png"
+        style="
+          width: 100px;
+          height: 100px;
+          display: block;
+        "
+      />
+          <p style="margin: 0px; margin-left: 50px">Contractor</p>
+
+        </div>
+      </button>
+      <button
+      mat-raised-button
+      my-theme-button
+      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+      (click)="takeActFor('Contractor')"
+      style="
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        margin-bottom: 20px;
+        background: #61c8ea !important;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+        "
+      >
+      <img
+      src="assets/images/cus_icons/ico_vendor.png"
+      style="
+        width: 100px;
+        height: 100px;
+        display: block;
+      "
+    />
+        <p style="margin: 0px; margin-left: 50px">Vendor</p>
+
+      </div>
+    </button>
+    <button
+    mat-raised-button
+    my-theme-button
+    [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+    (click)="takeActFor('Contractor Staff')"
+    style="
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      margin-bottom: 20px;
+      background: #094b61 !important;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        align-items: center;
+      "
+    >
+    <img
+    src="assets/images/cus_icons/ico_cs.png"
+    style="
+      width: 100px;
+      height: 100px;
+      display: block;
+    "
   />
-  <h1
-    welcome-title style="margin-top: 10vh; font-weight: normal;"
-    *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
-  >
-    {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
-  </h1>
-  <h3
-    info-title style="font-weight: normal !important;"
-    *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''"
-    style="margin-top: 10vh"
-  >
-    {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 }}
-  </h3>
-</div>
+      <p style="margin: 0px; margin-left: 50px">Contractor Staff</p>
+
+    </div>
+  </button>
+        <!--  <button
+        my-reg-option-btn
+        sp-button-red-out1
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        style="
+          margin-right: 2vh;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+        "
+        value=""
+        [ngStyle]="{
+          'font-weight': 'bold'
+        }"
+        (click)="takeActFor('Visitor')"
+        [disabled]="!IF_CONNECT_WITH_SERVER"
+      >
+        <img
+          src="assets/type50/images/icons/ico_visitor.png"
+          onError="src ='assets/type50/images/icons/ico_visitor.png'"
+          style="
+            width: 80px;
+            height: 80px;
+            padding-bottom: 10px;
+            margin: 0 auto;
+            display: block;
+          "
+        />
+        Visitor
+      </button> -->
+        <!--  <button
+        my-reg-option-btn
+        sp-button-red-out1
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        style="
+          margin-right: 2vh;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+        "
+        value=""
+        [ngStyle]="{
+          'font-weight': 'bold'
+        }"
+        (click)="takeActFor('Contractor')"
+        [disabled]="!IF_CONNECT_WITH_SERVER"
+      >
+        <img
+          src="assets/type50/images/icons/ico_contractor.png"
+          onError="src ='assets/type50/images/icons/ico_contractor.png'"
+          style="
+            width: 80px;
+            height: 80px;
+            padding-bottom: 10px;
+            margin: 0 auto;
+            display: block;
+          "
+        />
+        Contractor
+      </button> -->
+        <!--   <button
+        my-reg-option-btn
+        sp-button-red-out1
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        style="
+          margin-right: 2vh;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+        "
+        value=""
+        [ngStyle]="{
+          'font-weight': 'bold'
+        }"
+        (click)="takeActFor('Vendor')"
+        [disabled]="!IF_CONNECT_WITH_SERVER"
+      >
+        <img
+          src="assets/type50/images/icons/ico_vendor.png"
+          onError="src ='assets/type50/images/icons/ico_vendor.png'"
+          style="
+            width: 80px;
+            height: 80px;
+            padding-bottom: 10px;
+            margin: 0 auto;
+            display: block;
+          "
+        />
+        Vendor
+      </button> -->
+        <!--  <button
+        my-reg-option-btn
+        sp-button-red-out1
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        style="
+          margin-right: 2vh;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+        "
+        value=""
+        [ngStyle]="{
+          'font-weight': 'bold'
+        }"
+        (click)="takeActFor('Contractor Staff')"
+        [disabled]="!IF_CONNECT_WITH_SERVER"
+      >
+        <img
+          src="assets/type50/images/icons/ico_cstaff.png"
+          onError="src ='assets/type50/images/icons/ico_cstaff.png'"
+          style="
+            width: 80px;
+            height: 80px;
+            padding-bottom: 10px;
+            margin: 0 auto;
+            display: block;
+          "
+        />
+        Contractor Staff
+      </button> -->
+      </div>
+    </div>
+  </div>
 </div>
 <div style="text-align: center">
   <input
@@ -286,130 +552,3 @@
         {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label}}</button> -->
 </div>
 <!-- AppType 50 -->
-<div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.General.AppType == 50">
-  <button
-    my-reg-option-btn
-    sp-button-red-out1
-    matRipple
-    matRippleColor="rgba(255,255,255,0.1)"
-    style="
-      margin-right: 2vh;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 700;
-    "
-    value=""
-    [ngStyle]="{
-      'font-weight':'bold'
-    }"
-    (click)="takeActFor('Visitor')"
-    [disabled]="!IF_CONNECT_WITH_SERVER"
-  >
-    <img
-      src="assets/type50/images/icons/ico_visitor.png"
-      onError="src ='assets/type50/images/icons/ico_visitor.png'"
-      style="
-        width: 80px;
-        height: 80px;
-        padding-bottom: 10px;
-        margin: 0 auto;
-        display: block;
-      "
-    />
-    Visitor
-  </button>
-  <button
-    my-reg-option-btn
-    sp-button-red-out1
-    matRipple
-    matRippleColor="rgba(255,255,255,0.1)"
-    style="
-      margin-right: 2vh;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 700;
-    "
-    value=""
-    [ngStyle]="{
-      'font-weight':'bold'
-    }"
-    (click)="takeActFor('Contractor')"
-    [disabled]="!IF_CONNECT_WITH_SERVER"
-  >
-    <img
-      src="assets/type50/images/icons/ico_contractor.png"
-      onError="src ='assets/type50/images/icons/ico_contractor.png'"
-      style="
-        width: 80px;
-        height: 80px;
-        padding-bottom: 10px;
-        margin: 0 auto;
-        display: block;
-      "
-    />
-    Contractor
-  </button>
-  <button
-    my-reg-option-btn
-    sp-button-red-out1
-    matRipple
-    matRippleColor="rgba(255,255,255,0.1)"
-    style="
-      margin-right: 2vh;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 700;
-    "
-    value=""
-    [ngStyle]="{
-      'font-weight':'bold'
-    }"
-    (click)="takeActFor('Vendor')"
-    [disabled]="!IF_CONNECT_WITH_SERVER"
-  >
-    <img
-      src="assets/type50/images/icons/ico_vendor.png"
-      onError="src ='assets/type50/images/icons/ico_vendor.png'"
-      style="
-        width: 80px;
-        height: 80px;
-        padding-bottom: 10px;
-        margin: 0 auto;
-        display: block;
-      "
-    />
-    Vendor
-  </button>
-  <button
-    my-reg-option-btn
-    sp-button-red-out1
-    matRipple
-    matRippleColor="rgba(255,255,255,0.1)"
-    style="
-      margin-right: 2vh;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 700;
-    "
-    value=""
-    [ngStyle]="{
-      'font-weight':'bold'
-    }"
-    (click)="takeActFor('Contractor Staff')"
-    [disabled]="!IF_CONNECT_WITH_SERVER"
-  >
-    <img
-      src="assets/type50/images/icons/ico_cstaff.png"
-      onError="src ='assets/type50/images/icons/ico_cstaff.png'"
-      style="
-        width: 80px;
-        height: 80px;
-        padding-bottom: 10px;
-        margin: 0 auto;
-        display: block;
-      "
-    />
-    Contractor Staff
-  </button>
-
-</div>

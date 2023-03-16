@@ -10,7 +10,7 @@ import { AppSettings } from 'src/services/app.settings';
 export class ScanComponent implements OnInit {
 
   KIOSK_PROPERTIES: any = {};
-  constructor(private router:Router) {
+  constructor(private router: Router) {
     this._updateKioskSettings();
   }
 
@@ -24,12 +24,13 @@ export class ScanComponent implements OnInit {
       console.log(this.KIOSK_PROPERTIES);
     }
   }
-  takeActFor(action:String){
-    if(action == 'cancel' || action == 'home'){
+  takeActFor(action: String) {
+    if (action == 'cancel' || action == 'home') {
       this.router.navigateByUrl('/landing');
-    }else if(action == 'start'){
+    } else if (action == 'start') {
       //this.router.navigateByUrl('/details');
-      this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: "PASSPORT" }});
+      debugger
+      this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: "PASSPORT" } });
 
       /* switch (localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE)) {
         case "Visitor":

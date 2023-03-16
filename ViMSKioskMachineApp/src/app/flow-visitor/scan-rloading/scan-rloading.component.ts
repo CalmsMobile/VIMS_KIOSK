@@ -51,7 +51,6 @@ export class ScanRLoadingComponent implements OnInit {
         }
       });
   }
-
   gotoRegistrationScreen() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
@@ -61,6 +60,9 @@ export class ScanRLoadingComponent implements OnInit {
   }
   ngOnDestroy() {
     this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+    if(this.websocket != null && this.websocket.readyState > 0){
+      this.websocket.close();
+    }
   }
   getDeviceConnectionData(action:string){
     if(AppSettings.APP_DEFAULT_SETTIGS.Passport_Scanner == "SINOSECURE"){
@@ -137,6 +139,7 @@ export class ScanRLoadingComponent implements OnInit {
                   "visDOCID":parseData.Param["Passport number"]?parseData.Param["Passport number"]:parseData.Param["ID Number"],
                   "visDocImage":null,
                 }
+                _this.websocket.close();
                 localStorage.setItem("VISI_SCAN_DOC_DATA",JSON.stringify(userData));
                 _this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: _this.docType }});
               }

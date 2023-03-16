@@ -18,15 +18,23 @@
   <h3>Test Receipt Print</h3>
   <button mat-raised-button margin-right color="primary" (click)="testPrintReceipt()">Test Receipt Print</button>
   <div margin-top margin-bottom>{{RECEIPT_RESPONSE}}</div>
-</div> 
+</div>
 <div>
-    <h3> card dispenser 1</h3>
-  <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('SetCardIn')">Set Card In</button>
-  <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('EjectCard')">Eject Card</button>
-  <button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('RejectCard')">Reject Card</button>
-  <mat-form-field class="example-full-width">
-      <input #input1 matInput placeholder="Card Serial Number" value="">
+    <h3> card dispenser type 1</h3>
+  <button mat-raised-button margin-right color="primary" (click)="get_cardSerial_number_type1()">Test</button>
+ <mat-form-field class="example-full-width">
+  
+      <input #cardSerInput matInput placeholder="Card Serial Number" value="">
     </mat-form-field>
+</div>
+<div>
+  <h3> card dispenser 1</h3>
+<button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('SetCardIn')">Set Card In</button>
+<button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('EjectCard')">Eject Card</button>
+<button mat-raised-button margin-right color="primary" (click)="getDeviceConnectionData('RejectCard')">Reject Card</button>
+<mat-form-field class="example-full-width">
+    <input #input1 matInput placeholder="Card Serial Number" value="">
+  </mat-form-field>
 </div>
 <div>
     <h3> card dispenser 2</h3>

@@ -1,45 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  // font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-body * {
-  -webkit-touch-callout: none !important; /* iOS Safari */
-  -webkit-user-select: none !important; /* Safari */
-  -khtml-user-select: none !important; /* Konqueror HTML */
-  -moz-user-select: none !important; /* Firefox */
-  -ms-user-select: none !important; /* Internet Explorer/Edge */
-  user-select: none !important; /* Non-prefixed version, currently
-                                    supported by Chrome and Opera */
-}
 
-::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
-  color: rgba(0, 0, 0, 0.15);
-}
-::-moz-placeholder {
-  /* Firefox 19+ */
-  color: rgba(0, 0, 0, 0.15);
-}
-:-ms-input-placeholder {
-  /* IE 10+ */
-  color: rgba(0, 0, 0, 0.15);
-}
-:-moz-placeholder {
-  /* Firefox 18- */
-  color: rgba(0, 0, 0, 0.15);
-}
-@font-face {
-  font-family: "dinpro";
-  src: url("assets/fonts/dinpro.ttf");
-}
-* {
-  font-family: "dinpro", dinpro !important;
-}
-body {
-  font-family: "dinpro", sans-serif !important;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body * {
+    -webkit-touch-callout: none !important; /* iOS Safari */
+      -webkit-user-select: none !important; /* Safari */
+       -khtml-user-select: none !important; /* Konqueror HTML */
+         -moz-user-select: none !important; /* Firefox */
+          -ms-user-select: none !important; /* Internet Explorer/Edge */
+              user-select: none !important; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+  }
+
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color:rgba(0,0,0,0.15);
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: rgba(0,0,0,0.15);
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    color: rgba(0,0,0,0.15);
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    color: rgba(0,0,0,0.15);
+  }

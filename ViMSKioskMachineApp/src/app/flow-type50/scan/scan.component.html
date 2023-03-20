@@ -14,100 +14,71 @@
   </button>
 </div>
 <div style="position: absolute; right: 0; top: 0">
-  <img style="margin: 40px" src="assets\type50\images\Logo_small.png" />
+  <img style="margin: 40px;height: 70px;" src="assets\type50\images\Logo_small.png" />
 </div>
-<div style="text-align: center; padding: 30px; margin-top: 10%">
+<div style="text-align: center; padding-top: 25%">
   <p
     style="
       text-align: center;
       color: #00769d;
-      font-weight: normal;
-      font-size: xx-large;
+      font-weight: bold;
+      font-size: xxx-large;
     "
   >
     Please Scan your<br />Identity Card or Passport<br />at the Scanner and
     press "Start"
   </p>
 </div>
-<div margin-bottom style="text-align: center">
+<div style="text-align: center; padding-top: 20px">
   <img
     src="assets\type50\gifs\Passport.gif"
-    style="height: 35vw"
+    style="height: 40vw"
     margin-bottom
   />
-  <div>
-    <button
-      mat-raised-button
-      my-theme-button
-      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
-      (click)="takeActFor('cancel')"
-      style="
+  <button
+    mat-raised-button
+    my-theme-button
+    [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+    (click)="takeActFor('cancel')"
+    style="
       background: red !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        padding-left: 80px !important;
-        padding-right: 80px !important;
-        margin-top: 10px;
-        border-radius: 10px;
-        text-align: center;
-        border-radius: 2vh !important;
-        min-width: 200px;
-      "
-    >
-      <div style="display: flex; align-items: center">
-        <p style="margin: 0px">Cancel</p>
-      </div>
-    </button>
-    <!--  <button
-      mat-raised-button
-      my-theme-button
-      style="
-        background: red !important;
-        margin: 15px;
-        width: 200px;
-        text-align: center;
-      "
-      (click)="takeActFor('cancel')"
-    >
-      Cancel
-    </button> -->
-  </div>
-  <div>
-    <button
-      mat-raised-button
-      my-theme-button
-      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
-      (click)="takeActFor('start')"
-      style="
-        background: #00bfff !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        padding-left: 90px !important;
-        padding-right: 90px !important;
-        margin-top: 10px;
-        border-radius: 10px;
-        text-align: center;
-        border-radius: 2vh !important;
-      "
-    >
-      <div style="display: flex; align-items: center">
-        <p style="margin: 0px">Start</p>
-      </div>
-    </button>
-    <!--  <button
-      mat-raised-button
-      my-theme-button
-      style="
-        background: #00769d !important;
-        margin: 15px;
-        width: 200px;
-        text-align: center;
-      "
-      (click)="takeActFor('start')"
-    >
-      Start
-    </button> -->
-  </div>
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      padding-left: 75px !important;
+      padding-right: 75px !important;
+      border-radius: 10px;
+      text-align: center;
+      border-radius: 2vh !important;
+      min-width: 200px;
+      margin: 20px;
+    "
+  >
+    <div style="display: flex; align-items: center">
+      <p style="margin: 0px">Cancel</p>
+    </div>
+  </button>
+
+  <button
+    mat-raised-button
+    my-theme-button
+    [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+    (click)="takeActFor('start')"
+    style="
+      background: #00bfff !important;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      padding-left: 90px !important;
+      padding-right: 90px !important;
+      border-radius: 10px;
+      text-align: center;
+      border-radius: 2vh !important;
+      margin: 20px;
+    "
+  >
+    <div style="display: flex; align-items: center">
+      <p style="margin: 0px">Start</p>
+    </div>
+  </button>
 </div>
 <div my-footer-toolbar>
   <!-- <button

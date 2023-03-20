@@ -14,9 +14,12 @@
   </button>
 </div>
 <div style="position: absolute; right: 0; top: 0">
-  <img style="margin: 40px" src="assets\type50\images\Logo_small.png" />
+  <img
+    style="margin: 40px; height: 70px"
+    src="assets\type50\images\Logo_small.png"
+  />
 </div>
-<div loader-page style="text-align: center; padding: 30px">
+<div loader-page style="text-align: center; padding-top: 20%">
   <!--  <div *ngIf="isLoading" style="padding-top:20vh">
     <p info-title [innerHTML]="KIOSK_PROPERTIES['commonsetup']['Register_loading_msg'] | safeHtml">
 
@@ -33,14 +36,15 @@
       </mat-form-field>
   </div> -->
   <div *ngIf="!isLoading">
-    <div style="display: inline-grid; margin-top: 20%">
-      <label
-        style="font-weight: normal; font-size: 32px; color: #00769d"
+    <div style="display: inline-grid; width: 100%; margin-top: 10%">
+      <p info-title no-margin-top margin-bottom>{{ RESULT_MSG }}</p>
+      <!-- <label
+        style="font-weight: bold; font-size: 52px; color: #00769d"
         [innerHTML]="RESULT_MSG | safeHtml"
-      ></label>
+      ></label> -->
       <img
         src="assets\type50\images\icons\ico_right.png"
-        style="width: 80px; height: 80px; margin: 10px auto"
+        style="width: 100px; height: 100px; margin: 10px auto"
       />
       <img
         src="assets\type50\images\image_pass_card.png"
@@ -48,7 +52,7 @@
       />
       <label
         style="
-          font-size: 18px;
+          font-size: 30px;
           font-weight: bold;
           color: #00769d;
           margin-top: 20px;
@@ -58,7 +62,7 @@
       ></label>
       <label
         style="
-          font-size: 18px;
+          font-size: 30px;
           font-style: italic;
           color: #d60e0e;
           margin-top: 20px;
@@ -66,19 +70,18 @@
         *ngIf="RESULT_MSG2"
         [innerHTML]="RESULT_MSG3 | safeHtml"
       ></label>
-      <div *ngIf="mainModule === 'Contractor'">
+      <div *ngIf="mainModule === 'Contractor'" style="padding-top: 40px;">
         <button
           (click)="takeActFor('addWorker')"
           style="
             background: #00769d !important;
             margin: 25px;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        padding-left: 80px !important;
-        padding-right: 80px !important;
-        border-radius: 10px;
-        text-align: center;
-        border-radius: 2vh !important;
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            border-radius: 10px;
+            text-align: center;
+            width: 400px;
+            border-radius: 2vh !important;
           "
           mat-raised-button
           my-theme-button
@@ -89,13 +92,12 @@
         <button
           style="
             background: #00bfff !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        padding-left: 80px !important;
-        padding-right: 80px !important;
-        border-radius: 10px;
-        text-align: center;
-        border-radius: 2vh !important;
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            border-radius: 10px;
+            text-align: center;
+            width: 400px;
+            border-radius: 2vh !important;
           "
           mat-raised-button
           my-theme-button
@@ -104,27 +106,26 @@
           OK
         </button>
       </div>
-<div>
-  <button
-  *ngIf="mainModule !== 'Contractor'"
-  style="
-     background: #00bfff !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  border-radius: 10px;
-  text-align: center;
-  border-radius: 2vh !important;
-  margin: 25px;
-  width: fit-content !important;
-  "
-  mat-raised-button
-  my-theme-button
-  (click)="takeActFor('ok')"
->
-  OK
-</button>
-</div>
-
+      <div style="padding-top: 40px;">
+        <button
+          *ngIf="mainModule !== 'Contractor'"
+          style="
+            background: #00bfff !important;
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            border-radius: 10px;
+            text-align: center;
+            border-radius: 2vh !important;
+            margin: 25px;
+            width: fit-content !important;
+          "
+          mat-raised-button
+          my-theme-button
+          (click)="takeActFor('ok')"
+        >
+          OK
+        </button>
+      </div>
     </div>
   </div>
 </div>

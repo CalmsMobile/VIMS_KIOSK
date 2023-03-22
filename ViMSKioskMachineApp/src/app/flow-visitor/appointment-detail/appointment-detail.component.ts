@@ -354,7 +354,7 @@ export class AppointmentDetailComponent implements OnInit {
           this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
           this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
           this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
-          if(!this.apiServices.isTest)
+          //if(!this.apiServices.isTest)
           this._getAutoApprovalOption(this.aptmDetails.branchID);
           console.log(this.aptmDetails.hostDetails.id);
         }

@@ -526,6 +526,7 @@ export class AppointmentSuccessComponent implements OnInit {
       let _this = this;
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
       let _cardDcom = JSON.parse(setngs)["kioskSetup"].modules['card_dispenser']['COM_Port'] || "";
+      let timeOut = AppSettings.APP_DEFAULT_SETTIGS.Card_dispenser_time;
       this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe((data: any) => {
         debugger
         console.log("CD_OpenPort data " + data);
@@ -543,28 +544,30 @@ export class AppointmentSuccessComponent implements OnInit {
                   debugger
                   setTimeout(function () {
                     debugger
-                    if (_this.cardSerInput.nativeElement.value != null || _this.cardSerInput.nativeElement.value != "") {
+                    if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" ||  _this.cardSerInput.nativeElement.value.length > 2) {
                       debugger
                       console.log("CD_ card number " + _this.cardSerInput.nativeElement.value);
                       _callback(true, _this.cardSerInput.nativeElement.value);
                     }
                     else {
                       debugger
-                      this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                      _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
                         debugger
+                        _callback(false, "0");
                       }, err => {
                         debugger
+                        _callback(false, "0");
                       });
-                      const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+                      /* const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
                         data: { "title": "Please Contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
                         disableClose: true
                       });
                       dialogRef.afterClosed().subscribe((data) => {
                         this.router.navigate(['/landing']);
-                      });
-                      _callback(false, "0");
+                      }); */
+
                     }
-                  }, 5000);
+                  }, timeOut);
                 } else {
                   debugger
                   _callback(false, "0");
@@ -665,22 +668,40 @@ export class AppointmentSuccessComponent implements OnInit {
                     _preparePrintLabel(false);
                   });
               } else {
-                this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
+                this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                  this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    debugger
+                  }, err => {
+                    debugger
+                  });
+                }, err => {
+                  this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    debugger
+                  }, err => {
+                    debugger
+                  });
+                });
                 const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-                  data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
+                  data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
                   disableClose: true
                 });
                 dialogRef.afterClosed().subscribe((data) => {
                   this.router.navigate(['/landing']);
                 });
+
               }
             });
 
           } else {
             //_callback false
             //this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
+            this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+              debugger
+            }, err => {
+              debugger
+            });
             const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-              data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
+              data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
               disableClose: true
             });
             dialogRef.afterClosed().subscribe((data) => {

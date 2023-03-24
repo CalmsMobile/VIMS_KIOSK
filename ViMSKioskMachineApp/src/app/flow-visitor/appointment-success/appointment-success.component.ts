@@ -38,6 +38,7 @@ export class AppointmentSuccessComponent implements OnInit {
   LabelPrintManualOrAuto: any = 10;
   cardDispenserNotAllowed = false;
   @ViewChild('cardSerInput') cardSerInput: ElementRef;
+  callback: any;
 
   constructor(private route: ActivatedRoute,
     private settingsService: SettingsService,
@@ -434,6 +435,23 @@ export class AppointmentSuccessComponent implements OnInit {
         return false;
       });
   }
+  onInput(value: string) {
+    debugger
+    if (value != "" && value.length > 6) {
+      debugger
+      console.log("onInput " + value)
+      //this.takeActFor('getAppointmentDetail')
+      this.callback(true, this.cardSerInput.nativeElement.value);
+    }
+  }
+  onKeydown(event: any) {
+    debugger
+    if (event.isTrusted && this.cardSerInput.nativeElement.value.length >= 10) {
+      debugger
+      console.log("onKeydown: " + this.cardSerInput.nativeElement.value);
+      this.callback(true, this.cardSerInput.nativeElement.value);
+    }
+  }
   //-------------------- Hardware Services --------------------
   private chk_hardwares_to_finish(att_id: string, _visitorData: any, _nextElemcallBack: any) {
     debugger
@@ -541,8 +559,16 @@ export class AppointmentSuccessComponent implements OnInit {
               if (data.length > 0 && data[0]['Data'] != null) {
                 let cardMoveStatus = JSON.parse(data[0]['Data']);
                 if (cardMoveStatus['ResponseStatus'] == "0") {
+                  this.callback = _callback;
                   debugger
-                  setTimeout(function () {
+                  _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                    debugger
+                    _callback(false, "0");
+                  }, err => {
+                    debugger
+                    _callback(false, "0");
+                  });
+                  /* setTimeout(function () {
                     debugger
                     if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" ||  _this.cardSerInput.nativeElement.value.length > 2) {
                       debugger
@@ -558,16 +584,8 @@ export class AppointmentSuccessComponent implements OnInit {
                         debugger
                         _callback(false, "0");
                       });
-                      /* const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-                        data: { "title": "Please Contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
-                        disableClose: true
-                      });
-                      dialogRef.afterClosed().subscribe((data) => {
-                        this.router.navigate(['/landing']);
-                      }); */
-
                     }
-                  }, timeOut);
+                  }, timeOut); */
                 } else {
                   debugger
                   _callback(false, "0");

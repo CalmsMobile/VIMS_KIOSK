@@ -34,7 +34,7 @@ export class FlowVisitorComponent implements OnInit {
 
   takeActFor(action:string){
     if(action === "agree"){
-      
+
       // const dialogRef = this.dialog.open(appConfirmDialog, {
       //   width: '250px',
       //   data: {title: "CCTV monitoring in progress", btn_ok:"Ok"}
@@ -52,16 +52,16 @@ export class FlowVisitorComponent implements OnInit {
       if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
         this.router.navigateByUrl('/visitorDetailForTemp');
       else {
-        
+
         if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-            this.apiServices.localGetMethod("setLEDON",
+            /* this.apiServices.localGetMethod("setLEDON",
             this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
               width: '250px',
               disableClose:false,
@@ -78,7 +78,7 @@ export class FlowVisitorComponent implements OnInit {
               if(result){
                   this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'SING_NRICrDRIV' }});
               } else{
-                this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+               // this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
               }
             });
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
@@ -88,9 +88,9 @@ export class FlowVisitorComponent implements OnInit {
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-            this.apiServices.localGetMethod("setLEDON",
+            /* this.apiServices.localGetMethod("setLEDON",
             this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
               width: '250px',
               disableClose:false,
@@ -107,7 +107,7 @@ export class FlowVisitorComponent implements OnInit {
               if(result){
                   this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'PASSPORT' }});
               } else{
-                this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
               }
             });
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
@@ -117,9 +117,9 @@ export class FlowVisitorComponent implements OnInit {
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-            this.apiServices.localGetMethod("setLEDON",
+           /*  this.apiServices.localGetMethod("setLEDON",
             this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
               width: '250px',
               disableClose:false,
@@ -136,7 +136,7 @@ export class FlowVisitorComponent implements OnInit {
               if(result){
                   this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'BUSINESS' }});
               } else{
-                this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
               }
             });
         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
@@ -154,14 +154,14 @@ export class FlowVisitorComponent implements OnInit {
           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
         } else {
-          
+
           if(localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE) === "preAppointment"){
             localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, 'vcheckin');
             this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: "PREAPPOINTMT" }});
           }else{
             this.router.navigateByUrl('/visitorRegisType');
           }
-          
+
         }
       }
 

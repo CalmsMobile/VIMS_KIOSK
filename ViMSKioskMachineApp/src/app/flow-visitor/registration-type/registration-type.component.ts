@@ -57,27 +57,27 @@ export class RegistrationTypeComponent implements OnInit {
     this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD'
     || this.SEL_REGISTRATION_TYPE == 'BUSINESS'){
       let _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-      
+
       if(this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV'){
         _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-        this.apiServices.localGetMethod("setLEDON",
+        /* this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
       } else if(this.SEL_REGISTRATION_TYPE == 'PASSPORT'){
         _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-        this.apiServices.localGetMethod("setLEDON",
+      /*   this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
       } else if(this.SEL_REGISTRATION_TYPE == 'MYCARD'){
         _imgsrc = "assets/images/cus_icons/id_mycard_gif.gif";
-        this.apiServices.localGetMethod("setLEDON",
+        /* this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRIC_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
       } else if(this.SEL_REGISTRATION_TYPE == 'BUSINESS'){
         _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-        this.apiServices.localGetMethod("setLEDON",
+        /* this.apiServices.localGetMethod("setLEDON",
         this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
       }
       const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
         width: '250px',
@@ -95,7 +95,7 @@ export class RegistrationTypeComponent implements OnInit {
         if(result){
             this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: this.SEL_REGISTRATION_TYPE }});
         } else{
-          this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+          //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
         }
       });
     } else if(this.SEL_REGISTRATION_TYPE == 'OTHER'){

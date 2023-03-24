@@ -59,7 +59,7 @@ export class ScanRLoadingComponent implements OnInit {
     this.router.navigateByUrl('/landing');
   }
   ngOnDestroy() {
-    this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
     if(this.websocket != null && this.websocket.readyState > 0){
       this.websocket.close();
     }

@@ -15,7 +15,7 @@ import { DialogPrepareForScanComponent } from '../flow-visitor/registration-type
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
-  @ViewChild('readStaffCard') readStaffCardElement: ElementRef;
+  //@ViewChild('readStaffCard') readStaffCardElement: ElementRef;
   LOGO_IMG = "assets/images/cus_icons/CALMS_logo.png";
   GO_SETTINGS_COUNT:number = 0;
   KIOSK_AVAL_CARDS:number = 0;
@@ -67,9 +67,9 @@ export class LandingComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
     document.getElementById("homeButton").style.display = "block";
-    console.log("%c ---------- Landing Screen Distroy: %s", AppSettings.LOG_FAILED, this.datePipe.transform(new Date(), 'medium'));
+    //console.log("%c ---------- Landing Screen Distroy: %s", AppSettings.LOG_FAILED, this.datePipe.transform(new Date(), 'medium'));
   }
   readStaffCardEnter(){
     const StaffCardValue=this.StaffCardNo;
@@ -123,9 +123,9 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
                   const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-                  this.apiServices.localGetMethod("setLEDON",
+                 /*  this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
                   const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
                     width: '250px',
                     disableClose:false,
@@ -142,7 +142,7 @@ export class LandingComponent implements OnInit {
                     if(result){
                         this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'SING_NRICrDRIV' }});
                     } else{
-                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                      //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
                     }
                   });
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
@@ -152,9 +152,9 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
                   const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-                  this.apiServices.localGetMethod("setLEDON",
+                  /* this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
                   const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
                     width: '250px',
                     disableClose:false,
@@ -171,7 +171,7 @@ export class LandingComponent implements OnInit {
                     if(result){
                         this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'PASSPORT' }});
                     } else{
-                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                      //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
                     }
                   });
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
@@ -181,9 +181,9 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
                   const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-                  this.apiServices.localGetMethod("setLEDON",
+                 /*  this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
                   const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
                     width: '250px',
                     disableClose:false,
@@ -200,7 +200,7 @@ export class LandingComponent implements OnInit {
                     if(result){
                         this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'BUSINESS' }});
                     } else{
-                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                      //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
                     }
                   });
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
@@ -240,9 +240,9 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
                   const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-                  this.apiServices.localGetMethod("setLEDON",
+                  /* this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
                   const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
                     width: '250px',
                     disableClose:false,
@@ -259,7 +259,7 @@ export class LandingComponent implements OnInit {
                     if(result){
                         this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'SING_NRICrDRIV' }});
                     } else{
-                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                      //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
                     }
                   });
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
@@ -268,9 +268,9 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
                   const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-                  this.apiServices.localGetMethod("setLEDON",
+                  /* this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
                   const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
                     width: '250px',
                     disableClose:false,
@@ -287,7 +287,7 @@ export class LandingComponent implements OnInit {
                     if(result){
                         this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'PASSPORT' }});
                     } else{
-                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                      //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
                     }
                   });
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
@@ -296,9 +296,9 @@ export class LandingComponent implements OnInit {
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
                 !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
                   const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-                  this.apiServices.localGetMethod("setLEDON",
+                  /* this.apiServices.localGetMethod("setLEDON",
                   this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
-
+ */
                   const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
                     width: '250px',
                     disableClose:false,
@@ -315,7 +315,7 @@ export class LandingComponent implements OnInit {
                     if(result){
                         this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'BUSINESS' }});
                     } else{
-                      this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+                      //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
                     }
                   });
               } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
@@ -542,7 +542,8 @@ export class LandingComponent implements OnInit {
 
 
   checkCardPosition(_callback){
-    if(this.KIOSK_PROPERTIES['modules']['card_dispenser']['enable']){
+    _callback(true)
+   /*  if(this.KIOSK_PROPERTIES['modules']['card_dispenser']['enable']){
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data:any) => {
         if(data.length > 0 && data[0]['Data'] != ""){
           let cardStatus = JSON.parse(data[0]['Data']) || {"ResponseStatus":"1","ResponseMessage":"Invalid JSON"};
@@ -579,17 +580,17 @@ export class LandingComponent implements OnInit {
       });
     }else{
       _callback(true);
-    }
+    } */
   }
 
-  @HostListener('document:click', ['$event'])
+  /* @HostListener('document:click', ['$event'])
   clickout(event) {
     const _this=this;
     console.log("clicked inside landing");
     setTimeout(()=>{
       _this.readStaffCardElement.nativeElement.focus();
     },50);
-  }
+  } */
 }
 function checkWebsocket() {
   //throw new Error('Function not implemented.');

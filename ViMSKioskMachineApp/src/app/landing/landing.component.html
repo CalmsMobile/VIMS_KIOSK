@@ -24,7 +24,7 @@
     <i class="siva-icon-docs-1"></i>
   </button>
 </div> -->
-<div style="text-align: center;">
+<div style="text-align: center">
   <div *ngIf="KIOSK_PROPERTIES.General.AppType != 50">
     <h1
       welcome-title
@@ -66,7 +66,7 @@
     >
       {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 }}
     </h3> -->
-    <div style="text-align: center;">
+    <div style="text-align: center">
       <img
         style="height: 7vh; margin-top: 4vh"
         alt="Angular Logo"
@@ -75,7 +75,7 @@
       <p
         info-title
         no-margin-top
-        style="margin-top: 4vh !important; font-size: 8vmin;"
+        style="margin-top: 4vh !important; font-size: 8vmin"
         [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
         *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
       >
@@ -97,114 +97,74 @@
             background: #00769d !important;
           "
         >
-          <div
-            style="
-              display: flex;
-              align-items: center;
-            "
-          >
-          <img
-          src="assets/images/cus_icons/ico_visitor.png"
-          style="
-            width: 100px;
-            height: 100px;
-            display: block;
-          "
-        />
+          <div style="display: flex; align-items: center">
+            <img
+              src="assets/images/cus_icons/ico_visitor.png"
+              style="width: 100px; height: 100px; display: block"
+            />
             <p style="margin: 0px; margin-left: 50px">Visitor</p>
-
           </div>
         </button>
         <button
-        mat-raised-button
-        my-theme-button
-        [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
-        (click)="takeActFor('Contractor')"
-        style="
-          padding-top: 20px !important;
-          padding-bottom: 20px !important;
-          margin-bottom: 60px;
-          background: #009d93 !important;
-        "
-      >
-        <div
+          mat-raised-button
+          my-theme-button
+          [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+          (click)="takeActFor('Contractor')"
           style="
-            display: flex;
-            align-items: center;
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
+            margin-bottom: 60px;
+            background: #009d93 !important;
           "
         >
-        <img
-        src="assets/images/cus_icons/ico_contractor.png"
-        style="
-          width: 100px;
-          height: 100px;
-          display: block;
-        "
-      />
-          <p style="margin: 0px; margin-left: 50px">Contractor</p>
-
-        </div>
-      </button>
-      <button
-      mat-raised-button
-      my-theme-button
-      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
-      (click)="takeActFor('Contractor')"
-      style="
-        padding-top: 20px !important;
-        padding-bottom: 20px !important;
-        margin-bottom: 60px;
-        background: #61c8ea !important;
-      "
-    >
-      <div
-        style="
-          display: flex;
-          align-items: center;
-        "
-      >
-      <img
-      src="assets/images/cus_icons/ico_vendor.png"
-      style="
-        width: 100px;
-        height: 100px;
-        display: block;
-      "
-    />
-        <p style="margin: 0px; margin-left: 50px">Vendor</p>
-
-      </div>
-    </button>
-    <button
-    mat-raised-button
-    my-theme-button
-    [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
-    (click)="takeActFor('Contractor Staff')"
-    style="
-      padding-top: 20px !important;
-      padding-bottom: 20px !important;
-      margin-bottom: 60px;
-      background: #094b61 !important;
-    "
-  >
-    <div
-      style="
-        display: flex;
-        align-items: center;
-      "
-    >
-    <img
-    src="assets/images/cus_icons/ico_cs.png"
-    style="
-      width: 100px;
-      height: 100px;
-      display: block;
-    "
-  />
-      <p style="margin: 0px; margin-left: 50px">Contractor Staff</p>
-
-    </div>
-  </button>
+          <div style="display: flex; align-items: center">
+            <img
+              src="assets/images/cus_icons/ico_contractor.png"
+              style="width: 100px; height: 100px; display: block"
+            />
+            <p style="margin: 0px; margin-left: 50px">Contractor</p>
+          </div>
+        </button>
+        <button
+          mat-raised-button
+          my-theme-button
+          [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+          (click)="takeActFor('Vendor')"
+          style="
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
+            margin-bottom: 60px;
+            background: #61c8ea !important;
+          "
+        >
+          <div style="display: flex; align-items: center">
+            <img
+              src="assets/images/cus_icons/ico_vendor.png"
+              style="width: 100px; height: 100px; display: block"
+            />
+            <p style="margin: 0px; margin-left: 50px">Vendor</p>
+          </div>
+        </button>
+        <button
+          mat-raised-button
+          my-theme-button
+          [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+          (click)="takeActFor('Contractor Staff')"
+          style="
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
+            margin-bottom: 60px;
+            background: #094b61 !important;
+          "
+        >
+          <div style="display: flex; align-items: center">
+            <img
+              src="assets/images/cus_icons/ico_cs.png"
+              style="width: 100px; height: 100px; display: block"
+            />
+            <p style="margin: 0px; margin-left: 50px">Contractor Staff</p>
+          </div>
+        </button>
         <!--  <button
         my-reg-option-btn
         sp-button-red-out1

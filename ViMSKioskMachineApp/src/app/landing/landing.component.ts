@@ -67,7 +67,7 @@ export class LandingComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.apiServices.localGetMethod("setLEDOFF", "").subscribe((ledStatus: any) => { }, err => { });
+   // this.apiServices.localGetMethod("setLEDOFF", "").subscribe((ledStatus: any) => { }, err => { });
     document.getElementById("homeButton").style.display = "block";
     console.log("%c ---------- Landing Screen Distroy: %s", AppSettings.LOG_FAILED, this.datePipe.transform(new Date(), 'medium'));
   }

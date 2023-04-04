@@ -11,10 +11,11 @@ export const AppSettings = Object.freeze({
     "card_showTimeOutMsg": "true",
     "card_scrnTimOut": "120",
     "card_showTimeOutMsgAfter": "30",
-    //"Passport_Scanner":"old",
-    "Passport_Scanner": "SINOSECURE",
+    "Passport_Scanner": "old",
+   // "Passport_Scanner": "SINOSECURE",
     "SinosecureWebsocketUrl": "ws://127.0.0.1:90/echo",
-    "Disable_CardDispenser": "PARTICIPANTS"
+    "Disable_CardDispenser": "PARTICIPANTS",
+    "Card_dispenser_time":1300
   },
   APP_API_SETUP: {
     api_url: "http://localhost:57080/",

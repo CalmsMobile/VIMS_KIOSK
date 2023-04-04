@@ -33,19 +33,16 @@ export class SuccessComponent implements OnInit {
   takeActFor(action: String) {
     if (action == 'ok') {
       this.router.navigateByUrl('/landing');
-    } else if (action == 'addWorker') {
-      //this.router.navigateByUrl('/details');
-      this.router.navigateByUrl('/terms');
     } else if (action === 'home') {
       this.router.navigateByUrl('/landing');
     } else if (action === 'addWorker') {
-      let userData = {
-        "visName": "",
-        "visDOCID": "",
-        "visDocImage": null,
-      }
-      localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-      this.router.navigateByUrl('/details')
+
+        localStorage.setItem("_PURPOSE_OF_VISIT", "[]");
+        localStorage.setItem("VISI_SCAN_DOC_DATA", "");
+        localStorage.setItem("VISI_HOST_MOB_NUM", "");
+        localStorage.setItem("VISI_LIST_ARRAY", "{\"appSettings\":{}, \"visitorDetails\" :[]}");
+      
+      this.router.navigateByUrl('/scan');
     }
 
   }

@@ -19,6 +19,7 @@ export class AppointmentModal  {
     public checkinCounter:string = '';
     public visitorDocB64Image:string = '';
     public hostDetails:HostDetails = new HostDetails();
+    public hostName:string = '';
     public SkipFR?:boolean = false;
     public aptid?:string = '';
     public meetingHours:string = '';

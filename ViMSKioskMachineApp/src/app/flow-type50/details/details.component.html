@@ -35,10 +35,13 @@
   </button>
 </div>
 <div style="position: absolute; right: 0; top: 0">
-  <img style="margin: 40px;height: 70px;" src="assets\type50\images\Logo_small.png" />
+  <img
+    style="margin: 40px; height: 70px"
+    src="assets\type50\images\Logo_small.png"
+  />
 </div>
 
-<div *ngIf="!isLoading" style="text-align: center;padding-top: 15%;">
+<div *ngIf="!isLoading" style="text-align: center; padding-top: 15%">
   <p info-title no-margin-top margin-bottom>{{ title }}</p>
   <div>
     <div style="padding-top: 1vh">
@@ -214,7 +217,7 @@
           matInput
           theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
-          [(ngModel)]="aptmDetails.Host"
+          [(ngModel)]="aptmDetails.hostName"
           (blur)="textDataBindTemp($event.target.value, 'Host')"
           oninput="this.value = this.value.toUpperCase()"
           spellcheck="false"
@@ -397,7 +400,7 @@
                 KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength ||
               aptmDetails.contact.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
-              aptmDetails.Host.length <
+              aptmDetails.hostName.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Host.MinLength ||
               aptmDetails.Department.length < departmentMinLength))
         "

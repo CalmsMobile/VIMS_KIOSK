@@ -1,4 +1,3 @@
-import { HostDetails } from './../../flow-visitor/appointment-detail/appointmentModal';
 import { Router } from '@angular/router';
 import { Component, OnInit, Inject, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AppointmentModal } from '../appointmentModal';
@@ -55,16 +54,16 @@ export class DetailsComponent implements OnInit {
     private settingsService: SettingsService,
     public datePipe: DatePipe) {
     this.isLoading = false;
-    this._updateKioskSettings();
     this.aptmDetails = new AppointmentModal();
+    this._updateKioskSettings();
     this._initPrintAndCardDispenserValues();
   }
   _initPrintAndCardDispenserValues() {
 
-     setInterval(()=>{
-     if(this.cardSerInput != undefined)
-       this.cardSerInput.nativeElement.focus();
-     },100);
+    setInterval(() => {
+      if (this.cardSerInput != undefined)
+        this.cardSerInput.nativeElement.focus();
+    }, 100);
   }
   ngOnInit() {
     document.getElementById("homeButton").style.display = "none";
@@ -114,12 +113,12 @@ export class DetailsComponent implements OnInit {
 
       this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory = false;
 
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength = 11;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength = 11;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength = 5;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength = 11;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength = 5;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.MinLength = 4;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength = 1;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength = 5;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength = 1;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength = 1;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength = 1;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.MinLength = 1;
 
 
       this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
@@ -136,13 +135,19 @@ export class DetailsComponent implements OnInit {
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show = false;
           this.workReferenceNoShow = false;
           this.departmentShow = false;
+          this.aptmDetails.category = 'VISITOR';
+          this.aptmDetails.categoryId = 'VISIT';
           break;
         case "Contractor":
           this.departmentShow = false;
+          this.aptmDetails.category = 'CONTRACTOR';
+          this.aptmDetails.categoryId = 'CONTRACTOR';
           break;
         case "Vendor":
           this.workReferenceNoShow = false;
           this.departmentShow = false;
+          this.aptmDetails.category = 'VENDOR';
+          this.aptmDetails.categoryId = 'VENDOR';
           break;
         case "Contractor Staff":
           this.LocationOfVisitShow = false;
@@ -151,6 +156,8 @@ export class DetailsComponent implements OnInit {
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show = false;
           this.workReferenceNoShow = false;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory = true;
+          this.aptmDetails.category = 'CONTRACT STAFF';
+          this.aptmDetails.categoryId = 'CONTRACTSTAFF';
           break;
 
         default:
@@ -207,27 +214,30 @@ export class DetailsComponent implements OnInit {
       this.isLoading = true;
       if (this._updateVisitorList()) {
         console.log(localStorage.getItem("VISI_LIST_ARRAY"));
-        let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-        this.addAttendanceForVisitor(uploadArray);
+        /* let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+        this.addAttendanceForVisitor(uploadArray); */
+        this.isLoading = false;
+    this.router.navigateByUrl('/success');
       }
     }
-    //this.router.navigateByUrl('/success')
+
 
   }
   _updateVisitorList() {
-
+debugger
     let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     if (!this._validateDOCIdinList(this.aptmDetails.id)) {
-
+debugger
       let listOfVisitors: any = uploadArray['visitorDetails'];
       this.aptmDetails.checkinCounter = this.KIOSK_CHECKIN_COUNTER_NAME;
       this.aptmDetails['VisitorAnswers'] = JSON.stringify([]);
+      this.aptmDetails.hostDetails.name = this.aptmDetails.hostName;
       listOfVisitors.push(this.aptmDetails);
       uploadArray['visitorDetails'] = listOfVisitors;
       localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
       return true;
     } else {
-
+debugger
       return false;
     }
   }
@@ -268,9 +278,9 @@ export class DetailsComponent implements OnInit {
               let _RESDATA = Data["Table1"];
               if (_RESDATA.length > 0) {
                 debugger
-                //this.proceedThisAttIDsForCheckin(_RESDATA);
-                this.isLoading = false;
-                this.router.navigateByUrl('/success');
+                this.proceedThisAttIDsForCheckin(_RESDATA);
+                //this.isLoading = false;
+                //this.router.navigateByUrl('/success');
               }
             }
           } else if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 70) {
@@ -307,9 +317,11 @@ export class DetailsComponent implements OnInit {
       });
   }
   private proceedThisAttIDsForCheckin(att_IDs: any) {
+    debugger
     let i = 0, suc_flag = 0;
     let _callNext = () => {
       if (i < att_IDs.length) {
+        debugger
         this.chk_hardwares_to_finish(att_IDs[i]['att_id'], att_IDs[i], (status: boolean) => {
           if (status) {
             suc_flag++;
@@ -335,46 +347,68 @@ export class DetailsComponent implements OnInit {
 
     let _get_cardSerial_number_type1 = (_callback: any) => {
       debugger
-      let _this=this;
+      let _this = this;
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
       let _cardDcom = JSON.parse(setngs)["kioskSetup"].modules['card_dispenser']['COM_Port'] || "";
-      this.apiServices.localGetMethod("CD_OpenPort",_cardDcom).subscribe((data: any) => {
+      let timeOut = AppSettings.APP_DEFAULT_SETTIGS.Card_dispenser_time;
+      this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe((data: any) => {
         debugger
-        if (data.length > 0 && data[0]['Data'] != "") {
+        console.log("CD_OpenPort data " + data);
+        if (data.length > 0 && data[0]['Data'] != null) {
+          debugger
           let cardStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
-          if (cardStatus['ResponseStatus'] > 0) {
-            if (cardStatus["ResponseStatus"] > 0) {
-              this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
-                debugger
-                if (data.length > 0 && data[0]['Data'] != "") {
-                  let cardMoveStatus = JSON.parse(data[0]['Data']);
-                  if (cardMoveStatus['ResponseStatus'] == "0") {
-                    setTimeout(function(){
-                      _callback(true,_this.cardSerInput.nativeElement.value);
-                    },5000);
-                  } else {
-                    _callback(false, "0");
-                    return;
-                  }
+          console.log("CD_OpenPort cardStatus " + cardStatus);
+          if (cardStatus["ResponseStatus"] > 0) {
+            this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
+              console.log("CD_PreSend data " + data);
+              debugger
+              if (data.length > 0 && data[0]['Data'] != null) {
+                let cardMoveStatus = JSON.parse(data[0]['Data']);
+                if (cardMoveStatus['ResponseStatus'] == "0") {
+                  debugger
+                  setTimeout(function () {
+                    debugger
+                    if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" || _this.cardSerInput.nativeElement.value.length > 2) {
+                      debugger
+                      console.log("CD_ card number " + _this.cardSerInput.nativeElement.value);
+                      _callback(true, _this.cardSerInput.nativeElement.value);
+                    }
+                    else {
+                      debugger
+                      _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                        debugger
+                        _callback(false, "0");
+                      }, err => {
+                        debugger
+                        _callback(false, "0");
+                      });
+
+                    }
+                  }, timeOut);
                 } else {
+                  debugger
                   _callback(false, "0");
                   return;
                 }
-              },
-                err => {
-                  _callback(false, "0");
-                  return false;
-                });
-            }
-            else {
-              _callback(false, "0");
-              return;
-            }
-          } else {
+              } else {
+                debugger
+                _callback(false, "0");
+                return;
+              }
+            },
+              err => {
+                debugger
+                _callback(false, "0");
+                return false;
+              });
+          }
+          else {
+            debugger
             _callback(false, "0");
             return;
           }
         } else {
+          debugger
           _callback(false, "0");
           return;
         }
@@ -388,33 +422,18 @@ export class DetailsComponent implements OnInit {
     }
     if ((_Modules['card_dispenser']['enable'])) {
       debugger
-      if(_Modules['card_dispenser']['dispenser_type'] == 'TYPE1'){
+      if (_Modules['card_dispenser']['dispenser_type'] == 'TYPE1') {
         _get_cardSerial_number_type1((status: boolean, serial: string) => {
-
           debugger
           if (status) {
             //Update Visitor Card Serial Number
             this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
               let _preparePrintLabel = (cardDProcessStatus: boolean) => {
                 this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
-                /* this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
-                this.GScopeValue.visitorInfo.Name = _visitorData.vis_name || "";
-                this.GScopeValue.infoData.VisitorCompany = _visitorData.vis_company || "";
-                this.GScopeValue.infoData.VisitorCategoryText = _visitorData.Category || "";
-                this.GScopeValue.infoData.Contact = _visitorData.vis_contact || "";
-                this.GScopeValue.infoData.Email = _visitorData.vis_email || "";
-                this.GScopeValue.infoData.HostNameText = _visitorData.host_name || "";
-                this.GScopeValue.infoData.HostCompany = _visitorData.host_company_name || "";
-                this.GScopeValue.infoData.HostDepartment = _visitorData.host_department_name || "";
-                this.GScopeValue.infoData.HostFloor = _visitorData.host_floor_name || "";
-                this.GScopeValue.infoData.VehicleNo = _visitorData.vis_vehicle || "";
-                this.GScopeValue.infoData.HostPurposeText = _visitorData.vis_reason || "";
-                this.GScopeValue.visitorInfo.ImgSrc = _visitorData.vis_avatar_image || "";
-                this.GScopeValue.infoData.MeetingLoc = _visitorData.MeetingLoc || ""; */
                 if (visitorData.length > 0) {
 
-                  //this.processNexttoSuccess();
-
+                  this.isLoading = false;
+                  this.router.navigateByUrl('/success');
                   _nextElemcallBack(true);
                   return;
                 } else {
@@ -430,6 +449,11 @@ export class DetailsComponent implements OnInit {
                     let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
                     if (cardEjectStatus['ResponseStatus'] == "0") {
                       // If Eject Success Proceed Next Visitor attendance ID
+                      this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                        debugger
+                      }, err => {
+                        debugger
+                      });
                       _preparePrintLabel(true);
                     } else {
                       _preparePrintLabel(false);
@@ -441,13 +465,41 @@ export class DetailsComponent implements OnInit {
                   err => {
                     _preparePrintLabel(false);
                   });
+              } else {
+                this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                  this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    debugger
+                  }, err => {
+                    debugger
+                  });
+                }, err => {
+                  this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    debugger
+                  }, err => {
+                    debugger
+                  });
+                });
+                const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+                  data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
+                  disableClose: true
+                });
+                dialogRef.afterClosed().subscribe((data) => {
+                  this.router.navigate(['/landing']);
+                });
+
               }
             });
 
           } else {
-            this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {},err => {});
+            //_callback false
+            //this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
+            this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+              debugger
+            }, err => {
+              debugger
+            });
             const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-              data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
+              data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
               disableClose: true
             });
             dialogRef.afterClosed().subscribe((data) => {
@@ -457,6 +509,37 @@ export class DetailsComponent implements OnInit {
         });
       }
 
+    } else {
+      this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
+        let _preparePrintLabel = (cardDProcessStatus: boolean) => {
+          this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
+
+          if (visitorData.length > 0) {
+
+            this.isLoading = false;
+            this.router.navigateByUrl('/success');
+            _nextElemcallBack(true);
+            return;
+          } else {
+            _nextElemcallBack(false);
+            return;
+          }
+        }
+        debugger
+        if (status['s'] === true) {
+          _preparePrintLabel(true);
+        } else {
+
+          const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+            data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed", "ok": "Ok" },
+            disableClose: true
+          });
+          dialogRef.afterClosed().subscribe((data) => {
+            this.router.navigate(['/landing']);
+          });
+
+        }
+      });
     }
   }
   private visitorIndividualCheckIn(att_id: string, att_card_serialno: string, _callback: any) {
@@ -492,10 +575,10 @@ export class DetailsComponent implements OnInit {
         if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 10) {
           if (Data["Table1"] != undefined && Data["Table1"].length > 0) {
             this.CheckInVisitorData = Data["Table1"];
-           /*  this.DisplayImageHandlerURL = this.getImageHandlerURL();
-            if (!this.EnableAcsQrCode || !this.DisplayImageHandlerURL) {
-              this.qrcodeProcessed = true;
-            } */
+            /*  this.DisplayImageHandlerURL = this.getImageHandlerURL();
+             if (!this.EnableAcsQrCode || !this.DisplayImageHandlerURL) {
+               this.qrcodeProcessed = true;
+             } */
             _callback({ "s": true, "m": "" }, Data["Table1"]);
             //[{"VisitorNRIC":"gg","VisitorVehicle":"","VisitorPass":null,"Smartcard":"","DynamicHex":null,"PrinterEnable":"1","ReceiptPrinterEnable":"0","PermittedTime":"2019-02-13T18:31:00","CompanyName":"","Address1":"","Address2":"","Address3":"","CompanyMobile":"","CompanyFax":"","Terms1":null,"Terms2":null,"Terms3":null,"Terms4":null,"Terms5":null,"Message1":null,"Message2":null,"EnablePrint":"0","PrintType":null,"PrintField":null,"SlipTitle":"VISITOR ENTRY SLIP"}]
             return;

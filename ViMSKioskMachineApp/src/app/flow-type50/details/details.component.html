@@ -7,15 +7,8 @@
     <div class="bullet"></div>
     <div class="bullet"></div>
   </div>
-  <mat-form-field class="example-full-width" style="opacity: 0">
-    <input
-      #cardSerInput
-      matInput
-      maxlength="10"
-      (keydown.enter)="onKeydown($event)"
-      placeholder="Card Serial Number"
-      value=""
-    />
+  <mat-form-field class="example-full-width" style="opacity:0;">
+    <input #cardSerInput matInput maxlength="10" (keydown.enter)="onKeydown($event)" placeholder="Card Serial Number" value="">
   </mat-form-field>
 </div>
 
@@ -41,7 +34,7 @@
   />
 </div>
 
-<div *ngIf="!isLoading" style="text-align: center; padding-top: 15%">
+<div *ngIf="!isLoading" style="text-align: center; padding-top: 45%">
   <p info-title no-margin-top margin-bottom>{{ title }}</p>
   <div>
     <div style="padding-top: 1vh">

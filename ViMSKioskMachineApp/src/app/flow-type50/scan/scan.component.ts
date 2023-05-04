@@ -29,7 +29,7 @@ export class ScanComponent implements OnInit {
       this.router.navigateByUrl('/landing');
     } else if (action == 'start') {
       //this.router.navigateByUrl('/details');
-      debugger
+
       this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: "PASSPORT" } });
 
       /* switch (localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE)) {

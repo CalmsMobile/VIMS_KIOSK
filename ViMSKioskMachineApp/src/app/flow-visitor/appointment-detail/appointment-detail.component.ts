@@ -221,7 +221,7 @@ export class AppointmentDetailComponent implements OnInit {
 
       if (this.aptmDetails.hostDetails.company) {
         //this.aptmDetails.hostDetails.HostDeptId = this.aptmDetails.hostDetails.company;
-        //debugger;
+        //;
         this.isDisableBranch = true;
       }
       if (this.aptmDetails.contact) {
@@ -310,7 +310,7 @@ export class AppointmentDetailComponent implements OnInit {
         const categroyList = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
         if (categroyList.length == 1) {
-          debugger
+
           this.aptmDetails.category = categroyList[0].visitor_ctg_desc;
           this.aptmDetails.categoryId = categroyList[0].visitor_ctg_id;
         }
@@ -354,8 +354,8 @@ export class AppointmentDetailComponent implements OnInit {
           this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
           this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
           this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
-          if(!this.apiServices.isTest)
-          this._getAutoApprovalOption(this.aptmDetails.branchID);
+          if (!this.apiServices.isTest)
+            this._getAutoApprovalOption(this.aptmDetails.branchID);
           console.log(this.aptmDetails.hostDetails.id);
         }
         else {
@@ -1268,7 +1268,7 @@ export class AppointmentDetailComponent implements OnInit {
       Category: this.aptmDetails.categoryId
     }).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
-        //debugger;
+        //;
         const result = JSON.parse(data[0]["Data"]);
         console.log("branchId " + branchID);
         console.log("branchId dataauto " + JSON.stringify(result));
@@ -1654,7 +1654,7 @@ export class BottomSheetCountrySelect {
 })
 export class BottomSheetGenderSelect {
   vis_gender: any;
-  searchHostOption:false;
+  searchHostOption: false;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetGenderSelect>,
     private apiServices: ApiServices) {
     this.vis_gender = [{ name: "Male", code: "1" }, { name: "Female", code: "0" }, { name: "Other", code: "2" }];
@@ -1696,7 +1696,7 @@ export class BottomSheetHostSelect {
   searchText: string = '';
   KIOSK_PROPERTIES: any;
   KIOSK_PROPERTIES_LOCAL: any = {};
-  searchHostOption:false;
+  searchHostOption: false;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetHostSelect>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private apiServices: ApiServices) {
@@ -1708,9 +1708,9 @@ export class BottomSheetHostSelect {
       if (this.KIOSK_PROPERTIES_LOCAL) {
         this.searchHostOption = this.KIOSK_PROPERTIES_LOCAL.searchHostOption;
       } */
-      if(this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'] != undefined){
-        this.searchHostOption = this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'];
-      }
+    if (this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'] != undefined) {
+      this.searchHostOption = this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'];
+    }
     if (data.showMultiBranch) {
       this._getAllHostListNew(data.branchID);
     } else {

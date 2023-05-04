@@ -67,7 +67,7 @@ export class LandingComponent implements OnInit {
   }
 
   ngOnDestroy() {
-   // this.apiServices.localGetMethod("setLEDOFF", "").subscribe((ledStatus: any) => { }, err => { });
+    // this.apiServices.localGetMethod("setLEDOFF", "").subscribe((ledStatus: any) => { }, err => { });
     document.getElementById("homeButton").style.display = "block";
     console.log("%c ---------- Landing Screen Distroy: %s", AppSettings.LOG_FAILED, this.datePipe.transform(new Date(), 'medium'));
   }
@@ -334,7 +334,7 @@ export class LandingComponent implements OnInit {
     } else if (action === "vcheckout") {
       this.router.navigateByUrl('/visitorCheckout');
     } else if (action === "preAppointment") {
-      debugger
+
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status: boolean) => {
         if (status) {
@@ -601,16 +601,16 @@ function checkWebsocket() {
     var host = AppSettings.APP_DEFAULT_SETTIGS.SinosecureWebsocketUrl;
 
     _this.websocket = new WebSocket(host);
-    debugger
+
     if (_this.websocket.readyState == 1 || _this.websocket.readyState == 2) {
-      debugger
+
       _this.websocket.onclose = function () {
-        debugger
+
         console.log('close state' + _this.websocket.readyState);
       }
     }
   } catch (exception) {
-    debugger
+
     console.log("Websocket erroe");
   }
 }

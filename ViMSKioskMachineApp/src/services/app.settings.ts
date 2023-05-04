@@ -12,10 +12,10 @@ export const AppSettings = Object.freeze({
     "card_scrnTimOut": "120",
     "card_showTimeOutMsgAfter": "30",
     "Passport_Scanner": "old",
-   // "Passport_Scanner": "SINOSECURE",
+    //"Passport_Scanner": "SINOSECURE",
     "SinosecureWebsocketUrl": "ws://127.0.0.1:90/echo",
     "Disable_CardDispenser": "PARTICIPANTS",
-    "Card_dispenser_time":1300
+    "Card_dispenser_time": 1300
   },
   APP_API_SETUP: {
     api_url: "http://localhost:57080/",
@@ -60,6 +60,9 @@ export const AppSettings = Object.freeze({
     "CD_DispenseCard": "api/kiosk/CD_DispenseCard",
     "CD_RecycleBack": "api/kiosk/CD_RecycleBack",
 
+    "V_type_port": "8",
+    "C_type_port": "12",
+
     //----LED ON/OFF 1-----------
     "setLEDON": "api/kiosk/setLEDON?ComPort=",
     "setLEDOFF": "api/kiosk/setLEDOFF",
@@ -85,6 +88,8 @@ export const AppSettings = Object.freeze({
     "GetAllBranch": "api/kiosk/GetAllBranch",
     "GetAutoApprovalOption": "api/kiosk/GetAutoApprovalOption",
     "AddAttendanceForVisitor_Glen": "api/kiosk/AddAttendanceForVisitor_Glen",
+
+    "AddLogs": "api/Portal/AddLogs"
 
     // "getKioskSetupData":"api/Device/CRUDKioskMachine",
     // "kioskCardUpdate":"api/Device/kioskCardUpdate",

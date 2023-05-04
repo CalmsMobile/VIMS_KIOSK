@@ -214,20 +214,20 @@ export class DetailsComponent implements OnInit {
       this.isLoading = true;
       if (this._updateVisitorList()) {
         console.log(localStorage.getItem("VISI_LIST_ARRAY"));
-        /* let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-        this.addAttendanceForVisitor(uploadArray); */
-        this.isLoading = false;
-    this.router.navigateByUrl('/success');
+        let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+        this.addAttendanceForVisitor(uploadArray);
+        /*  this.isLoading = false;
+         this.router.navigateByUrl('/success'); */
       }
     }
 
 
   }
   _updateVisitorList() {
-debugger
+    debugger
     let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     if (!this._validateDOCIdinList(this.aptmDetails.id)) {
-debugger
+      debugger
       let listOfVisitors: any = uploadArray['visitorDetails'];
       this.aptmDetails.checkinCounter = this.KIOSK_CHECKIN_COUNTER_NAME;
       this.aptmDetails['VisitorAnswers'] = JSON.stringify([]);
@@ -237,7 +237,7 @@ debugger
       localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
       return true;
     } else {
-debugger
+      debugger
       return false;
     }
   }
@@ -344,14 +344,20 @@ debugger
     console.log(JSON.stringify(_visitorData));
     let _Modules = this.KIOSK_PROPERTIES['modules'];
 
-
     let _get_cardSerial_number_type1 = (_callback: any) => {
       debugger
       let _this = this;
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
       let _cardDcom = JSON.parse(setngs)["kioskSetup"].modules['card_dispenser']['COM_Port'] || "";
       let timeOut = AppSettings.APP_DEFAULT_SETTIGS.Card_dispenser_time;
+      if (this.mainModule == "Visitor" || this.mainModule == "Vendor") {
+        _cardDcom = AppSettings['APP_SERVICES']['V_type_port'];
+      } else if (this.mainModule == "Contractor" || this.mainModule == "Contractor Staff") {
+        _cardDcom = AppSettings['APP_SERVICES']['C_type_port'];
+      }
+      console.log("_cardDcom", _cardDcom)
       this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe((data: any) => {
+        //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_OpenPort", "router": this.router.url, "lineNo": 531, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
         debugger
         console.log("CD_OpenPort data " + data);
         if (data.length > 0 && data[0]['Data'] != null) {
@@ -361,6 +367,7 @@ debugger
           if (cardStatus["ResponseStatus"] > 0) {
             this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
               console.log("CD_PreSend data " + data);
+              //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_PreSend", "router": this.router.url, "lineNo": 541, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger
               if (data.length > 0 && data[0]['Data'] != null) {
                 let cardMoveStatus = JSON.parse(data[0]['Data']);
@@ -376,6 +383,7 @@ debugger
                     else {
                       debugger
                       _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                        //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 557, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                         debugger
                         _callback(false, "0");
                       }, err => {
@@ -424,12 +432,14 @@ debugger
       debugger
       if (_Modules['card_dispenser']['dispenser_type'] == 'TYPE1') {
         _get_cardSerial_number_type1((status: boolean, serial: string) => {
+          //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "_get_cardSerial_number_type1", "router": this.router.url, "lineNo": 613, "status": status })).subscribe((data: any) => console.log("AddLogs status=" + data));
           debugger
           if (status) {
             //Update Visitor Card Serial Number
             this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
               let _preparePrintLabel = (cardDProcessStatus: boolean) => {
                 this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
+
                 if (visitorData.length > 0) {
 
                   this.isLoading = false;
@@ -445,11 +455,13 @@ debugger
               debugger
               if (status['s'] === true) {
                 this.apiServices.localGetMethod("CD_DispenseCard", "").subscribe((data: any) => {
+                  //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_DispenseCard", "router": this.router.url, "lineNo": 654, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                   if (data.length > 0 && data[0]['Data'] != "") {
                     let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
                     if (cardEjectStatus['ResponseStatus'] == "0") {
                       // If Eject Success Proceed Next Visitor attendance ID
                       this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                        //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 660, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                         debugger
                       }, err => {
                         debugger
@@ -467,13 +479,16 @@ debugger
                   });
               } else {
                 this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                  //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 678, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                   this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 680, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                     debugger
                   }, err => {
                     debugger
                   });
                 }, err => {
                   this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 687, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                     debugger
                   }, err => {
                     debugger
@@ -491,9 +506,8 @@ debugger
             });
 
           } else {
-            //_callback false
-            //this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
             this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+              //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 708, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger
             }, err => {
               debugger
@@ -508,6 +522,92 @@ debugger
           }
         });
       }
+      /* if (_Modules['card_dispenser']['dispenser_type'] == 'TYPE1') {
+        _get_cardSerial_number_type1((status: boolean, serial: string) => {
+
+          if (status) {
+            //Update Visitor Card Serial Number
+            this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
+              let _preparePrintLabel = (cardDProcessStatus: boolean) => {
+                this.settingsService._kiosk_Minus1AvailCard((_minStatus: boolean) => { })
+                if (visitorData.length > 0) {
+
+                  this.isLoading = false;
+                  this.router.navigateByUrl('/success');
+                  _nextElemcallBack(true);
+                  return;
+                } else {
+                  _nextElemcallBack(false);
+                  return;
+                }
+              }
+              // If Success Eject Visitor Card
+
+              if (status['s'] === true) {
+                this.apiServices.localGetMethod("CD_DispenseCard", "").subscribe((data: any) => {
+                  if (data.length > 0 && data[0]['Data'] != "") {
+                    let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
+                    if (cardEjectStatus['ResponseStatus'] == "0") {
+                      // If Eject Success Proceed Next Visitor attendance ID
+                      this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+
+                      }, err => {
+
+                      });
+                      _preparePrintLabel(true);
+                    } else {
+                      _preparePrintLabel(false);
+                    }
+                  } else {
+                    _preparePrintLabel(false);
+                  }
+                },
+                  err => {
+                    _preparePrintLabel(false);
+                  });
+              } else {
+                this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                  this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+
+                  }, err => {
+
+                  });
+                }, err => {
+                  this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+
+                  }, err => {
+
+                  });
+                });
+                const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+                  data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
+                  disableClose: true
+                });
+                dialogRef.afterClosed().subscribe((data) => {
+                  this.router.navigate(['/landing']);
+                });
+
+              }
+            });
+
+          } else {
+            //_callback false
+            //this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
+            this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+
+            }, err => {
+
+            });
+            const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+              data: { "title": "Please contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
+              disableClose: true
+            });
+            dialogRef.afterClosed().subscribe((data) => {
+              this.router.navigate(['/landing']);
+            });
+          }
+        });
+      } */
 
     } else {
       this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {

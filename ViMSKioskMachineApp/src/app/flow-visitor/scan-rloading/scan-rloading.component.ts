@@ -63,36 +63,44 @@ export class ScanRLoadingComponent implements OnInit {
     this.apiServices.localGetMethod("setLEDOFF", "").subscribe((ledStatus: any) => { }, err => { });
   }
   getDeviceConnectionData(action: string) {
-    debugger
-    if (AppSettings.APP_DEFAULT_SETTIGS.Passport_Scanner == "SINOSECURE") {
-      let loData = this.SinosecureGetPassportDetail();
-    }
-    else {
-      debugger
-      let req = AppSettings['APP_SERVICES'][action];
-      this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data: any) => {
-        if ((action == "GetPassportDetail" || action == "getIdScanerData") && data.length > 0) {
-          debugger
-          if (data[0].Status) {
-            debugger
-            let resData = JSON.parse(data[0]["Data"]) || {};
-            if (resData['PassportNo'] != "" && resData['FullNameName'] != "") {
-              debugger
-              let userData = {
-                "visName": resData['FullNameName'],
-                "visDOCID": resData['PassportNo'],
-                "visDocImage": (typeof (resData['Image']) != 'undefined' ? "data:image/jpeg;base64," + resData['Image'] : ""),//resData['Image'] || resData['IDImgByte'],
-              }
-              // localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-              // this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
-              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-              if (this.KIOSK_PROPERTIES['General']['AppType'] == 50)
-                this.router.navigate(['/details'], { queryParams: { docType: this.docType } });
-              else
-                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    let KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
 
+    if (KIOSK_PROPERTIES_LOCAL.passportScanner) {
+      if (AppSettings.APP_DEFAULT_SETTIGS.Passport_Scanner == "SINOSECURE") {
+        let loData = this.SinosecureGetPassportDetail();
+      }
+      else {
+
+        let req = AppSettings['APP_SERVICES'][action];
+        this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data: any) => {
+          if ((action == "GetPassportDetail" || action == "getIdScanerData") && data.length > 0) {
+
+            if (data[0].Status) {
+
+              let resData = JSON.parse(data[0]["Data"]) || {};
+              if (resData['PassportNo'] != "" && resData['FullNameName'] != "") {
+
+                let userData = {
+                  "visName": resData['FullNameName'],
+                  "visDOCID": resData['PassportNo'],
+                  "visDocImage": (typeof (resData['Image']) != 'undefined' ? "data:image/jpeg;base64," + resData['Image'] : ""),//resData['Image'] || resData['IDImgByte'],
+                }
+                // localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+                // this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+                localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+                if (this.KIOSK_PROPERTIES['General']['AppType'] == 50)
+                  this.router.navigate(['/details'], { queryParams: { docType: this.docType } });
+                else
+                  this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+
+              } else {
+                //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
+                this.showErrorMsg();
+                this.gotoRegistrationScreen();
+              }
             } else {
-              //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
+              //this.snackBar.open("Please Try Again !", "", {duration: 3000});
               this.showErrorMsg();
               this.gotoRegistrationScreen();
             }
@@ -101,17 +109,25 @@ export class ScanRLoadingComponent implements OnInit {
             this.showErrorMsg();
             this.gotoRegistrationScreen();
           }
-        } else {
-          //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-          this.showErrorMsg();
-          this.gotoRegistrationScreen();
-        }
-      },
-        err => {
-          console.log("Failed...");
-          this.showErrorMsg();
-          return false;
-        });
+        },
+          err => {
+            console.log("Failed...");
+            this.showErrorMsg();
+            return false;
+          });
+      }
+    } else {
+      let userData = {
+        "visName": "TestvisName",
+        "visDOCID": "TestvisDOCID",
+        "visDocImage": null,
+      }
+
+      localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+      if (this.KIOSK_PROPERTIES['General']['AppType'] == 50)
+        this.router.navigate(['/details'], { queryParams: { docType: this.docType } });
+      else
+        this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
     }
     //{"PassportNo":"S8076606H","FullNameName":"ZHANG JINMING","State":"","City":"","Address":"","Country":"CHINESE","DocType":"3362","Gender":"Male","PostCode":"","IDImgByte":"R0
   }
@@ -127,10 +143,10 @@ export class ScanRLoadingComponent implements OnInit {
 
       _this.websocket.onopen = function () {
         console.log('Open state :' + _this.websocket.readyState);
-        debugger
+
       }
       _this.websocket.onmessage = function (event: any) {
-        debugger
+
         var str = event.data;
         var strsub = str;
         if (strsub != "") {
@@ -141,7 +157,7 @@ export class ScanRLoadingComponent implements OnInit {
           let parseData = JSON.parse(str);
           //console.log("Receive notification 2:"+str);
           if (typeof (parseData.Param["Passport number"]) != "undefined" || typeof (parseData.Param["ID Number"]) != "undefined") {
-            debugger
+
             let userData = {
               "visName": parseData.Param["National name"] ? parseData.Param["National name"] : parseData.Param["Name"],
               "visDOCID": parseData.Param["Passport number"] ? parseData.Param["Passport number"] : parseData.Param["ID Number"],
@@ -160,7 +176,7 @@ export class ScanRLoadingComponent implements OnInit {
             // _this.showErrorMsg();
             // _this.gotoRegistrationScreen();
           }
-          debugger
+
 
           /*var seek=str.split("data:image/jpeg;base64,");
           var len = seek.length;
@@ -179,7 +195,7 @@ export class ScanRLoadingComponent implements OnInit {
 
       }
       _this.websocket.onclose = function () {
-        debugger
+
         console.log('close state' + _this.websocket.readyState);
 
         let userData = {
@@ -196,7 +212,7 @@ export class ScanRLoadingComponent implements OnInit {
       }
     }
     catch (exception) {
-      debugger
+
       console.log("Error");
     }
     //return [];

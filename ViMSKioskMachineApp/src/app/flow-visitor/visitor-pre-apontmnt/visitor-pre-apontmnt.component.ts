@@ -34,28 +34,28 @@ export class VisitorPreApontmntComponent implements OnInit {
     this.totalVisitors = listOFvisitors['visitorDetails'].length;
     this._updateKioskSettings();
     this.APONTMNT_CODE = '';
-    
+
   }
   selectedTabValue(event) {
     console.log(event.index);
     if (event.index == 0) {
       this.selectedType = "contact";
-      setTimeout(()=>{
+      setTimeout(() => {
         this.contact.nativeElement.focus()
-    })
+      })
     }
     if (event.index == 1) {
       this.selectedType = "email";
-      setTimeout(()=>{
+      setTimeout(() => {
         this.email.nativeElement.focus()
-    })
+      })
     }
     if (event.index == 2) {
       this.selectedType = "appint_id";
-      setTimeout(()=>{
+      setTimeout(() => {
         this.appint_id.nativeElement.focus()
-    })
-      }
+      })
+    }
     console.log(this.selectedType)
   }
   ngOnInit() {
@@ -85,7 +85,7 @@ export class VisitorPreApontmntComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
-      if(this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'] != undefined){
+      if (this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'] != undefined) {
         this.qrScanAppointmentId = this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'];
       }
     }
@@ -186,13 +186,13 @@ export class VisitorPreApontmntComponent implements OnInit {
     document.getElementById("bodyloader").style.display = "block";
     let prepareData: any = "";
     if (this.selectedType == "contact") {
-      debugger
+
       prepareData = { "att_appointment_id": "", "ContactNo": this.APONTMNT_CONTACT, "Email": "" };
     } else if (this.selectedType == "email") {
-      debugger
+
       prepareData = { "att_appointment_id": "", "ContactNo": "", "Email": this.APONTMNT_EMAIL };
     } else if (this.selectedType == "appint_id") {
-      debugger
+
       prepareData = { "att_appointment_id": (this.APONTMNT_CODE).toString(), "ContactNo": "", "Email": "" };
     }
     console.log(JSON.stringify(prepareData));

@@ -101,10 +101,10 @@ export class AppointmentSuccessComponent implements OnInit {
     this.GScopeValue.getDate = function () {
       return getDateTime();
     }
-     setInterval(()=>{
-     if(this.cardSerInput != undefined)
-       this.cardSerInput.nativeElement.focus();
-     },100);
+    setInterval(() => {
+      if (this.cardSerInput != undefined)
+        this.cardSerInput.nativeElement.focus();
+    }, 100);
   }
   ngOnInit() {
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
@@ -436,11 +436,11 @@ export class AppointmentSuccessComponent implements OnInit {
   }
   //-------------------- Hardware Services --------------------
   private chk_hardwares_to_finish(att_id: string, _visitorData: any, _nextElemcallBack: any) {
-    debugger
+
     console.log(JSON.stringify(_visitorData));
     let _Modules = this.KIOSK_PROPERTIES['modules'];
-    let IsCardDispenserNotAllowedCateg = (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser?(AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser).split(','):[]);
-    const IsCardDispenserNotAllowed = (IsCardDispenserNotAllowedCateg.indexOf(_visitorData.Category)>-1?true:false);
+    let IsCardDispenserNotAllowedCateg = (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser ? (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser).split(',') : []);
+    const IsCardDispenserNotAllowed = (IsCardDispenserNotAllowedCateg.indexOf(_visitorData.Category) > -1 ? true : false);
     this.cardDispenserNotAllowed = IsCardDispenserNotAllowed;
     let _get_cardSerial_number = (_callback: any) => {
       this.apiServices.localGetMethod("SD_GetCardStatus", "").subscribe((data: any) => {
@@ -522,24 +522,24 @@ export class AppointmentSuccessComponent implements OnInit {
 
     }
     let _get_cardSerial_number_type1 = (_callback: any) => {
-      debugger
-      let _this=this;
+
+      let _this = this;
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
       let _cardDcom = JSON.parse(setngs)["kioskSetup"].modules['card_dispenser']['COM_Port'] || "";
-      this.apiServices.localGetMethod("CD_OpenPort",_cardDcom).subscribe((data: any) => {
-        debugger
+      this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe((data: any) => {
+
         if (data.length > 0 && data[0]['Data'] != "") {
           let cardStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
           if (cardStatus['ResponseStatus'] > 0) {
             if (cardStatus["ResponseStatus"] > 0) {
               this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
-                debugger
+
                 if (data.length > 0 && data[0]['Data'] != "") {
                   let cardMoveStatus = JSON.parse(data[0]['Data']);
                   if (cardMoveStatus['ResponseStatus'] == "0") {
-                    setTimeout(function(){
-                      _callback(true,_this.cardSerInput.nativeElement.value);
-                    },5000);
+                    setTimeout(function () {
+                      _callback(true, _this.cardSerInput.nativeElement.value);
+                    }, 5000);
                   } else {
                     _callback(false, "0");
                     return;
@@ -568,17 +568,17 @@ export class AppointmentSuccessComponent implements OnInit {
         }
       },
         err => {
-          debugger
+
           _callback(false, "0");
           return false;
         });
 
     }
     if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
-      debugger
-      if(_Modules['card_dispenser']['dispenser_type'] == 'TYPE1'){
+
+      if (_Modules['card_dispenser']['dispenser_type'] == 'TYPE1') {
         _get_cardSerial_number_type1((status: boolean, serial: string) => {
-          debugger
+
           if (status) {
             //Update Visitor Card Serial Number
             this.visitorIndividualCheckIn(att_id, serial, (status: any, visitorData: any) => {
@@ -601,12 +601,12 @@ export class AppointmentSuccessComponent implements OnInit {
                 if (visitorData.length > 0) {
 
                   this.processNexttoSuccess();
-                 /*  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
-                      this.loadlblprint(visitorData, (pri_status: boolean) => { });
-                  }
-                  if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
-                    this.loadreceiptprint(visitorData);
-                  } */
+                  /*  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
+                       this.loadlblprint(visitorData, (pri_status: boolean) => { });
+                   }
+                   if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
+                     this.loadreceiptprint(visitorData);
+                   } */
                   _nextElemcallBack(true);
                   return;
                 } else {
@@ -615,7 +615,7 @@ export class AppointmentSuccessComponent implements OnInit {
                 }
               }
               // If Success Eject Visitor Card
-              debugger
+
               if (status['s'] === true) {
                 this.apiServices.localGetMethod("CD_DispenseCard", "").subscribe((data: any) => {
                   if (data.length > 0 && data[0]['Data'] != "") {
@@ -637,7 +637,7 @@ export class AppointmentSuccessComponent implements OnInit {
             });
 
           } else {
-            this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {},err => {});
+            this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
             const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
               data: { "title": "Please Contact reception !", "subTile": "Visitor checkin : Problem in card dispenser !", "ok": "Ok" },
               disableClose: true
@@ -647,7 +647,7 @@ export class AppointmentSuccessComponent implements OnInit {
             });
           }
         });
-      }else{
+      } else {
         _get_cardSerial_number((status: boolean, serial: string) => {
           if (status) {
             //Update Visitor Card Serial Number
@@ -717,8 +717,8 @@ export class AppointmentSuccessComponent implements OnInit {
         });
       }
 
-    }else if ((_Modules['card_dispenser']['enable'] && IsCardDispenserNotAllowed) && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
-      debugger
+    } else if ((_Modules['card_dispenser']['enable'] && IsCardDispenserNotAllowed) && (_Modules['printer']['enable'] || _Modules['printer']['recipt_enable'])) {
+
 
       this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
         // If Success Eject Visitor Card
@@ -757,9 +757,9 @@ export class AppointmentSuccessComponent implements OnInit {
         }
       });
 
-      }
+    }
     else if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
-      debugger
+
       _get_cardSerial_number((status: boolean, serial: string) => {
         if (status) {
           //Update Visitor Card Serial Number
@@ -800,7 +800,7 @@ export class AppointmentSuccessComponent implements OnInit {
         }
       });
     } else if ((_Modules['printer']['enable'] || _Modules['printer']['recipt_enable']) && (!_Modules['card_dispenser']['enable'] || IsCardDispenserNotAllowed)) {
-      debugger
+
       this.visitorIndividualCheckIn(att_id, "", (status: any, visitorData: any) => {
         // If Success Eject Visitor Card
         this.GScopeValue.visitorInfo.Nric = _visitorData.vis_id || "";
@@ -866,13 +866,13 @@ export class AppointmentSuccessComponent implements OnInit {
     _callNext();
   }
   private _finish_with_success_msg() {
-    debugger
+
     this.isLoading = false;
     this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_sccess_msg1'];
 
     this.RESULT_MSG2 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_mid'];
-    if(!this.cardDispenserNotAllowed){
-      this.RESULT_MSG2 =  'Please Take Your Card'
+    if (!this.cardDispenserNotAllowed) {
+      this.RESULT_MSG2 = 'Please Take Your Card'
     }
     this.RESULT_MSG3 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_message_last'];
     const image = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['success_image'];
@@ -892,7 +892,7 @@ export class AppointmentSuccessComponent implements OnInit {
   // --------------- Print Label -------------------
   /*Load Dynamic Template Start*/
   loadlblprint(poReturnData, _callback: any) {
-    debugger
+
     var postData = {}, poReturnVal = "";
     this.apiServices.getPrintTemplateData(postData).subscribe((data: any) => {
       //console.log(data);
@@ -911,10 +911,10 @@ export class AppointmentSuccessComponent implements OnInit {
               if (this.CheckInVisitorData != undefined) {
                 if (this.CheckInVisitorData.length > 0) {
                   if (this.CheckInVisitorData[0].IsDynamicQR) {
-                    debugger
+
                     poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
                   } else if ((Data["Table"][0].PIC_BARCODE_ASSIGNTO).trim() != "") {
-                    debugger
+
                     switch (Data["Table"][0].PIC_BARCODE_ASSIGNTO) {
                       case "Visitor NRIC":
                         poReturnVal = poReturnData[0].VisitorNRIC;
@@ -1087,7 +1087,7 @@ export class AppointmentSuccessComponent implements OnInit {
     return (psCase == "L" ? lsReturn.toLowerCase() : (psCase == "U" ? lsReturn.toUpperCase() : lsReturn));
   }
   loadreceiptprint(poReturnData) {
-    debugger
+
     if (poReturnData.length > 0) {
       //Required Print Data
       //{"CompanyName":"","Address1":"","Address2":"","Address3":"","CompanyMobile":"","SlipTitle":"","SlipSubTitle_1":"VISITOR DETAILS","SlipSubTitle_2":"CHECK-IN DETAILS","SlipSubTitle_3":"HOST DETAILS","VisitorName":"","VisitorIC":"","VisitorCompany":"","VisitorCategory":"","VisitorContact":"","VisitorVehicle":"","HostPurpose":"","CheckInTime":"","PermittedTime":"","PassNo":"","CheckINLocation":"","CheckINBy":"","NoOfPersons":"","HostName":"","HostCompany":"","HostDepartment":"","Floor":"","PrintType":"OR","Terms1":"","Terms2":"","Terms3":"","Terms4":"","Terms5":"","Message1":"","Message2":"","PrintField":""}
@@ -1096,7 +1096,7 @@ export class AppointmentSuccessComponent implements OnInit {
       if (this.CheckInVisitorData != undefined) {
         if (this.CheckInVisitorData.length > 0) {
           if (this.CheckInVisitorData[0].IsDynamicQR) {
-            debugger
+
             poReturnVal = this.CheckInVisitorData[0].EncryptDynQRVal;
           } else if (this.KIOSK_PROPERTIES['modules']['printer']['qrRbar_print_field'] != '') {
 

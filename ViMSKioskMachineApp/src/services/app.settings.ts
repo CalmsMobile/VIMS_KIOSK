@@ -15,7 +15,7 @@ export const AppSettings = Object.freeze({
     //"Passport_Scanner": "SINOSECURE",
     "SinosecureWebsocketUrl": "ws://127.0.0.1:90/echo",
     "Disable_CardDispenser": "PARTICIPANTS",
-    "Card_dispenser_time": 1300
+    "Card_dispenser_time": 3000
   },
   APP_API_SETUP: {
     api_url: "http://localhost:57080/",

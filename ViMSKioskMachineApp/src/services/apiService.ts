@@ -16,9 +16,33 @@ const httpOptions = {
 };
 @Injectable()
 export class ApiServices {
-  isTest = false;
+  public isTest = false;
+
   constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp: Http) {
 
+  }
+
+  public sendLogToServer(module, content) {
+    debugger
+    let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    let KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+    let serverLog = false;
+    let postData = {
+      "System": "VIMS Kiosk",
+      "Module": module,
+      "Contents": content
+    }
+    if (KIOSK_PROPERTIES_LOCAL) {
+      debugger
+      serverLog = KIOSK_PROPERTIES_LOCAL.serverLog;
+    }
+    if (serverLog) {
+      debugger
+      var URL = this._getAPIURL();
+      console.log("API:" + URL + AppSettings['APP_SERVICES']["AddLogs"] + "----> Post Data: " + JSON.stringify(postData));
+      return this.http.post(URL + AppSettings['APP_SERVICES']["AddLogs"], postData, httpOptions);
+    }
+    return;
   }
   public _getAPIURL(): string {
     let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
@@ -95,6 +119,7 @@ export class ApiServices {
     console.log("API:" + serviceName + "----> Post Data: " + JSON.stringify(postData));
     return this.http.post(URL + AppSettings['APP_SERVICES'][serviceName], postData, httpOptions);
   }
+
 
   localGetMethod(serviceName: string, appendURL: string) {
     if (this.isTest)

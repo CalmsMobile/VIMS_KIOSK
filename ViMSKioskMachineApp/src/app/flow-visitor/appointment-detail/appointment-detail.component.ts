@@ -23,7 +23,7 @@ export class AppointmentDetailComponent implements OnInit {
       case "backspace":
         this.cClassMain.changeDetectorRef.detectChanges();
         setTimeout(() => {
-          this.cClassMain.updateNRICMinLength();
+          //this.cClassMain.updateNRICMinLength();
         }, 100);
         break;
 
@@ -354,7 +354,7 @@ export class AppointmentDetailComponent implements OnInit {
           this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
           this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
           this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
-          //if(!this.apiServices.isTest)
+          if(!this.apiServices.isTest)
           this._getAutoApprovalOption(this.aptmDetails.branchID);
           console.log(this.aptmDetails.hostDetails.id);
         }
@@ -1319,7 +1319,7 @@ export class AppointmentDetailComponent implements OnInit {
   itFocusOut(value: any, elm: string) {
     if (elm === "id" && value != "") {
       console.log("itFocusOut" + value);
-      this.updateNRICMinLength();
+      //this.updateNRICMinLength();
       this.getVisitorDetails(value);
     }
   }
@@ -1331,7 +1331,7 @@ export class AppointmentDetailComponent implements OnInit {
   onKey(value: string, event: any) {
     console.log("onKey: " + value);
 
-    this.updateNRICMinLength();
+    //this.updateNRICMinLength();
     // if (value.length > 1) {
     //   this.getVisitorDetails(value);
     // } else {
@@ -1654,7 +1654,7 @@ export class BottomSheetCountrySelect {
 })
 export class BottomSheetGenderSelect {
   vis_gender: any;
-  searchHostOption:false;
+  searchHostOption: false;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetGenderSelect>,
     private apiServices: ApiServices) {
     this.vis_gender = [{ name: "Male", code: "1" }, { name: "Female", code: "0" }, { name: "Other", code: "2" }];
@@ -1696,7 +1696,7 @@ export class BottomSheetHostSelect {
   searchText: string = '';
   KIOSK_PROPERTIES: any;
   KIOSK_PROPERTIES_LOCAL: any = {};
-  searchHostOption:false;
+  searchHostOption: false;
   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetHostSelect>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private apiServices: ApiServices) {
@@ -1708,9 +1708,9 @@ export class BottomSheetHostSelect {
       if (this.KIOSK_PROPERTIES_LOCAL) {
         this.searchHostOption = this.KIOSK_PROPERTIES_LOCAL.searchHostOption;
       } */
-      if(this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'] != undefined){
-        this.searchHostOption = this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'];
-      }
+    if (this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'] != undefined) {
+      this.searchHostOption = this.KIOSK_PROPERTIES['modules']['Enable_visitor_search_host'];
+    }
     if (data.showMultiBranch) {
       this._getAllHostListNew(data.branchID);
     } else {

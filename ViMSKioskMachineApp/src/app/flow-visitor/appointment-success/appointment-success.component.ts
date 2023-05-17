@@ -37,6 +37,8 @@ export class AppointmentSuccessComponent implements OnInit {
   ReceiptPrintEnable: any = false;
   LabelPrintManualOrAuto: any = 10;
   cardDispenserNotAllowed = false;
+  KIOSK_PROPERTIES_LOCAL: any = {};
+  serverLog = false;
   @ViewChild('cardSerInput') cardSerInput: ElementRef;
   callback: any;
 
@@ -456,6 +458,12 @@ export class AppointmentSuccessComponent implements OnInit {
   private chk_hardwares_to_finish(att_id: string, _visitorData: any, _nextElemcallBack: any) {
     debugger
     console.log(JSON.stringify(_visitorData));
+    let localSettings = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+    this.KIOSK_PROPERTIES_LOCAL = JSON.parse(localSettings);
+    if (this.KIOSK_PROPERTIES_LOCAL) {
+      this.serverLog = this.KIOSK_PROPERTIES_LOCAL.serverLog;
+    }
+
     let _Modules = this.KIOSK_PROPERTIES['modules'];
     let IsCardDispenserNotAllowedCateg = (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser ? (AppSettings.APP_DEFAULT_SETTIGS.Disable_CardDispenser).split(',') : []);
     const IsCardDispenserNotAllowed = (IsCardDispenserNotAllowedCateg.indexOf(_visitorData.Category) > -1 ? true : false);
@@ -543,9 +551,11 @@ export class AppointmentSuccessComponent implements OnInit {
       debugger
       let _this = this;
       let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+
       let _cardDcom = JSON.parse(setngs)["kioskSetup"].modules['card_dispenser']['COM_Port'] || "";
       let timeOut = AppSettings.APP_DEFAULT_SETTIGS.Card_dispenser_time;
       this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe((data: any) => {
+        if (_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_OpenPort", "router": this.router.url, "lineNo": 531, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
         debugger
         console.log("CD_OpenPort data " + data);
         if (data.length > 0 && data[0]['Data'] != null) {
@@ -555,20 +565,14 @@ export class AppointmentSuccessComponent implements OnInit {
           if (cardStatus["ResponseStatus"] > 0) {
             this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
               console.log("CD_PreSend data " + data);
+              if (_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_PreSend", "router": this.router.url, "lineNo": 541, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger
               if (data.length > 0 && data[0]['Data'] != null) {
                 let cardMoveStatus = JSON.parse(data[0]['Data']);
                 if (cardMoveStatus['ResponseStatus'] == "0") {
                   this.callback = _callback;
                   debugger
-                  _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
-                    debugger
-                    _callback(false, "0");
-                  }, err => {
-                    debugger
-                    _callback(false, "0");
-                  });
-                  /* setTimeout(function () {
+                  setTimeout(function () {
                     debugger
                     if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" ||  _this.cardSerInput.nativeElement.value.length > 2) {
                       debugger
@@ -584,8 +588,16 @@ export class AppointmentSuccessComponent implements OnInit {
                         debugger
                         _callback(false, "0");
                       });
+                      /* const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+                        data: { "title": "Please Contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
+                        disableClose: true
+                      });
+                      dialogRef.afterClosed().subscribe((data) => {
+                        this.router.navigate(['/landing']);
+                      }); */
+
                     }
-                  }, timeOut); */
+                  }, timeOut);
                 } else {
                   debugger
                   _callback(false, "0");
@@ -625,6 +637,7 @@ export class AppointmentSuccessComponent implements OnInit {
       debugger
       if (_Modules['card_dispenser']['dispenser_type'] == 'TYPE1') {
         _get_cardSerial_number_type1((status: boolean, serial: string) => {
+          if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "_get_cardSerial_number_type1", "router": this.router.url, "lineNo": 613, "status": status })).subscribe((data: any) => console.log("AddLogs status=" + data));
           debugger
           if (status) {
             //Update Visitor Card Serial Number
@@ -665,11 +678,13 @@ export class AppointmentSuccessComponent implements OnInit {
               debugger
               if (status['s'] === true) {
                 this.apiServices.localGetMethod("CD_DispenseCard", "").subscribe((data: any) => {
+                  if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_DispenseCard", "router": this.router.url, "lineNo": 654, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                   if (data.length > 0 && data[0]['Data'] != "") {
                     let cardEjectStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
                     if (cardEjectStatus['ResponseStatus'] == "0") {
                       // If Eject Success Proceed Next Visitor attendance ID
                       this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                        if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 660, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                         debugger
                       }, err => {
                         debugger
@@ -687,13 +702,16 @@ export class AppointmentSuccessComponent implements OnInit {
                   });
               } else {
                 this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                  if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 678, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                   this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 680, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                     debugger
                   }, err => {
                     debugger
                   });
                 }, err => {
                   this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+                    if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 687, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                     debugger
                   }, err => {
                     debugger
@@ -714,6 +732,7 @@ export class AppointmentSuccessComponent implements OnInit {
             //_callback false
             //this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => { }, err => { });
             this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
+              if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 708, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger
             }, err => {
               debugger
@@ -840,6 +859,7 @@ export class AppointmentSuccessComponent implements OnInit {
     }
     else if ((_Modules['card_dispenser']['enable'] && !IsCardDispenserNotAllowed) && !_Modules['printer']['enable'] && !_Modules['printer']['recipt_enable']) {
       debugger
+      if (this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "card_dispenser", "router": this.router.url, "lineNo": 835, "message": "" })).subscribe((data: any) => { if (data) { console.log("AddLogs status=" + data) } });
       _get_cardSerial_number((status: boolean, serial: string) => {
         if (status) {
           //Update Visitor Card Serial Number

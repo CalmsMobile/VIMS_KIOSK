@@ -84,6 +84,8 @@ export const AppSettings = Object.freeze({
         "GetAllBranch": "api/kiosk/GetAllBranch",
         "GetAutoApprovalOption": "api/kiosk/GetAutoApprovalOption",
 
+        "AddLogs":"api/Portal/AddLogs"
+
         // "getKioskSetupData":"api/Device/CRUDKioskMachine",
         // "kioskCardUpdate":"api/Device/kioskCardUpdate",
         // "GetPassportDetail":"api/Device/GetPassportDetail",

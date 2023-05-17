@@ -50,6 +50,17 @@ export class TestingComponent implements OnInit {
     this.router.navigateByUrl('/landing');
   }
   ngOnInit() {
+    let i = 0;
+    let max = 1;
+    let con = true;
+    (function repeat() {
+      if (++i > max) return;
+      setTimeout(function () {
+        console.log("waited for: " + i + " seconds");
+        if (con)
+          repeat();
+      }, 1000);
+    })();
   }
   testCardDType2(action: string) {
     let racrion = "SD_GetCardStatus";

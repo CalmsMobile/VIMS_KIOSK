@@ -40,7 +40,6 @@ export class AppointmentSuccessComponent implements OnInit {
   KIOSK_PROPERTIES_LOCAL: any = {};
   serverLog = false;
   @ViewChild('cardSerInput') cardSerInput: ElementRef;
-  callback: any;
 
   constructor(private route: ActivatedRoute,
     private settingsService: SettingsService,
@@ -437,23 +436,6 @@ export class AppointmentSuccessComponent implements OnInit {
         return false;
       });
   }
-  onInput(value: string) {
-    debugger
-    if (value != "" && value.length > 6) {
-      debugger
-      console.log("onInput " + value)
-      //this.takeActFor('getAppointmentDetail')
-      this.callback(true, this.cardSerInput.nativeElement.value);
-    }
-  }
-  onKeydown(event: any) {
-    debugger
-    if (event.isTrusted && this.cardSerInput.nativeElement.value.length >= 10) {
-      debugger
-      console.log("onKeydown: " + this.cardSerInput.nativeElement.value);
-      this.callback(true, this.cardSerInput.nativeElement.value);
-    }
-  }
   //-------------------- Hardware Services --------------------
   private chk_hardwares_to_finish(att_id: string, _visitorData: any, _nextElemcallBack: any) {
     debugger
@@ -570,11 +552,38 @@ export class AppointmentSuccessComponent implements OnInit {
               if (data.length > 0 && data[0]['Data'] != null) {
                 let cardMoveStatus = JSON.parse(data[0]['Data']);
                 if (cardMoveStatus['ResponseStatus'] == "0") {
-                  this.callback = _callback;
                   debugger
-                  setTimeout(function () {
+                  let i = 0;
+                  let max = 1;
+                  (function repeat() {
+                    if (++i > max) _callback(false, "0");
+                    setTimeout(function () {
+                      //console.log("waited for: " + i + " seconds");
+                      debugger
+                      if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" || _this.cardSerInput.nativeElement.value.length > 2) {
+                        debugger
+                        console.log("CD_ card number " + _this.cardSerInput.nativeElement.value);
+                        if (_this.cardSerInput.nativeElement.value.length == 10)
+                          _callback(true, _this.cardSerInput.nativeElement.value);
+                        else
+                          repeat()
+                      }
+                      else {
+                        debugger
+                        _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                          if (_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 557, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+                          debugger
+                          _callback(false, "0");
+                        }, err => {
+                          debugger
+                          _callback(false, "0");
+                        });
+                      }
+                    }, timeOut);
+                  })();
+                  /* setTimeout(function () {
                     debugger
-                    if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" ||  _this.cardSerInput.nativeElement.value.length > 2) {
+                    if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" || _this.cardSerInput.nativeElement.value.length > 2) {
                       debugger
                       console.log("CD_ card number " + _this.cardSerInput.nativeElement.value);
                       _callback(true, _this.cardSerInput.nativeElement.value);
@@ -582,22 +591,15 @@ export class AppointmentSuccessComponent implements OnInit {
                     else {
                       debugger
                       _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                        if(_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 557, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                         debugger
                         _callback(false, "0");
                       }, err => {
                         debugger
                         _callback(false, "0");
                       });
-                      /* const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-                        data: { "title": "Please Contact reception !", "subTile": "Visitor checkin has been failed (Unable to dispense card)", "ok": "Ok" },
-                        disableClose: true
-                      });
-                      dialogRef.afterClosed().subscribe((data) => {
-                        this.router.navigate(['/landing']);
-                      }); */
-
                     }
-                  }, timeOut);
+                  }, timeOut); */
                 } else {
                   debugger
                   _callback(false, "0");

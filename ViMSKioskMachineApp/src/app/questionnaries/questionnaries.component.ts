@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiServices } from 'src/services/apiService';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { AppSettings } from 'src/services/app.settings';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from '../flow-visitor/registration-type/registration-type.component';
@@ -14,14 +14,14 @@ import { DialogData } from '../flow-visitor/registration-type/registration-type.
 
 export class QuestionnariesComponent implements OnInit {
   position = -1;
-  QuestionsDisplay:any = []
+  QuestionsDisplay: any = []
   isPlayVideo = false;
   videoPath = '';
-  KIOSK_PROPERTIES:any = {};
+  KIOSK_PROPERTIES: any = {};
   mainModule = '';
-  KIOSK_CHECKIN_COUNTER_NAME:string = "";
+  KIOSK_CHECKIN_COUNTER_NAME: string = "";
   docType = '';
-  constructor(private apiServices:ApiServices,
+  constructor(private apiServices: ApiServices,
     public dialog: MatDialog,
     private _location: Location,
     private route: ActivatedRoute,
@@ -40,19 +40,28 @@ export class QuestionnariesComponent implements OnInit {
           this.QuestionsDisplay = JSON.parse(ques);
         }
 
-    });
+      });
     let Questionnaries = false;
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
       if (this.mainModule === 'vcheckin') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
+      } else if (this.mainModule === 'vcheckinapproval') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+      } else if (this.mainModule === 'preAppointment') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
+      }
+      Questionnaries = this.KIOSK_PROPERTIES.COMMON_CONFIG.Questionnaries.Enable_Questionnaries;
+
+      /* if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
         Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_Questionnaries'];
       } else {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ApptFieldSettings;
         Questionnaries = this.KIOSK_PROPERTIES['modules']['Questionnaries']['Enable_ques_Preappointments'];
-      }
+      } */
     }
 
     if (Questionnaries) {
@@ -61,7 +70,7 @@ export class QuestionnariesComponent implements OnInit {
       } else {
         const dialogRef = this.dialog.open(DialogAlertBox, {
           //width: '50vw',
-          data: {"title": "Questions not found", "subTile":"Please contact admin." }
+          data: { "title": "Questions not found", "subTile": "Please contact admin." }
         });
         dialogRef.afterClosed().subscribe(result => {
           this.goBack(false);
@@ -93,7 +102,7 @@ export class QuestionnariesComponent implements OnInit {
         }
       }
 
-    } else if (action === 'no'){
+    } else if (action === 'no') {
       this.QuestionsDisplay[this.position].Answer = 0;
       const currentQuestion = this.QuestionsDisplay[this.position];
       if (currentQuestion) {
@@ -112,7 +121,7 @@ export class QuestionnariesComponent implements OnInit {
 
 
 
-    } else if (action === 'prev'){
+    } else if (action === 'prev') {
       if ((this.position - 1) <= 0) {
         console.log('Reached first');
         this.goBack(true);
@@ -123,8 +132,8 @@ export class QuestionnariesComponent implements OnInit {
   }
 
   goBack(back) {
-    let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-    let listOfVisitors:any = uploadArray['visitorDetails'];
+    let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+    let listOfVisitors: any = uploadArray['visitorDetails'];
     const currentVisitor = listOfVisitors[listOfVisitors.length - 1];
     if (listOfVisitors.length > 0) {
       listOfVisitors.splice(-1, 1);
@@ -134,13 +143,16 @@ export class QuestionnariesComponent implements OnInit {
     localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
     if (back) {
       // this._location.back();
-      this.router.navigate(['/visitorAppointmentDetail'], { queryParams:
-        { resumeData: true,
+      this.router.navigate(['/visitorAppointmentDetail'], {
+        queryParams:
+        {
+          resumeData: true,
           docType: this.docType,
-          visitorData : JSON.stringify(currentVisitor),
+          visitorData: JSON.stringify(currentVisitor),
           video: this.videoPath,
-          questions : JSON.stringify(this.QuestionsDisplay),
-        }})
+          questions: JSON.stringify(this.QuestionsDisplay),
+        }
+      })
     } else {
       this.router.navigateByUrl('/landing');
     }
@@ -149,12 +161,12 @@ export class QuestionnariesComponent implements OnInit {
 
   vidEnded() {
     console.log("Video Ended");
-    if(this._updateVisitorList()){
-      this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
-    } else{
+    if (this._updateVisitorList()) {
+      this.router.navigate(['/visitorMsgSuceess'], { queryParams: { action: "register" } });
+    } else {
       const dialogRef = this.dialog.open(DialogAlertBox, {
         //width: '50vw',
-        data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
+        data: { "title": "Visitor already exists in list", "subTile": "Please check your data." }
       });
       dialogRef.afterClosed().subscribe(result => {
         this.goBack(false);
@@ -166,7 +178,7 @@ export class QuestionnariesComponent implements OnInit {
     console.log("Video Failed");
     const dialogRef = this.dialog.open(DialogAlertBox, {
       //width: '50vw',
-      data: {"title": "Error", "subTile":"Error while playing video. Please contact admin." }
+      data: { "title": "Error", "subTile": "Error while playing video. Please contact admin." }
     });
     dialogRef.afterClosed().subscribe(result => {
       this.goBack(true);
@@ -175,22 +187,23 @@ export class QuestionnariesComponent implements OnInit {
 
   playVideo() {
     let showVideoBrief = false;
-    if (this.mainModule === 'vcheckin') {
-      showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
-    } else {
-      showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video_preappt'];
-    }
+    /*  if (this.mainModule === 'vcheckin') {
+       showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video'];
+     } else {
+       showVideoBrief = this.KIOSK_PROPERTIES['modules']['Safety_briefing']['Enable_Safety_brief_video_preappt'];
+     } */
+    showVideoBrief = this.KIOSK_PROPERTIES.COMMON_CONFIG.Safety_briefing.Enable_Safety_brief_video
     if (showVideoBrief && this.videoPath) {
 
       this.isPlayVideo = true;
       // this.videoPath = 'http://commondatastorage.googleapis.com/gtv-videos-bucket1/sample/ForBiggerBlazes.mp4';
     } else {
-      if(this._updateVisitorList()){
-        this.router.navigate(['/visitorMsgSuceess'],{queryParams:{action:"register"}});
-      } else{
+      if (this._updateVisitorList()) {
+        this.router.navigate(['/visitorMsgSuceess'], { queryParams: { action: "register" } });
+      } else {
         const dialogRef = this.dialog.open(DialogAlertBox, {
           //width: '50vw',
-          data: {"title": "Visitor already exists in list", "subTile":"Please check your data." }
+          data: { "title": "Visitor already exists in list", "subTile": "Please check your data." }
         });
         dialogRef.afterClosed().subscribe(result => {
           this.goBack(false);
@@ -202,16 +215,16 @@ export class QuestionnariesComponent implements OnInit {
 
   _updateVisitorList() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
     }
-    let uploadArray:any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-    let listOfVisitors:any = uploadArray['visitorDetails'];
+    let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+    let listOfVisitors: any = uploadArray['visitorDetails'];
     const VisitorAnswersLocal = [];
     this.QuestionsDisplay.forEach(element => {
       const item = {
         id: element.QuestionariesSeqId,
-        value : element.Answer,
+        value: element.Answer,
         ValidationRequired: element.ValidationRequired ? 1 : 0
       }
       VisitorAnswersLocal.push(item);
@@ -226,19 +239,19 @@ export class QuestionnariesComponent implements OnInit {
 
     const dialogRef = this.dialog.open(DialogPrepareForScanComponent1, {
       width: '250px',
-      disableClose:false,
+      disableClose: false,
       data: {
         "title": 'Warning',
         "subTile": 'Oops, based on your answer, you are not permitted to proceed. Click \'Yes\' to recheck your answer or click \'No\' to cancel the check-in & process to registration counter.',
-        "cancel":'No',
-        "ok":'Yes'
+        "cancel": 'No',
+        "ok": 'Yes'
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result === 'exit'){
+      if (result === 'exit') {
         this.router.navigateByUrl('/landing');
-      } else{
+      } else {
 
       }
     });
@@ -262,17 +275,17 @@ export class DialogPrepareForScanComponent1 {
 
   constructor(
     public dialogRef: MatDialogRef<DialogPrepareForScanComponent1>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  retry():void {
+  retry(): void {
     this.dialogRef.close('retry');
   }
 
-  proceed():void {
+  proceed(): void {
     this.dialogRef.close('exit');
   }
 
@@ -294,7 +307,7 @@ export class DialogAlertBox {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAlertBox>,
-    @Inject(MAT_DIALOG_DATA) public data) {}
+    @Inject(MAT_DIALOG_DATA) public data) { }
 
   onNoClick(): void {
     this.dialogRef.close();

@@ -85,8 +85,9 @@ export class VisitorPreApontmntComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
-      if (this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'] != undefined) {
-        this.qrScanAppointmentId = this.KIOSK_PROPERTIES['modules']['Enable_QR_scanner_scan_appointment'];
+      this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.Enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.search_type === "QRCode") {
+        this.qrScanAppointmentId = true;
       }
     }
   }
@@ -94,43 +95,7 @@ export class VisitorPreApontmntComponent implements OnInit {
     if (action === "getAppointmentDetail") {
       this.getAppointmentDetails();
     } else if (action === "back") {
-      if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-        this.router.navigateByUrl('/landing')
-      } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-        this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-        this.router.navigateByUrl('/landing')
-      } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-        this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-        this.router.navigateByUrl('/landing')
-      } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-        this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-        this.router.navigateByUrl('/landing')
-      } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-        !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-        this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-        this.router.navigateByUrl('/landing');
-      } else {
-        this.router.navigateByUrl('/landing');
-      }
+      this.router.navigateByUrl('/landing');
     } else if (action === "home") {
       this.router.navigateByUrl('/landing')
     } else if (action == "scanNow") {

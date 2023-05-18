@@ -15,6 +15,7 @@ export class FlowVisitorComponent implements OnInit {
   sub:any;
   needHostNumber:any = '';
   totalVisitors:number = 0;
+  mainModule = '';
   constructor(
     private apiServices:ApiServices,
     private router:Router,
@@ -35,21 +36,8 @@ export class FlowVisitorComponent implements OnInit {
   takeActFor(action:string){
     if(action === "agree"){
 
-      // const dialogRef = this.dialog.open(appConfirmDialog, {
-      //   width: '250px',
-      //   data: {title: "CCTV monitoring in progress", btn_ok:"Ok"}
-      // });
-      // dialogRef.afterClosed().subscribe(result => {
-      //   console.log(result);
-      //   if(result){
-      //     if(this.needHostNumber == '' || this.needHostNumber == 'yes'){
-      //       this.router.navigateByUrl('/visitorHostMobNumber');
-      //     } else if(this.needHostNumber == 'no'){
-      //       this.router.navigateByUrl('/visitorRegisType');
-      //     }
-      //   }
-      // });
-      if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
+      this.router.navigateByUrl('/visitorRegisType');
+     /*  if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
         this.router.navigateByUrl('/visitorDetailForTemp');
       else {
 
@@ -59,9 +47,7 @@ export class FlowVisitorComponent implements OnInit {
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-            /* this.apiServices.localGetMethod("setLEDON",
-            this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_NRICRLicense_LED_port']).subscribe((ledStatus:any) => {},err=>{});
- */
+
             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
               width: '250px',
               disableClose:false,
@@ -88,9 +74,6 @@ export class FlowVisitorComponent implements OnInit {
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-            /* this.apiServices.localGetMethod("setLEDON",
-            this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Passport_LED_port']).subscribe((ledStatus:any) => {},err=>{});
- */
             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
               width: '250px',
               disableClose:false,
@@ -117,9 +100,7 @@ export class FlowVisitorComponent implements OnInit {
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
             const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-           /*  this.apiServices.localGetMethod("setLEDON",
-            this.KIOSK_PROPERTIES['modules']['only_visitor']['checkin']['in_Busins_Card_LED_port']).subscribe((ledStatus:any) => {},err=>{});
- */
+
             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
               width: '250px',
               disableClose:false,
@@ -163,7 +144,7 @@ export class FlowVisitorComponent implements OnInit {
           }
 
         }
-      }
+      } */
 
     } else if(action === "visitorSummary"){
       this.router.navigateByUrl('/visitorSummaryDetail')
@@ -174,9 +155,17 @@ export class FlowVisitorComponent implements OnInit {
 
   KIOSK_PROPERTIES:any = {};
   _updateKioskSettings(){
+    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      if (this.mainModule === 'vcheckin') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
+      } else if (this.mainModule === 'vcheckinapproval'){
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+      }else if (this.mainModule === 'preAppointment'){
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
+      }
     }
   }
 }

@@ -1,21 +1,31 @@
 <div my-headerbar-visitorlist>
-  <button *ngIf="totalVisitors > 0" (click)="takeActFor('visitorSummary')"
-   mat-icon-button my-theme-round-button 
-   [matBadge]="totalVisitors" matBadgePosition="before" matBadgeColor="accent">
-    <i class="siva-icon-users-1"></i> </button>
+  <button
+    *ngIf="totalVisitors > 0"
+    (click)="takeActFor('visitorSummary')"
+    mat-icon-button
+    my-theme-round-button
+    [matBadge]="totalVisitors"
+    matBadgePosition="before"
+    matBadgeColor="accent"
+  >
+    <i class="siva-icon-users-1"></i>
+  </button>
 </div>
-<div style="text-align:center;padding:30px;">
+<div style="text-align: center; padding: 30px">
   <h1 info-title>
-    {{KIOSK_PROPERTIES['modules']['T_adn_C']['title']}}
+    {{ KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.title }}
   </h1>
   <div terms-condition>
     <div terms-condition-body>
       <!-- <app-terms-and-condition></app-terms-and-condition> -->
-      <div [innerHTML]="KIOSK_PROPERTIES['modules']['T_adn_C']['template'] | safeHtml"></div>
+      <div
+        [innerHTML]="KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.template | safeHtml"
+      ></div>
     </div>
   </div>
 </div>
 <div my-footer-toolbar>
   <button mat-raised-button my-theme-button (click)="takeActFor('agree')">
-    {{KIOSK_PROPERTIES['modules']['T_adn_C']['agree_btn_label']}}</button>
+    {{ KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.agree_btn_caption }}
+  </button>
 </div>

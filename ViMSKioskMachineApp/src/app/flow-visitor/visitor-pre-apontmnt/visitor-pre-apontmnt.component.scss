@@ -5,6 +5,12 @@
   font-weight: bold;
 }
 
+[hideTab0Flag]{
+.class-hide-tab0 div.mat-tab-label:nth-child(1) {
+  display: none;
+}
+}
+
 /* ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
   color: rgb(255, 255, 255);
   font-size: 28px;
@@ -30,7 +36,7 @@
    color: rgb(255, 255, 255);
    font-weight: bold;
    font-size: 28px;
-  
+
 }
 
 /* Styles for the active tab label */

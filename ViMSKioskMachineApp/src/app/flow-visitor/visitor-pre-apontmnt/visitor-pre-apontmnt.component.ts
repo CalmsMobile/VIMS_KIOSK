@@ -189,7 +189,7 @@ export class VisitorPreApontmntComponent implements OnInit {
           } else {
             this.dialog.open(appConfirmDialog, {
               width: '250px',
-              data: { title: "Appointment record not found", btn_ok: "Ok" }
+              data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
             });
           }
         } else {
@@ -201,7 +201,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       } else {
         this.dialog.open(appConfirmDialog, {
           width: '250px',
-          data: { title: "Appointment record not found", btn_ok: "Ok" }
+          data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
         });
       }
     },
@@ -209,7 +209,7 @@ export class VisitorPreApontmntComponent implements OnInit {
         document.getElementById("bodyloader").style.display = "none";
         this.dialog.open(appConfirmDialog, {
           width: '250px',
-          data: { title: "Appointment record not found", btn_ok: "Ok" }
+          data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
         });
         return false;
       });

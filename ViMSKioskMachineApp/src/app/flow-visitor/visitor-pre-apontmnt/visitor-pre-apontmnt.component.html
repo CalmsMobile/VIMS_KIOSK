@@ -28,20 +28,57 @@
         mat-align-tabs="center"
         (selectedTabChange)="selectedTabValue($event)"
       >
-        <mat-tab label="{{ 'Mobile No.' }}" se>
-          <p sub-title>Please enter your <br />Mobile number</p>
+        <mat-tab
+          label="{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact
+              .title_caption
+          }}"
+        >
+          <p sub-title>
+            {{
+              KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact
+                .description
+            }}
+          </p>
         </mat-tab>
-        <mat-tab label="{{ 'Email' }}">
-          <p sub-title>Please enter your <br />Email address</p>
+        <mat-tab
+          label="{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption
+          }}"
+        >
+          <p sub-title>
+            {{
+              KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.description
+            }}
+          </p>
         </mat-tab>
         <mat-tab
           *ngIf="qrScanAppointmentId"
-          label="{{ 'Appointment QR Code' }}"
+          label="{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+              .title_caption
+          }}"
         >
-          <p sub-title>Please scan your<br />Appointment QR Code</p>
+          <p sub-title>
+            {{
+              KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+                .description
+            }}
+          </p>
         </mat-tab>
-        <mat-tab *ngIf="!qrScanAppointmentId" label="{{ 'Appointment ID' }}">
-          <p sub-title>Please enter<br />Appointment ID</p>
+        <mat-tab
+          *ngIf="!qrScanAppointmentId"
+          label="{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+              .title_caption
+          }}"
+        >
+          <p sub-title>
+            {{
+              KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+                .description
+            }}
+          </p>
         </mat-tab>
       </mat-tab-group>
       <mat-form-field
@@ -51,7 +88,9 @@
         style="display: block"
         *ngIf="selectedType == 'contact'"
       >
-        <mat-label>Mobile No.</mat-label>
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.field_caption
+        }}</mat-label>
         <input
           matInput
           [(ngModel)]="APONTMNT_CONTACT"
@@ -70,7 +109,9 @@
         style="display: block"
         *ngIf="selectedType == 'email'"
       >
-        <mat-label>Email</mat-label>
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.field_caption
+        }}</mat-label>
         <input
           matInput
           [(ngModel)]="APONTMNT_EMAIL"
@@ -89,8 +130,14 @@
         style="display: block"
         *ngIf="selectedType == 'appint_id'"
       >
-        <mat-label *ngIf="qrScanAppointmentId">Appointment QR Code</mat-label>
-        <mat-label *ngIf="!qrScanAppointmentId">Appointment ID</mat-label>
+        <mat-label *ngIf="qrScanAppointmentId">{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+            .field_caption
+        }}</mat-label>
+        <mat-label *ngIf="!qrScanAppointmentId">{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+            .field_caption
+        }}</mat-label>
         <input
           matInput
           [(ngModel)]="APONTMNT_CODE"

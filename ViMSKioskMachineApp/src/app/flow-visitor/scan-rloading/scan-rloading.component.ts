@@ -14,6 +14,7 @@ export class ScanRLoadingComponent implements OnInit {
   sub: any;
   docType: any = '';
   websocket: any;
+  mainModule = '';
   constructor(private router: Router,
     private route: ActivatedRoute,
     public snackBar: MatSnackBar,
@@ -25,9 +26,17 @@ export class ScanRLoadingComponent implements OnInit {
   }
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
+    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      if (this.mainModule === 'vcheckin') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
+      } else if (this.mainModule === 'vcheckinapproval') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+      } else if (this.mainModule === 'preAppointment') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
+      }
     }
   }
   ngOnInit() {
@@ -273,14 +282,24 @@ export class ScanRLoadingComponent implements OnInit {
     }
   }
   showErrorMsg() {
-    let documentTypes = {
-      "MYCARD": this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC_label,
-      "SING_NRICrDRIV": this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRICRLicenselabel,
-      "PASSPORT": this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport_label,
-      "BUSINESS": this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card_label,
-      "PREAPPOINTMT": this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label
+    let target_text = "";
+    if (this.docType == 'SING_NRICrDRIV') {
+      target_text = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_failed_msg;
+    } else if (this.docType == 'PASSPORT') {
+      target_text = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_failed_msg;
+    } else if (this.docType == 'MYCARD') {
+      target_text = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_failed_msg;
+    } else if (this.docType == 'BUSINESS') {
+      target_text = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.BusinessCard_failed_msg;
     }
-    let target_text = this.KIOSK_PROPERTIES['commonsetup']['Scan_failed_msg'];
+    let documentTypes = {
+      "MYCARD": this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_caption,
+      "SING_NRICrDRIV": this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_caption,
+      "PASSPORT": this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_caption,
+      "BUSINESS": this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.BusinessCard_caption,
+      //"PREAPPOINTMT": this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.in_prereg_option.in_prereg_label
+    }
+
     target_text = target_text.replace(new RegExp("{{document}}", 'g'), documentTypes[this.docType]);
     let dialogRef = this.dialog.open(appConfirmDialog, {
       width: '250px',

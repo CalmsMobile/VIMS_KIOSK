@@ -103,8 +103,8 @@ export class AppComponent {
           "title": this.KIOSK_PROPERTIES['commonsetup']['timer']['timout_msg_title'],
           "subTile": this.KIOSK_PROPERTIES['commonsetup']['timer']['timout_msg_msg'],
           "enbCancel":true,
-          "oktext":this.KIOSK_PROPERTIES['commonsetup']['timer']['timeout_btn_continue_label'],
-          "canceltext":this.KIOSK_PROPERTIES['commonsetup']['timer']['timeout_btn_gohome_label']
+          "oktext":this.KIOSK_PROPERTIES['commonsetup']['timer']['timeout_btn_continue_label'] || "CONTINUE",
+          "canceltext":this.KIOSK_PROPERTIES['commonsetup']['timer']['timeout_btn_gohome_label'] || "GO HOME"
         },
         disableClose: true
       });

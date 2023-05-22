@@ -29,6 +29,10 @@
         (selectedTabChange)="selectedTabValue($event)"
       >
         <mat-tab
+          [disabled]="
+            !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact
+              .enable
+          "
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact
               .title_caption
@@ -42,6 +46,10 @@
           </p>
         </mat-tab>
         <mat-tab
+        [disabled]="
+        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email
+          .enable
+      "
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption
           }}"
@@ -53,6 +61,10 @@
           </p>
         </mat-tab>
         <mat-tab
+        [disabled]="
+        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+          .enable
+      "
           *ngIf="qrScanAppointmentId"
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
@@ -67,6 +79,10 @@
           </p>
         </mat-tab>
         <mat-tab
+        [disabled]="
+        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+          .enable
+      "
           *ngIf="!qrScanAppointmentId"
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID

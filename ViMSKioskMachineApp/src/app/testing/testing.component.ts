@@ -109,7 +109,7 @@ export class TestingComponent implements OnInit {
   testPrintReceipt() {
     var preparedJSON = {
       "psJSON": "{\"CompanyName\":\"Calms Technologies Sdn Bhd\",\"Address1\":\"Block DC3, Server Farm, UPM-MTDC Technology Centre\",\"Address2\":\"Universiti Putra Malaysia, 43400 Serdang , Selangor DE\",\"Address3\":\"\",\"CompanyMobile\":\"+603 8941 8708 \",\"SlipTitle\":\"VISITOR ENTRY SLIP\",\"SlipSubTitle_1\":\"VISITOR DETAILS\",\"SlipSubTitle_2\":\"CHECK-IN DETAILS\",\"SlipSubTitle_3\":\"HOST DETAILS\",\"VisitorName\":\"SIVAPRAKASH JEYARAJ\",\"VisitorIC\":\"123456\",\"VisitorCompany\":\"individual\",\"VisitorCategory\":\"Visitor\",\"VisitorContact\":\"0987654321\",\"VisitorVehicle\":\"WLX7256\",\"HostPurpose\":\"collect document\",\"CheckInTime\":\"22-02-2019 01:40 pm\",\"PermittedTime\":\"22-02-2019 03:40 pm\",\"PassNo\":\"12345\",\"CheckINLocation\":\"Kiosk 1\",\"CheckINBy\":\"VISITOR\",\"NoOfPersons\":\"1\",\"HostName\":\"\",\"HostCompany\":\"\",\"HostDepartment\":\"\",\"Floor\":\"\",\"PrintType\":\"OR\",\"Terms1\":\"Terms and Conditions\",\"Terms2\":\"Visitor understand, acknowledge and conf\",\"Terms3\":\"that all details provided are accurate\",\"Terms4\":\"\",\"Terms5\":\"\",\"Message1\":\"Thank You\",\"Message2\":\"\",\"PrintField\":\"\"}",
-      "appSettings": {
+      /* "appSettings": {
         alowSMS: this.KIOSK_PROPERTIES['modules']['SMS']['enable'],
         SMSEndPoint: this.KIOSK_PROPERTIES['modules']['SMS']['apiURL'],
         SMSEndPointId: this.KIOSK_PROPERTIES['modules']['SMS']['SMSEndPointId'],
@@ -118,6 +118,10 @@ export class TestingComponent implements OnInit {
         SMSContent: this.KIOSK_PROPERTIES['modules']['SMS']['sms_template'],
         printEnable: this.KIOSK_PROPERTIES['modules']['printer']['recipt_enable'],
         printerName: this.KIOSK_PROPERTIES['modules']['printer']['printer_receipt_name'],
+      } */
+      "appSettings": {
+        allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
+        allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
       }
     }
     this.apiServices.PrintVisitorReceipt(preparedJSON)

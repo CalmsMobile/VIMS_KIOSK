@@ -63,28 +63,28 @@ export class RegistrationTypeComponent implements OnInit {
       let proceed_btn = "";
 
       if (this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV') {
-        _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
+        _imgsrc = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_GuideImage || "assets/images/cus_icons/id_lic_gif.gif";
         title = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_ScanGuide;
         //subTile = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_ScanGuide;
         cancel_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_cancel_button_caption;
         proceed_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_proceed_button_caption;
 
       } else if (this.SEL_REGISTRATION_TYPE == 'PASSPORT') {
-        _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
+        _imgsrc = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_GuideImage || "assets/images/cus_icons/id_passport_gif.gif";
         title = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_ScanGuide;
         //subTile = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_ScanGuide;
         cancel_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_cancel_button_caption;
         proceed_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_proceed_button_caption;
 
       } else if (this.SEL_REGISTRATION_TYPE == 'MYCARD') {
-        _imgsrc = "assets/images/cus_icons/id_mycard_gif.gif";
+        _imgsrc = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_GuideImage || "assets/images/cus_icons/id_mycard_gif.gif";
         title = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_ScanGuide;
         //subTile = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_ScanGuide;
         cancel_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_cancel_button_caption;
         proceed_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRIC_proceed_button_caption;
 
       } else if (this.SEL_REGISTRATION_TYPE == 'BUSINESS') {
-        _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
+        _imgsrc = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.BusinessCard_GuideImage || "assets/images/cus_icons/id_business_gif.gif";
         title = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.BusinessCard_ScanGuide;
         //subTile = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.BusinessCard_ScanGuide;
         cancel_btn = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.BusinessCard_cancel_button_caption;
@@ -119,10 +119,41 @@ export class RegistrationTypeComponent implements OnInit {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
+        this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin,this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_walkin);
       } else {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+        this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin,this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_ReqAppt);
       }
+
     }
+
+  }
+  checkTypes(setting,manualType) {
+    if (setting.enable_NRICRLicense && !setting.enable_Passport && !setting.enable_NRIC && !setting.enable_BusinessCard && !manualType) {
+      this.SEL_REGISTRATION_TYPE = 'SING_NRICrDRIV';
+      this.openPrepareScanDocDialog();
+    }
+
+    else if (!setting.enable_NRICRLicense && setting.enable_Passport && !setting.enable_NRIC && !setting.enable_BusinessCard && !manualType) {
+      this.SEL_REGISTRATION_TYPE = 'PASSPORT';
+      this.openPrepareScanDocDialog();
+    }
+
+    else if (!setting.enable_NRICRLicense && !setting.enable_Passport && setting.enable_NRIC && !setting.enable_BusinessCard && !manualType) {
+      this.SEL_REGISTRATION_TYPE = 'MYCARD';
+      this.openPrepareScanDocDialog();
+    }
+
+    else if (!setting.enable_NRICRLicense && !setting.enable_Passport && !setting.enable_NRIC && setting.enable_BusinessCard && !manualType) {
+      this.SEL_REGISTRATION_TYPE = 'BUSINESS';
+      this.openPrepareScanDocDialog();
+    }
+
+    else if (!setting.enable_NRICRLicense && !setting.enable_Passport && !setting.enable_NRIC && !setting.enable_BusinessCard && manualType) {
+      this.SEL_REGISTRATION_TYPE = 'OTHER';
+      this.openPrepareScanDocDialog();
+    }
+
   }
 }
 @Component({

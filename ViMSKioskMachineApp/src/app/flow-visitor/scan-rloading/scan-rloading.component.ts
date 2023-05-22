@@ -74,10 +74,12 @@ export class ScanRLoadingComponent implements OnInit {
     }
   }
   getDeviceConnectionData(action: string) {
-    if (AppSettings.APP_DEFAULT_SETTIGS.Passport_Scanner == "SINOSECURE") {
+    if (this.KIOSK_PROPERTIES.commonsetup.Passport_module_type == "SINOSECURE") {
+      debugger
       let loData = this.SinosecureGetPassportDetail();
     }
     else {
+      debugger
       let req = AppSettings['APP_SERVICES'][action];
       this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data: any) => {
         if ((action == "GetPassportDetail" || action == "getIdScanerData") && data.length > 0) {

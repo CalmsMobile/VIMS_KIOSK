@@ -427,7 +427,7 @@ export class LandingComponent implements OnInit {
 
     this.Appointment = localStorage.getItem('KIOSK_Appointment');
     this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
-    this.CheckIn = localStorage.getItem('KIOSK_CheckIn');
+    this.CheckIn = localStorage.getItem('KIOSK_WalkinRegistration');
     this.CheckOut = localStorage.getItem('KIOSK_CheckOut');
     const MyKad = localStorage.getItem('KIOSK_MyKad');
     const KIOSK_IDScanner = localStorage.getItem('KIOSK_IDScanner');

@@ -561,10 +561,11 @@ export class AppointmentSuccessComponent implements OnInit {
                 let cardMoveStatus = JSON.parse(data[0]['Data']);
                 if (cardMoveStatus['ResponseStatus'] == "0") {
                   debugger
-                  let i = 0;
-                  let max = 1;
+                  let reCheck = true;
+                  //let i = 0;
+                  //let max = 1;
                   (function repeat() {
-                    if (++i > max) _callback(false, "0");
+                    //if (++i > max) _callback(false, "0");
                     setTimeout(function () {
                       //console.log("waited for: " + i + " seconds");
                       debugger
@@ -573,8 +574,22 @@ export class AppointmentSuccessComponent implements OnInit {
                         console.log("CD_ card number " + _this.cardSerInput.nativeElement.value);
                         if (_this.cardSerInput.nativeElement.value.length == 10)
                           _callback(true, _this.cardSerInput.nativeElement.value);
-                        else
-                          repeat()
+                        else {
+                          if (reCheck) {
+                            reCheck = false;
+                            repeat()
+                          }
+                          else {
+                            _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                              if (_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 584, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+                              debugger
+                              _callback(false, "0");
+                            }, err => {
+                              debugger
+                              _callback(false, "0");
+                            });
+                          }
+                        }
                       }
                       else {
                         debugger
@@ -728,7 +743,7 @@ export class AppointmentSuccessComponent implements OnInit {
                   });
                 });
                 const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-                  data: { "title": "Please contact reception !", "subTile":  _Modules['card_dispenser']['failed_message'], "ok": "Ok" },
+                  data: { "title": "Please contact reception !", "subTile": _Modules['card_dispenser']['failed_message'], "ok": "Ok" },
                   disableClose: true
                 });
                 dialogRef.afterClosed().subscribe((data) => {
@@ -1069,7 +1084,7 @@ export class AppointmentSuccessComponent implements OnInit {
           console.log(Data["Table"][0]);
           let uploadArray = {
             psJSON: JSON.stringify(Data["Table"][0]),
-            appSettings: {
+            /* appSettings: {
               alowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
               SMSEndPoint: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.apiURL,
               SMSEndPointId: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.SMSEndPointId,
@@ -1078,7 +1093,12 @@ export class AppointmentSuccessComponent implements OnInit {
               SMSContent: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.sms_template,
               printEnable: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_enable,
               printerName: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_name,
+            } */
+            appSettings: {
+              allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
+              allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
             }
+
           }
           this.apiServices.PrintVisitorLabel(uploadArray)
             .subscribe((data: any) => {
@@ -1279,7 +1299,7 @@ export class AppointmentSuccessComponent implements OnInit {
       }
       let uploadArray = {
         psJSON: JSON.stringify(preparePrintData),
-        appSettings: {
+        /* appSettings: {
           alowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
           SMSEndPoint: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.apiURL,
           SMSEndPointId: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.SMSEndPointId,
@@ -1288,6 +1308,10 @@ export class AppointmentSuccessComponent implements OnInit {
           SMSContent: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.sms_template,
           printEnable: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.receipt_printer_enable,
           printerName: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.receipt_printer_name,
+        } */
+        appSettings: {
+          allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
+          allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
         }
       }
       console.log(JSON.stringify(uploadArray));

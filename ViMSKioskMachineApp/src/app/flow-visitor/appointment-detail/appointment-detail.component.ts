@@ -571,6 +571,10 @@ export class AppointmentDetailComponent implements OnInit {
   _updateVisitorCheckINSettings() {
     let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY") || "{}");
     uploadArray['appSettings'] = {
+      allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
+      allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
+    }
+    /* uploadArray['appSettings'] = {
       alowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
       SMSEndPoint: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.apiURL,
       SMSEndPointId: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.SMSEndPointId,
@@ -579,7 +583,7 @@ export class AppointmentDetailComponent implements OnInit {
       SMSContent: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.sms_template,
       printEnable: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_enable,
       printerName: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_name,
-    }
+    } */
     localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
 
     if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show) {

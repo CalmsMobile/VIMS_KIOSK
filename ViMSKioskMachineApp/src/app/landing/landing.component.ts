@@ -321,7 +321,7 @@ export class LandingComponent implements OnInit {
         }
       });
     } else if (action === "preAppointment") {
-      debugger
+      //debugger
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.checkCardPosition((status: boolean) => {
         if (status) {

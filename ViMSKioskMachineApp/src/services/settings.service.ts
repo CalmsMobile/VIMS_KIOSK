@@ -209,7 +209,7 @@ export class SettingsService {
             console.log("KIOSK_PROPERTIES " + JSON.stringify(_prepare));
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
             //new setting
-           // this._initCardDispenserModule();
+            //this._initCardDispenserModule();
             //this.snackBar.open("Kiosk Properties Updated !","",{duration: 2000});
             _callBack(true);
             return true;

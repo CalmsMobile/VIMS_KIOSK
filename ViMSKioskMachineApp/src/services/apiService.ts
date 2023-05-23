@@ -22,7 +22,7 @@ export class ApiServices {
 
   }
 
-  public sendLogToServer(module, content) {
+ async sendLogToServer(module, content) {
     debugger
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     let KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);

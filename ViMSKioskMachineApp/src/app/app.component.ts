@@ -138,7 +138,7 @@ export class AppComponent {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
 
     //-------------------- Hardware Services --------------------
-      this.settingsService._initCardDispenserModule();
+      //this.settingsService._initCardDispenserModule();
     }
   }
 }

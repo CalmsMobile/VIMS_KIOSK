@@ -27,6 +27,7 @@
       <mat-tab-group
         mat-align-tabs="center"
         (selectedTabChange)="selectedTabValue($event)"
+        [selectedIndex]="selectedIndex"
       >
         <mat-tab
           [disabled]="

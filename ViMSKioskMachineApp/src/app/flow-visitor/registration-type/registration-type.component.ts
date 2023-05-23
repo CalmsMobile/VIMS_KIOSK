@@ -119,16 +119,16 @@ export class RegistrationTypeComponent implements OnInit {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
-        this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin,this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_walkin);
+        this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin, this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_walkin);
       } else {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
-        this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin,this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_ReqAppt);
+        this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin, this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_ReqAppt);
       }
 
     }
 
   }
-  checkTypes(setting,manualType) {
+  checkTypes(setting, manualType) {
     if (setting.enable_NRICRLicense && !setting.enable_Passport && !setting.enable_NRIC && !setting.enable_BusinessCard && !manualType) {
       this.SEL_REGISTRATION_TYPE = 'SING_NRICrDRIV';
       this.openPrepareScanDocDialog();

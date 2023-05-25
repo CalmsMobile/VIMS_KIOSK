@@ -87,7 +87,7 @@ export class VisitorPreApontmntComponent implements OnInit {
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
-      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.search_type === "QRCode") {
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === "QRCode") {
         this.qrScanAppointmentId = true;
       }
       this.selectTab();

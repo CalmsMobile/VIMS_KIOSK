@@ -1,7 +1,7 @@
 {
 	"supportMultiBranch": true,
-  "autoApproval":false,
+  "autoApproval":true,
   "multiBrnachLable": "Host Company",
   "alertApproveMessage": "Your registration is pending approval. Please proceed to the reception counter.",
-  "serverLog":false
+  "serverLog":true
 }

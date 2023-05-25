@@ -147,11 +147,7 @@
         style="display: block"
         *ngIf="selectedType == 'appint_id'"
       >
-        <mat-label *ngIf="qrScanAppointmentId">{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
-            .field_caption
-        }}</mat-label>
-        <mat-label *ngIf="!qrScanAppointmentId">{{
+        <mat-label>{{
           KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
             .field_caption
         }}</mat-label>
@@ -167,13 +163,20 @@
           *ngIf="!qrScanAppointmentId"
         />
         <input
+        matInput
+        [(ngModel)]="APONTMNT_CODE"
+        maxlength="10"
+        #appint_id
+        *ngIf="qrScanAppointmentId"
+      />
+       <!--  <input
           matInput
           [(ngModel)]="APONTMNT_CODE"
           maxlength="10"
           #appint_id
           *ngIf="qrScanAppointmentId"
           (input)="onInput(appint_id.value)"
-        />
+        /> -->
       </mat-form-field>
     </div>
   </div>

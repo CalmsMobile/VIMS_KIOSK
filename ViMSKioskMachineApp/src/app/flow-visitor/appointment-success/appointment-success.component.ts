@@ -283,6 +283,7 @@ export class AppointmentSuccessComponent implements OnInit {
   }
 
   callApitoSaveAppointment(appointment1) {
+    debugger
     const cDate = new Date();
     const startTime = this.datePipe.transform(cDate + "", "MM-dd-yyyy HH:mm:ss");
     const endDate = new Date().setTime(new Date().getTime() + (appointment1.meetingHoursValue ? appointment1.meetingHoursValue : 1) * 60 * 60 * 1000);
@@ -316,6 +317,9 @@ export class AppointmentSuccessComponent implements OnInit {
     appointment.VehicleBrand = '';
     appointment.VehicleModel = '';
     appointment.VehicleColor = '';
+
+    appointment.allowSMS = this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable;
+    appointment.allowEmail = this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email;
 
     var _callErrorMsg = () => {
       this.RESULT_MSG = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.failed_msg_line1;
@@ -1084,7 +1088,7 @@ export class AppointmentSuccessComponent implements OnInit {
           console.log(Data["Table"][0]);
           let uploadArray = {
             psJSON: JSON.stringify(Data["Table"][0]),
-            /* appSettings: {
+           /*  appSettings: {
               alowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
               SMSEndPoint: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.apiURL,
               SMSEndPointId: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.SMSEndPointId,
@@ -1097,6 +1101,8 @@ export class AppointmentSuccessComponent implements OnInit {
             appSettings: {
               allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
               allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
+              printEnable: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_enable,
+              printerName: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_name,
             }
 
           }

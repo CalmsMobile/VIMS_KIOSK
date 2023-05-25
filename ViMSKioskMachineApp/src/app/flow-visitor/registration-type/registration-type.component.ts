@@ -164,7 +164,7 @@ export class RegistrationTypeComponent implements OnInit {
         <div margin-bottom style="text-align:center">
           <img [src]="data.scanImage" style="height: 15vw;" margin-bottom/>
         </div>
-        <div mat-dialog-actions margin>
+        <div mat-dialog-actions style="justify-content: center;" margin>
           <button mat-raised-button my-theme-alt-button margin-right [mat-dialog-close]="false" > {{data.cancel}}</button>
           <button mat-raised-button my-theme-button [mat-dialog-close]="true"> {{data.ok}}</button>
         </div>`,

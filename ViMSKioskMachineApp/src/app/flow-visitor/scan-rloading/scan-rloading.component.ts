@@ -74,7 +74,7 @@ export class ScanRLoadingComponent implements OnInit {
     }
   }
   getDeviceConnectionData(action: string) {
-    if (this.KIOSK_PROPERTIES.commonsetup.Passport_module_type == "SINOSECURE") {
+    if (this.KIOSK_PROPERTIES.commonsetup.Passport_reader_type == "Sinosecure") {
       debugger
       let loData = this.SinosecureGetPassportDetail();
     }
@@ -183,7 +183,7 @@ export class ScanRLoadingComponent implements OnInit {
         if (_this.apiServices.isTest) {
           let userData = {
             "visName": "visName",
-            "visDOCID": "visDOCID",
+            "visDOCID": "vi12",
             "visDocImage": null,
           }
           _this.websocket.close();

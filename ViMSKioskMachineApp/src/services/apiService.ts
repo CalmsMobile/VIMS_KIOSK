@@ -16,13 +16,13 @@ const httpOptions = {
 };
 @Injectable()
 export class ApiServices {
-  public isTest = true;
+  public isTest = false;
 
   constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp: Http) {
 
   }
 
- async sendLogToServer(module, content) {
+  async sendLogToServer(module, content) {
     debugger
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     let KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);

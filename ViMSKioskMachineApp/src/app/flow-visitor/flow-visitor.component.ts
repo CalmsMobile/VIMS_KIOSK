@@ -2,9 +2,9 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiServices } from 'src/services/apiService';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog,MatTabsModule } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatTabsModule } from '@angular/material';
 import { DialogPrepareForScanComponent } from './registration-type/registration-type.component';
-import { AppSettings} from '../../services/app.settings';
+import { AppSettings } from '../../services/app.settings';
 
 @Component({
   selector: 'app-flow-visitor',
@@ -12,19 +12,19 @@ import { AppSettings} from '../../services/app.settings';
   styleUrls: ['./flow-visitor.component.scss']
 })
 export class FlowVisitorComponent implements OnInit {
-  sub:any;
-  needHostNumber:any = '';
-  totalVisitors:number = 0;
+  sub: any;
+  needHostNumber: any = '';
+  totalVisitors: number = 0;
   mainModule = '';
   constructor(
-    private apiServices:ApiServices,
-    private router:Router,
+    private apiServices: ApiServices,
+    private router: Router,
     public dialog: MatDialog,
     private route: ActivatedRoute) {
-      let getVisi = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
-      this.totalVisitors =  getVisi['visitorDetails'].length;
-      this._updateKioskSettings();
-    }
+    let getVisi = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
+    this.totalVisitors = getVisi['visitorDetails'].length;
+    this._updateKioskSettings();
+  }
   ngOnInit() {
     this.sub = this.route
       .queryParams
@@ -33,137 +33,139 @@ export class FlowVisitorComponent implements OnInit {
       });
   }
 
-  takeActFor(action:string){
-    if(action === "agree"){
+  takeActFor(action: string) {
+    if (action === "agree") {
+      if (this.mainModule === 'preAppointment')
+        this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
+      else
+        this.router.navigateByUrl('/visitorRegisType');
+      /*  if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
+         this.router.navigateByUrl('/visitorDetailForTemp');
+       else {
 
-      this.router.navigateByUrl('/visitorRegisType');
-     /*  if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
-        this.router.navigateByUrl('/visitorDetailForTemp');
-      else {
+         if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+             const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
 
-        if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
+             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+               width: '250px',
+               disableClose:false,
+               data: {
+                 "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
+                 "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
+                 "scanImage":_imgsrc,
+                 "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
+                 "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
+               }
+             });
 
-            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-              width: '250px',
-              disableClose:false,
-              data: {
-                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
-                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
-                "scanImage":_imgsrc,
-                "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
-                "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
-              }
-            });
+             dialogRef.afterClosed().subscribe(result => {
+               if(result){
+                   this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'SING_NRICrDRIV' }});
+               } else{
+                // this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+               }
+             });
+         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+             const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
+             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+               width: '250px',
+               disableClose:false,
+               data: {
+                 "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
+                 "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
+                 "scanImage":_imgsrc,
+                 "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
+                 "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
+               }
+             });
 
-            dialogRef.afterClosed().subscribe(result => {
-              if(result){
-                  this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'SING_NRICrDRIV' }});
-              } else{
-               // this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-              }
-            });
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-              width: '250px',
-              disableClose:false,
-              data: {
-                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
-                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
-                "scanImage":_imgsrc,
-                "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
-                "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
-              }
-            });
+             dialogRef.afterClosed().subscribe(result => {
+               if(result){
+                   this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'PASSPORT' }});
+               } else{
+                 //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+               }
+             });
+         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+             const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
 
-            dialogRef.afterClosed().subscribe(result => {
-              if(result){
-                  this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'PASSPORT' }});
-              } else{
-                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-              }
-            });
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
+             const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+               width: '250px',
+               disableClose:false,
+               data: {
+                 "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
+                 "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
+                 "scanImage":_imgsrc,
+                 "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
+                 "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
+               }
+             });
 
-            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-              width: '250px',
-              disableClose:false,
-              data: {
-                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
-                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
-                "scanImage":_imgsrc,
-                "cancel":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
-                "ok":(this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
-              }
-            });
+             dialogRef.afterClosed().subscribe(result => {
+               if(result){
+                   this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'BUSINESS' }});
+               } else{
+                 //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+               }
+             });
+         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+             this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: 'PREAPPOINTMT' }});
+         } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+           !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+           this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+             this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
+         } else {
 
-            dialogRef.afterClosed().subscribe(result => {
-              if(result){
-                  this.router.navigate(['/visitorDocScanRLoading'],{ queryParams: { docType: 'BUSINESS' }});
-              } else{
-                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-              }
-            });
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: 'PREAPPOINTMT' }});
-        } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-          !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-          this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigate(['/visitorAppointmentDetail'], {queryParams: { docType: 'OTHER' }});
-        } else {
+           if(localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE) === "preAppointment"){
+             localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, 'vcheckin');
+             this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: "PREAPPOINTMT" }});
+           }else{
+             this.router.navigateByUrl('/visitorRegisType');
+           }
 
-          if(localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE) === "preAppointment"){
-            localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, 'vcheckin');
-            this.router.navigate(['/visitorPreApontmnt'], {queryParams: { docType: "PREAPPOINTMT" }});
-          }else{
-            this.router.navigateByUrl('/visitorRegisType');
-          }
+         }
+       } */
 
-        }
-      } */
-
-    } else if(action === "visitorSummary"){
+    } else if (action === "visitorSummary") {
       this.router.navigateByUrl('/visitorSummaryDetail')
-    } else if(action === "home"){
+    } else if (action === "home") {
       this.router.navigateByUrl('/landing')
     }
   }
 
-  KIOSK_PROPERTIES:any = {};
-  _updateKioskSettings(){
+  KIOSK_PROPERTIES: any = {};
+  _updateKioskSettings() {
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
-      } else if (this.mainModule === 'vcheckinapproval'){
+      } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
-      }else if (this.mainModule === 'preAppointment'){
+      } else if (this.mainModule === 'preAppointment') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
       }
     }
@@ -173,7 +175,7 @@ export class FlowVisitorComponent implements OnInit {
   selector: 'app-terms-and-condition',
   templateUrl: '../../assets/tandc.html'
 })
-export class AppTermsAndCondtion {}
+export class AppTermsAndCondtion { }
 
 @Component({
   selector: 'dialog-app-common-dialog',
@@ -195,19 +197,19 @@ export class AppTermsAndCondtion {}
 })
 export class appConfirmDialog {
 
-  count:any;
+  count: any;
   constructor(
     public dialogRef: MatDialogRef<appConfirmDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.count = 5;
-      var myInterval = setInterval(()=>{
-        this.count--;
-        if(this.count === 0){
-          clearInterval(myInterval);
-          this.dialogRef.close(true);
-        }
-      },1000);
-    }
+    this.count = 5;
+    var myInterval = setInterval(() => {
+      this.count--;
+      if (this.count === 0) {
+        clearInterval(myInterval);
+        this.dialogRef.close(true);
+      }
+    }, 1000);
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

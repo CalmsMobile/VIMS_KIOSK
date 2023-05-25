@@ -23,7 +23,7 @@ export class AppointmentDetailComponent implements OnInit {
       case "backspace":
         this.cClassMain.changeDetectorRef.detectChanges();
         setTimeout(() => {
-          //this.cClassMain.updateNRICMinLength();
+          this.cClassMain.updateNRICMinLength();
         }, 100);
         break;
 
@@ -210,9 +210,9 @@ export class AppointmentDetailComponent implements OnInit {
         this.isDisablecategory = true;
 
         let Questionnaries = false;
-        //if (this.mainModule === 'vcheckin' || this.mainModule === 'preAppointment') {
-        Questionnaries = this.KIOSK_PROPERTIES.COMMON_CONFIG.Questionnaries.Enable_Questionnaries;
-        //}
+        if (this.mainModule != 'preAppointment') {
+          Questionnaries = this.KIOSK_PROPERTIES.COMMON_CONFIG.Questionnaries.Enable_Questionnaries;
+        }
         if (this.aptmDetails.categoryId && (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief)) {
           this.getQuestionsOrVideo();
         }
@@ -352,7 +352,6 @@ export class AppointmentDetailComponent implements OnInit {
           console.log(this.aptmDetails.hostDetails.id);
         }
         else {
-
           for (let i = 0; i < this.branchMasters['Table1'].length; i++) {
             if (this.aptmDetails.hostDetails.company == this.branchMasters['Table1'][i]['BranchSeqId']) {
               this.aptmDetails.branchID = this.branchMasters['Table1'][i]['BranchSeqId'];
@@ -405,7 +404,7 @@ export class AppointmentDetailComponent implements OnInit {
         } else {
           this.router.navigateByUrl('/visitorRegisType');
         }
-      } else if (this.mainModule === 'vcheckin'){
+      } else if (this.mainModule === 'vcheckin') {
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_NRICRLicense &&
           !this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_Passport &&
           !this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_NRIC &&
@@ -444,7 +443,7 @@ export class AppointmentDetailComponent implements OnInit {
         } else {
           this.router.navigateByUrl('/visitorRegisType');
         }
-      }else if (this.mainModule === 'preAppointment'){
+      } else if (this.mainModule === 'preAppointment') {
         this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
       }
     } else if (action === "addVisitor") {
@@ -487,6 +486,11 @@ export class AppointmentDetailComponent implements OnInit {
         this.takeVistorProfilePicture(action);
       } else {
         this.aptmDetails.visitorB64Image = '';
+        if (this.KIOSK_PROPERTIES.commonsetup.Enable_PDPA) {
+          debugger
+          this.aptmDetails.id = this.aptmDetails.id.slice(-4) + "_" + this.aptmDetails.name.replace(/\s/g, "");;
+          console.log("this.aptmDetails.id == ", this.aptmDetails.id)
+        }
         this.confirmAfterTakePhoto();
       }
 
@@ -540,9 +544,9 @@ export class AppointmentDetailComponent implements OnInit {
   confirmAfterTakePhoto() {
     if (this._updateVisitorList()) {
       let Questionnaries = false;
-      //if (this.mainModule === 'vcheckin' || this.mainModule === 'preAppointment') {
+      if (this.mainModule != 'preAppointment') {
       Questionnaries = this.KIOSK_PROPERTIES.COMMON_CONFIG.Questionnaries.Enable_Questionnaries;
-      //}
+      }
       if (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief) {
         this.router.navigate(['/questionarie'], { queryParams: { docType: this.docType, video: this.videoPath, questions: JSON.stringify(this.QuestionsDisplay) } });
         return;
@@ -776,7 +780,16 @@ export class AppointmentDetailComponent implements OnInit {
       this.NUMBER_OF_INPUTS++;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Count = this.NUMBER_OF_INPUTS;
     } else {
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show = false;
+      debugger
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours)
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show = false;
+      else {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours = {
+          "Caption": "Appointment Hours",
+          "Show": false,
+          "Mandatory": false
+        }
+      }
     }
 
 
@@ -1313,7 +1326,7 @@ export class AppointmentDetailComponent implements OnInit {
   itFocusOut(value: any, elm: string) {
     if (elm === "id" && value != "") {
       console.log("itFocusOut" + value);
-      //this.updateNRICMinLength();
+      this.updateNRICMinLength();
       this.getVisitorDetails(value);
     }
   }
@@ -1325,7 +1338,7 @@ export class AppointmentDetailComponent implements OnInit {
   onKey(value: string, event: any) {
     console.log("onKey: " + value);
 
-    //this.updateNRICMinLength();
+    this.updateNRICMinLength();
     // if (value.length > 1) {
     //   this.getVisitorDetails(value);
     // } else {
@@ -1344,9 +1357,10 @@ export class AppointmentDetailComponent implements OnInit {
     console.log('this.aptmDetails.id: ' + valueInput + '--' + this.cClassMain.aptmDetails.id);
     this.cClassMain.aptmDetails.id = valueInput;
     this.cClassMain.changeDetectorRef.detectChanges();
-    if (this.KIOSK_PROPERTIES.IsKeyMansIdValidate && !this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength) {
+    if (this.KIOSK_PROPERTIES.commonsetup.Enable_NRIC_Passport_validation) {
       if (this.aptmDetails.id) {
         if (isNaN(+this.aptmDetails.id)) {
+          debugger
           this.VISITOR_ID_MIN_LENGTH = 8;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
         } else {
@@ -1354,6 +1368,9 @@ export class AppointmentDetailComponent implements OnInit {
           this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 12;
         }
       }
+    } else if (this.KIOSK_PROPERTIES.commonsetup.Enable_PDPA) {
+      this.VISITOR_ID_MIN_LENGTH = 4;
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
     } else {
       this.VISITOR_ID_MIN_LENGTH = this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
@@ -1440,6 +1457,7 @@ export class AppointmentDetailComponent implements OnInit {
       } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
       } else if (this.mainModule === 'preAppointment') {
+        debugger
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
       }
       /* if (this.mainModule === 'vcheckin') {

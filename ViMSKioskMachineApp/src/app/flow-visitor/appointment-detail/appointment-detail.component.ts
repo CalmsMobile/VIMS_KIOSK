@@ -545,7 +545,7 @@ export class AppointmentDetailComponent implements OnInit {
     if (this._updateVisitorList()) {
       let Questionnaries = false;
       if (this.mainModule != 'preAppointment') {
-      Questionnaries = this.KIOSK_PROPERTIES.COMMON_CONFIG.Questionnaries.Enable_Questionnaries;
+        Questionnaries = this.KIOSK_PROPERTIES.COMMON_CONFIG.Questionnaries.Enable_Questionnaries;
       }
       if (Questionnaries || this.KIOSK_PROPERTIES.COMMON_CONFIG.showVideoBrief) {
         this.router.navigate(['/questionarie'], { queryParams: { docType: this.docType, video: this.videoPath, questions: JSON.stringify(this.QuestionsDisplay) } });
@@ -1265,7 +1265,7 @@ export class AppointmentDetailComponent implements OnInit {
 
   _getAutoApprovalOption(branchID) {
     console.log("auto approval branch id === " + branchID);
-    if (!this.autoApproval)
+    if (!this.checkAutoApproval)
       return false;
     if (this.docType === "PREAPPOINTMT" || this.mainModule !== 'vcheckin') {
       return false;
@@ -1434,7 +1434,7 @@ export class AppointmentDetailComponent implements OnInit {
   VISITOR_ID_MIN_LENGTH = 0;
   VISITOR_ID_MAX_LENGTH = 30;
   showMultiBranch = false;
-  autoApproval = true;
+  checkAutoApproval = false;
   _updateKioskSettings() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
@@ -1444,7 +1444,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
       if (this.KIOSK_PROPERTIES_LOCAL) {
         this.showMultiBranch = this.KIOSK_PROPERTIES_LOCAL.supportMultiBranch;
-        this.autoApproval = this.KIOSK_PROPERTIES_LOCAL.autoApproval;
+        this.checkAutoApproval = this.KIOSK_PROPERTIES_LOCAL.checkAutoApproval;
       }
       this.KIOSK_PROPERTIES.IsKeyMansIdValidate = JSON.parse(setngs).IsKeyMansIdValidate;
       this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);

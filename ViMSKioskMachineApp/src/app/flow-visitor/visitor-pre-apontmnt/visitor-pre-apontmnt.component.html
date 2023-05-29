@@ -168,6 +168,7 @@
         maxlength="10"
         #appint_id
         *ngIf="qrScanAppointmentId"
+        (keydown.enter)="takeActFor('getAppointmentDetail')"
       />
        <!--  <input
           matInput

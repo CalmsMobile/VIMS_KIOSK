@@ -96,7 +96,7 @@ export class DetailsComponent implements OnInit {
 
       //Permit to work Reference Number
       this.workReferenceNoShow = true;
-      this.workReferenceNoCaption = "Permit to work Reference Number";
+      this.workReferenceNoCaption = "Permit to Work Reference Number";
       this.workReferenceNoMandatory = false;
       this.workReferenceNoMinLength = 5;
       this.workReferenceNoMaxLength = 30;

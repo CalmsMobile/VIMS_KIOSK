@@ -16,7 +16,7 @@ const httpOptions = {
 };
 @Injectable()
 export class ApiServices {
-  isTest = false;
+  isTest = true;
   constructor(public http: HttpClient, private datePipe: DatePipe, public myhttp: Http) {
 
   }
@@ -253,6 +253,10 @@ export class ApiServices {
 
   getConfigFile() {
     return this.http.get('assets/config.txt?time=' + new Date().getTime(), { responseType: 'text' });
+  }
+
+  getLocalAppSettings(){
+   return this.http.get('assets/app_settings.json');
   }
 
   // getVisitorInfo(request:any)

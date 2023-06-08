@@ -1,60 +1,63 @@
 <div my-headerbar-homeButton>
-  <button mat-icon-button (click)="takeActFor('home')"> <img
-    src="assets/type50/images/icons/ico_home.png"
-    onError="src ='assets/type50/images/icons/ico_home.png'"
-    style="
-      width: 80px;
-      height: 80px;
-      padding-bottom: 0;
-      margin: 0 auto;
-      display: block;
-    "
-  /></button>
+  <button mat-icon-button (click)="takeActFor('home')">
+    <img
+      src="assets/type50/images/icons/ico_home.png"
+      onError="src ='assets/type50/images/icons/ico_home.png'"
+      style="
+        width: 150px;
+        height: 150px;
+        padding-bottom: 0;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+  </button>
 </div>
-<div
-style="position: absolute; right: 0;top: 0;">
-<img style="margin: 40px; height: 70px;" src="assets\type50\images\Logo_small.png">
+<div style="position: absolute; right: 0; top: 0">
+  <img
+    style="margin: 40px; height: 90px"
+    src="assets\type50\images\Logo_small.png"
+  />
 </div>
 
-<div style="text-align:center; padding-top: 40%;">
-  <h1 info-title style="font-size: 8vmin;">
-    {{KIOSK_PROPERTIES['modules']['T_adn_C']['title']}}
+<div style="text-align: center; padding-top: 40%">
+  <h1 info-title style="font-size: 8vmin">
+    {{ KIOSK_PROPERTIES["modules"]["T_adn_C"]["title"] }}
   </h1>
   <!-- <h3 style="color: #00769d;">I agree to allow the management of Gleneagles Singapore<br>to process my personal data to verify identity for access into the building.</h3> -->
   <div terms-condition>
     <div terms-condition-body>
       <!-- <app-terms-and-condition></app-terms-and-condition> -->
-      <div [innerHTML]="KIOSK_PROPERTIES['modules']['T_adn_C']['template'] | safeHtml"></div>
-      </div>
+      <div
+        [innerHTML]="
+          KIOSK_PROPERTIES['modules']['T_adn_C']['template'] | safeHtml
+        "
+      ></div>
+    </div>
   </div>
   <button
-      mat-raised-button
-      my-theme-button
-      [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
-      (click)="takeActFor('scan')"
-      style="
-        margin-top: 100px;
-        background: #00bfff !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        padding-left: 80px !important;
-        padding-right: 80px !important;
-        border-radius: 10px;
-        text-align: center;
-        border-radius: 2vh !important;
-      "
-    >
-      <div
-        style="
-          display: flex;
-          align-items: center;
-        "
-      >
-        <p style="margin: 0px;"> {{KIOSK_PROPERTIES['modules']['T_adn_C']['agree_btn_label']}}</p>
-
-      </div>
-    </button>
-
+    mat-raised-button
+    my-theme-button
+    [ngStyle]="{ 'font-weight': 'bold', 'text-transform': 'capitalize' }"
+    (click)="takeActFor('scan')"
+    style="
+      margin-top: 100px;
+      background: #00bfff !important;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      padding-left: 80px !important;
+      padding-right: 80px !important;
+      border-radius: 10px;
+      text-align: center;
+      border-radius: 2vh !important;
+    "
+  >
+    <div style="display: flex; align-items: center">
+      <p style="margin: 0px">
+        {{ KIOSK_PROPERTIES["modules"]["T_adn_C"]["agree_btn_label"] }}
+      </p>
+    </div>
+  </button>
 </div>
 <div my-footer-toolbar>
   <!-- <button style='background: #00769d !important;' mat-raised-button my-theme-button (click)="takeActFor('scan')">

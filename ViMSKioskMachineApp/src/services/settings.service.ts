@@ -197,23 +197,30 @@ export class SettingsService {
           && _details['Table'][0]['Code'] == 10) {
           if (_details['Table1'] != undefined && _details['Table1'].length > 0) {
             let _kiosk_info = _details['Table1'][0];
-            let _prepare = {
-              "kioskName": "",
-              "kioskAvalCards": _kiosk_info['kioskAvalCards'],
-              "kioskSetup": JSON.parse(_kiosk_info['SettingDetail']),
-              "IsKeyMansIdValidate": _kiosk_info.IsKeyMansIdValidate
-            }
-            if (_details['Table2'] != undefined && _details['Table2'].length > 0) {
-              _prepare['kioskName'] = _details['Table2'][0]['Name'];
-            }
-            console.log("KIOSK_PROPERTIES " + JSON.stringify(_prepare));
+            console.log("setting server "+_kiosk_info['SettingDetail']);
+            let _prepare = {};
+            this.apiServices.getLocalAppSettings().subscribe(res => {
+              console.log('setting local json ' + JSON.stringify(res));
+               _prepare = {
+                "kioskName": "",
+                "kioskAvalCards": _kiosk_info['kioskAvalCards'],
+                "kioskSetup": JSON.parse(JSON.stringify(res)),
+                "IsKeyMansIdValidate": _kiosk_info.IsKeyMansIdValidate
+              }
+              if (_details['Table2'] != undefined && _details['Table2'].length > 0) {
+                _prepare['kioskName'] = _details['Table2'][0]['Name'];
+              }
+              console.log("KIOSK_PROPERTIES " + JSON.stringify(_prepare));
 
-            _prepare['kioskSetup']['General']['AppType'] = 50;
-            localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
+              //_prepare['kioskSetup']['General']['AppType'] = 50;
+              localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
 
-            this._initCardDispenserModule();
-            //this.snackBar.open("Kiosk Properties Updated !","",{duration: 2000});
-            _callBack(true);
+              this._initCardDispenserModule();
+              //this.snackBar.open("Kiosk Properties Updated !","",{duration: 2000});
+              _callBack(true);
+            });
+
+
             return true;
           } else {
             _callBack(false);

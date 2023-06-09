@@ -15,7 +15,7 @@ export const AppSettings = Object.freeze({
     //"Passport_Scanner": "SINOSECURE",
     "SinosecureWebsocketUrl": "ws://127.0.0.1:90/echo",
     "Disable_CardDispenser": "PARTICIPANTS",
-    "Card_dispenser_time": 3000
+    "Card_dispenser_time": 1300
   },
   APP_API_SETUP: {
     api_url: "http://localhost:57080/",
@@ -61,7 +61,7 @@ export const AppSettings = Object.freeze({
     "CD_RecycleBack": "api/kiosk/CD_RecycleBack",
 
     "V_type_port": "8",
-    "C_type_port": "12",
+    "C_type_port": "9",
 
     //----LED ON/OFF 1-----------
     "setLEDON": "api/kiosk/setLEDON?ComPort=",

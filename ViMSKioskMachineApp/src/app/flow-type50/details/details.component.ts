@@ -71,6 +71,7 @@ export class DetailsComponent implements OnInit {
   }
   KIOSK_PROPERTIES: any = {};
   KIOSK_PROPERTIES_LOCAL: any = {};
+  serverLog = false;
   aptmDetails: AppointmentModal;
   KIOSK_CHECKIN_COUNTER_NAME: string = "";
   VISITOR_ID_MIN_LENGTH = 0;
@@ -343,6 +344,9 @@ export class DetailsComponent implements OnInit {
     debugger
     console.log(JSON.stringify(_visitorData));
     let _Modules = this.KIOSK_PROPERTIES['modules'];
+    if (this.KIOSK_PROPERTIES_LOCAL) {
+      this.serverLog = this.KIOSK_PROPERTIES_LOCAL.serverLog;
+    }
 
     let _get_cardSerial_number_type1 = (_callback: any) => {
       debugger
@@ -356,8 +360,8 @@ export class DetailsComponent implements OnInit {
         _cardDcom = AppSettings['APP_SERVICES']['C_type_port'];
       }
       console.log("_cardDcom", _cardDcom)
-      this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe((data: any) => {
-        //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_OpenPort", "router": this.router.url, "lineNo": 531, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+      this.apiServices.localGetMethod("CD_OpenPort", _cardDcom).subscribe(async (data: any) => {
+        if (_this.serverLog) (await this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_OpenPort", "router": this.router.url, "lineNo": 531, "message": "" }))).subscribe((data: any) => console.log("AddLogs status=" + data));
         debugger
         console.log("CD_OpenPort data " + data);
         if (data.length > 0 && data[0]['Data'] != null) {
@@ -365,15 +369,58 @@ export class DetailsComponent implements OnInit {
           let cardStatus = JSON.parse(data[0]['Data']) || { "ResponseStatus": "1", "ResponseMessage": "Invalid JSON" };
           console.log("CD_OpenPort cardStatus " + cardStatus);
           if (cardStatus["ResponseStatus"] > 0) {
-            this.apiServices.localGetMethod("CD_PreSend", "").subscribe((data: any) => {
+            this.apiServices.localGetMethod("CD_PreSend", "").subscribe(async (data: any) => {
               console.log("CD_PreSend data " + data);
-              //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_PreSend", "router": this.router.url, "lineNo": 541, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+              if (_this.serverLog) (await this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_PreSend", "router": this.router.url, "lineNo": 541, "message": "" }))).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger
               if (data.length > 0 && data[0]['Data'] != null) {
                 let cardMoveStatus = JSON.parse(data[0]['Data']);
                 if (cardMoveStatus['ResponseStatus'] == "0") {
                   debugger
-                  setTimeout(function () {
+                  let reCheck = true;
+                  //let i = 0;
+                  //let max = 1;
+                  (function repeat() {
+                    //if (++i > max) _callback(false, "0");
+                    setTimeout(function () {
+                      //console.log("waited for: " + i + " seconds");
+                      debugger
+                      if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" || _this.cardSerInput.nativeElement.value.length > 2) {
+                        debugger
+                        console.log("CD_ card number " + _this.cardSerInput.nativeElement.value);
+                        if (_this.cardSerInput.nativeElement.value.length == 10)
+                          _callback(true, _this.cardSerInput.nativeElement.value);
+                        else {
+                          if (reCheck) {
+                            reCheck = false;
+                            repeat()
+                          }
+                          else {
+                            _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                              if (_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 584, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+                              debugger
+                              _callback(false, "0");
+                            }, err => {
+                              debugger
+                              _callback(false, "0");
+                            });
+                          }
+                        }
+                      }
+                      else {
+                        debugger
+                        _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
+                          if (_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 557, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+                          debugger
+                          _callback(false, "0");
+                        }, err => {
+                          debugger
+                          _callback(false, "0");
+                        });
+                      }
+                    }, timeOut);
+                  })();
+                  /* setTimeout(function () {
                     debugger
                     if (_this.cardSerInput.nativeElement.value != null && _this.cardSerInput.nativeElement.value != "" || _this.cardSerInput.nativeElement.value.length > 2) {
                       debugger
@@ -383,16 +430,15 @@ export class DetailsComponent implements OnInit {
                     else {
                       debugger
                       _this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
-                        //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 557, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
+                        if(_this.serverLog) this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 557, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                         debugger
                         _callback(false, "0");
                       }, err => {
                         debugger
                         _callback(false, "0");
                       });
-
                     }
-                  }, timeOut);
+                  }, timeOut); */
                 } else {
                   debugger
                   _callback(false, "0");

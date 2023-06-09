@@ -3,5 +3,5 @@
   "multiBrnachLable": "Host Company",
   "alertApproveMessage": "Your registration is pending approval. Please proceed to the reception counter.",
   "serverLog":false,
-  "passportScanner":false
+  "passportScanner":true
 }

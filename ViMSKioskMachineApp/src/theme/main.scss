@@ -1149,3 +1149,11 @@ app-scanqrcode {
     display: none !important;
   }
 }
+.mat-bottom-sheet-container-medium {
+  min-width: 550px !important;
+}
+.mat-list-base .mat-list-item .mat-list-text > *,
+.mat-list-base .mat-list-option .mat-list-text > * {
+  font-size: 3.8vw !important;
+  line-height: 5vw !important;
+}

@@ -272,7 +272,7 @@
     },
     "staff_and_visitor": {},
     "card_dispenser": {
-      "enable": false,
+      "enable": true,
       "dispenser_type": "TYPE1",
       "COM_Port": 10,
       "LED_PORT": 1,

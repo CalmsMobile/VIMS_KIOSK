@@ -354,7 +354,6 @@ export class AppointmentDetailComponent implements OnInit {
           this.aptmDetails.branchID = this.branchMasters['Table1'][0]['BranchSeqId'];
           this.aptmDetails.branchName = this.branchMasters['Table1'][0]['Name'];
           this._getAllHostListBasedOnBranch(this.aptmDetails.branchID);
-          if(this.autoApproval)
           this._getAutoApprovalOption(this.aptmDetails.branchID);
           console.log(this.aptmDetails.hostDetails.id);
         }
@@ -1259,6 +1258,8 @@ export class AppointmentDetailComponent implements OnInit {
 
 
   _getAutoApprovalOption(branchID) {
+    if (!this.autoApproval)
+      return false;
     console.log("auto approval branch id === " + branchID);
     if (this.docType === "PREAPPOINTMT" || this.mainModule !== 'vcheckin') {
       return false;
@@ -1423,7 +1424,7 @@ export class AppointmentDetailComponent implements OnInit {
   VISITOR_ID_MIN_LENGTH = 0;
   VISITOR_ID_MAX_LENGTH = 30;
   showMultiBranch = false;
-  autoApproval=true;
+  autoApproval = true;
   _updateKioskSettings() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');

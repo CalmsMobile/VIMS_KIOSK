@@ -31,8 +31,7 @@
       >
         <mat-tab
           [disabled]="
-            !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact
-              .enable
+            !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable
           "
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact
@@ -47,10 +46,7 @@
           </p>
         </mat-tab>
         <mat-tab
-        [disabled]="
-        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email
-          .enable
-      "
+          [disabled]="!KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable"
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption
           }}"
@@ -62,10 +58,10 @@
           </p>
         </mat-tab>
         <mat-tab
-        [disabled]="
-        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
-          .enable
-      "
+          [disabled]="
+            !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+              .enable
+          "
           *ngIf="qrScanAppointmentId"
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
@@ -80,10 +76,10 @@
           </p>
         </mat-tab>
         <mat-tab
-        [disabled]="
-        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
-          .enable
-      "
+          [disabled]="
+            !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
+              .enable
+          "
           *ngIf="!qrScanAppointmentId"
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID
@@ -163,14 +159,14 @@
           *ngIf="!qrScanAppointmentId"
         />
         <input
-        matInput
-        [(ngModel)]="APONTMNT_CODE"
-        maxlength="10"
-        #appint_id
-        *ngIf="qrScanAppointmentId"
-        (keydown.enter)="takeActFor('getAppointmentDetail')"
-      />
-       <!--  <input
+          matInput
+          [(ngModel)]="APONTMNT_CODE"
+          maxlength="10"
+          #appint_id
+          *ngIf="qrScanAppointmentId"
+          (keydown.enter)="takeActFor('getAppointmentDetail')"
+        />
+        <!--  <input
           matInput
           [(ngModel)]="APONTMNT_CODE"
           maxlength="10"
@@ -180,6 +176,24 @@
         /> -->
       </mat-form-field>
     </div>
+    <!-- <div horizontal-divider style="width:46%;display: inline-block;min-height: 45vh;
+        vertical-align: top;" *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.type !== 'manual'">
+      <p sub-title>{{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.screen_label2}}</p>
+      <button mat-raised-button my-theme-button (click)="takeActFor('scanNow')">Scan</button>
+    </div> -->
+    <div
+      *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan.enable"
+    >
+      <button mat-raised-button my-theme-button (click)="takeActFor('scanNow')">
+        {{
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan
+            .button_caption
+        }}
+      </button>
+    </div>
+    <!-- <button mat-raised-button my-theme-button (click)="takeActFor('scanNow')">
+      Scan
+    </button> -->
   </div>
 </div>
 <div my-footer-toolbar>

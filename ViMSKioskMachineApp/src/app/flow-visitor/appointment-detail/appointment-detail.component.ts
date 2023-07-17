@@ -1762,7 +1762,7 @@ export class BottomSheetHostSelect {
     console.log("onKey: " + value);
     console.log(JSON.stringify(event));
     this.searchText = value;
-    if (this.host_listClone && this.host_listClone.length > 0 && this.searchText.length > 2) {
+    if (this.host_listClone && this.host_listClone.length > 0 && this.searchText.length > 0) {
       var final = [];
       for (let i = 0; i < this.host_listClone.length; i++) {
         var data = this.host_listClone[i];

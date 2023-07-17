@@ -92,7 +92,7 @@ export class DetailsComponent implements OnInit {
       this.LocationOfVisitShow = true;
       this.LocationOfVisitCaption = "Location Of Visit";
       this.LocationOfVisitMandatory = true;
-      this.LocationOfVisitMinLength = 5;
+      this.LocationOfVisitMinLength = 2;
       this.LocationOfVisitMaxLength = 30;
 
       //Permit to work Reference Number
@@ -141,14 +141,14 @@ export class DetailsComponent implements OnInit {
           break;
         case "Contractor":
           this.departmentShow = false;
-          this.aptmDetails.category = 'CONTRACTOR';
-          this.aptmDetails.categoryId = 'CONTRACTOR';
+          this.aptmDetails.category = 'CONTRACTORS';
+          this.aptmDetails.categoryId = 'CNYS';
           break;
         case "Vendor":
           this.workReferenceNoShow = false;
           this.departmentShow = false;
           this.aptmDetails.category = 'VENDOR';
-          this.aptmDetails.categoryId = 'VENDOR';
+          this.aptmDetails.categoryId = 'VNDR';
           break;
         case "Contractor Staff":
           this.LocationOfVisitShow = false;
@@ -178,7 +178,8 @@ export class DetailsComponent implements OnInit {
       SMSContent: this.KIOSK_PROPERTIES['modules']['SMS']['sms_template'],
       printEnable: this.KIOSK_PROPERTIES['modules']['printer']['enable'],
       printerName: this.KIOSK_PROPERTIES['modules']['printer']['printer_name'],
-    }
+      AutocheckOutAndCheckIn: this.KIOSK_PROPERTIES_LOCAL.AutocheckOutAndCheckIn
+    } 
     localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
 
     /*  if (!this.KIOSK_PROPERTIES['CheckinSettings']['Purpose']['Show']) {
@@ -302,7 +303,17 @@ export class DetailsComponent implements OnInit {
                 this._location.back();
               }
             }); */
-          } else {
+          } else if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 20) {
+            const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
+              data: { "title": "Please contact reception !", "subTile": "Your previous check-in record yet to check-out, please proceed to reception counter and check-out and proceed again", "ok": "Ok" },
+              disableClose: true
+            });
+            dialogRef.afterClosed().subscribe((data) => {
+              this.router.navigate(['/landing']);
+            });
+          }
+
+          else {
             _callErrorMsg();
             return false;
           }

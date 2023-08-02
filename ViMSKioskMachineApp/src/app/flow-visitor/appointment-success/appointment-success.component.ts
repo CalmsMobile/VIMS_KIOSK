@@ -1000,7 +1000,7 @@ export class AppointmentSuccessComponent implements OnInit {
     this.RESULT_MSG = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.success_msg_line1;
 
     this.RESULT_MSG2 = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.success_msg_line2;
-    if (!this.cardDispenserNotAllowed) {
+    if (!this.cardDispenserNotAllowed && this.KIOSK_PROPERTIES.COMMON_CONFIG.card_dispenser.enable) {
       this.RESULT_MSG2 = 'Please Take Your Card'
     }
     this.RESULT_MSG3 = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.success_msg_line3;
@@ -1008,7 +1008,7 @@ export class AppointmentSuccessComponent implements OnInit {
     if (image && !this.DisplayImageHandlerURL) {
       this.DisplaySuccessImageHandlerURL = image;
     }
-    if (this.qrcodeProcessed) {
+    if (this.qrcodeProcessed && (this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_enable || this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.receipt_printer_enable) && this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.print_option == 10) {
       let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
       _timeout = parseInt(_timeout) * 1000;
       setTimeout(() => {

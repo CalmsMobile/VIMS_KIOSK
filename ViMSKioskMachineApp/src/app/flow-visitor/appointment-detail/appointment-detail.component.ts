@@ -580,6 +580,7 @@ export class AppointmentDetailComponent implements OnInit {
     uploadArray['appSettings'] = {
       allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
       allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
+      EnablePreviousEntrycheckoutvalidation: this.KIOSK_PROPERTIES_LOCAL.EnablePreviousEntrycheckoutvalidation
     }
     /* uploadArray['appSettings'] = {
       alowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,

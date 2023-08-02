@@ -90,7 +90,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === "QRCode") {
         this.qrScanAppointmentId = true;
       }
-      
+
       this.selectTab();
     }
   }
@@ -119,15 +119,15 @@ export class VisitorPreApontmntComponent implements OnInit {
         this.selectedIndex = 2;
         this.appint_id.nativeElement.focus()
       })
-    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-        this.selectedType = "email";
-        setTimeout(() => {
-          this.selectedIndex = 1;
-          //this.email.nativeElement.focus()
-        })
-      }
+      this.selectedType = "email";
+      setTimeout(() => {
+        this.selectedIndex = 1;
+        //this.email.nativeElement.focus()
+      })
+    }
   }
   takeActFor(action: string) {
     if (action === "getAppointmentDetail") {
@@ -215,11 +215,32 @@ export class VisitorPreApontmntComponent implements OnInit {
           if (Data["Table1"] != undefined && Data["Table1"].length > 0) {
             if (Data["Table1"].length == 1) {
               let _app_details = Data["Table1"][0];
-              _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+              /* _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
               _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
               _app_details['aptid'] = _app_details.ApptmentId.toString();
               localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
-              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } }); */
+              if (_app_details['AllowedVisits'] > 0) {
+                if (_app_details['UsedCount'] > 0 && _app_details['AllowedVisits'] <= _app_details['UsedCount']) {
+                  //<Message> = "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.";  
+                  this.dialog.open(appConfirmDialog, {
+                    width: '250px',
+                    data: { title: "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.", btn_ok: "Ok" }
+                  });
+                } else {
+                  _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+                  _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
+                  _app_details['aptid'] = _app_details.ApptmentId.toString();
+                  localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
+                  this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+                }
+              } else {
+                _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+                _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
+                _app_details['aptid'] = _app_details.ApptmentId.toString();
+                localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
+                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+              }
             } else {
               this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]) } });
             }

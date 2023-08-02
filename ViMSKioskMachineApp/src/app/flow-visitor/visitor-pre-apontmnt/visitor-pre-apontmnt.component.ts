@@ -90,6 +90,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === "QRCode") {
         this.qrScanAppointmentId = true;
       }
+      
       this.selectTab();
     }
   }

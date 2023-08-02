@@ -419,7 +419,7 @@ export class AppointmentSuccessComponent implements OnInit {
       console.log(data);
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         let Data = JSON.parse(data[0]["Data"]);
-        if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 10) {
+        if (Data["Table"] != undefined && Data["Table"].length > 0 && (Data["Table"][0]['Code'] == 10 || Data["Table"][0]['Code'] == 20)) {
           if (Data["Table1"] != undefined && Data["Table1"].length > 0) {
             this.CheckInVisitorData = Data["Table1"];
             this.DisplayImageHandlerURL = this.getImageHandlerURL();

@@ -370,7 +370,9 @@
               aptmDetails.contact.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
               aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
-              aptmDetails.purpose == '')) ||
+              aptmDetails.purpose == '' ||
+              aptmDetails.vehicle.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)) ||
           (mainModule == 'Contractor' &&
             (aptmDetails.name.length <
               KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
@@ -381,7 +383,9 @@
               aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
               aptmDetails.company.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength ||
-              aptmDetails.purpose == '')) ||
+              aptmDetails.purpose == '' ||
+              aptmDetails.vehicle.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)) ||
           (mainModule == 'Vendor' &&
             (aptmDetails.name.length <
               KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
@@ -392,7 +396,9 @@
               aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
               aptmDetails.company.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength ||
-              aptmDetails.purpose == '')) ||
+              aptmDetails.purpose == '' ||
+              aptmDetails.vehicle.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)) ||
           (mainModule == 'Contractor Staff' &&
             (aptmDetails.name.length <
               KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
@@ -402,7 +408,9 @@
                 KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
               aptmDetails.hostName.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Host.MinLength ||
-              aptmDetails.Department.length < departmentMinLength))
+              aptmDetails.Department.length < departmentMinLength ||
+              aptmDetails.vehicle.length <
+                KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength))
         "
       >
         CONFIRM

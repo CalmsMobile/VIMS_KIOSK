@@ -118,8 +118,8 @@ export class ScanRLoadingComponent implements OnInit {
       }
     } else {
       let userData = {
-        "visName": "TestvisName",
-        "visDOCID": "TestvisDOCID",
+        "visName": "Nizam",
+        "visDOCID": "nizam123456",
         "visDocImage": null,
       }
 
@@ -198,17 +198,17 @@ export class ScanRLoadingComponent implements OnInit {
 
         console.log('close state' + _this.websocket.readyState);
 
-        let userData = {
-          "visName": "TestvisName",
-          "visDOCID": "TestvisDOCID",
-          "visDocImage": null,
-        }
-
-        localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-        if (_this.KIOSK_PROPERTIES['General']['AppType'] == 50)
-          _this.router.navigate(['/details'], { queryParams: { docType: _this.docType } });
-        else
-          _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+        /*  let userData = {
+           "visName": "TestvisName",
+           "visDOCID": "TestvisDOCID",
+           "visDocImage": null,
+         }
+ 
+         localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+         if (_this.KIOSK_PROPERTIES['General']['AppType'] == 50)
+           _this.router.navigate(['/details'], { queryParams: { docType: _this.docType } });
+         else
+           _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } }); */
       }
     }
     catch (exception) {

@@ -138,23 +138,26 @@ export class DetailsComponent implements OnInit {
           this.departmentShow = false;
           this.aptmDetails.category = 'VISITOR';
           this.aptmDetails.categoryId = 'VISIT';
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
           break;
         case "Contractor":
           this.departmentShow = false;
           this.aptmDetails.category = 'CONTRACTORS';
           this.aptmDetails.categoryId = 'CNYS';
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
           break;
         case "Vendor":
           this.workReferenceNoShow = false;
           this.departmentShow = false;
           this.aptmDetails.category = 'VENDOR';
           this.aptmDetails.categoryId = 'VNDR';
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
           break;
         case "Contractor Staff":
           this.LocationOfVisitShow = false;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show = false;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show = false;
-          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show = false;
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
           this.workReferenceNoShow = false;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory = true;
           this.aptmDetails.category = 'CONTRACT STAFF';
@@ -179,7 +182,7 @@ export class DetailsComponent implements OnInit {
       printEnable: this.KIOSK_PROPERTIES['modules']['printer']['enable'],
       printerName: this.KIOSK_PROPERTIES['modules']['printer']['printer_name'],
       AutocheckOutAndCheckIn: this.KIOSK_PROPERTIES_LOCAL.AutocheckOutAndCheckIn
-    } 
+    }
     localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
 
     /*  if (!this.KIOSK_PROPERTIES['CheckinSettings']['Purpose']['Show']) {
@@ -281,8 +284,6 @@ export class DetailsComponent implements OnInit {
               if (_RESDATA.length > 0) {
                 debugger
                 this.proceedThisAttIDsForCheckin(_RESDATA);
-                //this.isLoading = false;
-                //this.router.navigateByUrl('/success');
               }
             }
           } else if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 70) {
@@ -535,6 +536,7 @@ export class DetailsComponent implements OnInit {
                     _preparePrintLabel(false);
                   });
               } else {
+                this.apiServices.localPostMethod("RemoveAttendanceEntry",{"att_id":att_id}).subscribe((data: any) => {});
                 this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
                   //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 678, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                   this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
@@ -563,6 +565,7 @@ export class DetailsComponent implements OnInit {
             });
 
           } else {
+            this.apiServices.localPostMethod("RemoveAttendanceEntry",{"att_id":att_id}).subscribe((data: any) => {});
             this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
               //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 708, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger

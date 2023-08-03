@@ -89,7 +89,8 @@ export const AppSettings = Object.freeze({
     "GetAutoApprovalOption": "api/kiosk/GetAutoApprovalOption",
     "AddAttendanceForVisitor_Glen": "api/kiosk/AddAttendanceForVisitor_Glen",
 
-    "AddLogs": "api/Portal/AddLogs"
+    "AddLogs": "api/Portal/AddLogs",
+    "RemoveAttendanceEntry":"api/kiosk/RemoveAttendanceEntry"
 
     // "getKioskSetupData":"api/Device/CRUDKioskMachine",
     // "kioskCardUpdate":"api/Device/kioskCardUpdate",

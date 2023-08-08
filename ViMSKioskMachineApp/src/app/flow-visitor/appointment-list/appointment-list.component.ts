@@ -14,6 +14,7 @@ export class AppointmentListComponent implements OnInit {
   totalVisitors: number = 0;
   listOFAppointments: any = [];
   purposes = [];
+  id_verification = false;
   constructor(private router: Router,
     private route: ActivatedRoute,
     public snackBar: MatSnackBar,
@@ -31,6 +32,7 @@ export class AppointmentListComponent implements OnInit {
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
         const passData = params['data'];
+        this.id_verification = params['id_verification'];
         console.log(JSON.stringify(passData));
         if (passData != undefined && passData.length > 0) {
           const list = JSON.parse(passData);
@@ -91,15 +93,21 @@ export class AppointmentListComponent implements OnInit {
               width: '250px',
               data: { title: "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.", btn_ok: "Ok" }
             });
-          }else {
+          } else {
             appointments['aptid'] = appointments.ApptmentId.toString();
             localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(appointments));
-            this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+            if (this.id_verification)
+              this.router.navigateByUrl('/visitorRegisType');
+            else
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
           }
         } else {
           appointments['aptid'] = appointments.ApptmentId.toString();
           localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(appointments));
-          this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+          if (this.id_verification)
+            this.router.navigateByUrl('/visitorRegisType');
+          else
+            this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
         }
       }
     } else if (action === "back") {

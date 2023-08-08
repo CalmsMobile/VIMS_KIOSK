@@ -34,8 +34,10 @@ export class VisitorPreApontmntComponent implements OnInit {
     let listOFvisitors: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     this.totalVisitors = listOFvisitors['visitorDetails'].length;
     this._updateKioskSettings();
-    this.APONTMNT_CODE = '';
 
+   /*  this.APONTMNT_CODE = '3805639620';
+    this.selectedType = 'appint_id';
+    this.getAppointmentDetails(); */
   }
   selectedTabValue(event) {
     console.log(event.index);
@@ -83,6 +85,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   }
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
+    localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", "");
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
@@ -196,13 +199,13 @@ export class VisitorPreApontmntComponent implements OnInit {
     document.getElementById("bodyloader").style.display = "block";
     let prepareData: any = "";
     if (this.selectedType == "contact") {
-      debugger
+
       prepareData = { "att_appointment_id": "", "ContactNo": this.APONTMNT_CONTACT, "Email": "" };
     } else if (this.selectedType == "email") {
-      debugger
+
       prepareData = { "att_appointment_id": "", "ContactNo": "", "Email": this.APONTMNT_EMAIL };
     } else if (this.selectedType == "appint_id") {
-      debugger
+
       prepareData = { "att_appointment_id": (this.APONTMNT_CODE).toString(), "ContactNo": "", "Email": "" };
     }
     console.log(JSON.stringify(prepareData));
@@ -232,17 +235,26 @@ export class VisitorPreApontmntComponent implements OnInit {
                   _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
                   _app_details['aptid'] = _app_details.ApptmentId.toString();
                   localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
-                  this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+                  if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable) {
+                    this.router.navigateByUrl('/visitorRegisType');
+                  } else {
+                    this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+                  }
+
                 }
               } else {
                 _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
                 _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
                 _app_details['aptid'] = _app_details.ApptmentId.toString();
                 localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
-                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable) {
+                  this.router.navigateByUrl('/visitorRegisType');
+                } else {
+                  this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+                }
               }
             } else {
-              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]) } });
+              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]), id_verification: this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable } });
             }
 
           } else {

@@ -340,6 +340,7 @@ export class LandingComponent implements OnInit {
   _clearAllLocalData() {
     localStorage.setItem("_PURPOSE_OF_VISIT", "[]");
     localStorage.setItem("VISI_SCAN_DOC_DATA", "");
+    localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", "");
     localStorage.setItem("VISI_HOST_MOB_NUM", "");
     localStorage.setItem("VISI_LIST_ARRAY", "{\"appSettings\":{}, \"visitorDetails\" :[]}");
   }

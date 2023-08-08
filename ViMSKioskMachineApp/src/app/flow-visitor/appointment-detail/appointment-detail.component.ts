@@ -70,6 +70,7 @@ export class AppointmentDetailComponent implements OnInit {
     this.route
       .queryParams
       .subscribe(params => {
+        debugger
         this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
         this.docType = params['docType'];
         /* if (this.docType == undefined || this.docType == '') {
@@ -111,21 +112,29 @@ export class AppointmentDetailComponent implements OnInit {
             this.router.navigateByUrl('/visitorRegisType');
           }
         } else { */
-        const resumeData = params['resumeData'];
-        if (resumeData) {
-          debugger
-          const visitorData = params['visitorData'];
-          if (visitorData) {
-            this.aptmDetails = JSON.parse(visitorData);
-            this.NUMBER_OF_INPUTS = 0;
-            this._updateKioskSettings();
-            if (this.NUMBER_OF_INPUTS > 7) {
-              this.showFirstPageFields = false;
-            }
-            this.videoPath = params['video'];
-            const quest = params['questions'];
-            if (quest) {
-              this.QuestionsDisplay = JSON.parse(quest);
+
+        if (this.mainModule === 'preAppointment') {
+          console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));
+          this.docType = "PREAPPOINTMT";
+        } else {
+          const resumeData = params['resumeData'];
+
+
+          if (resumeData) {
+            debugger
+            const visitorData = params['visitorData'];
+            if (visitorData) {
+              this.aptmDetails = JSON.parse(visitorData);
+              this.NUMBER_OF_INPUTS = 0;
+              this._updateKioskSettings();
+              if (this.NUMBER_OF_INPUTS > 7) {
+                this.showFirstPageFields = false;
+              }
+              this.videoPath = params['video'];
+              const quest = params['questions'];
+              if (quest) {
+                this.QuestionsDisplay = JSON.parse(quest);
+              }
             }
           }
         }
@@ -146,6 +155,8 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
   _initUpdateScanDataValues() {
+    debugger
+    console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));
     if ((this.docType == "PASSPORT" || this.docType == "SING_NRICrDRIV" || this.docType == "MYCARD")
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
@@ -159,7 +170,14 @@ export class AppointmentDetailComponent implements OnInit {
 
     } else if (this.docType == "PREAPPOINTMT" && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
+      debugger
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != undefined && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != '') {
+        let id = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA"))['visDOCID'];
+        if (doc_detail["id"] != id){
+          this.router.navigateByUrl('/landing');
+        }
+      }
       console.log("doc_detail  " + JSON.stringify(doc_detail))
       this.aptmDetails.name = doc_detail["name"];
       this.aptmDetails.id = doc_detail["id"];

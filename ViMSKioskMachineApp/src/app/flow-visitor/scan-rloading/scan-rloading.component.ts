@@ -21,21 +21,23 @@ export class ScanRLoadingComponent implements OnInit {
     private dialog: MatDialog,
     private apiServices: ApiServices) {
     this.docType = '';
-    localStorage.setItem("VISI_SCAN_DOC_DATA", "");
     this._updateKioskSettings();
   }
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
+    debugger
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
+        localStorage.setItem("VISI_SCAN_DOC_DATA", "");
       } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+        localStorage.setItem("VISI_SCAN_DOC_DATA", "");
       } else if (this.mainModule === 'preAppointment') {
-        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings.id_verification;
       }
     }
   }
@@ -91,8 +93,14 @@ export class ScanRLoadingComponent implements OnInit {
                 "visDOCID": resData['PassportNo'],
                 "visDocImage": (typeof (resData['Image']) != 'undefined' ? "data:image/jpeg;base64," + resData['Image'] : ""),//resData['Image'] || resData['IDImgByte'],
               }
-              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+              if (this.mainModule === 'preAppointment') {
+                localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+              } else {
+                localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+              }
+
             } else {
               //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
               this.showErrorMsg();
@@ -150,8 +158,13 @@ export class ScanRLoadingComponent implements OnInit {
               "visDocImage": null,
             }
             _this.websocket.close();
-            localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-            _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+            if (_this.mainModule === 'preAppointment') {
+              localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+              _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+            } else {
+              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+              _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+            }
           }
           else if (typeof (parseData.Param["White"]) == "undefined") {
             // _this.showErrorMsg();
@@ -181,14 +194,25 @@ export class ScanRLoadingComponent implements OnInit {
         //_this.apiServices.sendLogToServer("Passport", JSON.stringify({ "service": "close state", "router": _this.router.url, "lineNo": 531, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
         // _this.apiServices.sendLogToServer("close state", JSON.stringify({ "router": _this.router.url, "lineNo": 171, "message": "" })).subscribe((data: any) => console.log("AddLogs status="+data));
         if (_this.apiServices.isTest) {
-          let userData = {
-            "visName": "visName",
-            "visDOCID": "vi12",
-            "visDocImage": null,
-          }
+
           _this.websocket.close();
-          localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-          _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+          if (_this.mainModule === 'preAppointment') {
+            let userData = {
+              "visName": "visName",
+              "visDOCID": "123456789412",
+              "visDocImage": null,
+            }
+            localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+            _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+          } else {
+            let userData = {
+              "visName": "visName",
+              "visDOCID": "vi12",
+              "visDocImage": null,
+            }
+            localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+            _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+          }
         }
       }
     }
@@ -211,8 +235,13 @@ export class ScanRLoadingComponent implements OnInit {
               "visDOCID": resData[1],
               "visDocImage": (typeof (resData[16]) != 'undefined' ? "data:image/jpeg;base64," + resData[16] : ""),
             }
-            localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-            this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+            if (this.mainModule === 'preAppointment') {
+              localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+            } else {
+              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+            }
           } else {
             //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
             this.showErrorMsg();
@@ -254,8 +283,13 @@ export class ScanRLoadingComponent implements OnInit {
               "Address": resData["Address"] || "",
               "CardImagePath": resData["CardImagePath"] || "",
             }
-            localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
-            this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+            if (this.mainModule === 'preAppointment') {
+              localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+            } else {
+              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+            }
           } else {
             //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
             this.showErrorMsg();
@@ -284,6 +318,7 @@ export class ScanRLoadingComponent implements OnInit {
     }
   }
   showErrorMsg() {
+    debugger
     let target_text = "";
     if (this.docType == 'SING_NRICrDRIV') {
       target_text = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_failed_msg;

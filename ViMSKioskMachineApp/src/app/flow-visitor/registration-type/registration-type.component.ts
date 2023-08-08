@@ -20,17 +20,19 @@ export class RegistrationTypeComponent implements OnInit {
   SEL_REGISTRATION_TYPE: any = '';
   totalVisitors: number = 0;
   mainModule = '';
+  title = '';
   constructor(private router: Router, private dialog: MatDialog, private apiServices: ApiServices) {
     this.SEL_REGISTRATION_TYPE = '';
-    localStorage.setItem("VISI_SCAN_DOC_DATA", "");
     let getVisi = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     this.totalVisitors = getVisi['visitorDetails'].length;
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
+    if (this.mainModule != 'preAppointment')
+      localStorage.setItem("VISI_SCAN_DOC_DATA", "");
     this._updateKioskSettings();
   }
 
   ngOnInit() {
-    this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
+    //this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
   }
   takeActFor(action: string) {
     if (action === "back") {
@@ -53,6 +55,7 @@ export class RegistrationTypeComponent implements OnInit {
 
   }
   openPrepareScanDocDialog(): void {
+    debugger
     if (this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV' ||
       this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD'
       || this.SEL_REGISTRATION_TYPE == 'BUSINESS') {
@@ -119,12 +122,44 @@ export class RegistrationTypeComponent implements OnInit {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       if (this.mainModule === 'vcheckin') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.WalkinSettings;
+        this.title = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.choose_your_reg_type_title;
         this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin, this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_walkin);
-      } else {
+      } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+        this.title = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.choose_your_reg_type_title;
         this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin, this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_ReqAppt);
+      } else if (this.mainModule === 'preAppointment') {
+        this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings.id_verification;
+        this.title = "Verification";
+        /* if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_NRICRLicense == undefined)
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_NRICRLicense = false;
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_Passport == undefined)
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_Passport = false;
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_NRIC == undefined)
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_NRIC = false;
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_BusinessCard == undefined)
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_BusinessCard = false; */
+        this.checkVerificationTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin);
       }
 
+    }
+
+  }
+  checkVerificationTypes(setting) {
+    debugger
+    if (setting.enable_NRICRLicense && !setting.enable_Passport && !setting.enable_NRIC) {
+      this.SEL_REGISTRATION_TYPE = 'SING_NRICrDRIV';
+      this.openPrepareScanDocDialog();
+    }
+
+    else if (!setting.enable_NRICRLicense && setting.enable_Passport && !setting.enable_NRIC) {
+      this.SEL_REGISTRATION_TYPE = 'PASSPORT';
+      this.openPrepareScanDocDialog();
+    }
+
+    else if (!setting.enable_NRICRLicense && !setting.enable_Passport && setting.enable_NRIC) {
+      this.SEL_REGISTRATION_TYPE = 'MYCARD';
+      this.openPrepareScanDocDialog();
     }
 
   }

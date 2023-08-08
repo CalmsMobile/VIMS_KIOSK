@@ -6,7 +6,7 @@
 </div>
 <div style="text-align:center;padding:30px;">
   <p info-title no-margin-top [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
-    {{KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.choose_your_reg_type_title}}
+    {{title}}
   </p>
   <div style="padding-top: 0vh;">
       <mat-radio-group [(ngModel)]="SEL_REGISTRATION_TYPE">

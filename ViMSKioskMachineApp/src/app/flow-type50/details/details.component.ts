@@ -106,8 +106,8 @@ export class DetailsComponent implements OnInit {
       this.departmentShow = true;
       this.departmentCaption = "Department";
       this.departmentMandatory = true;
-      this.departmentMinLength = 5;
-      this.departmentMaxLength = 30;
+      this.departmentMinLength = 2;
+      this.departmentMaxLength = 2;
 
 
       this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
@@ -138,7 +138,7 @@ export class DetailsComponent implements OnInit {
           this.departmentShow = false;
           this.aptmDetails.category = 'VISITOR';
           this.aptmDetails.categoryId = 'VISIT';
-          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = false;
           break;
         case "Contractor":
           this.departmentShow = false;
@@ -205,6 +205,10 @@ export class DetailsComponent implements OnInit {
       }
       if (this.aptmDetails.id) {
         this.isDisableid = true;
+        if(this.aptmDetails.id.length > 4){
+          this.aptmDetails.id = this.aptmDetails.id.substring(this.aptmDetails.id.length - 4,this.aptmDetails.id.length);
+        }
+        console.log(this.aptmDetails.id.length);
       }
 
     }
@@ -237,6 +241,7 @@ export class DetailsComponent implements OnInit {
       this.aptmDetails.checkinCounter = this.KIOSK_CHECKIN_COUNTER_NAME;
       this.aptmDetails['VisitorAnswers'] = JSON.stringify([]);
       this.aptmDetails.hostDetails.name = this.aptmDetails.hostName;
+      this.aptmDetails.id = this.aptmDetails.id+"_"+this.aptmDetails.name.replace(" ","_");
       listOfVisitors.push(this.aptmDetails);
       uploadArray['visitorDetails'] = listOfVisitors;
       localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));

@@ -370,9 +370,7 @@
               aptmDetails.contact.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
               aptmDetails.MeetingLoc.length < LocationOfVisitMinLength ||
-              aptmDetails.purpose == '' ||
-              aptmDetails.vehicle.length <
-                KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)) ||
+              aptmDetails.purpose == '' )) ||
           (mainModule == 'Contractor' &&
             (aptmDetails.name.length <
               KIOSK_PROPERTIES.COMMON_CONFIG.Name.MinLength ||
@@ -408,7 +406,7 @@
                 KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength ||
               aptmDetails.hostName.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Host.MinLength ||
-              aptmDetails.Department.length < departmentMinLength ||
+              aptmDetails.Department.length != departmentMinLength ||
               aptmDetails.vehicle.length <
                 KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength))
         "

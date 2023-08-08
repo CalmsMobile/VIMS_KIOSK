@@ -164,7 +164,7 @@
     "T_adn_C": {
       "enable": true,
       "title": "Terms & Conditions",
-      "template": "<h1 style=\"text-align:center;\">I agree to allow the management of<br />Gleneagles Singapore to process<br />my personal data to verify identity for<br />access into the building.</h1><h4></h4>",
+      "template": "<h1 style=\"text-align:center;\">I agree to allow the management of<br />Gleneagles Hospital Singapore<br />to process my personal data<br />to verify identity for access into the building.</h1><h4></h4>",
       "agree_btn_label": "I Agree"
     },
     "Questionnaries": {

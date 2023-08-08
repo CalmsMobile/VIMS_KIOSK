@@ -1,20 +1,19 @@
-[terms-condition]{
-  width: 60vw;
+[terms-condition] {
   margin: auto;
   height: 30vh;
   padding: 25px;
   border-radius: 10px;
   overflow-y: auto;
-  [terms-condition-body]{
-      overflow-y: auto;
-      overflow-x: hidden;
-      width: 95%;
-      height: 100%;
-      margin: auto;
-      text-align: left;
+  [terms-condition-body] {
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 95%;
+    height: 100%;
+    margin: auto;
+    text-align: left;
   }
 }
-.cctv_counter{
+.cctv_counter {
   padding: 20px;
   border-radius: 50%;
 }

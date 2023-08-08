@@ -118,8 +118,8 @@ export class ScanRLoadingComponent implements OnInit {
       }
     } else {
       let userData = {
-        "visName": "Nizam",
-        "visDOCID": "nizam123456",
+        "visName": "Nizam M",
+        "visDOCID": "56hjgjgjhghj",
         "visDocImage": null,
       }
 
@@ -203,7 +203,7 @@ export class ScanRLoadingComponent implements OnInit {
            "visDOCID": "TestvisDOCID",
            "visDocImage": null,
          }
- 
+
          localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
          if (_this.KIOSK_PROPERTIES['General']['AppType'] == 50)
            _this.router.navigate(['/details'], { queryParams: { docType: _this.docType } });

@@ -25,7 +25,7 @@ export class ScanRLoadingComponent implements OnInit {
   }
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
-    debugger
+
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
@@ -77,11 +77,11 @@ export class ScanRLoadingComponent implements OnInit {
   }
   getDeviceConnectionData(action: string) {
     if (this.KIOSK_PROPERTIES.commonsetup.Passport_reader_type == "Sinosecure") {
-      debugger
+
       let loData = this.SinosecureGetPassportDetail();
     }
     else {
-      debugger
+
       let req = AppSettings['APP_SERVICES'][action];
       this.apiServices.getApiDeviceConnectionRequest(req).subscribe((data: any) => {
         if ((action == "GetPassportDetail" || action == "getIdScanerData") && data.length > 0) {
@@ -137,10 +137,10 @@ export class ScanRLoadingComponent implements OnInit {
 
       _this.websocket.onopen = function () {
         console.log('Open state :' + _this.websocket.readyState);
-        debugger
+
       }
       _this.websocket.onmessage = function (event: any) {
-        debugger
+
         var str = event.data;
         var strsub = str;
         if (strsub != "") {
@@ -151,7 +151,7 @@ export class ScanRLoadingComponent implements OnInit {
           let parseData = JSON.parse(str);
           //console.log("Receive notification 2:"+str);
           if (typeof (parseData.Param["Passport number"]) != "undefined" || typeof (parseData.Param["ID Number"]) != "undefined") {
-            debugger
+
             let userData = {
               "visName": parseData.Param["National name"] ? parseData.Param["National name"] : parseData.Param["Name"],
               "visDOCID": parseData.Param["Passport number"] ? parseData.Param["Passport number"] : parseData.Param["ID Number"],
@@ -170,7 +170,7 @@ export class ScanRLoadingComponent implements OnInit {
             // _this.showErrorMsg();
             // _this.gotoRegistrationScreen();
           }
-          debugger
+
 
           /*var seek=str.split("data:image/jpeg;base64,");
           var len = seek.length;
@@ -189,7 +189,7 @@ export class ScanRLoadingComponent implements OnInit {
 
       }
       _this.websocket.onclose = function () {
-        debugger
+
         console.log('close state' + _this.websocket.readyState);
         //_this.apiServices.sendLogToServer("Passport", JSON.stringify({ "service": "close state", "router": _this.router.url, "lineNo": 531, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
         // _this.apiServices.sendLogToServer("close state", JSON.stringify({ "router": _this.router.url, "lineNo": 171, "message": "" })).subscribe((data: any) => console.log("AddLogs status="+data));
@@ -199,7 +199,7 @@ export class ScanRLoadingComponent implements OnInit {
           if (_this.mainModule === 'preAppointment') {
             let userData = {
               "visName": "visName",
-              "visDOCID": "123456789412",
+              "visDOCID": "12345678902",
               "visDocImage": null,
             }
             localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
@@ -217,7 +217,7 @@ export class ScanRLoadingComponent implements OnInit {
       }
     }
     catch (exception) {
-      debugger
+
       console.log("Error");
     }
     //return [];
@@ -318,7 +318,7 @@ export class ScanRLoadingComponent implements OnInit {
     }
   }
   showErrorMsg() {
-    debugger
+
     let target_text = "";
     if (this.docType == 'SING_NRICrDRIV') {
       target_text = this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.NRICRLicense_failed_msg;

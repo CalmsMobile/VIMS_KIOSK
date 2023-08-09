@@ -55,7 +55,7 @@ export class RegistrationTypeComponent implements OnInit {
 
   }
   openPrepareScanDocDialog(): void {
-    debugger
+    
     if (this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV' ||
       this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD'
       || this.SEL_REGISTRATION_TYPE == 'BUSINESS') {
@@ -146,7 +146,7 @@ export class RegistrationTypeComponent implements OnInit {
 
   }
   checkVerificationTypes(setting) {
-    debugger
+
     if (setting.enable_NRICRLicense && !setting.enable_Passport && !setting.enable_NRIC) {
       this.SEL_REGISTRATION_TYPE = 'SING_NRICrDRIV';
       this.openPrepareScanDocDialog();

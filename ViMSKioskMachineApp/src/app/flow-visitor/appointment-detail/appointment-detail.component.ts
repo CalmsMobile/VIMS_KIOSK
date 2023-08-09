@@ -70,7 +70,7 @@ export class AppointmentDetailComponent implements OnInit {
     this.route
       .queryParams
       .subscribe(params => {
-        debugger
+
         this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
         this.docType = params['docType'];
         /* if (this.docType == undefined || this.docType == '') {
@@ -121,7 +121,7 @@ export class AppointmentDetailComponent implements OnInit {
 
 
           if (resumeData) {
-            debugger
+
             const visitorData = params['visitorData'];
             if (visitorData) {
               this.aptmDetails = JSON.parse(visitorData);
@@ -155,7 +155,7 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
   _initUpdateScanDataValues() {
-    debugger
+
     console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));
     if ((this.docType == "PASSPORT" || this.docType == "SING_NRICrDRIV" || this.docType == "MYCARD")
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
@@ -170,12 +170,12 @@ export class AppointmentDetailComponent implements OnInit {
 
     } else if (this.docType == "PREAPPOINTMT" && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
-      debugger
+
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != undefined && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != '') {
         let id = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA"))['visDOCID'];
-        if (doc_detail["id"] != id){
-          this.router.navigateByUrl('/landing');
+        if (doc_detail["id"] != id) {
+          this.showIdVerificationAlert();
         }
       }
       console.log("doc_detail  " + JSON.stringify(doc_detail))
@@ -238,7 +238,7 @@ export class AppointmentDetailComponent implements OnInit {
 
       if (this.aptmDetails.hostDetails.company) {
         //this.aptmDetails.hostDetails.HostDeptId = this.aptmDetails.hostDetails.company;
-        //debugger;
+        //;
         this.isDisableBranch = true;
       }
       if (this.aptmDetails.contact) {
@@ -317,14 +317,33 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.purpose = listOFvisitors['visitorDetails'][0]['purpose'];
     }
   }
-
+  showIdVerificationAlert() {
+    const dialogRef = this.dialog.open(DialogAppSessionTimeOutDialog, {
+      //width: '250px',
+      data: {
+        "title": '',
+        "subTile": this.KIOSK_PROPERTIES_LOCAL.idVerificationFailedAlertMsg,
+        "enbCancel": true,
+        "oktext": 'Retry',
+        "canceltext": 'Go Home'
+      },
+      disableClose: false
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.router.navigateByUrl('/visitorRegisType');
+      } else {
+        this.router.navigateByUrl('/landing');
+      }
+    });
+  }
   _getAllCategoryOfVisit() {
     this.apiServices.localPostMethod("getVisitorCategory", {}).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         const categroyList = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_CATEGORY_OF_VISIT', data[0]["Data"]);
         if (categroyList.length == 1) {
-          debugger
+
           this.aptmDetails.category = categroyList[0].visitor_ctg_desc;
           this.aptmDetails.categoryId = categroyList[0].visitor_ctg_id;
         }
@@ -505,7 +524,7 @@ export class AppointmentDetailComponent implements OnInit {
       } else {
         this.aptmDetails.visitorB64Image = '';
         if (this.KIOSK_PROPERTIES.commonsetup.Enable_PDPA) {
-          debugger
+
           this.aptmDetails.id = this.aptmDetails.id.slice(-4) + "_" + this.aptmDetails.name.replace(/\s/g, "");;
           console.log("this.aptmDetails.id == ", this.aptmDetails.id)
         }
@@ -799,7 +818,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.NUMBER_OF_INPUTS++;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Count = this.NUMBER_OF_INPUTS;
     } else {
-      debugger
+
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours)
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show = false;
       else {
@@ -1259,7 +1278,6 @@ export class AppointmentDetailComponent implements OnInit {
       });
   }
 
-
   showApproveAlertDialog() {
     const dialogRef = this.dialog.open(DialogAppSessionTimeOutDialog, {
       //width: '250px',
@@ -1294,7 +1312,7 @@ export class AppointmentDetailComponent implements OnInit {
       Category: this.aptmDetails.categoryId
     }).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
-        //debugger;
+        //;
         const result = JSON.parse(data[0]["Data"]);
         console.log("branchId " + branchID);
         console.log("branchId dataauto " + JSON.stringify(result));
@@ -1379,7 +1397,7 @@ export class AppointmentDetailComponent implements OnInit {
     if (this.KIOSK_PROPERTIES.commonsetup.Enable_NRIC_Passport_validation) {
       if (this.aptmDetails.id) {
         if (isNaN(+this.aptmDetails.id)) {
-          debugger
+
           this.VISITOR_ID_MIN_LENGTH = 8;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
         } else {
@@ -1476,7 +1494,7 @@ export class AppointmentDetailComponent implements OnInit {
       } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
       } else if (this.mainModule === 'preAppointment') {
-        debugger
+
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
       }
       /* if (this.mainModule === 'vcheckin') {

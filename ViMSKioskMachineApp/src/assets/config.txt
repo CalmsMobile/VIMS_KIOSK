@@ -4,5 +4,6 @@
   "multiBrnachLable": "Host Company",
   "alertApproveMessage": "Your registration is pending approval. Please proceed to the reception counter.",
   "serverLog":true,
-  "EnablePreviousEntrycheckoutvalidation":false
+  "EnablePreviousEntrycheckoutvalidation":false,
+  "idVerificationFailedAlertMsg":"The identity you have provided does not match the information from your appointment. Kindly use the same identity that you used when scheduling your appointment."
 }

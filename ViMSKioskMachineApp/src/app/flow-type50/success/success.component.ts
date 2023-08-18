@@ -70,7 +70,7 @@ export class SuccessComponent implements OnInit {
           this.RESULT_MSG2 = "Please collect your pass from the dispenser,<br>and then proceed to gantry to scan the pass for entry";
           this.RESULT_MSG3 = "Do not bring the pass out of the hospital. Pass should<br>be returned upon leaving, drop into the gantry when scanning out<br>*if found liable for missing pass, a $20 fine will be imposed"
           break;
-        case 'Contractor Staff':
+        case 'Contract Staff':
           this.RESULT_MSG = "Contract Staff Successfully Checked In";
           this.RESULT_MSG2 = "Please collect your pass from the dispenser,<br>and then proceed to gantry to scan the pass for entry<br><br>If the access card is required, please proceed to the Security Counter";
           this.RESULT_MSG3 = "Do not bring the pass out of the hospital. Pass should<br>be returned upon leaving, drop into the gantry when scanning out<br>*if found liable for missing pass, a $20 fine will be imposed"

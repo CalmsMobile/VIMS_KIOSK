@@ -42,7 +42,7 @@ export class ScanComponent implements OnInit {
         case "Vendor":
           this.router.navigateByUrl('/detailsVendor');
           break;
-        case "Contractor Staff":
+        case "Contract Staff":
           this.router.navigateByUrl('/detailsContractorStaff');
           break;
 

@@ -107,7 +107,7 @@ export class DetailsComponent implements OnInit {
       this.departmentCaption = "Department";
       this.departmentMandatory = true;
       this.departmentMinLength = 2;
-      this.departmentMaxLength = 2;
+      this.departmentMaxLength = 30;
 
 
       this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckinSettings;
@@ -153,7 +153,7 @@ export class DetailsComponent implements OnInit {
           this.aptmDetails.categoryId = 'VNDR';
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
           break;
-        case "Contractor Staff":
+        case "Contract Staff":
           this.LocationOfVisitShow = false;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show = false;
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show = false;
@@ -205,8 +205,8 @@ export class DetailsComponent implements OnInit {
       }
       if (this.aptmDetails.id) {
         this.isDisableid = true;
-        if(this.aptmDetails.id.length > 4){
-          this.aptmDetails.id = this.aptmDetails.id.substring(this.aptmDetails.id.length - 4,this.aptmDetails.id.length);
+        if (this.aptmDetails.id.length > 4) {
+          this.aptmDetails.id = this.aptmDetails.id.substring(this.aptmDetails.id.length - 4, this.aptmDetails.id.length);
         }
         console.log(this.aptmDetails.id.length);
       }
@@ -241,7 +241,7 @@ export class DetailsComponent implements OnInit {
       this.aptmDetails.checkinCounter = this.KIOSK_CHECKIN_COUNTER_NAME;
       this.aptmDetails['VisitorAnswers'] = JSON.stringify([]);
       this.aptmDetails.hostDetails.name = this.aptmDetails.hostName;
-      this.aptmDetails.id = this.aptmDetails.id+"_"+this.aptmDetails.name.replace(" ","_");
+      this.aptmDetails.id = this.aptmDetails.id + "_" + this.aptmDetails.name.replace(" ", "_");
       listOfVisitors.push(this.aptmDetails);
       uploadArray['visitorDetails'] = listOfVisitors;
       localStorage.setItem("VISI_LIST_ARRAY", JSON.stringify(uploadArray));
@@ -373,7 +373,7 @@ export class DetailsComponent implements OnInit {
       let timeOut = AppSettings.APP_DEFAULT_SETTIGS.Card_dispenser_time;
       if (this.mainModule == "Visitor" || this.mainModule == "Vendor") {
         _cardDcom = AppSettings['APP_SERVICES']['V_type_port'];
-      } else if (this.mainModule == "Contractor" || this.mainModule == "Contractor Staff") {
+      } else if (this.mainModule == "Contractor" || this.mainModule == "Contract Staff") {
         _cardDcom = AppSettings['APP_SERVICES']['C_type_port'];
       }
       console.log("_cardDcom", _cardDcom)
@@ -541,7 +541,7 @@ export class DetailsComponent implements OnInit {
                     _preparePrintLabel(false);
                   });
               } else {
-                this.apiServices.localPostMethod("RemoveAttendanceEntry",{"att_id":att_id}).subscribe((data: any) => {});
+                this.apiServices.localPostMethod("RemoveAttendanceEntry", { "att_id": att_id }).subscribe((data: any) => { });
                 this.apiServices.localGetMethod("CD_RecycleBack", "").subscribe((data: any) => {
                   //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_RecycleBack", "router": this.router.url, "lineNo": 678, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
                   this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
@@ -570,7 +570,7 @@ export class DetailsComponent implements OnInit {
             });
 
           } else {
-            this.apiServices.localPostMethod("RemoveAttendanceEntry",{"att_id":att_id}).subscribe((data: any) => {});
+            this.apiServices.localPostMethod("RemoveAttendanceEntry", { "att_id": att_id }).subscribe((data: any) => { });
             this.apiServices.localGetMethod("CD_ComClose", "").subscribe((data: any) => {
               //this.apiServices.sendLogToServer("Card Dispenser", JSON.stringify({ "service": "CD_ComClose", "router": this.router.url, "lineNo": 708, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
               debugger

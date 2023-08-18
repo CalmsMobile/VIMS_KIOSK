@@ -102,7 +102,7 @@ export class LandingComponent implements OnInit {
   }
   takeActFor(action: string) {
     console.log(action);
-    if (action === "Visitor" || action === "Contractor" || action === "Vendor" || action === "Contractor Staff" && this.KIOSK_PROPERTIES.General.AppType == 50) {
+    if (action === "Visitor" || action === "Contractor" || action === "Vendor" || action === "Contract Staff" && this.KIOSK_PROPERTIES.General.AppType == 50) {
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
       this.router.navigateByUrl('/terms');
     } else if (action === "vcheckin") {

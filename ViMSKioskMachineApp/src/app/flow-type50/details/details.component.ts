@@ -1,3 +1,4 @@
+import { HostDetails } from './../../flow-visitor/appointment-detail/appointmentModal';
 import { Router } from '@angular/router';
 import { Component, OnInit, Inject, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AppointmentModal } from '../appointmentModal';
@@ -20,6 +21,12 @@ export class DetailsComponent implements OnInit {
   isLoading = false;
   isDisablename = false;
   isDisableid = false;
+  isDisablecontact = false;
+  isDisableMeetingLoc = false;
+  isDisablepurpose = false;
+  isDisablehost = false;
+  isDisablecompany = false;
+  isDisableWorkPermit = false;
 
   //Location of Visit
   LocationOfVisitShow: boolean;
@@ -145,6 +152,27 @@ export class DetailsComponent implements OnInit {
           this.aptmDetails.category = 'CONTRACTORS';
           this.aptmDetails.categoryId = 'CNYS';
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory = true;
+          console.log(localStorage.getItem("ADD_WORKER_VISITOR"));
+          if (localStorage.getItem("ADD_WORKER_VISITOR") != "{}") {
+            let Visitor: any = JSON.parse(localStorage.getItem("ADD_WORKER_VISITOR"));
+            console.log(Visitor);
+            this.isDisablecontact = true;
+            this.isDisableMeetingLoc = true;
+            this.isDisablepurpose = true;
+            this.isDisablehost = true;
+            this.isDisablecompany = true;
+            this.isDisableWorkPermit = true;
+            this.aptmDetails.contact = Visitor.contact;
+            this.aptmDetails.MeetingLoc = Visitor.MeetingLoc;
+            this.aptmDetails.purpose = Visitor.purpose;
+            this.aptmDetails.purposeId = Visitor.purposeId;
+            this.aptmDetails.hostName = Visitor.hostName;
+            this.aptmDetails.company = Visitor.company;
+            this.aptmDetails.vehicle = Visitor.vehicle;
+            this.aptmDetails.WorkPermit = Visitor.WorkPermit;
+
+          }
+
           break;
         case "Vendor":
           this.workReferenceNoShow = false;
@@ -212,6 +240,7 @@ export class DetailsComponent implements OnInit {
       }
 
     }
+    console.log(localStorage.getItem('ADD_WORKER_VISITOR'));
   }
   takeActFor(action: String) {
     if (action == 'home')
@@ -360,6 +389,7 @@ export class DetailsComponent implements OnInit {
   private chk_hardwares_to_finish(att_id: string, _visitorData: any, _nextElemcallBack: any) {
     debugger
     console.log(JSON.stringify(_visitorData));
+
     let _Modules = this.KIOSK_PROPERTIES['modules'];
     if (this.KIOSK_PROPERTIES_LOCAL) {
       this.serverLog = this.KIOSK_PROPERTIES_LOCAL.serverLog;
@@ -506,6 +536,7 @@ export class DetailsComponent implements OnInit {
                 if (visitorData.length > 0) {
 
                   this.isLoading = false;
+                  localStorage.setItem("ADD_WORKER_VISITOR", JSON.stringify(this.aptmDetails));
                   this.router.navigateByUrl('/success');
                   _nextElemcallBack(true);
                   return;
@@ -595,6 +626,7 @@ export class DetailsComponent implements OnInit {
           if (visitorData.length > 0) {
 
             this.isLoading = false;
+            localStorage.setItem("ADD_WORKER_VISITOR", JSON.stringify(this.aptmDetails));
             this.router.navigateByUrl('/success');
             _nextElemcallBack(true);
             return;

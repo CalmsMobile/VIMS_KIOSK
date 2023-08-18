@@ -118,8 +118,8 @@ export class ScanRLoadingComponent implements OnInit {
       }
     } else {
       let userData = {
-        "visName": "Nizam M",
-        "visDOCID": "56hjgjgjhghj",
+        "visName": "Test",
+        "visDOCID": "sdfsfjgjhghj",
         "visDocImage": null,
       }
 

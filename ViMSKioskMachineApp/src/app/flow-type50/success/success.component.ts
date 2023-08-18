@@ -42,6 +42,7 @@ export class SuccessComponent implements OnInit {
       localStorage.setItem("VISI_HOST_MOB_NUM", "");
       localStorage.setItem("VISI_LIST_ARRAY", "{\"appSettings\":{}, \"visitorDetails\" :[]}");
 
+      console.log(localStorage.getItem('ADD_WORKER_VISITOR'));
       this.router.navigateByUrl('/scan');
     }
 

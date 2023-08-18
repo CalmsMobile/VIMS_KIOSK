@@ -129,6 +129,7 @@
           KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption
         }}</mat-label>
         <input
+          [disabled]="isDisablecontact"
           matInput
           theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
@@ -159,6 +160,7 @@
       >
         <mat-label>{{ LocationOfVisitCaption }}</mat-label>
         <input
+          [disabled]="isDisableMeetingLoc"
           matInput
           theme-input-button
           [required]="LocationOfVisitMandatory"
@@ -190,6 +192,7 @@
           KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Caption
         }}</mat-label>
         <input
+          [disabled]="isDisablepurpose"
           matInput
           readonly
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory"
@@ -214,6 +217,7 @@
       >
         <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption }}</mat-label>
         <input
+          [disabled]="isDisablehost"
           matInput
           theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
@@ -244,6 +248,7 @@
           KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption
         }}</mat-label>
         <input
+          [disabled]="isDisablecompany"
           matInput
           theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
@@ -306,6 +311,7 @@
       >
         <mat-label>{{ workReferenceNoCaption }}</mat-label>
         <input
+          [disabled]="isDisableWorkPermit"
           matInput
           theme-input-button
           [required]="workReferenceNoMandatory"

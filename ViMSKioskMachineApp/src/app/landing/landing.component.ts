@@ -353,6 +353,7 @@ export class LandingComponent implements OnInit {
     localStorage.setItem("VISI_SCAN_DOC_DATA", "");
     localStorage.setItem("VISI_HOST_MOB_NUM", "");
     localStorage.setItem("VISI_LIST_ARRAY", "{\"appSettings\":{}, \"visitorDetails\" :[]}");
+    localStorage.setItem('ADD_WORKER_VISITOR',"{}");
   }
   gotoCountClickSettings() {
     let numOfClicks = 8;

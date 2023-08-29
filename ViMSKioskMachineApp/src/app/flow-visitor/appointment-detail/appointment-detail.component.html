@@ -350,6 +350,34 @@
           "
         />
       </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        *ngIf="showPassNo"
+      >
+        <mat-label>{{ KIOSK_PROPERTIES_LOCAL.passNoCaption }}</mat-label>
+        <input
+          matInput
+          theme-input-button
+          [required]="KIOSK_PROPERTIES_LOCAL.passNoMandatory"
+          [(ngModel)]="aptmDetails.att_pass_id"
+          (blur)="textDataBindTemp($event.target.value, 'att_pass_id')"
+          spellcheck="false"
+          [minlength]="KIOSK_PROPERTIES_LOCAL.passNoMinLength"
+          [maxlength]="KIOSK_PROPERTIES_LOCAL.passNoMaxLength"
+          oninput="this.value = this.value.toUpperCase()"
+          ng-virtual-keyboard
+          ng-virtual-keyboard-layout="extended"
+          [ng-virtual-keyboard-placeholder]="
+            KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder
+          "
+        />
+      </mat-form-field>
 
       <mat-form-field
         appearance="outline"
@@ -554,6 +582,11 @@
         KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 &&
         KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory &&
         aptmDetails.vehicle == '') ||
+      (showPassNo &&
+        KIOSK_PROPERTIES_LOCAL.passNoMandatory &&
+        aptmDetails.att_pass_id == '' &&
+        aptmDetails.att_pass_id.length <
+          KIOSK_PROPERTIES_LOCAL.passNoMinLength) ||
       (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show &&
         KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 &&
         aptmDetails.email &&
@@ -648,6 +681,11 @@
         !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1 &&
         KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory &&
         aptmDetails.vehicle == '') ||
+      (showPassNo &&
+        KIOSK_PROPERTIES_LOCAL.passNoMandatory &&
+        aptmDetails.att_pass_id == '' &&
+        aptmDetails.att_pass_id.length <
+          KIOSK_PROPERTIES_LOCAL.passNoMinLength) ||
       (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show &&
         !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 &&
         aptmDetails.email &&

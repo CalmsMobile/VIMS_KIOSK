@@ -5,5 +5,11 @@
   "alertApproveMessage": "Your registration is pending approval. Please proceed to the reception counter.",
   "serverLog":true,
   "EnablePreviousEntrycheckoutvalidation":false,
-  "idVerificationFailedAlertMsg":"The identity you have provided does not match the information from your appointment. Kindly use the same identity that you used when scheduling your appointment."
+  "idVerificationFailedAlertMsg":"The identity you have provided does not match the information from your appointment. Kindly use the same identity that you used when scheduling your appointment.",
+  "showPassNo":false,
+  "passNoCaption":"Pass No.",
+  "passNoPlaceHolder":"Pass No.",
+  "passNoMandatory":true,
+  "passNoMinLength":1,
+  "passNoMaxLength":10
 }

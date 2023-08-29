@@ -1471,6 +1471,7 @@ export class AppointmentDetailComponent implements OnInit {
   VISITOR_ID_MIN_LENGTH = 0;
   VISITOR_ID_MAX_LENGTH = 30;
   showMultiBranch = false;
+  showPassNo = false;
   checkAutoApproval = false;
   _updateKioskSettings() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
@@ -1481,6 +1482,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
       if (this.KIOSK_PROPERTIES_LOCAL) {
         this.showMultiBranch = this.KIOSK_PROPERTIES_LOCAL.supportMultiBranch;
+        this.showPassNo = this.KIOSK_PROPERTIES_LOCAL.showPassNo;
         this.checkAutoApproval = this.KIOSK_PROPERTIES_LOCAL.checkAutoApproval;
       }
       this.KIOSK_PROPERTIES.IsKeyMansIdValidate = JSON.parse(setngs).IsKeyMansIdValidate;
@@ -1493,6 +1495,7 @@ export class AppointmentDetailComponent implements OnInit {
         }
       } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
+        this.showPassNo = false;
       } else if (this.mainModule === 'preAppointment') {
 
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;

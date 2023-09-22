@@ -1,30 +1,55 @@
 <div class="PictureDialog">
-    <h3>{{PictureDialogTitle}}</h3>
-    <div [style.backgroundImage]="'url(' +temp_take_pic + ')'" *ngIf="showOverlayImg"
+  <h3>{{PictureDialogTitle}}</h3>
+  <div
+    [style.backgroundImage]="'url(' +temp_take_pic + ')'"
+    *ngIf="showOverlayImg"
     class="defaultImg"
-    style="width: 500px;
-    height: 375px;
-    background-size: 100%;
-    background-position: center;
-    position: absolute;">
-  
-    </div>
-    <div 
+    style="
+      width: 500px;
+      height: 375px;
+      background-size: 100%;
+      background-position: center;
+      position: absolute;
+    "
+  ></div>
+  <div
     class="webcamparentdiv"
-    style="position: relative;
-    text-align: center;
-    color: white;">
-    <webcam id="webcam" [height]="webcamheight" [width]="webcamwidth" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
-    [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions"
-    [imageQuality]="0.5" [mirrorImage] = "'always'" (cameraSwitched)="cameraWasSwitched($event)" (initError)="handleInitError($event)">
+    style="position: relative; text-align: center; color: white"
+  >
+    <webcam
+      id="webcam"
+      [height]="webcamheight"
+      [width]="webcamwidth"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      *ngIf="showWebcam"
+      [allowCameraSwitch]="allowCameraSwitch"
+      [switchCamera]="nextWebcamObservable"
+      [videoOptions]="videoOptions"
+      [imageQuality]="0.5"
+      [mirrorImage]="'always'"
+      (cameraSwitched)="cameraWasSwitched($event)"
+      (initError)="handleInitError($event)"
+    >
     </webcam>
-  
-    <img  *ngIf="showOverlay" [height]="overlayheight" [width]="webcamwidth" style="position: absolute;
-    top: 49%;
-    left: 50%;
-    transform: translate(-50%, -50%);" src="assets/images/cus_icons/transparent_layer2.png"/>
-  
-      <h1 *ngIf="INTERVALTIME_SEC > 0" style="padding: 5px 25px;
+
+    <img
+      *ngIf="showOverlay"
+      [height]="overlayheight"
+      [width]="webcamwidth"
+      style="
+        position: absolute;
+        top: 49%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+      src="assets/images/cus_icons/transparent_layer2.png"
+    />
+
+    <h1
+      *ngIf="INTERVALTIME_SEC > 0"
+      style="
+        padding: 5px 25px;
         background: rgb(218, 22, 22);
         color: white;
         border-radius: 50%;
@@ -35,23 +60,45 @@
         left: 50%;
         transform: translate(-50%, -50%);
         -webkit-animation: fadeOutInVj 1s ease-in-out 0s infinite;
-          animation: fadeOutInVj 1s ease-in-out 0s infinite;
-        margin: 5px 0px 0px;">{{INTERVALTIME_SEC}}</h1>
-    </div>
-  
-    <img [src]="webcamImage.imageAsDataUrl" style="    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);" [height]="webcamheight" [width]="capturedwidth" *ngIf="!showWebcam"/>
+        animation: fadeOutInVj 1s ease-in-out 0s infinite;
+        margin: 5px 0px 0px;
+      "
+    >
+      {{INTERVALTIME_SEC}}
+    </h1>
   </div>
-  <div style="text-align:center;" margin-top class="picturebuttons">
-  
-        <button mat-button style="font-size: 3vh;
-        border: 2px solid #ff4081;
-        border-radius: 7px;
-        background-color: white;
-        color:  #ff4081;
-        text-transform: uppercase;
-        float: left;" (click)="onNoClick()">Cancel</button>
-        <!-- <button (click)="onNoClick()" mat-fab
+  <img
+    [src]="data['vImg']"
+    style="-webkit-transform: scaleX(-1); transform: scaleX(-1)"
+    [height]="webcamheight"
+    [width]="capturedwidth"
+    *ngIf="!showWebcam && data['vImg']"
+  />
+  <img
+    [src]="webcamImage.imageAsDataUrl"
+    style="-webkit-transform: scaleX(-1); transform: scaleX(-1)"
+    [height]="webcamheight"
+    [width]="capturedwidth"
+    *ngIf="!showWebcam && webcamImage!=null"
+  />
+</div>
+<div style="text-align: center" margin-top class="picturebuttons">
+  <button
+    mat-button
+    style="
+      font-size: 3vh;
+      border: 2px solid #ff4081;
+      border-radius: 7px;
+      background-color: white;
+      color: #ff4081;
+      text-transform: uppercase;
+      float: left;
+    "
+    (click)="onNoClick()"
+  >
+    Cancel
+  </button>
+  <!-- <button (click)="onNoClick()" mat-fab
         style="
         height: 8vh;
         width: 8vh;
@@ -63,16 +110,25 @@
         Cancel
        <i class="siva-icon-cancel"></i>
        </button> -->
-  
-       <button mat-button *ngIf="reCaptureWebcam" style="font-size: 3vh;
-       border: 2px solid #ff4081;
-       border-radius: 7px;
-       background-color: white;
-       color:  #ff4081;
-        text-transform: uppercase;
-       float: center;" (click)="reCaptureWebcamClick()">Retake</button>
-  
-        <!-- <button mat-fab *ngIf="reCaptureWebcam"
+
+  <button
+    mat-button
+    *ngIf="reCaptureWebcam"
+    style="
+      font-size: 3vh;
+      border: 2px solid #ff4081;
+      border-radius: 7px;
+      background-color: white;
+      color: #ff4081;
+      text-transform: uppercase;
+      float: center;
+    "
+    (click)="reCaptureWebcamClick()"
+  >
+    Retake
+  </button>
+
+  <!-- <button mat-fab *ngIf="reCaptureWebcam"
         (click)="reCaptureWebcamClick()"
         style="
         height: 8vh;
@@ -82,57 +138,72 @@
         background-color: white;
         color:  #ff4081;
         float: center; ">
-  
+
         <mat-icon aria-hidden="false">refresh</mat-icon>
        </button> -->
-  
-       <button mat-button *ngIf="showWebcam" style="font-size: 3vh;
-        background-color: #ff4081;
-       color:  white;
-       border-radius: 7px;
+
+  <button
+    mat-button
+    *ngIf="showWebcam"
+    style="
+      font-size: 3vh;
+      background-color: #ff4081;
+      color: white;
+      border-radius: 7px;
       border: 2px solid #ff4081;
-        text-transform: uppercase;
-       float: right;" (click)="triggerSnapshot()">Capture</button>
-  
-        <!-- <button (click)="triggerSnapshot()" mat-fab *ngIf="showWebcam"
+      text-transform: uppercase;
+      float: right;
+    "
+    (click)="triggerSnapshot()"
+  >
+    Capture
+  </button>
+
+  <!-- <button (click)="triggerSnapshot()" mat-fab *ngIf="showWebcam"
         style="height: 8vh;
         width: 8vh;
         font-size: 3vh;float: right;">
         <i class="siva-icon-camera"></i>
        </button> -->
-  
-       <button mat-button *ngIf="!showWebcam" style="font-size: 3vh;
-       background-color: #ff4081;
-       color:  white;
-       border-radius: 7px;
+
+  <button
+    mat-button
+    *ngIf="!showWebcam"
+    style="
+      font-size: 3vh;
+      background-color: #ff4081;
+      color: white;
+      border-radius: 7px;
       border: 2px solid #ff4081;
-       float: right;" (click)="triggerSnapshot()">Proceed</button>
-  
-        <!-- <button (click)="triggerSnapshot()" mat-fab *ngIf="!showWebcam"
+      float: right;
+    "
+    (click)="triggerSnapshot()"
+  >
+    Proceed
+  </button>
+
+  <!-- <button (click)="triggerSnapshot()" mat-fab *ngIf="!showWebcam"
         style="height: 8vh;
         width: 8vh;
         font-size: 3vh;float: right;">
         <mat-icon aria-hidden="false">check</mat-icon>
         </button> -->
-  </div>
-  
-  
-  
-  <!-- <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button> -->
-  <!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button>
+</div>
+
+<!-- <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button> -->
+<!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button>
     <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button>
     <input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow
       Camera Switch</label> -->
-  <!-- DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
+<!-- DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
     <button (click)="showNextWebcam(deviceId);">Activate</button> -->
-  
-  <!-- <div class="snapshot" *ngIf="webcamImage">
+
+<!-- <div class="snapshot" *ngIf="webcamImage">
     <h2>Nice one!</h2>
     <img [src]="webcamImage.imageAsDataUrl" />
   </div>
-  
+
   <h4 *ngIf="errors.length > 0">Messages:</h4>
   <ul *ngFor="let error of errors">
     <li>{{error | json}}</li>
   </ul> -->
-  

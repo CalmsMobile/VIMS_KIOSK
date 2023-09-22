@@ -520,7 +520,10 @@ export class AppointmentDetailComponent implements OnInit {
         return;
       }
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enb_webCam_img_capture) {
-        this.takeVistorProfilePicture(action);
+        //console.log(this.aptmDetails.visitorB64Image);
+
+        this.takeVistorProfilePicture(action, this.aptmDetails.visitorB64Image);
+
       } else {
         this.aptmDetails.visitorB64Image = '';
         if (this.KIOSK_PROPERTIES.commonsetup.Enable_PDPA) {
@@ -557,11 +560,14 @@ export class AppointmentDetailComponent implements OnInit {
     }
     return _flag;
   }
+  viewVisitorImage() {
 
-  takeVistorProfilePicture(action1) {
+
+  }
+  takeVistorProfilePicture(action1, visitorB64Image) {
     const dialogRef = this.dialog.open(takeVisitorPictureDialog, {
       disableClose: true,
-      data: { action: action1 }
+      data: { action: action1, vImg: visitorB64Image }
     });
     dialogRef.afterClosed().subscribe(result => {
       //console.log(result);
@@ -1437,10 +1443,12 @@ export class AppointmentDetailComponent implements OnInit {
     this.apiServices.localPostMethod('getVisitorInformation', uploadarray).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"]) {
         let _data = data[0]["Data"];
+        if (_data == null)
+          this.aptmDetails.visitorB64Image = "";
         if (_data["Table"] != undefined && _data["Table"].length > 0 && _data["Table"][0]["Code"] == '10') {
           if (_data["Table1"] != undefined && _data["Table1"].length > 0) {
             let visitorInfo = _data["Table1"][0];
-            this.aptmDetails.visitorB64Image = "data:image/jpeg;base64," + visitorInfo.Photo;
+            this.aptmDetails.visitorB64Image = visitorInfo.Photo != "" ? "data:image/jpeg;base64," + visitorInfo.Photo : "";
             this.aptmDetails.name = visitorInfo.visitor_name || "";
             this.aptmDetails.company = visitorInfo.company_name || "";
             this.aptmDetails.email = visitorInfo.visitor_email || "";
@@ -1896,7 +1904,9 @@ export class takeVisitorPictureDialog {
   PictureDialogTitle = "";
   constructor(
     public dialogRef: MatDialogRef<takeVisitorPictureDialog>,
-    @Inject(MAT_DIALOG_DATA) public data) { }
+    @Inject(MAT_DIALOG_DATA) public data) {
+    console.log(data['vImg']);
+  }
 
   onNoClick(): void {
     this.dialogRef.close({ "status": false, "data": "" });
@@ -1921,10 +1931,16 @@ export class takeVisitorPictureDialog {
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
   private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
   public ngOnInit(): void {
+    if (this.data['vImg'] != "") {
+      this.showWebcam = false;
+      this.reCaptureWebcam = true;
+    }
     WebcamUtil.getAvailableVideoInputs()
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
+
+
     this.showOverLay();
   }
 
@@ -1957,7 +1973,7 @@ export class takeVisitorPictureDialog {
         return false;
       });
       */
-      this.dialogRef.close({ "status": true, "data": this.webcamImage.imageAsDataUrl, "action": this.passAction });
+      this.dialogRef.close({ "status": true, "data": this.data['vImg'] != "" ? this.data['vImg'] : this.webcamImage.imageAsDataUrl, "action": this.passAction });
     }
 
   }
@@ -1987,6 +2003,7 @@ export class takeVisitorPictureDialog {
     this.showOverlayImg = true;
   }
   reCaptureWebcamClick() {
+    this.data['vImg'] = "";
     this.showOverLay();
     this.reCaptureWebcam = false;
     this.showWebcam = true;

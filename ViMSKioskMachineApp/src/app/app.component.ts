@@ -45,7 +45,7 @@ export class AppComponent {
       case 'home':
       const dialogRef = this.dialog.open(DialogAppCommonDialog, {
         //width: '250px',
-        data: {"title": "Are you sure want to go home ?", "subTile":"",
+        data: {"title": this.KIOSK_PROPERTIES['commonsetup']['alert_gotohome_msg'], "subTile":"",
         "enbCancel":true,"oktext":"Ok","canceltext":"Cancel"}
       });
       dialogRef.afterClosed().subscribe(result => {

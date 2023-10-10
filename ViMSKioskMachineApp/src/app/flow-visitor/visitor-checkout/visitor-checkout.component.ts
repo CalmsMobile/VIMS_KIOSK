@@ -41,6 +41,7 @@ export class VisitorCheckoutComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckOutSettings;
     }
   }
   takeActFor(action:string){

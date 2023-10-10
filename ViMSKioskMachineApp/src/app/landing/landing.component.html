@@ -1,31 +1,55 @@
-<button mat-button (click)="gotoCountClickSettings()" style="position: absolute;
-right: 0;
-min-height: 15vh;
-min-width: 15vh;z-index: 999999999;">
-</button>
+<button
+  mat-button
+  (click)="gotoCountClickSettings()"
+  style="
+    position: absolute;
+    right: 0;
+    min-height: 15vh;
+    min-width: 15vh;
+    z-index: 999999999;
+  "
+></button>
 <!-- <div my-headerbar-homeButton *ngIf="KIOSK_PROPERTIES.modules.card_dispenser.enable">
   <button disabled mat-icon-button my-theme-round-button [matBadge]="KIOSK_AVAL_CARDS" matBadgePosition="before"
     matBadgeColor="accent">
     <i class="siva-icon-docs-1"></i> </button>
 </div> -->
-<div style="text-align:center;padding:30px;">
-  <h1 welcome-title *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''">
-    {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1}}
+<div style="text-align: center; padding: 30px">
+  <h1
+    welcome-title
+    *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''"
+  >
+    {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
   </h1>
-  <img style="height: 24vh;margin-top: 2vh;" alt="Angular Logo" [src]="LOGO_IMG">
-  <h3 info-title *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''" style="margin-top:10vh;">
-    {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2}}</h3>
+  <img
+    style="height: 24vh; margin-top: 2vh"
+    alt="Angular Logo"
+    [src]="LOGO_IMG"
+  />
+  <h3
+    info-title
+    *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''"
+    style="margin-top: 10vh"
+  >
+    {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 }}
+  </h3>
 </div>
-<div style="text-align: center;">
-  <input type="text" id="readStaffCard" #readStaffCard autofocus [(ngModel)]="StaffCardNo"
-    (keyup.enter)="readStaffCardEnter()" />
+<div style="text-align: center">
+  <input
+    type="text"
+    id="readStaffCard"
+    #readStaffCard
+    autofocus
+    [(ngModel)]="StaffCardNo"
+    (keyup.enter)="readStaffCardEnter()"
+  />
 </div>
 <!-- <div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.modules.app_flow_type == 'staff_and_visitor'">
   <button mat-raised-button my-theme-button (click)="takeActFor('staff')" style="margin-right:100px;">Staff</button>
   <button mat-raised-button my-theme-button (click)="takeActFor('visitor')">Visitor</button>
 </div> -->
 <!-- <div my-footer-toolbar *ngIf="KIOSK_PROPERTIES.General.AppType == '10' || KIOSK_PROPERTIES.General.AppType == '30'"> -->
-  <div my-footer-toolbar>
+<div my-footer-toolbar>
   <!-- <mat-radio-group>
     <mat-radio-button my-reg-option-btn sp-button-violet-out
     *ngIf="KIOSK_PROPERTIES.modules.only_visitor.CheckoutOption && KIOSK_PROPERTIES.modules.only_visitor.checkout.out_type != 'auto'"
@@ -50,49 +74,150 @@ min-width: 15vh;z-index: 999999999;">
     </mat-radio-button>
   </mat-radio-group> -->
 
-  <button my-reg-option-btn sp-button-red-out1 matRipple matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
-    font-size: 20px;
-    font-weight: 700;" *ngIf="KIOSK_PROPERTIES.WalkinSettings.Enable"
-    value="CHECKIN" [ngStyle]="{'font-weight': KIOSK_PROPERTIES.WalkinSettings.CaptionBold? 'bold': '' ,
-    'text-transform': KIOSK_PROPERTIES.WalkinSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
-    (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    <img src="{{CheckIn}}" onError="src ='assets/images/cus_icons/checkin.png'" style="    width: 100px;
-    height: 100px;
-    padding-bottom: 10px;
-    margin: 0 auto;
-    display: block;" />
-    {{KIOSK_PROPERTIES.WalkinSettings.Caption}}</button>
-
-  <button my-reg-option-btn sp-button-violet-out matRipple matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
+  <button
+    my-reg-option-btn
+    sp-button-red-out1
+    matRipple
+    matRippleColor="rgba(255,255,255,0.1)"
+    style="
+      margin-right: 5vh;
+      text-align: center;
       font-size: 20px;
-      font-weight: 700;"
-    *ngIf="KIOSK_PROPERTIES.AppointmentSettings.Enable"
-    value="PREAPPOINTMT"
-    [ngStyle]="{'font-weight': KIOSK_PROPERTIES.AppointmentSettings.CaptionBold? 'bold': '400' ,
-        'text-transform': KIOSK_PROPERTIES.AppointmentSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
-    (click)="takeActFor('preAppointment')">
-    <img src="{{Appointment}}" onError="src ='assets/images/cus_icons/pre_appointment.png'" style="   width: 100px;
-    height: 100px;
-    padding-bottom: 10px;
-    margin: 0 auto;
-    display: block;" />
-    {{KIOSK_PROPERTIES.AppointmentSettings.Caption}}
+      font-weight: 700;
+    "
+    *ngIf="KIOSK_PROPERTIES.WalkinSettings.Enable"
+    value="CHECKIN"
+    [ngStyle]="{
+      'font-weight': KIOSK_PROPERTIES.WalkinSettings.CaptionBold ? 'bold' : '',
+      'text-transform': KIOSK_PROPERTIES.WalkinSettings.CaptionCapitalize
+        ? 'uppercase'
+        : 'capitalize'
+    }"
+    (click)="takeActFor('vcheckin')"
+    [disabled]="!IF_CONNECT_WITH_SERVER"
+  >
+    <img
+      src="{{ CheckIn }}"
+      onError="src ='assets/images/cus_icons/checkin.png'"
+      style="
+        width: 100px;
+        height: 100px;
+        padding-bottom: 10px;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+    {{ KIOSK_PROPERTIES.WalkinSettings.Caption }}
   </button>
 
-  <button my-reg-option-btn sp-button-green-out1 matRipple matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
-    font-size: 20px;
-    font-weight: 700;" *ngIf="KIOSK_PROPERTIES.ReqApptSettings.Enable"
-    [ngStyle]="{'font-weight': KIOSK_PROPERTIES.ReqApptSettings.CaptionBold? 'bold': '' ,
-    'text-transform': KIOSK_PROPERTIES.ReqApptSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
-    (click)="takeActFor('vcheckinapproval')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    <img src="{{RequestAppointment}}" onError="src ='assets/images/cus_icons/register.png'" style="   width: 100px;
-    height: 100px;
-    padding-bottom: 10px;
-    margin: 0 auto;
-    display: block;" />
-    {{KIOSK_PROPERTIES.ReqApptSettings.Caption}}</button>
+  <button
+    my-reg-option-btn
+    sp-button-violet-out
+    matRipple
+    matRippleColor="rgba(255,255,255,0.1)"
+    style="
+      margin-right: 5vh;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+    "
+    *ngIf="KIOSK_PROPERTIES.AppointmentSettings.Enable"
+    value="PREAPPOINTMT"
+    [ngStyle]="{
+      'font-weight': KIOSK_PROPERTIES.AppointmentSettings.CaptionBold
+        ? 'bold'
+        : '400',
+      'text-transform': KIOSK_PROPERTIES.AppointmentSettings.CaptionCapitalize
+        ? 'uppercase'
+        : 'capitalize'
+    }"
+    (click)="takeActFor('preAppointment')"
+  >
+    <img
+      src="{{ Appointment }}"
+      onError="src ='assets/images/cus_icons/pre_appointment.png'"
+      style="
+        width: 100px;
+        height: 100px;
+        padding-bottom: 10px;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+    {{ KIOSK_PROPERTIES.AppointmentSettings.Caption }}
+  </button>
 
+  <button
+    my-reg-option-btn
+    sp-button-green-out1
+    matRipple
+    matRippleColor="rgba(255,255,255,0.1)"
+    style="
+      margin-right: 5vh;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+    "
+    *ngIf="KIOSK_PROPERTIES.ReqApptSettings.Enable"
+    [ngStyle]="{
+      'font-weight': KIOSK_PROPERTIES.ReqApptSettings.CaptionBold ? 'bold' : '',
+      'text-transform': KIOSK_PROPERTIES.ReqApptSettings.CaptionCapitalize
+        ? 'uppercase'
+        : 'capitalize'
+    }"
+    (click)="takeActFor('vcheckinapproval')"
+    [disabled]="!IF_CONNECT_WITH_SERVER"
+  >
+    <img
+      src="{{ RequestAppointment }}"
+      onError="src ='assets/images/cus_icons/register.png'"
+      style="
+        width: 100px;
+        height: 100px;
+        padding-bottom: 10px;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+    {{ KIOSK_PROPERTIES.ReqApptSettings.Caption }}
+  </button>
 
+  <button
+    my-reg-option-btn
+    sp-button-green-out1
+    matRipple
+    matRippleColor="rgba(255,255,255,0.1)"
+    style="
+      margin-right: 5vh;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+    "
+    *ngIf="KIOSK_PROPERTIES.CheckOutSettings.Enable"
+    [ngStyle]="{
+      'font-weight': KIOSK_PROPERTIES.CheckOutSettings.CaptionBold
+        ? 'bold'
+        : '',
+      'text-transform': KIOSK_PROPERTIES.CheckOutSettings.CaptionCapitalize
+        ? 'uppercase'
+        : 'capitalize'
+    }"
+    (click)="takeActFor('vcheckout')"
+    [disabled]="!IF_CONNECT_WITH_SERVER"
+  >
+    <img
+      src="{{ CheckOut }}"
+      onError="src ='assets/images/cus_icons/checkout.png'"
+      style="
+        width: 100px;
+        height: 100px;
+        padding-bottom: 10px;
+        margin: 0 auto;
+        display: block;
+      "
+    />
+    {{ KIOSK_PROPERTIES.CheckOutSettings.Caption }}
+  </button>
   <!-- <button my-reg-option-btn sp-button-violet-out1 matRipple matRippleColor="rgba(255,255,255,0.1)" style="margin-right: 5vh;text-align: center;
   font-size: 20px;
   font-weight: 700;"
@@ -111,5 +236,4 @@ min-width: 15vh;z-index: 999999999;">
       *ngIf="KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor"
       (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
         {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_option.in_prereg_label}}</button> -->
-
 </div>

@@ -19,7 +19,7 @@ export class CheckoutSuccessComponent implements OnInit {
   action:any = '';
   isLoading:boolean = false;
   isFinished:boolean = false;
-  LOGO_IMG = "assets/images/cus_icons/icon_rightyes.png";
+  LOGO_IMG = "";
   TEST_PIN:any = "";
   RESULT_MSG = "";
   RESULT_MSG2 = "";
@@ -79,6 +79,7 @@ export class CheckoutSuccessComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if(setngs != undefined && setngs != ""){
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
+      this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.CheckOutSettings;
     }
   }
 
@@ -92,10 +93,11 @@ export class CheckoutSuccessComponent implements OnInit {
 
     console.log(JSON.stringify(params));
 
-    var _callErrorMsg = ()=>{
-      this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkout']['out_sccess_msg1'] ;
+    /* var _callErrorMsg = ()=>{
+      this.RESULT_MSG = this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_title ;
+      this.RESULT_MSG2 = this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_msg ;
       const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-        data: {"title": this.KIOSK_PROPERTIES['modules']['only_visitor']['checkout']['out_sccess_msg2'], "subTile":"Please try again or Contact Reception" }
+        data: {"title": this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_title, "subTile": this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_msg }
       });
       dialogRef.afterClosed().subscribe((data)=>{
         this.router.navigateByUrl('/landing');
@@ -103,14 +105,15 @@ export class CheckoutSuccessComponent implements OnInit {
     }
 
     var _callErrorMsg1 = (desc)=>{
-      this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkout']['out_sccess_msg1'] ;
+      this.RESULT_MSG =this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_title ;
+      this.RESULT_MSG2 =this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_msg ;
       const dialogRef = this.dialog.open(DialogSuccessMessagePage, {
-        data: {"title": this.KIOSK_PROPERTIES['modules']['only_visitor']['checkout']['out_sccess_msg2'], "subTile": desc }
+        data: {"title": this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_alert_title, "subTile": desc }
       });
       dialogRef.afterClosed().subscribe((data)=>{
         this.router.navigateByUrl('/landing');
       });
-    }
+    } */
 
   this.apiServices.localPostMethod("VimsAppUpdateVisitorCheckOut", params).subscribe((data:any) => {
     console.log(data);
@@ -125,36 +128,60 @@ export class CheckoutSuccessComponent implements OnInit {
               this.isFinished = true;
               this._finish_with_success_msg();
             } else {
-              _callErrorMsg1(output.Table[0].Description? output.Table[0].Description: output.Table[0].description);
+             // _callErrorMsg1(output.Table[0].Description? output.Table[0].Description: output.Table[0].description);
+            this._finish_with_failed_msg();
             }
 
           }else if(output.length > 0 && (output[0].code > 10 || output[0].Code > 10)){
-            _callErrorMsg1(output[0].Description? output[0].Description: output[0].description);
+            //_callErrorMsg1(output[0].Description? output[0].Description: output[0].description);
+            this._finish_with_failed_msg();
           }else{
-            _callErrorMsg();
+           // _callErrorMsg();
+           this._finish_with_failed_msg();
           }
         }else{
           if(data[0] && data[0].ErrorLog && data[0].ErrorLog[0] && data[0].ErrorLog[0].Error) {
-            _callErrorMsg1(JSON.stringify({"message":data[0].ErrorLog[0].Error}));
+            //_callErrorMsg1(JSON.stringify({"message":data[0].ErrorLog[0].Error}));
+            this._finish_with_failed_msg();
           } else {
-            _callErrorMsg();
+           // _callErrorMsg();
+           this._finish_with_failed_msg();
           }
         }
       }
     } else{
-      _callErrorMsg();
+      //_callErrorMsg();
+      this._finish_with_failed_msg();
       return false;
     }
   } ,
   err => {
-    _callErrorMsg();
+    //_callErrorMsg();
+    this._finish_with_failed_msg();
     return false;
   });
 }
 
   private _finish_with_success_msg(){
-    this.RESULT_MSG = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkout']['out_sccess_msg1'] ;
-    // this.RESULT_MSG2 = this.KIOSK_PROPERTIES['modules']['only_visitor']['checkout']['out_sccess_msg2'] ;
+    this.LOGO_IMG = "assets/images/cus_icons/icon_rightyes.png";
+    this.RESULT_MSG = this.KIOSK_PROPERTIES.COMMON_CONFIG.success_msg_line1;
+     this.RESULT_MSG2 = this.KIOSK_PROPERTIES.COMMON_CONFIG.success_msg_line2 ;
+     this.RESULT_MSG3 = this.KIOSK_PROPERTIES.COMMON_CONFIG.success_msg_line3 ;
+
+    let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
+    _timeout = parseInt(_timeout) * 1000;
+    setTimeout(()=>{
+      this.isLoading = false;
+      this.router.navigateByUrl('/landing');
+    },_timeout);
+
+  }
+  private _finish_with_failed_msg(){
+   this. LOGO_IMG = "assets/images/cus_icons/icon_failed.png";
+    this.isFinished = true;
+    this.RESULT_MSG = this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_msg_line1;
+     this.RESULT_MSG2 = this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_msg_line2 ;
+     this.RESULT_MSG3 = this.KIOSK_PROPERTIES.COMMON_CONFIG.failed_msg_line3 ;
 
     let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
     _timeout = parseInt(_timeout) * 1000;

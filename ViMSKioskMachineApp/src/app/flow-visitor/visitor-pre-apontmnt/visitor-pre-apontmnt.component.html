@@ -46,7 +46,9 @@
           </p>
         </mat-tab>
         <mat-tab
-          [disabled]="!KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable"
+          [disabled]="
+            !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable
+          "
           label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption
           }}"

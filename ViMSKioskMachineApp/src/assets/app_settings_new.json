@@ -1,0 +1,568 @@
+{
+  "kioskName": "Mobile app Kiosk",
+  "kioskAvalCards": null,
+  "kioskSetup": {
+    "commonsetup": {
+      "dbname": "ViMSDB",
+      "company_logo": "",
+      "app_background": "",
+      "timer": {
+        "scr_timeout": 1000,
+        "timout_msg_title": "Your session is about to expire!",
+        "timout_msg_msg": "You will be logged out in {{timeOutCount}} seconds.",
+        "scr_timeout_msg": 15,
+        "enb_autoupdtstngs": true,
+        "intrvl_autoupdtstngs": 120,
+        "tq_scr_timeout_msg": 5
+      },
+      "Home_screen_Label_1": "Welcome",
+      "Home_screen_Label_2": "Touch to start",
+      "Scan_loading_msg": "Scanning in Progress <br> Please Wait",
+      "Register_loading_msg": "Register in Progress <br> Please Wait",
+      "clr_txt_header1": "#ff0066",
+      "clr_txt_header2": "#6633cc",
+      "clr_btn_txt": "#cccc66",
+      "clr_btn_gtd_1": "#da1b60",
+      "clr_btn_gtd_2": "#ff8a00",
+      "clr_keyboard_btn_txt": "#3399ff",
+      "clr_keyboard_btn_gtd_1": "#da1b60",
+      "clr_keyboard_btn_gtd_2": "#ff8a00",
+      "clr_input_caption": "#330066",
+      "clr_input_color": "#FF9800",
+      "Home_screen_Staff_btn_label": "Staff",
+      "Home_screen_Visitor_btn_label": "Visitor",
+      "Check_in_btn_label": "Check in",
+      "Check_out_btn_label": "Check out",
+      "Enable_Round_border_button": false,
+      "button_background_image": [
+        {
+          "src": "",
+          "filename": null,
+          "uid": "cb90db9e-e25d-44b2-9aa6-4f2166b5e968_0",
+          "trackerId": "cb90db9e-e25d-44b2-9aa6-4f2166b5e968_0",
+          "extension": ".png",
+          "isFrom": null,
+          "Type": "ManualRegistration",
+          "primary": "0",
+          "caption": null,
+          "description": null,
+          "imgpathurl": "KioskSelfService/ebdd-e4c2-2023-07-14-20-53-32-371\\outputonlinetexttools7.png",
+          "VideoUrl": null
+        },
+        {
+          "src": "",
+          "filename": null,
+          "uid": "f509d3f3-6d8e-4030-b44a-7df3ba511700_0",
+          "trackerId": "f509d3f3-6d8e-4030-b44a-7df3ba511700_0",
+          "extension": ".png",
+          "isFrom": null,
+          "Type": "WalkinRegistration",
+          "primary": "0",
+          "caption": null,
+          "description": null,
+          "imgpathurl": "KioskSelfService/119c-e4c2-2023-07-14-20-56-25-094\\outputonlinetexttools.png",
+          "VideoUrl": null
+        },
+        {
+          "src": "",
+          "filename": null,
+          "uid": "a9bd1a5e-b441-4de1-9bb0-5b6ee39e0112_0",
+          "trackerId": "a9bd1a5e-b441-4de1-9bb0-5b6ee39e0112_0",
+          "extension": ".png",
+          "isFrom": null,
+          "Type": "Passport",
+          "primary": "0",
+          "caption": null,
+          "description": null,
+          "imgpathurl": "KioskSelfService/119c-e4c2-2023-07-14-20-56-25-094\\outputonlinetexttools6.png",
+          "VideoUrl": null
+        },
+        {
+          "src": "",
+          "filename": null,
+          "uid": "ec18ada4-c5d5-468a-a0aa-a729acb264e6_0",
+          "trackerId": "ec18ada4-c5d5-468a-a0aa-a729acb264e6_0",
+          "extension": ".png",
+          "isFrom": null,
+          "Type": "Appointment",
+          "primary": "0",
+          "caption": null,
+          "description": null,
+          "imgpathurl": "KioskSelfService/119c-e4c2-2023-07-14-20-56-25-094\\outputonlinetexttools1.png",
+          "VideoUrl": null
+        },
+        {
+          "src": "",
+          "filename": null,
+          "uid": "91629ace-ca35-47f5-a35e-a9ca75d8fd5c_0",
+          "trackerId": "91629ace-ca35-47f5-a35e-a9ca75d8fd5c_0",
+          "extension": ".png",
+          "isFrom": null,
+          "Type": "RequestAppointment",
+          "primary": "0",
+          "caption": null,
+          "description": null,
+          "imgpathurl": "KioskSelfService/e059-e4c2-2023-07-14-1-15-04-029\\outputonlinetexttools2.png",
+          "VideoUrl": null
+        },
+        {
+          "src": "",
+          "filename": null,
+          "uid": "91629ace-ca35-47f5-a35e-a9ca75d8fd5c_0",
+          "trackerId": "91629ace-ca35-47f5-a35e-a9ca75d8fd5c_0",
+          "extension": ".png",
+          "isFrom": null,
+          "Type": "CheckOut",
+          "primary": "0",
+          "caption": null,
+          "description": null,
+          "imgpathurl": "KioskSelfService/e059-e4c2-2023-07-14-1-15-04-029\\outputonlinetexttools2.png",
+          "VideoUrl": null
+        }
+      ],
+      "alert_gotohome_msg": "exit?"
+    },
+    "WalkinSettings": {
+      "Enable": true,
+      "Caption": "Walk In",
+      "CaptionCapitalize": false,
+      "CaptionBold": false,
+      "VisitorId": {
+        "Caption": "NRIC",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "VisitorName": {
+        "Caption": "Name",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "Company": {
+        "Caption": "Company",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "Category": { "Caption": "Category", "Show": false, "Mandatory": true },
+      "Contact": {
+        "Caption": "Contact",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "EmailId": {
+        "Caption": "Email Id",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "Vehicle": {
+        "Caption": "Vehicle Number",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "Purpose": {
+        "Caption": "Purpose of visit",
+        "Show": false,
+        "Mandatory": true,
+        "default": "Meet Admin"
+      },
+      "Host": {
+        "Caption": "Looking For",
+        "Show": true,
+        "Mandatory": true,
+        "default": "Admin"
+      },
+      "Gender": { "Caption": "Gender", "Show": true, "Mandatory": false },
+      "Country": { "Caption": "Country", "Show": false, "Mandatory": false },
+      "T_and_C": {
+        "enable": false,
+        "title": "Terms & Conditions",
+        "template": "<p style=\"color:red;\">Sample Terms &amp; Condition Content</p>",
+        "agree_btn_caption": "Agree & Proceed"
+      },
+      "Questionnaries": { "Enable_Questionnaries": false },
+      "Email": { "Enable_Checkin_Email": false },
+      "AdditionalTitle": {
+        "choose_your_reg_type_title": "Choose your registration type",
+        "detail_page_title": "Visitor Info",
+        "submit_button_caption": "Submit"
+      },
+      "checkin": {
+        "registration_action_type": "single",
+        "enable_NRIC": true,
+        "NRIC_caption": "My Kad",
+        "NRIC_ScanGuide": "",
+        "NRIC_GuideImage": "",
+        "NRIC_failed_msg": "Failed",
+        "NRIC_cancel_button_caption": "Cancel",
+        "NRIC_proceed_button_caption": "Proceed",
+        "enable_NRICRLicense": true,
+        "NRICRLicense_caption": "NRIC",
+        "NRICRLicense_ScanGuide": "",
+        "NRICRLicense_GuideImage": "",
+        "NRICRLicense_failed_msg": "failed",
+        "NRICRLicense_cancel_button_caption": "Cancel",
+        "NRICRLicense_proceed_button_caption": "Proceed",
+        "enable_BusinessCard": false,
+        "BusinessCard_caption": "",
+        "BusinessCard_ScanGuide": "",
+        "BusinessCard_GuideImage": "",
+        "BusinessCard_failed_msg": "",
+        "BusinessCard_cancel_button_caption": "Cancel",
+        "BusinessCard_proceed_button_caption": "Proceed",
+        "enable_Passport": false,
+        "Passport_caption": "",
+        "Passport_ScanGuide": "",
+        "Passport_GuideImage": "",
+        "Passport_failed_msg": "",
+        "Passport_cancel_button_caption": "Cancel",
+        "Passport_proceed_button_caption": "Proceed",
+        "enable_manual_walkin": true,
+        "manual_walkin_caption": "Manual",
+        "enb_webCam_img_capture": true,
+        "success_image": "",
+        "failed_image": "",
+        "success_msg_line1": "Visitor Successfully Checked In !",
+        "success_msg_line2": "",
+        "success_msg_line3": "",
+        "failed_msg_line1": "Visitor Check In Failed !",
+        "failed_msg_line2": "",
+        "failed_msg_line3": ""
+      },
+      "card_dispenser": {
+        "enable": false,
+        "dispenser_type": "TYPE1",
+        "failed_message": "Failed !",
+        "COM_Port": 1
+      },
+      "printer": {
+        "label_printer_enable": false,
+        "label_printer_name": "DYMO LabelWriter 450 Turbo",
+        "printer_type": "Label",
+        "printer_template": "template1",
+        "receipt_printer_enable": false,
+        "receipt_printer_name": "HP Color LaserJet Pro MFP M176n",
+        "receipt_printer_code": "QR",
+        "print_option": "10",
+        "qrRbar_print_field": "NRIC",
+        "printer_button_caption": "Print"
+      },
+      "SMS": {
+        "enable": false,
+        "sms_template": "Hello! #VisitorNameAll# #VisitorNameFirst# #VisitorCount# Your pin number is #VisitorPinNumber#"
+      },
+      "ACS": { "EnableAcsQrCode": true },
+      "Safety_briefing": { "Enable_Safety_brief_video": false },
+      "Enable_visitor_search_host": true
+    },
+    "AppointmentSettings": {
+      "Enable": true,
+      "Caption": "Appointment",
+      "CaptionCapitalize": false,
+      "CaptionBold": false,
+      "VisitorId": {
+        "Caption": "NRIC",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "VisitorName": {
+        "Caption": "Name",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "Company": {
+        "Caption": "Company",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "Category": { "Caption": "Category", "Show": true, "Mandatory": true },
+      "Contact": {
+        "Caption": "Contact",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "EmailId": {
+        "Caption": "Email Id",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "Vehicle": {
+        "Caption": "Vehicle Number",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "Purpose": {
+        "Caption": "Purpose of visit",
+        "Show": true,
+        "Mandatory": true,
+        "default": "Meet Admin"
+      },
+      "Host": {
+        "Caption": "Looking For",
+        "Show": true,
+        "Mandatory": true,
+        "default": "Admin"
+      },
+      "Gender": { "Caption": "Gender", "Show": false, "Mandatory": false },
+      "Country": { "Caption": "Country", "Show": false, "Mandatory": false },
+      "T_and_C": {
+        "enable": false,
+        "title": "Terms & Conditions",
+        "template": "<p style=\"color:red;\">Sample Terms &amp; Condition Content</p>",
+        "agree_btn_caption": "Agree & Proceed"
+      },
+      "Email": { "Enable_Checkin_Email": false },
+      "AdditionalTitle": {
+        "detail_page_title": "Visitor Info",
+        "appt_not_found_desc": "Appointment Not Found",
+        "expiry_appointment_alert": "Appointment Expired !",
+        "appt_checkin_limit_reached": "Check-in limit reached !",
+        "multi_appt_list_view_title": "Multiple appointment ",
+        "submit_button_caption": "Submit"
+      },
+      "checkin": {
+        "registration_action_type": "single",
+        "enb_webCam_img_capture": false,
+        "success_image": "",
+        "failed_image": "",
+        "success_msg_line1": "Visitor Successfully Checked In !",
+        "success_msg_line2": "",
+        "success_msg_line3": "",
+        "failed_msg_line1": "Visitor Check In Failed !",
+        "failed_msg_line2": "",
+        "failed_msg_line3": ""
+      },
+      "card_dispenser": {
+        "enable": false,
+        "dispenser_type": "TYPE1",
+        "failed_message": "Failed !",
+        "COM_Port": 1
+      },
+      "printer": {
+        "label_printer_enable": false,
+        "label_printer_name": "DYMO LabelWriter 450 Turbo",
+        "printer_type": "Label",
+        "printer_template": "template1",
+        "receipt_printer_enable": false,
+        "receipt_printer_name": "HP Color LaserJet Pro MFP M176n",
+        "receipt_printer_code": "QR",
+        "print_option": "10",
+        "qrRbar_print_field": "NRIC",
+        "printer_button_caption": "Print"
+      },
+      "SMS": {
+        "enable": false,
+        "sms_template": "Hello! #VisitorNameAll# #VisitorNameFirst# #VisitorCount# Your pin number is #VisitorPinNumber#"
+      },
+      "ACS": { "EnableAcsQrCode": true },
+      "Enable_visitor_search_host": false,
+      "AppointmentSearch": {
+        "Contact": {
+          "enable": true,
+          "title_caption": "Contact",
+          "description": "Enter your mobile number",
+          "field_caption": "Contact"
+        },
+        "Email": {
+          "enable": true,
+          "title_caption": "Email",
+          "description": "Enter your email address",
+          "field_caption": "Email"
+        },
+        "AppointmentID": {
+          "enable": true,
+          "title_caption": "Appointment ID / QR Code",
+          "description": "Enter your appointment id",
+          "field_caption": "Appointment ID",
+          "search_type": "QRCode"
+        },
+        "get_appt_detail_button_caption": "Get Appointment Detail",
+        "search_type": "QRCode",
+        "WebCamScan": { "enable": true, "button_caption": "Scan" }
+      },
+      "id_verification": {
+        "enable": false,
+        "checkin": {
+          "enable_Passport": true,
+          "Passport_caption": "Passport",
+          "Passport_ScanGuide": "scan",
+          "Passport_failed_msg": "failed",
+          "Passport_cancel_button_caption": "Cancel",
+          "Passport_proceed_button_caption": "Proceed"
+        }
+      }
+    },
+    "ReqApptSettings": {
+      "Enable": true,
+      "Caption": "Request Appointment",
+      "CaptionCapitalize": false,
+      "CaptionBold": false,
+      "VisitorId": {
+        "Caption": "NRIC",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "VisitorName": {
+        "Caption": "Name",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "Company": {
+        "Caption": "Company",
+        "PlaceHolder": "",
+        "Show": true,
+        "Mandatory": true,
+        "MinLength": 0
+      },
+      "Category": { "Caption": "Category", "Show": true, "Mandatory": true },
+      "Contact": {
+        "Caption": "Contact",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "EmailId": {
+        "Caption": "Email Id",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "Vehicle": {
+        "Caption": "Vehicle Number",
+        "PlaceHolder": "",
+        "Show": false,
+        "Mandatory": false,
+        "MinLength": 0
+      },
+      "Purpose": {
+        "Caption": "Purpose of visit",
+        "Show": true,
+        "Mandatory": true,
+        "default": "Meet Admin"
+      },
+      "AppointmentHours": {
+        "Caption": "Appointment Hours",
+        "Show": true,
+        "Mandatory": true
+      },
+      "Host": {
+        "Caption": "Looking For",
+        "Show": true,
+        "Mandatory": true,
+        "default": "Admin"
+      },
+      "Gender": { "Caption": "Gender", "Show": false, "Mandatory": false },
+      "Country": { "Caption": "Country", "Show": false, "Mandatory": false },
+      "T_and_C": {
+        "enable": false,
+        "title": "Terms & Conditions",
+        "template": "<p style=\"color:red;\">Sample Terms &amp; Condition Content</p>",
+        "agree_btn_caption": "Agree & Proceed"
+      },
+      "Questionnaries": { "Enable_Questionnaries": false },
+      "Email": { "Enable_Checkin_Email": true },
+      "AdditionalTitle": {
+        "choose_your_reg_type_title": "Choose your registration type",
+        "detail_page_title": "Visitor Info",
+        "submit_button_caption": "Submit"
+      },
+      "checkin": {
+        "registration_action_type": "single",
+        "enable_NRIC": false,
+        "NRIC_caption": "",
+        "NRIC_ScanGuide": "",
+        "NRIC_GuideImage": "",
+        "NRIC_failed_msg": "",
+        "NRIC_cancel_button_caption": "Cancel",
+        "NRIC_proceed_button_caption": "Proceed",
+        "enable_NRICRLicense": false,
+        "NRICRLicense_caption": "",
+        "NRICRLicense_ScanGuide": "",
+        "NRICRLicense_GuideImage": "",
+        "NRICRLicense_failed_msg": "",
+        "NRICRLicense_cancel_button_caption": "Cancel",
+        "NRICRLicense_proceed_button_caption": "Proceed",
+        "enable_BusinessCard": false,
+        "BusinessCard_caption": "",
+        "BusinessCard_ScanGuide": "",
+        "BusinessCard_GuideImage": "",
+        "BusinessCard_failed_msg": "",
+        "BusinessCard_cancel_button_caption": "Cancel",
+        "BusinessCard_proceed_button_caption": "Proceed",
+        "enable_Passport": false,
+        "Passport_caption": "",
+        "Passport_ScanGuide": "",
+        "Passport_GuideImage": "",
+        "Passport_failed_msg": "",
+        "Passport_cancel_button_caption": "Cancel",
+        "Passport_proceed_button_caption": "Proceed",
+        "enable_manual_ReqAppt": true,
+        "manual_ReqAppt_caption": "Manual",
+        "enb_webCam_img_capture": false,
+        "success_image": "",
+        "failed_image": "",
+        "success_msg_line1": "Visitor Successfully Checked In !",
+        "success_msg_line2": "",
+        "success_msg_line3": "",
+        "failed_msg_line1": "Visitor Check In Failed !",
+        "failed_msg_line2": "",
+        "failed_msg_line3": ""
+      },
+      "Safety_briefing": { "Enable_Safety_brief_video": false },
+      "Enable_visitor_search_host": false,
+      "SMS": { "enable": true }
+    },
+    "CheckOutSettings": {
+      "Enable": true,
+      "Caption": "Check Out",
+      "CaptionCapitalize": false,
+      "CaptionBold": false,
+      "page_title": "Checkout",
+      "screen_manual_label": "Please enter your SMS Pin Code Or Appointment ID",
+      "screen_qr_label": "Scan your Appointment QRCode",
+      "AppointmentID": {
+        "field_caption": "Appointment ID",
+        "PlaceHolder": "placeholder"
+      },
+      "type": "manual&QRCode",
+      "proceed_button_label": "Proceed",
+      "checkout_button_label": "Checkout",
+      "scan_button_label": "Scan",
+      "success_msg_line1": "success_msg_line1",
+      "success_msg_line2": "success_msg_line2",
+      "success_msg_line3": "success_msg_line3",
+      "failed_msg_line1": "failed_msg_line1",
+      "failed_msg_line2": "failed_msg_line2",
+      "failed_msg_line3": "failed_msg_line3"
+    }
+  },
+  "IsKeyMansIdValidate": false
+}

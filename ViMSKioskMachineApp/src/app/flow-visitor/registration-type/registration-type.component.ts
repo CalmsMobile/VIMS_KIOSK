@@ -36,10 +36,14 @@ export class RegistrationTypeComponent implements OnInit {
   }
   takeActFor(action: string) {
     if (action === "back") {
-      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.enable) {
-        this.router.navigateByUrl('/visitorAgree');
+      if (this.mainModule == 'preAppointment') {
+        this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
       } else {
-        this.router.navigateByUrl('/landing');
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.enable) {
+          this.router.navigateByUrl('/visitorAgree');
+        } else {
+          this.router.navigateByUrl('/landing');
+        }
       }
     } else if (action === "next") {
       this.openPrepareScanDocDialog();
@@ -55,7 +59,7 @@ export class RegistrationTypeComponent implements OnInit {
 
   }
   openPrepareScanDocDialog(): void {
-    
+
     if (this.SEL_REGISTRATION_TYPE == 'SING_NRICrDRIV' ||
       this.SEL_REGISTRATION_TYPE == 'PASSPORT' || this.SEL_REGISTRATION_TYPE == 'MYCARD'
       || this.SEL_REGISTRATION_TYPE == 'BUSINESS') {

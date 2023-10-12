@@ -254,7 +254,7 @@ export class VisitorPreApontmntComponent implements OnInit {
                 }
               }
             } else {
-              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]), id_verification: this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable } });
+              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]), id_verification: this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable?1:0 } });
             }
 
           } else {

@@ -1008,13 +1008,13 @@ export class AppointmentSuccessComponent implements OnInit {
     if (image && !this.DisplayImageHandlerURL) {
       this.DisplaySuccessImageHandlerURL = image;
     }
-    if (this.qrcodeProcessed && (this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_enable || this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.receipt_printer_enable) && this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.print_option == 10) {
+    //if (this.qrcodeProcessed && (this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.label_printer_enable || this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.receipt_printer_enable) && this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.print_option == 10) {
       let _timeout = this.KIOSK_PROPERTIES['commonsetup']['timer']['tq_scr_timeout_msg'] || 5;
       _timeout = parseInt(_timeout) * 1000;
       setTimeout(() => {
         this.router.navigateByUrl('/landing');
       }, _timeout);
-    }
+   // }
 
   }
 

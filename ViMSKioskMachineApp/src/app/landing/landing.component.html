@@ -193,7 +193,10 @@
       font-size: 20px;
       font-weight: 700;
     "
-    *ngIf="KIOSK_PROPERTIES.CheckOutSettings.Enable"
+    *ngIf="
+      KIOSK_PROPERTIES.CheckOutSettings != undefined &&
+      KIOSK_PROPERTIES.CheckOutSettings.Enable
+    "
     [ngStyle]="{
       'font-weight': KIOSK_PROPERTIES.CheckOutSettings.CaptionBold
         ? 'bold'

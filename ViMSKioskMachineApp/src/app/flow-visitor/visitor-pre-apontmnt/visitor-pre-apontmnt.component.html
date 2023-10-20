@@ -17,18 +17,28 @@
   </p>
 
   <div style="text-align: center; margin-top: 15vh">
-    <!-- <div
-      style="display: inline-block; vertical-align: top; margin-right: 40px"
-      *ngIf="
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.search_type !== 'QRCode'
-      "
-    > -->
+   
     <div style="display: inline-block; vertical-align: top; margin-right: 40px">
       <mat-tab-group
         mat-align-tabs="center"
         (selectedTabChange)="selectedTabValue($event)"
         [selectedIndex]="selectedIndex"
       >
+      <mat-tab
+      [disabled]="
+        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable
+      "
+      label="{{
+        KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption
+      }}"
+    >
+      <p sub-title>
+        {{
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC
+            .description
+        }}
+      </p>
+    </mat-tab>
         <mat-tab
           [disabled]="
             !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable
@@ -96,6 +106,27 @@
           </p>
         </mat-tab>
       </mat-tab-group>
+      <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      theme-border-input-big
+      style="display: block"
+      *ngIf="selectedType == 'nric'"
+    >
+      <mat-label>{{
+        KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption
+      }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="APONTMNT_NRIC"
+        oninput="this.value = this.value.toUpperCase()"
+        (blur)="textDataBindNric($event.target.value)"
+        ng-virtual-keyboard
+        ng-virtual-keyboard-layout="extended"
+        ng-virtual-keyboard-placeholder="NRIC"
+        #nric
+      />
+    </mat-form-field>
       <mat-form-field
         appearance="outline"
         floatLabel="always"

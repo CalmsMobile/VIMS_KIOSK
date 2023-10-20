@@ -16,6 +16,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   totalVisitors: number = 0;
   APONTMNT_CODE: any = "";
   APONTMNT_CONTACT: any = "";
+  APONTMNT_NRIC: any = "";
   APONTMNT_EMAIL: any = "";
   selectedType = 'contact';
   selectedIndex = 0;
@@ -23,6 +24,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   qrScanAppointmentId = false;
   //KIOSK_PROPERTIES_LOCAL: any = {};
   isBackButtonVisible = false;
+  @ViewChild("nric") nric: ElementRef;
   @ViewChild("contact") contact: ElementRef;
   @ViewChild('email') email: ElementRef;
   @ViewChild('appint_id') appint_id: ElementRef;
@@ -42,18 +44,24 @@ export class VisitorPreApontmntComponent implements OnInit {
   selectedTabValue(event) {
     console.log(event.index);
     if (event.index == 0) {
+      this.selectedType = "nric";
+      setTimeout(() => {
+        this.nric.nativeElement.focus()
+      })
+    }
+    if (event.index == 1) {
       this.selectedType = "contact";
       setTimeout(() => {
         this.contact.nativeElement.focus()
       })
     }
-    if (event.index == 1) {
+    if (event.index == 2) {
       this.selectedType = "email";
       setTimeout(() => {
         this.email.nativeElement.focus()
       })
     }
-    if (event.index == 2) {
+    if (event.index == 3) {
       this.selectedType = "appint_id";
       setTimeout(() => {
         this.appint_id.nativeElement.focus()
@@ -98,36 +106,68 @@ export class VisitorPreApontmntComponent implements OnInit {
     }
   }
   selectTab() {
-    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+      this.selectedType = "nric";
+      setTimeout(() => {
+        this.selectedIndex = 0;
+        this.nric.nativeElement.focus()
+      })
+    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable &&this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
       this.selectedType = "contact";
       setTimeout(() => {
-        this.selectedIndex = 0;
+        this.selectedIndex = 1;
         this.contact.nativeElement.focus()
       })
-    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable &&!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
       this.selectedType = "email";
       setTimeout(() => {
-        this.selectedIndex = 1;
+        this.selectedIndex = 2;
         this.email.nativeElement.focus()
       })
-    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable &&!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
       this.selectedType = "appint_id";
       setTimeout(() => {
-        this.selectedIndex = 2;
+        this.selectedIndex = 3;
         this.appint_id.nativeElement.focus()
       })
-    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+    }else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+      this.selectedType = "nric";
+      setTimeout(() => {
+        this.selectedIndex = 0;
+        //this.email.nativeElement.focus()
+      })
+    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+      this.selectedType = "contact";
+      setTimeout(() => {
+        this.selectedIndex = 1;
+        //this.email.nativeElement.focus()
+      })
+    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
       this.selectedType = "email";
       setTimeout(() => {
-        this.selectedIndex = 1;
+        this.selectedIndex = 2;
+        //this.email.nativeElement.focus()
+      })
+    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+      this.selectedType = "appint_id";
+      setTimeout(() => {
+        this.selectedIndex = 3;
         //this.email.nativeElement.focus()
       })
     }
@@ -167,6 +207,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       // this.APONTMNT_CODE = _scanData['aptid'] || '';
 
       this.APONTMNT_CODE = this.scanData;
+      this.APONTMNT_NRIC = "";
       this.APONTMNT_CONTACT = "";
       this.APONTMNT_EMAIL = "";
       this.takeActFor('getAppointmentDetail');
@@ -179,6 +220,10 @@ export class VisitorPreApontmntComponent implements OnInit {
     this.APONTMNT_CODE = value;
   }
 
+  textDataBindNric(value: string) {
+    console.log(value);
+    this.APONTMNT_NRIC = value;
+  }
   textDataBindContact(value: string) {
     console.log(value);
     this.APONTMNT_CONTACT = value;
@@ -198,15 +243,18 @@ export class VisitorPreApontmntComponent implements OnInit {
   getAppointmentDetails() {
     document.getElementById("bodyloader").style.display = "block";
     let prepareData: any = "";
-    if (this.selectedType == "contact") {
+    if (this.selectedType == "nric") {
 
-      prepareData = { "att_appointment_id": "", "ContactNo": this.APONTMNT_CONTACT, "Email": "" };
+      prepareData = {"nric":this.APONTMNT_NRIC, "att_appointment_id": "", "ContactNo": "", "Email": "" };
+    }else if (this.selectedType == "contact") {
+
+      prepareData = { "nric":"","att_appointment_id": "", "ContactNo": this.APONTMNT_CONTACT, "Email": "" };
     } else if (this.selectedType == "email") {
 
-      prepareData = { "att_appointment_id": "", "ContactNo": "", "Email": this.APONTMNT_EMAIL };
+      prepareData = {"nric":"", "att_appointment_id": "", "ContactNo": "", "Email": this.APONTMNT_EMAIL };
     } else if (this.selectedType == "appint_id") {
 
-      prepareData = { "att_appointment_id": (this.APONTMNT_CODE).toString(), "ContactNo": "", "Email": "" };
+      prepareData = {"nric":"", "att_appointment_id": (this.APONTMNT_CODE).toString(), "ContactNo": "", "Email": "" };
     }
     console.log(JSON.stringify(prepareData));
     this.apiServices.localPostMethod("getAptmentInformation", prepareData).subscribe((data: any) => {

@@ -18,7 +18,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   APONTMNT_CONTACT: any = "";
   APONTMNT_NRIC: any = "";
   APONTMNT_EMAIL: any = "";
-  selectedType = 'contact';
+  selectedType = '';
   selectedIndex = 0;
   purposes = [];
   qrScanAppointmentId = false;
@@ -37,38 +37,69 @@ export class VisitorPreApontmntComponent implements OnInit {
     this.totalVisitors = listOFvisitors['visitorDetails'].length;
     this._updateKioskSettings();
 
-   /*  this.APONTMNT_CODE = '3805639620';
-    this.selectedType = 'appint_id';
-    this.getAppointmentDetails(); */
+    /*  this.APONTMNT_CODE = '3805639620';
+     this.selectedType = 'appint_id';
+     this.getAppointmentDetails(); */
   }
   selectedTabValue(event) {
-    console.log(event.index);
-    if (event.index == 0) {
-      this.selectedType = "nric";
+    console.log(event);
+
+
+    if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption) {
+      this.selectedType = 'nric'
       setTimeout(() => {
         this.nric.nativeElement.focus()
-      })
+      });
     }
-    if (event.index == 1) {
-      this.selectedType = "contact";
+    if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.title_caption) {
+      this.selectedType = 'contact'
       setTimeout(() => {
-        this.contact.nativeElement.focus()
-      })
+      this.contact.nativeElement.focus()
+    });
     }
-    if (event.index == 2) {
-      this.selectedType = "email";
+    if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption) {
+      this.selectedType = 'email'
       setTimeout(() => {
-        this.email.nativeElement.focus()
-      })
+      this.email.nativeElement.focus()
+    });
     }
-    if (event.index == 3) {
-      this.selectedType = "appint_id";
+    if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.title_caption) {
+      this.selectedType = 'appint_id'
       setTimeout(() => {
-        this.appint_id.nativeElement.focus()
-      })
+      this.appint_id.nativeElement.focus()
+    });
     }
-    console.log(this.selectedType)
+
+
   }
+  /*  selectedTabValue(event) {
+     console.log(event.index);
+     if (event.index == 0) {
+       this.selectedType = "nric";
+       setTimeout(() => {
+         this.nric.nativeElement.focus()
+       })
+     }
+     if (event.index == 1) {
+       this.selectedType = "contact";
+       setTimeout(() => {
+         this.contact.nativeElement.focus()
+       })
+     }
+     if (event.index == 2) {
+       this.selectedType = "email";
+       setTimeout(() => {
+         this.email.nativeElement.focus()
+       })
+     }
+     if (event.index == 3) {
+       this.selectedType = "appint_id";
+       setTimeout(() => {
+         this.appint_id.nativeElement.focus()
+       })
+     }
+     console.log(this.selectedType)
+   } */
   ngOnInit() {
     if (localStorage.getItem('_PURPOSE_OF_VISIT') != undefined && localStorage.getItem('_PURPOSE_OF_VISIT') != '') {
       this.purposes = JSON.parse(localStorage.getItem('_PURPOSE_OF_VISIT'));
@@ -101,77 +132,110 @@ export class VisitorPreApontmntComponent implements OnInit {
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === "QRCode") {
         this.qrScanAppointmentId = true;
       }
+      this.selTab();
+      //this.selectTab();
+    }
+  }
+  selTab() {
+    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable || this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable ||
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable ||
+      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
 
-      this.selectTab();
-    }
-  }
-  selectTab() {
-    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "nric";
-      setTimeout(() => {
-        this.selectedIndex = 0;
-        this.nric.nativeElement.focus()
-      })
-    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable &&this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "contact";
-      setTimeout(() => {
-        this.selectedIndex = 1;
+      this.selectedIndex = 0;
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable) {
+        this.selectedType = 'nric'
+        setTimeout(() => {
+          this.nric.nativeElement.focus()
+        });
+      }
+      else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable) {
+        this.selectedType = 'contact'
+        setTimeout(() => {
         this.contact.nativeElement.focus()
-      })
-    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable &&!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "email";
-      setTimeout(() => {
-        this.selectedIndex = 2;
+      });
+      }
+      else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable) {
+        this.selectedType = 'email'
+        setTimeout(() => {
         this.email.nativeElement.focus()
-      })
-    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable &&!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "appint_id";
-      setTimeout(() => {
-        this.selectedIndex = 3;
+      });
+      }
+      else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+        this.selectedType = 'appint_id'
+        setTimeout(() => {
         this.appint_id.nativeElement.focus()
-      })
-    }else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "nric";
-      setTimeout(() => {
-        this.selectedIndex = 0;
-        //this.email.nativeElement.focus()
-      })
-    } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "contact";
-      setTimeout(() => {
-        this.selectedIndex = 1;
-        //this.email.nativeElement.focus()
-      })
-    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "email";
-      setTimeout(() => {
-        this.selectedIndex = 2;
-        //this.email.nativeElement.focus()
-      })
-    }else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
-      !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-      this.selectedType = "appint_id";
-      setTimeout(() => {
-        this.selectedIndex = 3;
-        //this.email.nativeElement.focus()
-      })
+      });
+      }
+
     }
   }
+  /*  selectTab() {
+     if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "nric";
+       setTimeout(() => {
+         this.selectedIndex = 0;
+         this.nric.nativeElement.focus()
+       })
+     } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "contact";
+       setTimeout(() => {
+         this.selectedIndex = 1;
+         this.contact.nativeElement.focus()
+       })
+     } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "email";
+       setTimeout(() => {
+         this.selectedIndex = 2;
+         this.email.nativeElement.focus()
+       })
+     } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "appint_id";
+       setTimeout(() => {
+         this.selectedIndex = 3;
+         this.appint_id.nativeElement.focus()
+       })
+     } else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "nric";
+       setTimeout(() => {
+         this.selectedIndex = 0;
+         //this.email.nativeElement.focus()
+       })
+     } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "contact";
+       setTimeout(() => {
+         this.selectedIndex = 1;
+         //this.email.nativeElement.focus()
+       })
+     } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "email";
+       setTimeout(() => {
+         this.selectedIndex = 2;
+         //this.email.nativeElement.focus()
+       })
+     } else if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable && !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable &&
+       !this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable &&
+       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
+       this.selectedType = "appint_id";
+       setTimeout(() => {
+         this.selectedIndex = 3;
+         //this.email.nativeElement.focus()
+       })
+     }
+   } */
   takeActFor(action: string) {
     if (action === "getAppointmentDetail") {
       this.getAppointmentDetails();
@@ -245,16 +309,16 @@ export class VisitorPreApontmntComponent implements OnInit {
     let prepareData: any = "";
     if (this.selectedType == "nric") {
 
-      prepareData = {"nric":this.APONTMNT_NRIC, "att_appointment_id": "", "ContactNo": "", "Email": "" };
-    }else if (this.selectedType == "contact") {
+      prepareData = { "nric": this.APONTMNT_NRIC, "att_appointment_id": "", "ContactNo": "", "Email": "" };
+    } else if (this.selectedType == "contact") {
 
-      prepareData = { "nric":"","att_appointment_id": "", "ContactNo": this.APONTMNT_CONTACT, "Email": "" };
+      prepareData = { "nric": "", "att_appointment_id": "", "ContactNo": this.APONTMNT_CONTACT, "Email": "" };
     } else if (this.selectedType == "email") {
 
-      prepareData = {"nric":"", "att_appointment_id": "", "ContactNo": "", "Email": this.APONTMNT_EMAIL };
+      prepareData = { "nric": "", "att_appointment_id": "", "ContactNo": "", "Email": this.APONTMNT_EMAIL };
     } else if (this.selectedType == "appint_id") {
 
-      prepareData = {"nric":"", "att_appointment_id": (this.APONTMNT_CODE).toString(), "ContactNo": "", "Email": "" };
+      prepareData = { "nric": "", "att_appointment_id": (this.APONTMNT_CODE).toString(), "ContactNo": "", "Email": "" };
     }
     console.log(JSON.stringify(prepareData));
     this.apiServices.localPostMethod("getAptmentInformation", prepareData).subscribe((data: any) => {
@@ -302,7 +366,7 @@ export class VisitorPreApontmntComponent implements OnInit {
                 }
               }
             } else {
-              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]), id_verification: this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable?1:0 } });
+              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]), id_verification: this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable ? 1 : 0 } });
             }
 
           } else {

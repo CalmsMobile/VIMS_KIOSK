@@ -1,4 +1,6 @@
 export const AppSettings = Object.freeze({
+  KIOSK_TYPE_PORTRAIT:"Portrait",
+  KIOSK_TYPE_LANDSCAPE:"Landscape",
   APP_DEFAULT_SETTIGS: {
     "APP_TYPE": "debug",
     "SEL_LANGUAGE": "en",

@@ -1,7 +1,7 @@
+import { AppSettings } from './../../../../ViMSKioskMachineAppLocalization/src/services/app.settings';
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ApiServices } from 'src/services/apiService';
 import { DatePipe } from '@angular/common';
-import { AppSettings } from '../../services/app.settings';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { SettingsService } from 'src/services/settings.service';
@@ -27,6 +27,7 @@ export class LandingComponent implements OnInit {
   CheckIn = '';
   CheckOut = '';
   KIOSK_PROPERTIES_LOCAL: any = {};
+  KIOSK_TYPE: string;
   constructor(
     private apiServices: ApiServices,
     private settingsServices: SettingsService,
@@ -368,6 +369,10 @@ export class LandingComponent implements OnInit {
 
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
+    let kioskType = localStorage.getItem('KIOSK_TYPE');
+    if (kioskType != undefined) {
+      this.KIOSK_TYPE = kioskType;
+    }
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
@@ -536,7 +541,7 @@ export class LandingComponent implements OnInit {
     _callback(true)
   }
 }
-function checkWebsocket() {
+/* function checkWebsocket() {
   //throw new Error('Function not implemented.');
   try {
     const _this = this;
@@ -556,5 +561,5 @@ function checkWebsocket() {
     debugger
     console.log("Websocket erroe");
   }
-}
+} */
 

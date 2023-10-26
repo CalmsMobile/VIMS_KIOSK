@@ -5,6 +5,7 @@ import { SettingsService } from 'src/services/settings.service';
 import { appConfirmDialog } from '../flow-visitor/flow-visitor.component';
 import { DialogAppCommonDialog } from '../app.common.dialog';
 import { ApiServices } from 'src/services/apiService';
+import { AppSettings } from 'src/services/app.settings';
 
 @Component({
   selector: 'app-getkioskcode',
@@ -13,24 +14,25 @@ import { ApiServices } from 'src/services/apiService';
 })
 export class GetkioskcodeComponent implements OnInit {
 
-  KIOSK_CODE:any;
-  KIOSK_AVAL_CARDS:number = 0;
-  UPDATE_SETTINGS_SHOW:boolean = true;
-  constructor(private router:Router,
-     private route: ActivatedRoute,
-     private settingServices:SettingsService,
-     private apiServices: ApiServices,
-     public snackBar: MatSnackBar,
-     private dialog:MatDialog) {
+  KIOSK_CODE: any;
+  KIOSK_AVAL_CARDS: number = 0;
+  UPDATE_SETTINGS_SHOW: boolean = true;
+  KIOSK_TYPE:string = AppSettings.KIOSK_TYPE_LANDSCAPE;
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private settingServices: SettingsService,
+    private apiServices: ApiServices,
+    public snackBar: MatSnackBar,
+    private dialog: MatDialog) {
     this.KIOSK_CODE = localStorage.getItem("APP_KIOSK_CODE") || '';
-    if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != ""
-    && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""
-    && localStorage.getItem("KIOSK_PROPERTIES") != undefined && localStorage.getItem("KIOSK_PROPERTIES") != ""){
+    if (localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != ""
+      && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""
+      && localStorage.getItem("KIOSK_PROPERTIES") != undefined && localStorage.getItem("KIOSK_PROPERTIES") != "") {
       this.UPDATE_SETTINGS_SHOW = false;
     }
-    if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != ""
-    && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""
-    && localStorage.getItem("KIOSK_PROPERTIES") != undefined && localStorage.getItem("KIOSK_PROPERTIES") != ""){
+    if (localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != ""
+      && localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""
+      && localStorage.getItem("KIOSK_PROPERTIES") != undefined && localStorage.getItem("KIOSK_PROPERTIES") != "") {
       document.getElementById("homeButton").style.display = "block";
     } else {
       document.getElementById("homeButton").style.display = "none";
@@ -44,101 +46,133 @@ export class GetkioskcodeComponent implements OnInit {
       .subscribe(params => {
         // Defaults to 0 if no query param provided.
         this.KIOSK_CODE = params['scanData'] || localStorage.getItem("APP_KIOSK_CODE") || '';
-        if(this.KIOSK_CODE != undefined && this.KIOSK_CODE != ''){
+        if (this.KIOSK_CODE != undefined && this.KIOSK_CODE != '') {
           //this.takeActFor('update');
         }
       });
-     console.log(this.route.snapshot.url[0].path);
+    console.log(this.route.snapshot.url[0].path);
   }
 
-  _getAllHostList(){
-    this.apiServices.localPostMethod('getHostName',{}).subscribe((data:any) => {
-      if(data.length > 0 && data[0]["Status"] === true  && data[0]["Data"] != undefined ){
+  _getAllHostList() {
+    this.apiServices.localPostMethod('getHostName', {}).subscribe((data: any) => {
+      if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         // this.host_list = JSON.parse(data[0]["Data"]);
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
         //{"HOSTNAME":"awang","SEQID":225,"COMPANY_REFID":"1","DEPARTMENT_REFID":"","HOSTIC":"awang","HostExt":"","HostFloor":"","HostCardSerialNo":"","HOST_ID":"awang","HOST_EMAIL":"","EMAIL_ALERT":true,"AD_ACTIVE_USER_STATUS":true,"dept_id":null,"dept_desc":null}
         console.log("--- List Of Host Updated");
       }
     },
-    err => {
-      console.log("Failed...");
-      return false;
-    });
+      err => {
+        console.log("Failed...");
+        return false;
+      });
   }
 
-  takeActFor(action:string){
-    if(action === "update"){
-      if((this.KIOSK_CODE).toString().length > 0){
+  takeActFor(action: string) {
+    if (action === "update") {
+      if ((this.KIOSK_CODE).toString().length > 0) {
         localStorage.setItem("APP_KIOSK_CODE", this.KIOSK_CODE);
         document.getElementById("bodyloader").style.display = "block";
-        this.settingServices._verifyKioskMachineCode((status:boolean)=>{
-          if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
-          localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){
+        this.settingServices._verifyKioskMachineCode((status: boolean) => {
+          if (localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
+            localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != "") {
             this.UPDATE_SETTINGS_SHOW = false;
           }
-          if(status){
+          if (status) {
             this.getIconSrc();
-          } else{
+          } else {
             document.getElementById("bodyloader").style.display = "none";
             this.dialog.open(appConfirmDialog, {
               width: '250px',
-              data: {title: "Connect to server problem ! please contact admin.", btn_ok:"Ok"}
+              data: { title: "Connect to server problem ! please contact admin.", btn_ok: "Ok" }
             });
           }
         });
       }
-    } else if(action === "settingsUpdate"){
-      if((this.KIOSK_CODE).toString().length > 0){
-        if(localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
-          localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != ""){
-          this.settingServices._getThisLicenceSetupProperties((status:boolean)=>{
-            if(status){
+    } else if (action === "settingsUpdate") {
+      if ((this.KIOSK_CODE).toString().length > 0) {
+        if (localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != undefined && localStorage.getItem("APP_KIOSK_CODE_DECRIPTED") != "" &&
+          localStorage.getItem("MY_MAC_ID") != undefined && localStorage.getItem("MY_MAC_ID") != "") {
+          this.settingServices._getThisLicenceSetupProperties((status: boolean) => {
+            if (status) {
               this.dialog.open(appConfirmDialog, {
                 width: '250px',
-                data: {title: "Kiosk Properties Updated !", btn_ok:"Ok"}
+                data: { title: "Kiosk Properties Updated !", btn_ok: "Ok" }
               });
-              this.router.navigate(['/landing'],{ queryParams: { }});
-            } else{
+              this.router.navigate(['/landing'], { queryParams: {} });
+            } else {
               this.dialog.open(appConfirmDialog, {
                 width: '250px',
-                data: {title: "Connect to server problem ! please contact admin.", btn_ok:"Ok"}
+                data: { title: "Connect to server problem ! please contact admin.", btn_ok: "Ok" }
               });
             }
           });
         }
       }
-    } else if(action === "clearAccount"){
+    } else if (action === "clearAccount") {
       const dialogRef = this.dialog.open(DialogAppCommonDialog, {
         width: '250px',
-        data: {"title": "Are you sure want to clear this account?", "subTile":"",
-        "enbCancel":true,"oktext":"Yes","canceltext":"No"}
+        data: {
+          "title": "Are you sure want to clear this account?", "subTile": "",
+          "enbCancel": true, "oktext": "Yes", "canceltext": "No"
+        }
       });
 
       dialogRef.afterClosed().subscribe(result => {
-         if(result){
+        if (result) {
           localStorage.clear();
           this.router.navigateByUrl('/landing');
-         }
+        }
       });
     }
-    else if(action === "back"){
+    else if (action === "back") {
       this.router.navigateByUrl('/landing')
-    }else if(action === "home"){
+    } else if (action === "home") {
       this.router.navigateByUrl('/landing')
-    }else if(action === "testing"){
+    } else if (action === "testing") {
       this.router.navigateByUrl('/testing')
-    } else if(action =="scanNow"){
-      this.router.navigate(['/scanQRCode'], {queryParams: { scanType: 'LICENCEQR' }});
+    } else if (action == "scanNow") {
+      this.router.navigate(['/scanQRCode'], { queryParams: { scanType: 'LICENCEQR' } });
     }
+
+
   }
-  textDataBindTemp(value : string, elm:string ) {
+  changeOrientation(type) {
+    localStorage.setItem('KIOSK_TYPE', type);
+    this.KIOSK_TYPE = localStorage.getItem('KIOSK_TYPE');
+  }
+  textDataBindTemp(value: string, elm: string) {
     console.log(value);
     this[elm] = value;
   }
-  KIOSK_PROPERTIES:any = {};
-  _updateKioskSettings(){
+  KIOSK_PROPERTIES: any = {};
+  _updateKioskSettings() {
+    /* let kioskType = localStorage.getItem('KIOSK_TYPE');
+    if (kioskType == undefined) {
+      localStorage.setItem('KIOSK_TYPE', 'Landscape');
+      const dialogRef = this.dialog.open(DialogAppCommonDialog, {
+        width: '250px',
+        data: {
+          "title": "Please Select Kiosk Type", "subTile": "",
+          "enbCancel": true, "oktext": "Portrait", "canceltext": "Landscape"
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          localStorage.setItem('KIOSK_TYPE', 'Portrait');
+          this.KIOSK_TYPE = localStorage.getItem('KIOSK_TYPE');
+        }
+      });
+    } */
+    let kioskType = localStorage.getItem('KIOSK_TYPE');
+    if (kioskType != undefined) {
+      this.KIOSK_TYPE = kioskType;
+    }else{
+      this.changeOrientation(AppSettings.KIOSK_TYPE_LANDSCAPE);
+    }
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       this.KIOSK_AVAL_CARDS = this.KIOSK_PROPERTIES['kioskAvalCards'];
     }
@@ -155,7 +189,7 @@ export class GetkioskcodeComponent implements OnInit {
     localStorage.setItem('KIOSK_Appointment', '');
     localStorage.setItem('KIOSK_ManualRegistration', '');
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
-    if(setngs != undefined && setngs != ""){
+    if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
       const logoSrcs = this.KIOSK_PROPERTIES['commonsetup']['button_background_image'];
       if (logoSrcs && logoSrcs.length > 0) {
@@ -164,24 +198,24 @@ export class GetkioskcodeComponent implements OnInit {
         for (let i = 0; i < logoSrcs.length; i++) {
           const locaItem = logoSrcs[i];
           console.log(locaItem.Type + " --> Request Position:" + i);
-          this.getBase64ImageFromUrl(apiUrl+ locaItem.imgpathurl)
-          .then(result => {
-            downloadCount = downloadCount + 1;
-            console.log(locaItem.Type + " --> Base64: completed downloadCount:" + downloadCount);
-            localStorage.setItem('KIOSK_'+locaItem.Type, result+'');
-            if (downloadCount === logoSrcs.length) {
-              console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:"+ downloadCount);
-              this.callBackSuccess();
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            downloadCount = downloadCount + 1;
-            if (downloadCount === logoSrcs.length) {
-              console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:"+ downloadCount);
-              this.callBackSuccess();
-            }
-          });
+          this.getBase64ImageFromUrl(apiUrl + locaItem.imgpathurl)
+            .then(result => {
+              downloadCount = downloadCount + 1;
+              console.log(locaItem.Type + " --> Base64: completed downloadCount:" + downloadCount);
+              localStorage.setItem('KIOSK_' + locaItem.Type, result + '');
+              if (downloadCount === logoSrcs.length) {
+                console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:" + downloadCount);
+                this.callBackSuccess();
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              downloadCount = downloadCount + 1;
+              if (downloadCount === logoSrcs.length) {
+                console.log("Call success ->> length:" + logoSrcs.length + " downloadCount:" + downloadCount);
+                this.callBackSuccess();
+              }
+            });
         }
       } else {
         this.callBackSuccess();
@@ -198,18 +232,18 @@ export class GetkioskcodeComponent implements OnInit {
     console.log("Image download success");
     this.dialog.open(appConfirmDialog, {
       width: '250px',
-      data: {title: "Kiosk Properties Updated !", btn_ok:"Ok"}
+      data: { title: "Kiosk Properties Updated !", btn_ok: "Ok" }
     });
-    this.router.navigate(['/landing'],{ queryParams: { }});
+    this.router.navigate(['/landing'], { queryParams: {} });
   }
 
   async getBase64ImageFromUrl(imageUrl) {
     var res = await fetch(imageUrl);
     var blob = await res.blob();
     return new Promise((resolve, reject) => {
-      var reader  = new FileReader();
+      var reader = new FileReader();
       reader.addEventListener("load", () => {
-          resolve(reader.result);
+        resolve(reader.result);
       }, false);
       reader.onerror = () => {
         return reject(this);
@@ -217,21 +251,23 @@ export class GetkioskcodeComponent implements OnInit {
       reader.readAsDataURL(blob);
     })
   }
-  closeWindow(action:String){
+  closeWindow(action: String) {
     // const remote = require('electron').remote;
     // var window = remote.getCurrentWindow();
-    if(action === "exit"){
+    if (action === "exit") {
       const dialogRef = this.dialog.open(DialogAppCommonDialog, {
         width: '250px',
-        data: {"title": "Are you sure want to exit from App?", "subTile":"",
-        "enbCancel":true,"oktext":"Yes","canceltext":"No"}
+        data: {
+          "title": "Are you sure want to exit from App?", "subTile": "",
+          "enbCancel": true, "oktext": "Yes", "canceltext": "No"
+        }
       });
 
       dialogRef.afterClosed().subscribe(result => {
-         if(result){
+        if (result) {
           window.close();
           //window.open('','_self').close();
-         }
+        }
       });
     }
   }

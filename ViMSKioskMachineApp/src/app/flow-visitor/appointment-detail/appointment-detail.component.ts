@@ -8,7 +8,6 @@ import { AppointmentModal } from './appointmentModal';
 import { AppSettings } from 'src/services/app.settings';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 import { DialogAppSessionTimeOutDialog } from 'src/app/app.component';
-import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -1225,7 +1224,7 @@ export class AppointmentDetailComponent implements OnInit {
         break;
     }
   }
-  openBottomHostSelect(): void {
+ async openBottomHostSelect() {
     if (this.isDisableHost || this.hostListCount === 1 || (this.showMultiBranch && !this.aptmDetails.branchName)) {
       return;
     }
@@ -1481,7 +1480,12 @@ export class AppointmentDetailComponent implements OnInit {
   showMultiBranch = false;
   showPassNo = false;
   checkAutoApproval = false;
+  KIOSK_TYPE: string;
   _updateKioskSettings() {
+    let kioskType = localStorage.getItem('KIOSK_TYPE');
+    if (kioskType != undefined) {
+      this.KIOSK_TYPE = kioskType;
+    }
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     if (setngs != undefined && setngs != "") {

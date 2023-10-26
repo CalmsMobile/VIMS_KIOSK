@@ -94,7 +94,7 @@ export class ApiServices {
     if (this.isTest)
       var URL = this._getAPIURL();
     else
-      var URL = "http://localhost/Portal/api/kiosk/";
+      var URL = "http://localhost/CALMS%20CheckIn%20API/api/kiosk/";
 
     console.log("URL", URL);
     console.log("serviceName", serviceName);
@@ -125,7 +125,7 @@ export class ApiServices {
     if (this.isTest)
       var URL = this._getAPIURL();
     else
-      var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/CALMS%20CheckIn%20API/";
 
     // let _scanData = localStorage.getItem("APP_KIOSK_CODE_DECRIPTED");
     // _scanData = JSON.parse(_scanData);
@@ -147,7 +147,7 @@ export class ApiServices {
     if (this.isTest)
       var URL = this._getAPIURL();
     else
-      var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/CALMS%20CheckIn%20API/";
     console.log(URL + service);
     return this.http.get(URL + service);
   }
@@ -177,7 +177,7 @@ export class ApiServices {
     if (this.isTest)
       var URL = this._getAPIURL();
     else
-      var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/CALMS%20CheckIn%20API/";
     data = this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['getStaffTemperature'], data, httpOptions);
   }
@@ -212,7 +212,7 @@ export class ApiServices {
     if (this.isTest)
       var URL = this._getAPIURL();
     else
-      var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/CALMS%20CheckIn%20API/";
     data = this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorLabel'], data, httpOptions);
   }
@@ -220,7 +220,7 @@ export class ApiServices {
     if (this.isTest)
       var URL = this._getAPIURL();
     else
-      var URL = "http://localhost/Portal/";
+      var URL = "http://localhost/CALMS%20CheckIn%20API/";
     data = this._postMethodAuth(data);
     return this.http.post(URL + AppSettings['APP_SERVICES']['PrintVisitorReceipt'], data, httpOptions);
   }

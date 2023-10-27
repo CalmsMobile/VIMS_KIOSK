@@ -173,7 +173,9 @@ export class AppointmentDetailComponent implements OnInit {
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != undefined && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != '') {
         let id = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA"))['visDOCID'];
-        if (doc_detail["id"] != id) {
+        let doc = doc_detail["id"].replace(/\s|-/g, '');
+        id = id.replace(/\s|-/g, '');
+        if (doc != id) {
           this.showIdVerificationAlert();
         }
       }
@@ -1224,7 +1226,7 @@ export class AppointmentDetailComponent implements OnInit {
         break;
     }
   }
- async openBottomHostSelect() {
+  async openBottomHostSelect() {
     if (this.isDisableHost || this.hostListCount === 1 || (this.showMultiBranch && !this.aptmDetails.branchName)) {
       return;
     }
@@ -1753,18 +1755,31 @@ export class BottomSheetGenderSelect {
   template: `
             <div *ngIf="this.searchHostOption">
 
-              <mat-form-field style="width: -webkit-fill-available;" appearance="outline" floatLabel="auto" no-padding
-        matRipple matRippleColor="rgba(255,255,255,0.1)" theme-border-input-small app-detail-grid-input>
+              <mat-form-field
+              style="width: -webkit-fill-available;"
+               appearance="outline"
+               floatLabel="auto"
+               no-padding
+        matRipple matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        >
           <mat-label>{{"Search " + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption}}</mat-label>
           <input matInput theme-input-button (keyup)="onKey(box.value, $event)"
-          [(ngModel)]="searchText" #box
+          [(ngModel)]="searchText"
+           #box
+           [disabled] = "host_list.length == 0"
           (blur)="textDataBindTemp($event.target.value, 'id')"
           oninput="this.value = this.value.toUpperCase()"
             spellcheck="false" autocomplete="off"
             ng-virtual-keyboard ng-virtual-keyboard-layout="extended"
             [ng-virtual-keyboard-placeholder]="'Search ' + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption">
         </mat-form-field>
+
             </div>
+            <div *ngIf="host_list.length == 0" style="text-align: center; padding-top: 30px">
+                <h1>Loading please wait...</h1>
+    </div>
             <mat-nav-list>
               <mat-list-item style="height: 4.5vw;border-bottom: 1px solid rgba(0,0,0,0.07);color: #3e5763;"
               *ngFor="let host of host_list" (click)="selectThisItem($event,host)">

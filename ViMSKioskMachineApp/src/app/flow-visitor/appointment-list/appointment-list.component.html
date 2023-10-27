@@ -3,7 +3,7 @@
     Total Appointments {{listOFAppointments.length}}
   </p>
   <div class="bg-div">
-    <table my-appointment-table style="width: 100%; background: white;" *ngIf="listOFAppointments.length > 0">
+    <table my-appointment-table style="width: 100%; background: white; padding-left: 0;padding-right: 0;" *ngIf="listOFAppointments.length > 0">
       <!-- <thead>
         <tr>
           <th class="title"><u>Host</u></th>
@@ -30,29 +30,29 @@
         <td>
           <div class="row">
             <div class="columnleft">
-              <h1 class="title">Meeting Person - <span class="subtitle">{{appointments.host_name}}</span></h1>
-              <h1 class="title" *ngIf="appointments.purposeDesc" >Purpose - <span class="subtitle">{{appointments.purposeDesc}}</span></h1>
-              <h1 class="title" *ngIf="appointments.MeetingLoc" >Meeting Location - <span class="subtitle">{{appointments.MeetingLoc}}</span></h1>
-              <h1 class="title">Start time     - <span class="subtitle">{{appointments.START_TIME}}</span></h1>
-              <h1 class="title">End time       - <span class="subtitle">{{appointments.END_TIME}}</span></h1>
+              <h1 class="title">Host: <span class="subtitle">{{appointments.host_name}}</span></h1>
+              <h1 class="title" *ngIf="appointments.purposeDesc" >Purpose: <span class="subtitle">{{appointments.purposeDesc}}</span></h1>
+              <h1 class="title" *ngIf="appointments.MeetingLoc" >Meeting Location: <span class="subtitle">{{appointments.MeetingLoc}}</span></h1>
+              <h1 class="title">Start: <span class="subtitle">{{appointments.START_TIME}}</span></h1>
+              <h1 class="title">End: <span class="subtitle">{{appointments.END_TIME}}</span></h1>
             </div>
             <div class="columnright">
               <button mat-raised-button class = "my-theme-alt-button">Select</button>
             </div>
           </div>
-          
+
           <!-- <div>
               <h1 class="title" ><img src="assets/images/cus_icons/host.png" style="width: 30px;
                 height: 30px;
                 margin: 0 auto;
                 " alt="">Meeting Person - {{appointments.host_name}}</h1>
-                
+
             <p class="desc">{{appointments.purposeDesc}}</p>
             <p class="datetim">START TIME - {{appointments.START_TIME}}</p>
             <p class="datetim">END TIME - {{appointments.END_TIME}}</p>
-            
+
           </div> -->
-          
+
         </td>
       </tr>
     </table>

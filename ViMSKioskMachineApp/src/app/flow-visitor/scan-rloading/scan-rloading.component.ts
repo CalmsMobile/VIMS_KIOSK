@@ -4,6 +4,7 @@ import { AppSettings } from 'src/services/app.settings';
 import { ApiServices } from 'src/services/apiService';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { appConfirmDialog } from '../flow-visitor.component';
+import { DialogAppSessionTimeOutDialog } from 'src/app/app.component';
 @Component({
   selector: 'app-scan-rloading',
   templateUrl: './scan-rloading.component.html',
@@ -103,23 +104,23 @@ export class ScanRLoadingComponent implements OnInit {
 
             } else {
               //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
-              this.showErrorMsg();
-              this.gotoRegistrationScreen();
+              this.showErrorMsg(action);
+              //this.gotoRegistrationScreen();
             }
           } else {
             //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-            this.showErrorMsg();
-            this.gotoRegistrationScreen();
+            this.showErrorMsg(action);
+            //this.gotoRegistrationScreen();
           }
         } else {
           //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-          this.showErrorMsg();
-          this.gotoRegistrationScreen();
+          this.showErrorMsg(action);
+          //this.gotoRegistrationScreen();
         }
       },
         err => {
           console.log("Failed...");
-          this.showErrorMsg();
+          this.showErrorMsg(action);
           return false;
         });
     }
@@ -167,7 +168,7 @@ export class ScanRLoadingComponent implements OnInit {
             }
           }
           else if (typeof (parseData.Param["White"]) == "undefined") {
-            // _this.showErrorMsg();
+            // _this.showErrorMsg(action);
             // _this.gotoRegistrationScreen();
           }
 
@@ -191,8 +192,7 @@ export class ScanRLoadingComponent implements OnInit {
       _this.websocket.onclose = function () {
 
         console.log('close state' + _this.websocket.readyState);
-        //_this.apiServices.sendLogToServer("Passport", JSON.stringify({ "service": "close state", "router": _this.router.url, "lineNo": 531, "message": "" })).subscribe((data: any) => console.log("AddLogs status=" + data));
-        // _this.apiServices.sendLogToServer("close state", JSON.stringify({ "router": _this.router.url, "lineNo": 171, "message": "" })).subscribe((data: any) => console.log("AddLogs status="+data));
+
         if (_this.apiServices.isTest) {
 
           _this.websocket.close();
@@ -213,6 +213,32 @@ export class ScanRLoadingComponent implements OnInit {
             localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
             _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
           }
+        } else {
+          let target_text = "";
+          target_text = _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_failed_msg;
+
+          let documentTypes = {
+            "PASSPORT": _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_caption
+          }
+          target_text = target_text.replace(new RegExp("{{document}}", 'g'), documentTypes[this.docType]);
+          const dialogRef = _this.dialog.open(DialogAppSessionTimeOutDialog, {
+            //width: '250px',
+            data: {
+              "title": '',
+              "subTile": target_text,
+              "enbCancel": true,
+              "oktext": 'Retry',
+              "canceltext": 'Go Home'
+            },
+            disableClose: false
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              _this.SinosecureGetPassportDetail();
+            } else {
+              _this.gotoRegistrationScreen();
+            }
+          });
         }
       }
     }
@@ -244,23 +270,23 @@ export class ScanRLoadingComponent implements OnInit {
             }
           } else {
             //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
-            this.showErrorMsg();
-            this.gotoRegistrationScreen();
+            this.showErrorMsg(action);
+            //this.gotoRegistrationScreen();
           }
         } else {
           //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-          this.showErrorMsg();
-          this.gotoRegistrationScreen();
+          this.showErrorMsg(action);
+          //this.gotoRegistrationScreen();
         }
       } else {
         //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-        this.showErrorMsg();
-        this.gotoRegistrationScreen();
+        this.showErrorMsg(action);
+        //this.gotoRegistrationScreen();
       }
     },
       err => {
         console.log("Failed...");
-        this.showErrorMsg();
+        this.showErrorMsg(action);
         return false;
       });
   }
@@ -292,23 +318,23 @@ export class ScanRLoadingComponent implements OnInit {
             }
           } else {
             //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
-            this.showErrorMsg();
-            this.gotoRegistrationScreen();
+            this.showErrorMsg(action);
+            //this.gotoRegistrationScreen();
           }
         } else {
           //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-          this.showErrorMsg();
-          this.gotoRegistrationScreen();
+          this.showErrorMsg(action);
+          //this.gotoRegistrationScreen();
         }
       } else {
         //this.snackBar.open("Please Try Again !", "", {duration: 3000});
-        this.showErrorMsg();
-        this.gotoRegistrationScreen();
+        this.showErrorMsg(action);
+        //this.gotoRegistrationScreen();
       }
     },
       err => {
         console.log("Failed...");
-        this.showErrorMsg();
+        this.showErrorMsg(action);
         return false;
       });
   }
@@ -317,7 +343,7 @@ export class ScanRLoadingComponent implements OnInit {
       this.router.navigateByUrl('/landing')
     }
   }
-  showErrorMsg() {
+  showErrorMsg(action) {
 
     let target_text = "";
     if (this.docType == 'SING_NRICrDRIV') {
@@ -338,12 +364,36 @@ export class ScanRLoadingComponent implements OnInit {
     }
 
     target_text = target_text.replace(new RegExp("{{document}}", 'g'), documentTypes[this.docType]);
-    let dialogRef = this.dialog.open(appConfirmDialog, {
+    /* let dialogRef = this.dialog.open(appConfirmDialog, {
       width: '250px',
       data: { title: target_text, btn_ok: "Ok", document: documentTypes[this.docType] }
+    }); */
+    const dialogRef = this.dialog.open(DialogAppSessionTimeOutDialog, {
+      //width: '250px',
+      data: {
+        "title": '',
+        "subTile": target_text,
+        "enbCancel": true,
+        "oktext": 'Retry',
+        "canceltext": 'Go Home'
+      },
+      disableClose: false
     });
+
     dialogRef.afterClosed().subscribe(result => {
-      this.gotoRegistrationScreen();
+      if (result) {
+        if (action == 'getIdScanerData') {
+          this.getDeviceConnectionData('getIdScanerData');
+        } else if (action == 'GetPassportDetail') {
+          this.getDeviceConnectionData('GetPassportDetail');
+        } else if (action == 'MYCARD') {
+          this.getMyCardDetails('MYCARD');
+        } else if (action == 'BUSINESS') {
+          this.getBusinessCardDetails('BUSINESS');
+        }
+      }
+      else
+        this.gotoRegistrationScreen();
     });
   }
 }

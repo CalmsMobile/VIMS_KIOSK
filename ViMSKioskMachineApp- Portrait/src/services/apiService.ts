@@ -214,6 +214,9 @@ export class ApiServices {
   getConfigFile() {
     return  this.http.get('assets/config.txt?time='+ new Date().getTime(), { responseType: 'text' });
   }
+  getLocalAppSettings() {
+    return this.http.get('assets/app_settings.json');
+  }
   getKioskBalance(request)
   {
     var xmlhttp = new XMLHttpRequest();

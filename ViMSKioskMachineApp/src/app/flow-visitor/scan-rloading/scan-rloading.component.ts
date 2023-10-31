@@ -131,6 +131,7 @@ export class ScanRLoadingComponent implements OnInit {
     console.log("Sinosecure started..");
     try {
       const _this = this;
+      let isRead = false;
       //const readyState = new Array("on connection", "Connection established", "Closing connection", "Close connection");
       var host = AppSettings.APP_DEFAULT_SETTIGS.SinosecureWebsocketUrl;
 
@@ -158,6 +159,7 @@ export class ScanRLoadingComponent implements OnInit {
               "visDOCID": parseData.Param["Passport number"] ? parseData.Param["Passport number"] : parseData.Param["ID Number"],
               "visDocImage": null,
             }
+            isRead=true;
             _this.websocket.close();
             if (_this.mainModule === 'preAppointment') {
               localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
@@ -214,6 +216,7 @@ export class ScanRLoadingComponent implements OnInit {
             _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
           }
         } else {
+          if(!isRead){
           let target_text = "";
           target_text = _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_failed_msg;
 
@@ -240,6 +243,7 @@ export class ScanRLoadingComponent implements OnInit {
             }
           });
         }
+      }
       }
     }
     catch (exception) {

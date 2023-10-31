@@ -23,6 +23,7 @@ import { NgVirtualKeyboardModule } from '@protacon/ng-virtual-keyboard';
 import { ScanqrcodeComponent } from './scanqrcode/scanqrcode.component';
 import { QuestionnariesComponent } from './questionnaries/questionnaries.component';
 import { MatVideoModule } from 'mat-video';
+import { HostListComponent } from './flow-visitor/host-list/host-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,6 +59,6 @@ import { MatVideoModule } from 'mat-video';
   providers: [ApiServices, DatePipe , SettingsService],
   bootstrap: [AppComponent],
 
-  entryComponents:[DialogAppCommonDialog,DialogAppSessionTimeOutDialog]
+  entryComponents:[DialogAppCommonDialog,DialogAppSessionTimeOutDialog,HostListComponent]
 })
 export class AppModule { }

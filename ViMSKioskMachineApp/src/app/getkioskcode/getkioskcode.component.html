@@ -26,12 +26,15 @@
         (click)="takeActFor('scanNow')">Scan QRCode</button>
 
     </div>
-    <div horizontal-divider style="width:50%;float: left;min-height:60vh;" margin-top>
+    <div horizontal-divider style="width:50%;float: left;min-height:60vh;">
       <button mat-raised-button my-theme-button [disabled]="KIOSK_CODE.toString().length <=0 "
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('update')">Validate License</button>
       <br>
       <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('update')">Update Settings</button>
+      <br>
+      <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
+        style="margin-top:30px;min-width: calc(100% - 100px);" (click)="changeOrientation(KIOSK_TYPE == 'Landscape'?'Portrait':'Landscape')">{{KIOSK_TYPE == 'Landscape'?'Portrait Mode':'Landscape Mode'}}</button>
       <br>
       <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:30px;min-width: calc(100% - 100px);" (click)="takeActFor('testing')">Troubleshoot</button>
@@ -80,6 +83,9 @@
       <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="takeActFor('update', false)">Update Settings</button>
       <br>
+      <button mat-raised-button my-theme-button
+        style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="changeOrientation(KIOSK_TYPE == 'Landscape'?'Portrait':'Landscape')">{{KIOSK_TYPE == 'Landscape'?'Portrait Mode':'Landscape Mode'}}</button>
+      <br>
       <button mat-raised-button my-theme-button [disabled]="UPDATE_SETTINGS_SHOW"
         style="margin-top:4vh;min-width: calc(100% - 100px);" (click)="takeActFor('testing', false)">Troubleshoot</button>
       <br>
@@ -92,7 +98,7 @@
     </div>
   </div>
 </div>
-<div my-footer-toolbar>
+<!-- <div my-footer-toolbar>
   <button
   mat-raised-button
   my-theme-button
@@ -100,4 +106,4 @@
   (click)="changeOrientation(KIOSK_TYPE == 'Landscape'?'Portrait':'Landscape')">
   <i class="siva-icon-tablet-1"></i></button>
 
-</div>
+</div> -->

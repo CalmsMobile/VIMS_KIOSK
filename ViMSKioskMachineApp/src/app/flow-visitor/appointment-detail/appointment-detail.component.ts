@@ -8,6 +8,7 @@ import { AppointmentModal } from './appointmentModal';
 import { AppSettings } from 'src/services/app.settings';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 import { DialogAppSessionTimeOutDialog } from 'src/app/app.component';
+import { HostListComponent } from '../host-list/host-list.component';
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -1229,9 +1230,17 @@ export class AppointmentDetailComponent implements OnInit {
   async openBottomHostSelect() {
     if (this.isDisableHost || this.hostListCount === 1 || (this.showMultiBranch && !this.aptmDetails.branchName)) {
       return;
+    } else {
+      document.getElementById("bodyloader").style.display = "block";
+      if (this.showMultiBranch) {
+        this._getAllHostListNew(this.aptmDetails.branchID);
+      } else {
+        this._getAllHostList();
+      }
     }
-
-    const host = this.bottomSheet.open(BottomSheetHostSelect, {
+  }
+  openHostsheet(){
+    const host = this.bottomSheet.open(HostListComponent, {
       data: {
         data: this.KIOSK_PROPERTIES,
         showMultiBranch: this.showMultiBranch,
@@ -1240,6 +1249,9 @@ export class AppointmentDetailComponent implements OnInit {
     });
     host.afterDismissed().subscribe(result => {
       if (result != undefined) {
+        if(result=='search'){
+
+        }else{
         console.log(result);
         this.aptmDetails.hostDetails.id = result['HOSTIC'];
         this.aptmDetails.hostDetails.name = result['HOSTNAME'];
@@ -1248,10 +1260,40 @@ export class AppointmentDetailComponent implements OnInit {
         this.aptmDetails.hostDetails.email = result['HOST_EMAIL'];
         this.aptmDetails.hostDetails.HostDeptId = result['DEPARTMENT_REFID'];
         console.log(this.aptmDetails.hostDetails.id);
+        }
       }
     });
   }
-
+  _getAllHostList() {
+    this.apiServices.localPostMethod('getHostName', {}).subscribe((data: any) => {
+      if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
+        //this.host_listClone = JSON.parse(data[0]["Data"]);
+        //this.host_list = this.host_listClone;
+        localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
+       console.log("--- List Of Host Updated " + JSON.stringify(data[0]["Data"]));
+       this.openHostsheet();
+      }
+    },
+      err => {
+        console.log("Failed...");
+        return false;
+      });
+  }
+  _getAllHostListNew(branchID) {
+    this.apiServices.localPostMethodNew('getHostName', {}, branchID).subscribe((data: any) => {
+      if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
+        //this.host_listClone = JSON.parse(data[0]["Data"]);
+        //this.host_list = this.host_listClone;
+        localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
+        console.log("--- List Of Host Updated multibranch " + JSON.stringify(data[0]["Data"]));
+        this.openHostsheet();
+      }
+    },
+      err => {
+        console.log("Failed...");
+        return false;
+      });
+  }
   _getAllHostListBasedOnBranch(branchID) {
     this.apiServices.localPostMethodNew('getHostName', {}, branchID).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {

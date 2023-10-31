@@ -1,0 +1,54 @@
+<div *ngIf="this.searchHostOption">
+  <mat-form-field
+    style="width: -webkit-fill-available"
+    appearance="outline"
+    floatLabel="auto"
+    no-padding
+    matRipple
+    matRippleColor="rgba(255,255,255,0.1)"
+    theme-border-input-small
+    app-detail-grid-input
+
+  >
+    <mat-label>{{
+      "Search " + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption
+    }}</mat-label>
+    <input
+      matInput
+      theme-input-button
+      (keyup)="onKey(box.value, $event)"
+      [(ngModel)]="searchText"
+      #box
+      (blur)="textDataBindTemp($event.target.value, 'id')"
+      oninput="this.value = this.value.toUpperCase()"
+      spellcheck="false"
+      autocomplete="off"
+      ng-virtual-keyboard
+      ng-virtual-keyboard-layout="extended"
+      [ng-virtual-keyboard-placeholder]="
+        'Search ' + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption
+      "
+    />
+  </mat-form-field>
+</div>
+<!-- <div
+  *ngIf="host_list.length == 0"
+  style="text-align: center; padding-top: 30px"
+>
+  <h1>Loading please wait...</h1>
+</div> -->
+<mat-nav-list>
+  <mat-list-item
+    style="
+      height: 4.5vw;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+      color: #3e5763;
+    "
+    *ngFor="let host of host_list"
+    (click)="selectThisItem($event, host)"
+  >
+    <span mat-line style="font-size: 1.8vw; line-height: 2vw">{{
+      host.HOSTNAME
+    }}</span>
+  </mat-list-item>
+</mat-nav-list>

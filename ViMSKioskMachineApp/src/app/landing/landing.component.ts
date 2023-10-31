@@ -426,8 +426,10 @@ export class LandingComponent implements OnInit {
     let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
     this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
     let shadow = "0px 0px 0px 4px white";
-    if (this.KIOSK_PROPERTIES != undefined && !this.KIOSK_PROPERTIES['commonsetup']['Enable_round_border_button']) {
-      this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] = "#6633ff00"
+    let round_border_color = this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'];
+    if (!this.KIOSK_PROPERTIES['commonsetup']['Enable_Round_border_button']) {
+      debugger
+      round_border_color = "#6633ff00"
       shadow = "none"
     }
 
@@ -459,14 +461,14 @@ export class LandingComponent implements OnInit {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['kiosk_button_text_color'] + ` !important;
       background: transparent !important;
       box-shadow: none !important;
-      border: 5px solid ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] + `;
+      border: 5px solid ` + round_border_color + `;
       border-radius: 60px !important;
     }
     [sp-button-red-out1], [sp-button-green-out1], [sp-button-violet-out1], [sp-button-green-out1] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['kiosk_button_text_color'] + ` !important;
       background: transparent !important;
       box-shadow: none !important;
-      border: 5px solid ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] + `;
+      border: 5px solid ` + round_border_color + `;
       border-radius: 60px !important;
     }
     [theme-border-input-big],

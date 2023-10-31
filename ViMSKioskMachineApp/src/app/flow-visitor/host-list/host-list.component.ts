@@ -1,7 +1,8 @@
-import { element } from 'protractor';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { ApiServices } from 'src/services/apiService';
+import Keyboard from "simple-keyboard";
+//import layout from "simple-keyboard-layouts/build/layouts/japanese";
 
 @Component({
   selector: 'app-host-list',
@@ -15,6 +16,9 @@ export class HostListComponent implements OnInit {
   KIOSK_PROPERTIES: any;
   KIOSK_PROPERTIES_LOCAL: any = {};
   searchHostOption: false;
+  inputValue = "";
+  keyboard: Keyboard;
+  @ViewChild("box") box: ElementRef;
   constructor(private bottomSheetRef: MatBottomSheetRef<HostListComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
     private apiServices: ApiServices) {
@@ -29,11 +33,11 @@ export class HostListComponent implements OnInit {
     if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Enable_visitor_search_host != undefined) {
       this.searchHostOption = this.KIOSK_PROPERTIES.COMMON_CONFIG.Enable_visitor_search_host;
     }
-   /*  if (data.showMultiBranch) {
-      this._getAllHostListNew(data.branchID);
-    } else {
-      this._getAllHostList();
-    } */
+    /*  if (data.showMultiBranch) {
+       this._getAllHostListNew(data.branchID);
+     } else {
+       this._getAllHostList();
+     } */
     if (localStorage.getItem('_LIST_OF_HOST') != undefined && localStorage.getItem('_LIST_OF_HOST') != '') {
       // this.host_list = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
       this.host_listClone = JSON.parse(localStorage.getItem('_LIST_OF_HOST'));
@@ -43,12 +47,46 @@ export class HostListComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    //throw new Error('Method not implemented.');
-    console.log(document.getElementsByClassName('cdk-overlay-pane'));
-    let element =document.getElementsByClassName('cdk-overlay-pane');
 
   }
+  ngAfterViewInit() {
+    this.keyboard = new Keyboard({
+      onChange: input => this.onChange(input),
+      onKeyPress: button => this.onKeyPress(button),
+    });
+  }
 
+  onChange = (input: string) => {
+    setTimeout(() => {
+      this.box.nativeElement.value = input.toUpperCase();
+      this.box.nativeElement.focus();
+      this.onKey(this.box.nativeElement.value, null)
+    });
+    //this.inputValue = input;
+    console.log("Input changed", input);
+  };
+
+  onKeyPress = (button: string) => {
+    console.log("Button pressed", button);
+
+    /**
+     * If you want to handle the shift and caps lock buttons
+     */
+    if (button === "{shift}" || button === "{lock}") this.handleShift();
+  };
+
+  onInputChange = (event: any) => {
+    this.keyboard.setInput(event.target.value);
+  };
+
+  handleShift = () => {
+    let currentLayout = this.keyboard.options.layoutName;
+    let shiftToggle = currentLayout === "default" ? "shift" : "default";
+
+    this.keyboard.setOptions({
+      layoutName: shiftToggle
+    });
+  };
   textDataBindTemp(value: string, elm: string) {
     console.log(value);
     // this.searchText = value;
@@ -72,10 +110,10 @@ export class HostListComponent implements OnInit {
       this.host_list = final;
     }
   }
-search(){
-  this.bottomSheetRef.dismiss("search");
-   // event.preventDefault();
-}
+  search() {
+    this.bottomSheetRef.dismiss("search");
+    // event.preventDefault();
+  }
   selectThisItem(event: MouseEvent, purpose: any): void {
     this.bottomSheetRef.dismiss(purpose);
     event.preventDefault();

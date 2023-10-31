@@ -8,7 +8,6 @@
     matRippleColor="rgba(255,255,255,0.1)"
     theme-border-input-small
     app-detail-grid-input
-
   >
     <mat-label>{{
       "Search " + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption
@@ -23,20 +22,13 @@
       oninput="this.value = this.value.toUpperCase()"
       spellcheck="false"
       autocomplete="off"
-      ng-virtual-keyboard
-      ng-virtual-keyboard-layout="extended"
-      [ng-virtual-keyboard-placeholder]="
-        'Search ' + KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption
-      "
     />
   </mat-form-field>
+  <div style="text-align: center">
+    <div class="simple-keyboard"></div>
+  </div>
 </div>
-<!-- <div
-  *ngIf="host_list.length == 0"
-  style="text-align: center; padding-top: 30px"
->
-  <h1>Loading please wait...</h1>
-</div> -->
+
 <mat-nav-list>
   <mat-list-item
     style="

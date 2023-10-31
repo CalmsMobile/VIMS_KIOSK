@@ -38,6 +38,7 @@
     "@progress/kendo-drawing": "^1.9.4",
     "@progress/kendo-licensing": "^1.1.4",
     "@protacon/ng-virtual-keyboard": "^0.8.0",
+    "angular-simple-keyboard": "^1.1.2",
     "angular2-qrscanner": "^1.0.7",
     "core-js": "^2.6.0",
     "cors": "^2.8.5",
@@ -48,6 +49,7 @@
     "ngx-scroll-event": "^1.0.8",
     "ngx-webcam": "^0.2.2",
     "rxjs": "~6.3.3",
+    "simple-keyboard-layouts": "^3.3.30",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

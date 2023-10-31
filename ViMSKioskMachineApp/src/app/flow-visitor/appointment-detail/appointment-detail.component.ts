@@ -1241,6 +1241,7 @@ export class AppointmentDetailComponent implements OnInit {
   }
   openHostsheet(){
     const host = this.bottomSheet.open(HostListComponent, {
+      panelClass: 'search-host-bottom-sheet',
       data: {
         data: this.KIOSK_PROPERTIES,
         showMultiBranch: this.showMultiBranch,

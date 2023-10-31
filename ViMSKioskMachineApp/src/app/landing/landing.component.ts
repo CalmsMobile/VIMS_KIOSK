@@ -428,7 +428,6 @@ export class LandingComponent implements OnInit {
     let shadow = "0px 0px 0px 4px white";
     let round_border_color = this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'];
     if (!this.KIOSK_PROPERTIES['commonsetup']['Enable_Round_border_button']) {
-      debugger
       round_border_color = "#6633ff00"
       shadow = "none"
     }
@@ -533,6 +532,11 @@ export class LandingComponent implements OnInit {
     virtual-keyboard [mat-mini-fab] mat-icon,
     virtual-keyboard [mat-mini-fab] mat-icon:hover{
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_txt'] + ` !important;
+    }
+    .hg-theme-default .hg-button {
+      color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_txt'] + ` !important;
+      background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_1'] + `) !important;
+      font-size: large!important;
     }
     `;
     document.getElementById("MY_RUNTIME_CSS").innerHTML = _css;

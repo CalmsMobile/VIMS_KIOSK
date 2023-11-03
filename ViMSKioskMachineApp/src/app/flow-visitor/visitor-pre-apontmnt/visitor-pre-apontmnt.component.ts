@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog, MatInput } from '@angular/material';
+import { MatBottomSheet, MatDialog, MatInput } from '@angular/material';
 import { ApiServices } from 'src/services/apiService';
 import { SettingsService } from '../../../services/settings.service';
 import { appConfirmDialog } from '../flow-visitor.component';
+import { KeboardBottomSheetComponent } from '../keboard-bottom-sheet/keboard-bottom-sheet.component';
 
 @Component({
   selector: 'app-visitor-pre-apontmnt',
@@ -30,7 +31,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   @ViewChild('appint_id') appint_id: ElementRef;
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private settingService: SettingsService,
+    private bottomSheet: MatBottomSheet,
     private dialog: MatDialog,
     private apiServices: ApiServices) {
     let listOFvisitors: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
@@ -43,8 +44,6 @@ export class VisitorPreApontmntComponent implements OnInit {
   }
   selectedTabValue(event) {
     console.log(event);
-
-
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption) {
       this.selectedType = 'nric'
       setTimeout(() => {
@@ -54,20 +53,20 @@ export class VisitorPreApontmntComponent implements OnInit {
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.title_caption) {
       this.selectedType = 'contact'
       setTimeout(() => {
-      this.contact.nativeElement.focus()
-    });
+        this.contact.nativeElement.focus()
+      });
     }
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption) {
       this.selectedType = 'email'
       setTimeout(() => {
-      this.email.nativeElement.focus()
-    });
+        this.email.nativeElement.focus()
+      });
     }
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.title_caption) {
       this.selectedType = 'appint_id'
       setTimeout(() => {
-      this.appint_id.nativeElement.focus()
-    });
+        this.appint_id.nativeElement.focus()
+      });
     }
 
 
@@ -143,28 +142,41 @@ export class VisitorPreApontmntComponent implements OnInit {
 
       this.selectedIndex = 0;
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable) {
-        this.selectedType = 'nric'
+        this.selectedType = 'nric';
+        this.openKeyBoard(
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
+          this.APONTMNT_NRIC);
         setTimeout(() => {
-          this.nric.nativeElement.focus()
+          this.nric.nativeElement.focus();
         });
       }
       else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable) {
-        this.selectedType = 'contact'
+        this.selectedType = 'contact';
+        this.openKeyBoard(
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.field_caption,
+          this.APONTMNT_CONTACT);
         setTimeout(() => {
-        this.contact.nativeElement.focus()
-      });
+          this.contact.nativeElement.focus()
+        });
       }
       else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable) {
-        this.selectedType = 'email'
+        this.selectedType = 'email';
+        this.openKeyBoard(
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.field_caption,
+          this.APONTMNT_EMAIL);
         setTimeout(() => {
-        this.email.nativeElement.focus()
-      });
+          this.email.nativeElement.focus()
+        });
       }
       else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
-        this.selectedType = 'appint_id'
+        this.selectedType = 'appint_id';
+        if (!this.qrScanAppointmentId)
+          this.openKeyBoard(
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.field_caption,
+            this.APONTMNT_CODE);
         setTimeout(() => {
-        this.appint_id.nativeElement.focus()
-      });
+          this.appint_id.nativeElement.focus()
+        });
       }
 
     }
@@ -337,7 +349,7 @@ export class VisitorPreApontmntComponent implements OnInit {
               this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } }); */
               if (_app_details['AllowedVisits'] > 0) {
                 if (_app_details['UsedCount'] > 0 && _app_details['AllowedVisits'] <= _app_details['UsedCount']) {
-                  //<Message> = "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.";  
+                  //<Message> = "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.";
                   this.dialog.open(appConfirmDialog, {
                     width: '250px',
                     data: { title: "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.", btn_ok: "Ok" }
@@ -413,5 +425,50 @@ export class VisitorPreApontmntComponent implements OnInit {
       }
     });
     return purposeTitle
+  }
+
+  openKeyBoard(field_caption, value) {
+    //this.selectedType = selectedType;
+    const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
+      panelClass: this.selectedType == "contact" ? 'keyboard-numeric-host-bottom-sheet' : 'keyboard-normal-host-bottom-sheet',
+      data: {
+        mode: this.selectedType == "contact" ? "numeric" : "other",
+        value: value,
+        field_caption: field_caption
+      }
+    });
+    host.afterDismissed().subscribe(result => {
+      if (result != undefined) {
+        console.log(result);
+
+        if (this.selectedType == 'nric') {
+          setTimeout(() => {
+            this.APONTMNT_NRIC = result;
+            this.nric.nativeElement.focus()
+          });
+        }
+
+        if (this.selectedType == 'contact') {
+          setTimeout(() => {
+            this.APONTMNT_CONTACT = result;
+            this.contact.nativeElement.focus()
+          });
+        }
+        if (this.selectedType == 'email') {
+          setTimeout(() => {
+            this.APONTMNT_EMAIL = result;
+            this.email.nativeElement.focus()
+          });
+        }
+        if (this.selectedType == 'appint_id') {
+          setTimeout(() => {
+            this.APONTMNT_CODE = result;
+            this.appint_id.nativeElement.focus()
+          });
+        }
+
+
+      }
+    });
   }
 }

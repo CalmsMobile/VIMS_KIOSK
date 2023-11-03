@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
-import { WebcamModule} from 'ngx-webcam';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WebcamModule } from 'ngx-webcam';
 import { Routes, RouterModule } from '@angular/router';
 import { FlowVisitorComponent, AppTermsAndCondtion, appConfirmDialog } from './flow-visitor.component';
 import { HostMobileComponent, DialogMobileVerifyComponent } from './host-mobile/host-mobile.component';
@@ -9,7 +9,7 @@ import { RegistrationTypeComponent, DialogPrepareForScanComponent } from './regi
 import { ScanRLoadingComponent } from './scan-rloading/scan-rloading.component';
 import { AppointmentDetailComponent, BottomSheetPurposeSheet, DialogVisitorAlreadyExist, takeVisitorPictureDialog, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect, BottomSheetGenderSelect, BottomSheetHoursSelect, BottomSheetBranchSelect } from './appointment-detail/appointment-detail.component';
 import { AppointmentSuccessComponent, DialogSuccessMessagePage } from './appointment-success/appointment-success.component';
-import { NgVirtualKeyboardModule }  from '@protacon/ng-virtual-keyboard';
+import { NgVirtualKeyboardModule } from '@protacon/ng-virtual-keyboard';
 export const ROUTES: Routes = [
   { path: 'visitorAgree', component: FlowVisitorComponent },
   { path: 'visitorHostMobNumber', component: HostMobileComponent },
@@ -20,8 +20,8 @@ export const ROUTES: Routes = [
   { path: 'visitorMsgSuceess', component: AppointmentSuccessComponent },
   { path: 'visitorPreApontmnt', component: VisitorPreApontmntComponent },
   { path: 'appointmentList', component: AppointmentListComponent },
-  { path: 'visitorCheckout', component: VisitorCheckoutComponent},
-  { path: 'checkoutSuccess', component: CheckoutSuccessComponent},
+  { path: 'visitorCheckout', component: VisitorCheckoutComponent },
+  { path: 'checkoutSuccess', component: CheckoutSuccessComponent },
   { path: 'staffDetailForTemp', component: staffDetailForTempComponent },
   { path: 'visitorDetailForTemp', component: visitorDetailForTempComponent },
   { path: 'staffTemperature', component: staffTemperatureComponent },
@@ -55,15 +55,16 @@ import { visitorTemperatureComponent } from './visitorTemperature/visitorTempera
 import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnaries/questionnaries.component';
 import { AppointmentListComponent } from './appointment-list/appointment-list.component';
 import { HostListComponent } from './host-list/host-list.component';
+import { KeboardBottomSheetComponent } from './keboard-bottom-sheet/keboard-bottom-sheet.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
-     RegistrationTypeComponent, DialogPrepareForScanComponent, DialogPrepareForScanComponent1,
-      ScanRLoadingComponent,AppTermsAndCondtion, DialogAlertBox,BottomSheetHoursSelect,
-      AppointmentDetailComponent, BottomSheetPurposeSheet,BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
-      AppointmentSuccessComponent,DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
-      VisitorPreApontmntComponent, VisitorCheckoutComponent,CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
-    staffTemperatureComponent,visitorDetailForTempComponent,visitorTemperatureComponent,BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent],
+    RegistrationTypeComponent, DialogPrepareForScanComponent, DialogPrepareForScanComponent1,
+    ScanRLoadingComponent, AppTermsAndCondtion, DialogAlertBox, BottomSheetHoursSelect,
+    AppointmentDetailComponent, BottomSheetPurposeSheet, BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
+    AppointmentSuccessComponent, DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
+    VisitorPreApontmntComponent, VisitorCheckoutComponent, CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
+    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent],
   imports: [
     RouterModule.forChild(ROUTES),
     CommonModule,
@@ -88,11 +89,11 @@ import { HostListComponent } from './host-list/host-list.component';
     WebcamModule
   ],
   entryComponents: [
-    BottomSheetPurposeSheet,BottomSheetBranchSelect, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect,
+    BottomSheetPurposeSheet, BottomSheetBranchSelect, BottomSheetCategorySelect, BottomSheetHostSelect, BottomSheetCountrySelect,
     BottomSheetGenderSelect,
     BottomSheetHoursSelect,
     DialogAlertBox,
-    DialogVisitorAlreadyExist,takeVisitorPictureDialog,
+    DialogVisitorAlreadyExist, takeVisitorPictureDialog,
     DialogMobileVerifyComponent,
     DialogPrepareForScanComponent,
     DialogPrepareForScanComponent1,

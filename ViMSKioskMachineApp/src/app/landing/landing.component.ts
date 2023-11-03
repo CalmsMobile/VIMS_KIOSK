@@ -536,7 +536,7 @@ export class LandingComponent implements OnInit {
     .hg-theme-default .hg-button {
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_txt'] + ` !important;
       background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_1'] + `) !important;
-      font-size: large!important;
+      font-size: x-large!important;
     }
     `;
     document.getElementById("MY_RUNTIME_CSS").innerHTML = _css;

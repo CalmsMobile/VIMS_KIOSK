@@ -133,6 +133,8 @@ export class GetkioskcodeComponent implements OnInit {
       this.router.navigateByUrl('/testing')
     } else if (action == "scanNow") {
       this.router.navigate(['/scanQRCode'], { queryParams: { scanType: 'LICENCEQR' } });
+    } else if (action === "uisettings") {
+      this.router.navigateByUrl('/uisettings')
     }
 
 

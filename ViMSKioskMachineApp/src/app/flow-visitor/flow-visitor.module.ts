@@ -56,6 +56,7 @@ import { DialogAlertBox, DialogPrepareForScanComponent1 } from '../questionnarie
 import { AppointmentListComponent } from './appointment-list/appointment-list.component';
 import { HostListComponent } from './host-list/host-list.component';
 import { KeboardBottomSheetComponent } from './keboard-bottom-sheet/keboard-bottom-sheet.component';
+import { UiSettingsComponent } from './ui-settings/ui-settings.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
@@ -64,7 +65,7 @@ import { KeboardBottomSheetComponent } from './keboard-bottom-sheet/keboard-bott
     AppointmentDetailComponent, BottomSheetPurposeSheet, BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
     AppointmentSuccessComponent, DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
     VisitorPreApontmntComponent, VisitorCheckoutComponent, CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
-    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent],
+    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent],
   imports: [
     RouterModule.forChild(ROUTES),
     CommonModule,

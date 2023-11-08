@@ -203,6 +203,8 @@ export class SettingsService {
               "kioskSetup": JSON.parse(_kiosk_info['SettingDetail']),
               "IsKeyMansIdValidate": _kiosk_info.IsKeyMansIdValidate
             }
+            //_prepare['kioskSetup']['commonsetup']['keyboard_normal_width'] = 80;
+            //_prepare['kioskSetup']['commonsetup']['keyboard_numeric_width'] = 50;
             if (_details['Table2'] != undefined && _details['Table2'].length > 0) {
               _prepare['kioskName'] = _details['Table2'][0]['Name'];
             }

@@ -21,6 +21,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   APONTMNT_EMAIL: any = "";
   selectedType = '';
   selectedIndex = 0;
+  showScanButton = false;
   purposes = [];
   qrScanAppointmentId = false;
   //KIOSK_PROPERTIES_LOCAL: any = {};
@@ -45,25 +46,43 @@ export class VisitorPreApontmntComponent implements OnInit {
   selectedTabValue(event) {
     console.log(event);
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption) {
-      this.selectedType = 'nric'
+      this.selectedType = 'nric';
+      this.showScanButton = false;
+      this.openKeyBoard(
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
+        this.APONTMNT_NRIC);
       setTimeout(() => {
         this.nric.nativeElement.focus()
       });
     }
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.title_caption) {
-      this.selectedType = 'contact'
+      this.selectedType = 'contact';
+      this.showScanButton = false;
+      this.openKeyBoard(
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.field_caption,
+        this.APONTMNT_CONTACT);
       setTimeout(() => {
         this.contact.nativeElement.focus()
       });
     }
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.title_caption) {
-      this.selectedType = 'email'
+      this.selectedType = 'email';
+      this.showScanButton = false;
+      this.openKeyBoard(
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.field_caption,
+        this.APONTMNT_EMAIL);
       setTimeout(() => {
         this.email.nativeElement.focus()
       });
     }
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.title_caption) {
-      this.selectedType = 'appint_id'
+      this.selectedType = 'appint_id';
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan.enable)
+        this.showScanButton = true;
+      if (!this.qrScanAppointmentId)
+        this.openKeyBoard(
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.field_caption,
+          this.APONTMNT_CODE);
       setTimeout(() => {
         this.appint_id.nativeElement.focus()
       });
@@ -170,6 +189,8 @@ export class VisitorPreApontmntComponent implements OnInit {
       }
       else if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
         this.selectedType = 'appint_id';
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan.enable)
+          this.showScanButton = true;
         if (!this.qrScanAppointmentId)
           this.openKeyBoard(
             this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.field_caption,
@@ -359,11 +380,11 @@ export class VisitorPreApontmntComponent implements OnInit {
                   _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
                   _app_details['aptid'] = _app_details.ApptmentId.toString();
                   localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
-                  if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable) {
+                  /* if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable) {
                     this.router.navigateByUrl('/visitorRegisType');
-                  } else {
+                  } else { */
                     this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
-                  }
+                  //}
 
                 }
               } else {
@@ -371,14 +392,14 @@ export class VisitorPreApontmntComponent implements OnInit {
                 _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
                 _app_details['aptid'] = _app_details.ApptmentId.toString();
                 localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
-                if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable) {
+                /* if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable) {
                   this.router.navigateByUrl('/visitorRegisType');
-                } else {
+                } else { */
                   this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
-                }
+               // }
               }
             } else {
-              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]), id_verification: this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable ? 1 : 0 } });
+              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"])} });
             }
 
           } else {
@@ -430,7 +451,7 @@ export class VisitorPreApontmntComponent implements OnInit {
   openKeyBoard(field_caption, value) {
     //this.selectedType = selectedType;
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
-      panelClass: this.selectedType == "contact" ? 'keyboard-numeric-host-bottom-sheet' : 'keyboard-normal-host-bottom-sheet',
+      panelClass: this.selectedType == "contact" ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
       data: {
         mode: this.selectedType == "contact" ? "numeric" : "other",
         value: value,

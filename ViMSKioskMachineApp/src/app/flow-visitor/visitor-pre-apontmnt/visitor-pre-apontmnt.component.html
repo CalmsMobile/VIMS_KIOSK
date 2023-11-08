@@ -12,7 +12,7 @@
   </button>
 </div>
 <div style="text-align: center; padding: 30px">
-  <p info-title no-margin-top margin-bottom>
+  <p info-title margin-bottom>
     {{ KIOSK_PROPERTIES.COMMON_CONFIG.Caption }}
   </p>
 
@@ -231,7 +231,7 @@
       </mat-form-field>
     </div>
     <div
-      *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan.enable"
+      *ngIf="showScanButton"
     >
       <button mat-raised-button my-theme-button (click)="takeActFor('scanNow')">
         {{

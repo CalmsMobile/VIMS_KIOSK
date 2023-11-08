@@ -500,15 +500,15 @@ $my-reg-radio-button-size: 2.8vw;
 [my-reg-option-radio] {
   display: inline-block;
   -webkit-tap-highlight-color: transparent;
-  width: 25vh;
-  height: 25vh;
+  width: 30vh;
+  height: 30vh;
   color: white;
   background: theme-colors();
   text-align: left;
   border-radius: 50%;
   margin-bottom: 20px;
   box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.2);
-  margin-left: 2vw;
+  margin-left: 2.3vw;
   &:focus {
     outline: none !important;
   }
@@ -581,6 +581,15 @@ $my-reg-radio-button-size: 2.8vw;
     //     width: $my-reg-radio-button-size;
     // }
   }
+}
+[my-reg-option-radio] .mat-radio-label .mat-radio-label-content {
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  width: 70%;
+  padding: 50% 15% 0px 15%;
+  font-size: 2.3vh;
+  white-space: normal;
 }
 [my-reg-option-btn] {
   display: inline-block;
@@ -1113,16 +1122,24 @@ app-scanqrcode {
   max-width: 80vw !important;
   margin-top: 80px;
 }
-.keyboard-normal-host-bottom-sheet {
+.keyboard-normal-bottom-sheet {
   min-height: fit-content !important;
   min-width: 80vw !important;
   max-width: 80vw !important;
   margin-top: 80px;
 }
-.keyboard-numeric-host-bottom-sheet {
+.keyboard-numeric-bottom-sheet {
   min-height: fit-content !important;
-    min-width: 40vw !important;
-    max-width: 80vw !important;
-    margin-top: 80px;
+  min-width: 40vw !important;
+  max-width: 80vw !important;
+  margin-top: 80px;
+}
+[info-time] {
+  font-size: 2.8vmin;
+  color: theme-colors("textColors", "primaryWhite");
+  margin: 1vh auto;
+  margin-left: 10px;
+  width: fit-content;
+  float: left;
 }
 @import "simple-keyboard/build/css/index.css";

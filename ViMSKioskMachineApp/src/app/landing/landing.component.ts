@@ -8,6 +8,8 @@ import { SettingsService } from 'src/services/settings.service';
 import { DialogAppCommonDialog } from '../app.common.dialog';
 import { DialogSuccessMessagePage } from '../flow-visitor/appointment-success/appointment-success.component';
 import { DialogPrepareForScanComponent } from '../flow-visitor/registration-type/registration-type.component';
+import { Subscription, timer } from 'rxjs';
+import { map, share } from "rxjs/operators";
 
 @Component({
   selector: 'app-landing',
@@ -28,6 +30,14 @@ export class LandingComponent implements OnInit {
   CheckOut = '';
   KIOSK_PROPERTIES_LOCAL: any = {};
   KIOSK_TYPE: string;
+  //time = new Date();
+  rxTime = new Date();
+  intervalId;
+  subscription: Subscription;
+  appStartTime = "";
+  appEndTime = "";
+  appStop = false;
+  appStopMsg = "";
   constructor(
     private apiServices: ApiServices,
     private settingsServices: SettingsService,
@@ -41,13 +51,44 @@ export class LandingComponent implements OnInit {
     this._updateKioskSettings();
   }
   ngOnInit() {
-    /* localStorage.setItem("TemperatureMessageTitle", this.KIOSK_PROPERTIES['General']['TemperatureMessageTitle']);
-    localStorage.setItem("Temperature", this.KIOSK_PROPERTIES['General']['AllowedTemperatureLimit']);
-    localStorage.setItem("WaitMessage", this.KIOSK_PROPERTIES['General']['WaitMessage']); */
     console.log("%c ---------- Landing Screen Init: %s", AppSettings.LOG_SUCCESS, this.datePipe.transform(new Date(), 'medium'));
 
+    if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.Enable) {
+      console.log(this.checkOperationTime(this.getDayOfTheWeek(this.rxTime.getDay())));
+      // Using RxJS Timer
+      this.subscription = timer(0, 1000)
+        .pipe(
+          map(() => new Date()),
+          share()
+        )
+        .subscribe(time => {
+          let hour = this.rxTime.getHours();
+          let minuts = this.rxTime.getMinutes();
+          let seconds = this.rxTime.getSeconds();
+          let day = this.rxTime.getDay();
+          //let a = time.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+          let NewTime = hour + ":" + minuts + ":" + seconds + ":" + day;
+          //console.log(NewTime);
+
+          this.rxTime = time;
+          const currentTime = new Date();
+          let currentDate = this.datePipe.transform(currentTime, 'yyyy-MM-dd');
+          const startTime = new Date(currentDate + "T" + this.appStartTime);
+          const endTime = new Date(currentDate + "T" + this.appEndTime);
+
+          if (currentTime >= startTime && currentTime <= endTime) {
+            //console.log("The current time is between the start and end times.");
+            this.appStop = false;
+          } else {
+            //console.log("The current time is not between the start and end times.");
+            this.appStop = true;
+          }
+
+        });
+    }
 
   }
+
   ngAfterViewInit() {
     document.getElementById("homeButton").style.display = "none";
     this.getConfigData();
@@ -71,6 +112,10 @@ export class LandingComponent implements OnInit {
     //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
     document.getElementById("homeButton").style.display = "block";
     //console.log("%c ---------- Landing Screen Distroy: %s", AppSettings.LOG_FAILED, this.datePipe.transform(new Date(), 'medium'));
+    clearInterval(this.intervalId);
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   readStaffCardEnter() {
     const StaffCardValue = this.StaffCardNo;
@@ -109,230 +154,229 @@ export class LandingComponent implements OnInit {
     } else if (action === "vcheckin") {
 
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
-      this.checkCardPosition((status: boolean) => {
-        if (status) {
-          if (this.KIOSK_PROPERTIES['WalkinSettings']['T_and_C']['enable']) {
-            this.router.navigateByUrl('/visitorAgree');
+
+      if (this.KIOSK_PROPERTIES['WalkinSettings']['T_and_C']['enable']) {
+        this.router.navigateByUrl('/visitorAgree');
+      } else {
+        this.router.navigateByUrl('/visitorRegisType');
+        /* if (this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
+          this.router.navigateByUrl('/visitorDetailForTemp');
+        else {
+          console.log('button clicked:' + action)
+          if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
+
+            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+              width: '250px',
+              disableClose: false,
+              data: {
+                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
+                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
+                "scanImage": _imgsrc,
+                "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
+                "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'SING_NRICrDRIV' } });
+              } else {
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+              }
+            });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
+
+            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+              width: '250px',
+              disableClose: false,
+              data: {
+                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
+                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
+                "scanImage": _imgsrc,
+                "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
+                "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'PASSPORT' } });
+              } else {
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+              }
+            });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
+            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+              width: '250px',
+              disableClose: false,
+              data: {
+                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
+                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
+                "scanImage": _imgsrc,
+                "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
+                "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'BUSINESS' } });
+              } else {
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+              }
+            });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual && action === 'vcheckin') {
+            this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: 'PREAPPOINTMT' } });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
+            this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: 'OTHER' } });
           } else {
             this.router.navigateByUrl('/visitorRegisType');
-            /* if (this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
-              this.router.navigateByUrl('/visitorDetailForTemp');
-            else {
-              console.log('button clicked:' + action)
-              if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-                const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-
-                const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-                  width: '250px',
-                  disableClose: false,
-                  data: {
-                    "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
-                    "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
-                    "scanImage": _imgsrc,
-                    "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
-                    "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
-                  }
-                });
-
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'SING_NRICrDRIV' } });
-                  } else {
-                    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-                  }
-                });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-                const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-
-                const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-                  width: '250px',
-                  disableClose: false,
-                  data: {
-                    "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
-                    "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
-                    "scanImage": _imgsrc,
-                    "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
-                    "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
-                  }
-                });
-
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'PASSPORT' } });
-                  } else {
-                    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-                  }
-                });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-                const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-                const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-                  width: '250px',
-                  disableClose: false,
-                  data: {
-                    "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_title),
-                    "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_msg),
-                    "scanImage": _imgsrc,
-                    "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_cancel_txt),
-                    "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_screen_scan_alert_ok_txt)
-                  }
-                });
-
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'BUSINESS' } });
-                  } else {
-                    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-                  }
-                });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual && action === 'vcheckin') {
-                this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: 'PREAPPOINTMT' } });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: 'OTHER' } });
-              } else {
-                this.router.navigateByUrl('/visitorRegisType');
-              }
-            } */
           }
-        }
-      });
+        } */
+      }
+
     } else if (action == 'vcheckinapproval') {
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
-      this.checkCardPosition((status: boolean) => {
-        if (status) {
-          if (this.KIOSK_PROPERTIES['ReqApptSettings']['T_and_C']['enable']) {
-            this.router.navigateByUrl('/visitorAgree');
+
+      if (this.KIOSK_PROPERTIES['ReqApptSettings']['T_and_C']['enable']) {
+        this.router.navigateByUrl('/visitorAgree');
+      } else {
+        this.router.navigateByUrl('/visitorRegisType');
+        /* if (this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
+          this.router.navigateByUrl('/visitorDetailForTemp');
+        else {
+          console.log('button clicked:' + action)
+          if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license) &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
+
+            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+              width: '250px',
+              disableClose: false,
+              data: {
+                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
+                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
+                "scanImage": _imgsrc,
+                "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
+                "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'SING_NRICrDRIV' } });
+              } else {
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+              }
+            });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
+
+            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+              width: '250px',
+              disableClose: false,
+              data: {
+                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
+                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
+                "scanImage": _imgsrc,
+                "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
+                "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'PASSPORT' } });
+              } else {
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+              }
+            });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
+
+            const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
+              width: '250px',
+              disableClose: false,
+              data: {
+                "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
+                "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
+                "scanImage": _imgsrc,
+                "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
+                "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
+              }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'BUSINESS' } });
+              } else {
+                //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
+              }
+            });
+          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
+            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
+            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
+            this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: 'OTHER' } });
           } else {
             this.router.navigateByUrl('/visitorRegisType');
-            /* if (this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])
-              this.router.navigateByUrl('/visitorDetailForTemp');
-            else {
-              console.log('button clicked:' + action)
-              if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license) &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
-                const _imgsrc = "assets/images/cus_icons/id_lic_gif.gif";
-
-                const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-                  width: '250px',
-                  disableClose: false,
-                  data: {
-                    "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
-                    "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
-                    "scanImage": _imgsrc,
-                    "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
-                    "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
-                  }
-                });
-
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'SING_NRICrDRIV' } });
-                  } else {
-                    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-                  }
-                });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
-                const _imgsrc = "assets/images/cus_icons/id_passport_gif.gif";
-
-                const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-                  width: '250px',
-                  disableClose: false,
-                  data: {
-                    "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
-                    "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
-                    "scanImage": _imgsrc,
-                    "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
-                    "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
-                  }
-                });
-
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'PASSPORT' } });
-                  } else {
-                    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-                  }
-                });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
-                const _imgsrc = "assets/images/cus_icons/id_business_gif.gif";
-
-                const dialogRef = this.dialog.open(DialogPrepareForScanComponent, {
-                  width: '250px',
-                  disableClose: false,
-                  data: {
-                    "title": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_title),
-                    "subTile": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_msg),
-                    "scanImage": _imgsrc,
-                    "cancel": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_cancel_txt),
-                    "ok": (this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_screen_scan_alert_ok_txt)
-                  }
-                });
-
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.router.navigate(['/visitorDocScanRLoading'], { queryParams: { docType: 'BUSINESS' } });
-                  } else {
-                    //this.apiServices.localGetMethod("setLEDOFF","").subscribe((ledStatus:any) => {},err=>{});
-                  }
-                });
-              } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_NRIC &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Passport &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Busins_Card &&
-                !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_Driving_license &&
-                this.KIOSK_PROPERTIES.modules.only_visitor.checkin.appt_manual) {
-                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: 'OTHER' } });
-              } else {
-                this.router.navigateByUrl('/visitorRegisType');
-              }
-            } */
           }
-        }
-      });
+        } */
+      }
+
     } else if (action === "preAppointment") {
       //debugger
       localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
-      this.checkCardPosition((status: boolean) => {
-        if (status) {
-          if (this.KIOSK_PROPERTIES['AppointmentSettings']['T_and_C']['enable']) {
-            this.router.navigateByUrl('/visitorAgree');
-          } else {
-            this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
-          }
-        }
-      });
+
+      if (this.KIOSK_PROPERTIES['AppointmentSettings']['T_and_C']['enable']) {
+        //this.router.navigateByUrl('/visitorAgree');
+        this.router.navigate(['/visitorAgree'], { queryParams: { id_verification: this.KIOSK_PROPERTIES['AppointmentSettings']['id_verification']['enable'] } });
+      } else {
+        if (this.KIOSK_PROPERTIES['AppointmentSettings']['id_verification']['enable'])
+          this.router.navigateByUrl('/visitorRegisType');
+        else
+          this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
+      }
+
+
 
     } else if (action === "vcheckout") {
       this.router.navigateByUrl('/visitorCheckout');
@@ -446,6 +490,7 @@ export class LandingComponent implements OnInit {
     let _css = `
     [welcome-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header1'] + ` !important; }
     [info-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
+    [info-time] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
     [sub-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
     [my-theme-round-button], [my-theme-button] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] + ` !important;
@@ -537,35 +582,94 @@ export class LandingComponent implements OnInit {
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_txt'] + ` !important;
       background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_1'] + `) !important;
       font-size: x-large!important;
-    }
-    `;
+    }`;
     document.getElementById("MY_RUNTIME_CSS").innerHTML = _css;
   }
+  getDayOfTheWeek(day) {
+    switch (day) {
+      case 0:
+        return "sun";
+      case 1:
+        return "mon";
+      case 2:
+        return "tue";
+      case 3:
+        return "wed";
+      case 4:
+        return "thu";
+      case 5:
+        return "fri";
+      case 6:
+        return "sat";
+    }
+  }
+  checkOperationTime(currentDay) {
+    //debugger
+    console.log(this.KIOSK_PROPERTIES.commonsetup.OperationTime)
+    switch (currentDay) {
+      case "sun":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.sun_idle_note;
+          return true;
+        }
 
+      case "mon":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.mon_idle_note;
+          return true;
+        }
 
-  checkCardPosition(_callback) {
-    _callback(true)
+      case "tue":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.tue_idle_note;
+          return true;
+        }
+
+      case "wed":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.wed_idle_note;
+          return true;
+        }
+
+      case "thu":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.thu_idle_note;
+          return true;
+        }
+
+      case "fri":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.fri_idle_note;
+          return true;
+        }
+
+      case "sat":
+        if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_startTime != "" && this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_endTime != "") {
+          this.appStartTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_startTime;
+          this.appEndTime = this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_endTime;
+          if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_idle_note != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_idle_note != "")
+            this.appStopMsg = this.KIOSK_PROPERTIES.commonsetup.OperationTime.sat_idle_note;
+          return true;
+        }
+    }
+    return false;
   }
 }
-/* function checkWebsocket() {
-  //throw new Error('Function not implemented.');
-  try {
-    const _this = this;
-    //const readyState = new Array("on connection", "Connection established", "Closing connection", "Close connection");
-    var host = AppSettings.APP_DEFAULT_SETTIGS.SinosecureWebsocketUrl;
-
-    _this.websocket = new WebSocket(host);
-    debugger
-    if (_this.websocket.readyState == 1 || _this.websocket.readyState == 2) {
-      debugger
-      _this.websocket.onclose = function () {
-        debugger
-        console.log('close state' + _this.websocket.readyState);
-      }
-    }
-  } catch (exception) {
-    debugger
-    console.log("Websocket erroe");
-  }
-} */
-

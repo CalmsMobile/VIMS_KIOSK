@@ -6,7 +6,6 @@
 <div style="text-align: center; padding: 30px">
   <p
     info-title
-    no-margin-top
     margin-bottom
     [ngStyle]="{
       'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold ? 'bold' : '',
@@ -164,11 +163,7 @@
           "
           spellcheck="false"
           autocomplete="off"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.PlaceHolder
-          "
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.PlaceHolder, $event.target.value, $event,false)"
         />
       </mat-form-field>
 
@@ -205,11 +200,8 @@
           oninput="this.value = this.value.toUpperCase()"
           spellcheck="false"
           [disabled]="isDisablename"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.PlaceHolder
-          "
+
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.PlaceHolder, $event.target.value, $event,false)"
         />
       </mat-form-field>
 
@@ -246,11 +238,8 @@
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength"
           [disabled]="isDisablecompany"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.Company.PlaceHolder
-          "
+
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Company.PlaceHolder, $event.target.value, $event,false)"
         />
       </mat-form-field>
 
@@ -287,11 +276,8 @@
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength"
           [disabled]="isDisablecontact"
           oninput="this.value = this.value.toUpperCase()"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="numeric"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder
-          "
+
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, $event.target.value, $event,true)"
         />
       </mat-form-field>
 
@@ -329,11 +315,8 @@
           [disabled]="isDisableemail"
           oninput="this.value = this.value.toLowerCase()"
           pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.PlaceHolder
-          "
+
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.PlaceHolder, $event.target.value, $event,false)"
         />
       </mat-form-field>
 
@@ -370,11 +353,8 @@
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength"
           [disabled]="isDisablevehicle"
           oninput="this.value = this.value.toUpperCase()"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder
-          "
+
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder, $event.target.value, $event,false)"
         />
       </mat-form-field>
       <mat-form-field
@@ -401,11 +381,8 @@
           [minlength]="KIOSK_PROPERTIES_LOCAL.passNoMinLength"
           [maxlength]="KIOSK_PROPERTIES_LOCAL.passNoMaxLength"
           oninput="this.value = this.value.toUpperCase()"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder
-          "
+
+          (click)="openKeyBoard(KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder, $event.target.value, $event,false)"
         />
       </mat-form-field>
 

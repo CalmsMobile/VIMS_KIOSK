@@ -26,8 +26,8 @@ export class RegistrationTypeComponent implements OnInit {
     let getVisi = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     this.totalVisitors = getVisi['visitorDetails'].length;
     this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
-    if (this.mainModule != 'preAppointment')
-      localStorage.setItem("VISI_SCAN_DOC_DATA", "");
+    /* if (this.mainModule != 'preAppointment')
+      localStorage.setItem("VISI_SCAN_DOC_DATA", ""); */
     this._updateKioskSettings();
   }
 
@@ -36,15 +36,13 @@ export class RegistrationTypeComponent implements OnInit {
   }
   takeActFor(action: string) {
     if (action === "back") {
-      if (this.mainModule == 'preAppointment') {
-        this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
-      } else {
+
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.enable) {
           this.router.navigateByUrl('/visitorAgree');
         } else {
           this.router.navigateByUrl('/landing');
         }
-      }
+
     } else if (action === "next") {
       this.openPrepareScanDocDialog();
     } else if (action === "home") {
@@ -134,6 +132,7 @@ export class RegistrationTypeComponent implements OnInit {
         this.checkTypes(this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin, this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_manual_ReqAppt);
       } else if (this.mainModule === 'preAppointment') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings.id_verification;
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C = this.KIOSK_PROPERTIES.AppointmentSettings.T_and_C;
         this.title = "Verification";
         /* if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_NRICRLicense == undefined)
           this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.checkin.enable_NRICRLicense = false;

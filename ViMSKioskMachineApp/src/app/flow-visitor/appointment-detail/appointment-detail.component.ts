@@ -9,6 +9,7 @@ import { AppSettings } from 'src/services/app.settings';
 import { DialogAppCommonDialog } from 'src/app/app.common.dialog';
 import { DialogAppSessionTimeOutDialog } from 'src/app/app.component';
 import { HostListComponent } from '../host-list/host-list.component';
+import { KeboardBottomSheetComponent } from '../keboard-bottom-sheet/keboard-bottom-sheet.component';
 @Component({
   selector: 'app-appointment-detail',
   templateUrl: './appointment-detail.component.html',
@@ -70,52 +71,55 @@ export class AppointmentDetailComponent implements OnInit {
     this.route
       .queryParams
       .subscribe(params => {
-
         this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
         this.docType = params['docType'];
-        /* if (this.docType == undefined || this.docType == '') {
-          if ((this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC || !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license) &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-          } else if (!this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_NRIC &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Passport &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Busins_Card &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_Driving_license &&
-            !this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_prereg_visitor &&
-            this.KIOSK_PROPERTIES.modules.only_visitor.checkin.in_manual) {
-            this.router.navigateByUrl('/landing');
-          } else {
-            this.router.navigateByUrl('/visitorRegisType');
-          }
-        } else { */
 
         if (this.mainModule === 'preAppointment') {
           console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));
           this.docType = "PREAPPOINTMT";
+          let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+          let OperationTime = JSON.parse(setngs).kioskSetup.commonsetup.OperationTime;
+
+          if (OperationTime.Checkin_with_appointment_time && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
+            debugger
+            let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
+            const currentTime = new Date();
+            const actualStartTime = new Date(doc_detail['START_TIME']);
+            const startTime = new Date(doc_detail['START_TIME']);
+            const actualEndTime = new Date(doc_detail['END_TIME']);
+            const endTime = new Date(doc_detail['END_TIME']);
+            var buffer_startTime_hour = "0";
+            var buffer_startTime_minutes = "0";
+            var buffer_endTime_hour = "0";
+            var buffer_endTime_minutes = "0";
+            if (OperationTime.buffer_startTime != "" && OperationTime.buffer_startTime != null) {
+              buffer_startTime_hour = OperationTime.buffer_startTime.split(':')[0];
+              buffer_startTime_minutes = OperationTime.buffer_startTime.split(':')[1];
+            }
+            if (OperationTime.buffer_endTime != "" && OperationTime.buffer_endTime != null) {
+              buffer_endTime_hour = OperationTime.buffer_endTime.split(':')[0];;
+              buffer_endTime_minutes = OperationTime.buffer_endTime.split(':')[1];;
+            }
+            startTime.setHours(startTime.getHours() + parseInt(buffer_startTime_hour));
+            startTime.setMinutes(startTime.getMinutes() + parseInt(buffer_startTime_minutes));
+
+            endTime.setHours(endTime.getHours() + parseInt(buffer_endTime_hour));
+            endTime.setMinutes(endTime.getMinutes() + parseInt(buffer_endTime_minutes));
+
+            console.log("startTime= " + startTime);
+            console.log("endTime=" + endTime);
+            console.log("actualStartTime= " + actualStartTime);
+            console.log("actualEndTime=" + actualEndTime);
+
+            //currentTime.setMonth(currentTime.getMonth() + 1);
+            if ((currentTime >= startTime && currentTime <= endTime) || (currentTime >= actualStartTime && currentTime <= actualEndTime)) {
+              console.log("The current time is between the start and end times.");
+            } else {
+              console.log("The current time is not between the start and end times.");
+              this.showAppointmentExpiredAlert();
+            }
+
+          }
         } else {
           const resumeData = params['resumeData'];
 
@@ -172,14 +176,14 @@ export class AppointmentDetailComponent implements OnInit {
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
 
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
-      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != undefined && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != '') {
+      /* if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != undefined && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != '') {
         let id = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA"))['visDOCID'];
         let doc = doc_detail["id"].replace(/\s|-/g, '');
         id = id.replace(/\s|-/g, '');
         if (doc != id) {
           this.showIdVerificationAlert();
         }
-      }
+      } */
       console.log("doc_detail  " + JSON.stringify(doc_detail))
       this.aptmDetails.name = doc_detail["name"];
       this.aptmDetails.id = doc_detail["id"];
@@ -339,6 +343,26 @@ export class AppointmentDetailComponent implements OnInit {
       }
     });
   }
+  showAppointmentExpiredAlert() {
+    const dialogRef = this.dialog.open(DialogAppSessionTimeOutDialog, {
+      //width: '250px',
+      data: {
+        "title": '',
+        "subTile": "Your appointment expired!",
+        "enbCancel": false,
+        "oktext": 'ok',
+        "canceltext": ''
+      },
+      disableClose: false
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      /* if (result) {
+        this.router.navigateByUrl('/visitorRegisType');
+      } else { */
+      this.router.navigateByUrl('/landing');
+      //}
+    });
+  }
   _getAllCategoryOfVisit() {
     this.apiServices.localPostMethod("getVisitorCategory", {}).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
@@ -483,7 +507,8 @@ export class AppointmentDetailComponent implements OnInit {
           this.router.navigateByUrl('/visitorRegisType');
         }
       } else if (this.mainModule === 'preAppointment') {
-        this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
+        this.router.navigateByUrl('/landing');
+        //this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
       }
     } else if (action === "addVisitor") {
       if (this._updateVisitorList()) {
@@ -1239,7 +1264,7 @@ export class AppointmentDetailComponent implements OnInit {
       }
     }
   }
-  openHostsheet(){
+  openHostsheet() {
     const host = this.bottomSheet.open(HostListComponent, {
       panelClass: 'search-host-bottom-sheet',
       data: {
@@ -1250,17 +1275,17 @@ export class AppointmentDetailComponent implements OnInit {
     });
     host.afterDismissed().subscribe(result => {
       if (result != undefined) {
-        if(result=='search'){
+        if (result == 'search') {
 
-        }else{
-        console.log(result);
-        this.aptmDetails.hostDetails.id = result['HOSTIC'];
-        this.aptmDetails.hostDetails.name = result['HOSTNAME'];
-        this.aptmDetails.hostDetails.company = result['COMPANY_REFID'];
-        this.aptmDetails.hostDetails.contact = result['HostExt'];
-        this.aptmDetails.hostDetails.email = result['HOST_EMAIL'];
-        this.aptmDetails.hostDetails.HostDeptId = result['DEPARTMENT_REFID'];
-        console.log(this.aptmDetails.hostDetails.id);
+        } else {
+          console.log(result);
+          this.aptmDetails.hostDetails.id = result['HOSTIC'];
+          this.aptmDetails.hostDetails.name = result['HOSTNAME'];
+          this.aptmDetails.hostDetails.company = result['COMPANY_REFID'];
+          this.aptmDetails.hostDetails.contact = result['HostExt'];
+          this.aptmDetails.hostDetails.email = result['HOST_EMAIL'];
+          this.aptmDetails.hostDetails.HostDeptId = result['DEPARTMENT_REFID'];
+          console.log(this.aptmDetails.hostDetails.id);
         }
       }
     });
@@ -1271,8 +1296,8 @@ export class AppointmentDetailComponent implements OnInit {
         //this.host_listClone = JSON.parse(data[0]["Data"]);
         //this.host_list = this.host_listClone;
         localStorage.setItem('_LIST_OF_HOST', data[0]["Data"]);
-       console.log("--- List Of Host Updated " + JSON.stringify(data[0]["Data"]));
-       this.openHostsheet();
+        console.log("--- List Of Host Updated " + JSON.stringify(data[0]["Data"]));
+        this.openHostsheet();
       }
     },
       err => {
@@ -1593,7 +1618,23 @@ export class AppointmentDetailComponent implements OnInit {
       this.calculateNumberofInputs();
     }
   }
+  openKeyBoard(field_caption, value, event: any, isNumeric) {
 
+    const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
+      panelClass: isNumeric ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
+      data: {
+        mode: isNumeric ? "numeric" : "other",
+        value: value,
+        field_caption: field_caption
+      }
+    });
+    host.afterDismissed().subscribe(result => {
+      if (result != undefined) {
+        console.log(result);
+        event.target.value = result;
+      }
+    });
+  }
 }
 @Component({
   selector: 'bottom-sheet-overview-example-sheet',

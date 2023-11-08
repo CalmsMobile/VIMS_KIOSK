@@ -5,10 +5,10 @@
     <i class="siva-icon-users-1"></i> </button>
 </div>
 <div style="text-align:center;padding:30px;">
-  <p info-title no-margin-top [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
+  <p info-title [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
     {{title}}
   </p>
-  <div style="padding-top: 0vh;">
+  <div style="padding-top: 10vh;">
       <mat-radio-group [(ngModel)]="SEL_REGISTRATION_TYPE">
           <mat-radio-button my-reg-option-radio sp-button-blue-out
           *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.checkin.enable_NRIC"

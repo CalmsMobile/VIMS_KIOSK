@@ -16,6 +16,7 @@ export class FlowVisitorComponent implements OnInit {
   needHostNumber: any = '';
   totalVisitors: number = 0;
   mainModule = '';
+  id_verification: boolean = false;
   constructor(
     private apiServices: ApiServices,
     private router: Router,
@@ -30,13 +31,18 @@ export class FlowVisitorComponent implements OnInit {
       .queryParams
       .subscribe(params => {
         this.needHostNumber = params['needHostNumber'] || '';
+        this.id_verification = params['id_verification'] || false;
       });
   }
 
   takeActFor(action: string) {
     if (action === "agree") {
-      if (this.mainModule === 'preAppointment')
-        this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
+      if (this.mainModule === 'preAppointment') {
+        if (this.id_verification)
+          this.router.navigateByUrl('/visitorRegisType');
+        else
+          this.router.navigate(['/visitorPreApontmnt'], { queryParams: { docType: "PREAPPOINTMT" } });
+      }
       else
         this.router.navigateByUrl('/visitorRegisType');
       /*  if(this.KIOSK_PROPERTIES['General']['EnableTemperatureSetting'])

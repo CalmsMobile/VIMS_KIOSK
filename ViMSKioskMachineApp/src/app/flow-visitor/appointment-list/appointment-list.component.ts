@@ -14,7 +14,7 @@ export class AppointmentListComponent implements OnInit {
   totalVisitors: number = 0;
   listOFAppointments: any = [];
   purposes = [];
-  id_verification: number;
+  //id_verification: number;
   constructor(private router: Router,
     private route: ActivatedRoute,
     public snackBar: MatSnackBar,
@@ -30,10 +30,10 @@ export class AppointmentListComponent implements OnInit {
     this.route
       .queryParams
       .subscribe(params => {
-        
+
         // Defaults to 0 if no query param provided.
         const passData = params['data'];
-        this.id_verification = params['id_verification'];
+        //this.id_verification = params['id_verification'];
 
         console.log(JSON.stringify(passData));
         if (passData != undefined && passData.length > 0) {
@@ -99,18 +99,18 @@ export class AppointmentListComponent implements OnInit {
           } else {
             appointments['aptid'] = appointments.ApptmentId.toString();
             localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(appointments));
-            if (this.id_verification == 1)
+            /* if (this.id_verification == 1)
               this.router.navigateByUrl('/visitorRegisType');
-            if (this.id_verification == 0)
+            if (this.id_verification == 0) */
               this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
 
           }
         } else {
           appointments['aptid'] = appointments.ApptmentId.toString();
           localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(appointments));
-          if (this.id_verification == 1)
+          /* if (this.id_verification == 1)
             this.router.navigateByUrl('/visitorRegisType');
-          if (this.id_verification == 0)
+          if (this.id_verification == 0) */
             this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
 
         }

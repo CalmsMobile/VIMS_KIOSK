@@ -6,6 +6,7 @@ import { TestingComponent } from './testing/testing.component';
 import { GetkioskcodeComponent } from './getkioskcode/getkioskcode.component';
 import { ScanqrcodeComponent } from './scanqrcode/scanqrcode.component';
 import { QuestionnariesComponent } from './questionnaries/questionnaries.component';
+import { UiSettingsComponent } from './flow-visitor/ui-settings/ui-settings.component';
 
 const routes: Routes = [
    {path: '', component: LandingComponent},
@@ -16,14 +17,15 @@ const routes: Routes = [
    {path: 'scanQRCode', component: ScanqrcodeComponent},
    {path: 'testing', component: TestingComponent},
    {path: 'questionarie', component: QuestionnariesComponent},
+   {path: 'uisettings', component: UiSettingsComponent},
 
    //{path: '**', component: LandingComponent},
   // {
-  //   path: '', 
-  //   component: LandingComponent, 
+  //   path: '',
+  //   component: LandingComponent,
   //   children: [
   //     {path: '**', component: LandingComponent},
-      
+
   //     {path: 'slidermanager', redirectTo: "./slidermanager/slidermanager.module#SlidermanagerModule"}
   //   ]}
 ];

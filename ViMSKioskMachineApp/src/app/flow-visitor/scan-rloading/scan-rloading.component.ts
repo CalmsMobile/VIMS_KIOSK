@@ -39,6 +39,8 @@ export class ScanRLoadingComponent implements OnInit {
         localStorage.setItem("VISI_SCAN_DOC_DATA", "");
       } else if (this.mainModule === 'preAppointment') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings.id_verification;
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle = this.KIOSK_PROPERTIES.AppointmentSettings.AdditionalTitle;
+        console.log(this.KIOSK_PROPERTIES.COMMON_CONFIG);
       }
     }
   }
@@ -95,8 +97,9 @@ export class ScanRLoadingComponent implements OnInit {
                 "visDocImage": (typeof (resData['Image']) != 'undefined' ? "data:image/jpeg;base64," + resData['Image'] : ""),//resData['Image'] || resData['IDImgByte'],
               }
               if (this.mainModule === 'preAppointment') {
-                localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
-                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+                this.getAppointmentDetails(resData['PassportNo'])
+                /* localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } }); */
               } else {
                 localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
                 this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
@@ -159,11 +162,12 @@ export class ScanRLoadingComponent implements OnInit {
               "visDOCID": parseData.Param["Passport number"] ? parseData.Param["Passport number"] : parseData.Param["ID Number"],
               "visDocImage": null,
             }
-            isRead=true;
+            isRead = true;
             _this.websocket.close();
             if (_this.mainModule === 'preAppointment') {
-              localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
-              _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+              _this.getAppointmentDetails(parseData.Param["Passport number"] ? parseData.Param["Passport number"] : parseData.Param["ID Number"]);
+              /* localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+              _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } }); */
             } else {
               localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
               _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
@@ -204,8 +208,9 @@ export class ScanRLoadingComponent implements OnInit {
               "visDOCID": "12345678902",
               "visDocImage": null,
             }
-            localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
-            _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
+            _this.getAppointmentDetails("123456789012");
+            /* localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+            _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } }); */
           } else {
             let userData = {
               "visName": "visName",
@@ -216,34 +221,34 @@ export class ScanRLoadingComponent implements OnInit {
             _this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: _this.docType } });
           }
         } else {
-          if(!isRead){
-          let target_text = "";
-          target_text = _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_failed_msg;
+          if (!isRead) {
+            let target_text = "";
+            target_text = _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_failed_msg;
 
-          let documentTypes = {
-            "PASSPORT": _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_caption
-          }
-          target_text = target_text.replace(new RegExp("{{document}}", 'g'), documentTypes[this.docType]);
-          const dialogRef = _this.dialog.open(DialogAppSessionTimeOutDialog, {
-            //width: '250px',
-            data: {
-              "title": '',
-              "subTile": target_text,
-              "enbCancel": true,
-              "oktext": 'Retry',
-              "canceltext": 'Go Home'
-            },
-            disableClose: false
-          });
-          dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-              _this.SinosecureGetPassportDetail();
-            } else {
-              _this.gotoRegistrationScreen();
+            let documentTypes = {
+              "PASSPORT": _this.KIOSK_PROPERTIES.COMMON_CONFIG.checkin.Passport_caption
             }
-          });
+            target_text = target_text.replace(new RegExp("{{document}}", 'g'), documentTypes[this.docType]);
+            const dialogRef = _this.dialog.open(DialogAppSessionTimeOutDialog, {
+              //width: '250px',
+              data: {
+                "title": '',
+                "subTile": target_text,
+                "enbCancel": true,
+                "oktext": 'Retry',
+                "canceltext": 'Go Home'
+              },
+              disableClose: false
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                _this.SinosecureGetPassportDetail();
+              } else {
+                _this.gotoRegistrationScreen();
+              }
+            });
+          }
         }
-      }
       }
     }
     catch (exception) {
@@ -266,8 +271,9 @@ export class ScanRLoadingComponent implements OnInit {
               "visDocImage": (typeof (resData[16]) != 'undefined' ? "data:image/jpeg;base64," + resData[16] : ""),
             }
             if (this.mainModule === 'preAppointment') {
-              localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
-              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
+              this.getAppointmentDetails(resData[1])
+              /* localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } }); */
             } else {
               localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
               this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
@@ -313,13 +319,10 @@ export class ScanRLoadingComponent implements OnInit {
               "Address": resData["Address"] || "",
               "CardImagePath": resData["CardImagePath"] || "",
             }
-            if (this.mainModule === 'preAppointment') {
-              localStorage.setItem("VISI_SCAN_DOC_VERIFICATION_DATA", JSON.stringify(userData));
-              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
-            } else {
+
               localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(userData));
               this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.docType } });
-            }
+
           } else {
             //this.snackBar.open("Device connection failed ! Please Try Again !", "", {duration: 3000});
             this.showErrorMsg(action);
@@ -400,4 +403,120 @@ export class ScanRLoadingComponent implements OnInit {
         this.gotoRegistrationScreen();
     });
   }
+  purposes = [];
+  _getAllPurposeOfVisit() {
+    this.apiServices.localPostMethod('getPurpose', {}).subscribe((data: any) => {
+      if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
+        this.purposes = JSON.parse(data[0]["Data"]);
+        localStorage.setItem('_PURPOSE_OF_VISIT', data[0]["Data"]);
+        console.log("--- Purpose of Visit Updated");
+      }
+    },
+      err => {
+        console.log("Failed...");
+        return false;
+      });
+  }
+
+  getPurposeName(purposeId, isID) {
+    let purposeTitle = purposeId;
+    console.log(this.purposes);
+    this.purposes.forEach(element => {
+      if (element.visitpurpose_desc == purposeId || element.visitpurpose_id == purposeId) {
+        if (isID) {
+          purposeTitle = element.visitpurpose_id;
+        } else {
+          purposeTitle = element.visitpurpose_desc;
+        }
+
+        return purposeTitle;
+      }
+    });
+    return purposeTitle
+  }
+  getAppointmentDetails(APONTMNT_NRIC) {
+    document.getElementById("bodyloader").style.display = "block";
+    let prepareData: any = "";
+    APONTMNT_NRIC = APONTMNT_NRIC.replace(/\s|-/g, '');
+
+    prepareData = { "nric": APONTMNT_NRIC, "att_appointment_id": "", "ContactNo": "", "Email": "" };
+
+    console.log(JSON.stringify(prepareData));
+    this.apiServices.localPostMethod("getAptmentInformation", prepareData).subscribe((data: any) => {
+      console.log("getAppointmentDetails " + JSON.stringify(data));
+      document.getElementById("bodyloader").style.display = "none";
+      if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
+        let Data = data[0]["Data"];
+        if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 10) {
+          if (Data["Table1"] != undefined && Data["Table1"].length > 0) {
+            if (Data["Table1"].length == 1) {
+              let _app_details = Data["Table1"][0];
+              /* _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+              _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
+              _app_details['aptid'] = _app_details.ApptmentId.toString();
+              localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
+              this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } }); */
+              if (_app_details['AllowedVisits'] > 0) {
+                if (_app_details['UsedCount'] > 0 && _app_details['AllowedVisits'] <= _app_details['UsedCount']) {
+                  //<Message> = "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.";
+                  this.router.navigateByUrl('/visitorRegisType');
+                  this.dialog.open(appConfirmDialog, {
+                    width: '250px',
+                    data: { title: "The maximum number of check-ins for this appointment has been reached, so you won't be able to check-in using this appointment. Please contact host or reception desk for further assistance.", btn_ok: "Ok" }
+                  });
+                } else {
+                  _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+                  _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
+                  _app_details['aptid'] = _app_details.ApptmentId.toString();
+                  localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
+
+                  this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+
+                }
+              } else {
+                _app_details.purposeDesc = this.getPurposeName(_app_details.purpose, false);
+                _app_details.purposeId = this.getPurposeName(_app_details.purpose, true);
+                _app_details['aptid'] = _app_details.ApptmentId.toString();
+                localStorage.setItem("VISI_SCAN_DOC_DATA", JSON.stringify(_app_details));
+
+                this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: "PREAPPOINTMT" } });
+
+              }
+            } else {
+              this.router.navigate(['/appointmentList'], { queryParams: { data: JSON.stringify(Data["Table1"]) } });
+            }
+
+          } else {
+            this.router.navigateByUrl('/visitorRegisType');
+            this.dialog.open(appConfirmDialog, {
+              width: '250px',
+              data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
+            });
+          }
+        } else {
+          this.router.navigateByUrl('/visitorRegisType');
+          this.dialog.open(appConfirmDialog, {
+            width: '250px',
+            data: { title: Data["Table"][0]['description'], btn_ok: "Ok" }
+          });
+        }
+      } else {
+        this.router.navigateByUrl('/visitorRegisType');
+        this.dialog.open(appConfirmDialog, {
+          width: '250px',
+          data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
+        });
+      }
+    },
+      err => {
+        this.router.navigateByUrl('/visitorRegisType');
+        document.getElementById("bodyloader").style.display = "none";
+        this.dialog.open(appConfirmDialog, {
+          width: '250px',
+          data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
+        });
+        return false;
+      });
+  }
+
 }

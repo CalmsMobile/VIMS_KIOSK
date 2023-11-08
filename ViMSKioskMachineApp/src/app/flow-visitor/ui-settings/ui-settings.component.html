@@ -1,0 +1,29 @@
+<div style="text-align: center; padding: 20px">
+  <p
+    info-title
+    style="
+      margin: 0 auto;
+      margin-top: 5vh !important;
+      margin-bottom: 2vh !important;
+    "
+  >
+    UI-Settings
+  </p>
+  <div>
+    <div style="width: 75%; margin: 0 auto">
+      <button
+        mat-raised-button
+        my-theme-button
+        style="margin-top: 4vh; min-width: calc(100% - 100px)"
+        (click)="
+          changeOrientation(
+            KIOSK_TYPE == 'Landscape' ? 'Portrait' : 'Landscape'
+          )
+        "
+      >
+        {{ KIOSK_TYPE == "Landscape" ? "Portrait Mode" : "Landscape Mode" }}
+      </button>
+      <br />
+    </div>
+  </div>
+</div>

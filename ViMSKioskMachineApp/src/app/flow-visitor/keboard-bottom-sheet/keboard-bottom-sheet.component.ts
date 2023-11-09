@@ -29,7 +29,7 @@ export class KeboardBottomSheetComponent {
         layout: {
           default: ["1 2 3", "4 5 6", "7 8 9", "+ 0 {bksp}", "{enter}"]
         },
-        display:{
+        display: {
           '{bksp}': 'Delete',
           '{enter}': 'OK',
         },
@@ -43,6 +43,14 @@ export class KeboardBottomSheetComponent {
         onChange: input => this.onChange(input),
         onKeyPress: button => this.onKeyPress(button),
         preventMouseDownDefault: false,
+        display: {
+          '{bksp}': 'Delete',
+          '{enter}': 'OK',
+          '{tab}': 'tab',
+          '{lock}': 'caps',
+          '{shift}': 'shift',
+          '{space}': 'space',
+        },
       });
     }
     //this.keyboard.replaceInput({ inputId: "test" })

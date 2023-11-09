@@ -53,7 +53,7 @@ export class LandingComponent implements OnInit {
   ngOnInit() {
     console.log("%c ---------- Landing Screen Init: %s", AppSettings.LOG_SUCCESS, this.datePipe.transform(new Date(), 'medium'));
 
-    if (this.KIOSK_PROPERTIES.commonsetup.OperationTime.Enable) {
+    if (this.KIOSK_PROPERTIES.commonsetup.OperationTime != undefined && this.KIOSK_PROPERTIES.commonsetup.OperationTime.Enable) {
       console.log(this.checkOperationTime(this.getDayOfTheWeek(this.rxTime.getDay())));
       // Using RxJS Timer
       this.subscription = timer(0, 1000)
@@ -75,13 +75,15 @@ export class LandingComponent implements OnInit {
           let currentDate = this.datePipe.transform(currentTime, 'yyyy-MM-dd');
           const startTime = new Date(currentDate + "T" + this.appStartTime);
           const endTime = new Date(currentDate + "T" + this.appEndTime);
-
-          if (currentTime >= startTime && currentTime <= endTime) {
-            //console.log("The current time is between the start and end times.");
-            this.appStop = false;
-          } else {
-            //console.log("The current time is not between the start and end times.");
-            this.appStop = true;
+          //console.log(currentTime)
+          if (startTime && endTime) {
+            if (currentTime >= startTime && currentTime <= endTime) {
+             // console.log("The current time is between the start and end times.");
+              this.appStop = false;
+            } else {
+             // console.log("The current time is not between the start and end times.");
+              this.appStop = true;
+            }
           }
 
         });

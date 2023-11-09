@@ -9,7 +9,12 @@
     z-index: 999999999;
   "
 ></button>
-<div>
+<div
+  *ngIf="
+    this.KIOSK_PROPERTIES.commonsetup.OperationTime != undefined &&
+    this.KIOSK_PROPERTIES.commonsetup.OperationTime.Enable
+  "
+>
   <h3 info-time>{{ rxTime | date : "medium" }}</h3>
 </div>
 <div *ngIf="KIOSK_TYPE == 'Landscape'">

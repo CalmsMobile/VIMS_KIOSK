@@ -58,10 +58,14 @@
           matInput
           [(ngModel)]="APONTMNT_CODE"
           (blur)="textDataBindTemp($event.target.value, 'APONTMNT_CODE')"
-          ng-virtual-keyboard
-          ng-virtual-keyboard-layout="extended"
-          [ng-virtual-keyboard-placeholder]="
-            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentID.PlaceHolder
+          oninput="this.value = this.value.toUpperCase()"
+          (click)="
+            openKeyBoard(
+              KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentID.PlaceHolder,
+              $event.target.value,
+              $event,
+              false
+            )
           "
         />
       </mat-form-field>

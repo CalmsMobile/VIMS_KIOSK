@@ -78,6 +78,8 @@ export class AppointmentDetailComponent implements OnInit {
           console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));
           this.docType = "PREAPPOINTMT";
           let setngs = localStorage.getItem('KIOSK_PROPERTIES');
+          let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+          this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
           let OperationTime = JSON.parse(setngs).kioskSetup.commonsetup.OperationTime;
 
           if (OperationTime.Checkin_with_appointment_time && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
@@ -348,7 +350,7 @@ export class AppointmentDetailComponent implements OnInit {
       //width: '250px',
       data: {
         "title": '',
-        "subTile": "Your appointment expired!",
+        "subTile": this.KIOSK_PROPERTIES_LOCAL.bufferTimeNotMatchedAlert,
         "enbCancel": false,
         "oktext": 'ok',
         "canceltext": ''

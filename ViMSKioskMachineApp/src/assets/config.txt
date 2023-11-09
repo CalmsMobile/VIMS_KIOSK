@@ -6,6 +6,7 @@
   "serverLog":false,
   "EnablePreviousEntrycheckoutvalidation":false,
   "idVerificationFailedAlertMsg":"The identity you have provided does not match the information from your appointment. Kindly use the same identity that you used when scheduling your appointment.",
+  "bufferTimeNotMatchedAlert":"Currently, no appointments are available for check-in. Please verify your appointment time with your host or the reception desk. Please be advised that the system only allows check-ins within scheduled appointment timings.",
   "showPassNo":false,
   "passNoCaption":"Pass No.",
   "passNoPlaceHolder":"Pass No.",

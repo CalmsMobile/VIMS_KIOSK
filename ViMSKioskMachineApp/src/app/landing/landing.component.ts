@@ -78,10 +78,10 @@ export class LandingComponent implements OnInit {
           //console.log(currentTime)
           if (startTime && endTime) {
             if (currentTime >= startTime && currentTime <= endTime) {
-             // console.log("The current time is between the start and end times.");
+              // console.log("The current time is between the start and end times.");
               this.appStop = false;
             } else {
-             // console.log("The current time is not between the start and end times.");
+              // console.log("The current time is not between the start and end times.");
               this.appStop = true;
             }
           }
@@ -422,9 +422,12 @@ export class LandingComponent implements OnInit {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];
-      this.LOGO_IMG = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
+      let logo = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
+      if (logo != "")
+        this.LOGO_IMG = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
       let app_bg = this.KIOSK_PROPERTIES['commonsetup']['app_background'];
-      document.querySelector("body[app-bg]")['style']['background'] = "url('" + app_bg + "') no-repeat center";
+      if (app_bg != "")
+        document.querySelector("body[app-bg]")['style']['background'] = "url('" + app_bg + "') no-repeat center";
       this.composeRunTimeCss();
       if (this.KIOSK_PROPERTIES.WalkinSettings.card_dispenser.enable || this.KIOSK_PROPERTIES.AppointmentSettings.card_dispenser.enable) {
         this.KIOSK_AVAL_CARDS = this.KIOSK_PROPERTIES['kioskAvalCards'];

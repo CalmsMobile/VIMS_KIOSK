@@ -426,8 +426,13 @@ export class LandingComponent implements OnInit {
       if (logo != "")
         this.LOGO_IMG = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
       let app_bg = this.KIOSK_PROPERTIES['commonsetup']['app_background'];
+
       if (app_bg != "")
         document.querySelector("body[app-bg]")['style']['background'] = "url('" + app_bg + "') no-repeat center";
+      else
+        document.querySelector("body[app-bg]")['style']['background'] = "url('" + "../assets/images/bg/app_bg.jpg" + "') no-repeat center";
+      //  document.querySelector("[welcome-bg]")['style']['background'] = "url('" + welcome_background + "') no-repeat center";
+
       this.composeRunTimeCss();
       if (this.KIOSK_PROPERTIES.WalkinSettings.card_dispenser.enable || this.KIOSK_PROPERTIES.AppointmentSettings.card_dispenser.enable) {
         this.KIOSK_AVAL_CARDS = this.KIOSK_PROPERTIES['kioskAvalCards'];
@@ -491,8 +496,13 @@ export class LandingComponent implements OnInit {
     const KIOSK_BusinessCard = localStorage.getItem('KIOSK_BusinessCard');
     const KIOSK_Appointment = localStorage.getItem('KIOSK_Appointment');
     const KIOSK_ManualRegistration = localStorage.getItem('KIOSK_ManualRegistration');
+    let welcome_background = "";
+    if (this.KIOSK_PROPERTIES['commonsetup']['welcome_background'] != undefined && this.KIOSK_PROPERTIES['commonsetup']['welcome_background'] != "")
+      welcome_background = this.KIOSK_PROPERTIES['commonsetup']['welcome_background'];
+    else welcome_background = "../assets/images/bg/app_bg.jpg";
     console.log("apply image css ->>" + this.CheckIn);
     let _css = `
+    [welcome-bg]{background: url(`+ welcome_background + `) 0 0/100% 100% no-repeat !important;}
     [welcome-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header1'] + ` !important; }
     [info-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
     [info-time] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }

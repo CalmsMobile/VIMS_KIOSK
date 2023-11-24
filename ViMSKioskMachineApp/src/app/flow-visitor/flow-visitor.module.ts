@@ -26,6 +26,8 @@ export const ROUTES: Routes = [
   { path: 'visitorDetailForTemp', component: visitorDetailForTempComponent },
   { path: 'staffTemperature', component: staffTemperatureComponent },
   { path: 'visitorTemperature', component: visitorTemperatureComponent },
+  { path: 'visitorTemperature', component: visitorTemperatureComponent },
+  { path: 'barcode-verification', component: BarcodeVerificationComponent },
 ];
 import {
   MatToolbarModule,
@@ -57,6 +59,7 @@ import { AppointmentListComponent } from './appointment-list/appointment-list.co
 import { HostListComponent } from './host-list/host-list.component';
 import { KeboardBottomSheetComponent } from './keboard-bottom-sheet/keboard-bottom-sheet.component';
 import { UiSettingsComponent } from './ui-settings/ui-settings.component';
+import { BarcodeVerificationComponent, DialogRetry } from './barcode-verification/barcode-verification.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
@@ -65,7 +68,7 @@ import { UiSettingsComponent } from './ui-settings/ui-settings.component';
     AppointmentDetailComponent, BottomSheetPurposeSheet, BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
     AppointmentSuccessComponent, DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
     VisitorPreApontmntComponent, VisitorCheckoutComponent, CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
-    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent],
+    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent, BarcodeVerificationComponent, DialogRetry],
   imports: [
     RouterModule.forChild(ROUTES),
     CommonModule,
@@ -100,7 +103,8 @@ import { UiSettingsComponent } from './ui-settings/ui-settings.component';
     DialogPrepareForScanComponent1,
     DialogSuccessMessagePage,
     AppTermsAndCondtion,
-    appConfirmDialog
+    appConfirmDialog,
+    DialogRetry
   ],
 })
 export class FlowVisitorModule { }

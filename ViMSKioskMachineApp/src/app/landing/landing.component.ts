@@ -18,7 +18,8 @@ import { map, share } from "rxjs/operators";
 })
 export class LandingComponent implements OnInit {
   //@ViewChild('readStaffCard') readStaffCardElement: ElementRef;
-  LOGO_IMG = "assets/images/cus_icons/CALMS_logo.png";
+  //LOGO_IMG = "assets/images/cus_icons/CALMS_logo.png";
+  LOGO_IMG = "";
   GO_SETTINGS_COUNT: number = 0;
   KIOSK_AVAL_CARDS: number = 0;
   GO_SETTINGS_TIMER: any = null;
@@ -38,6 +39,7 @@ export class LandingComponent implements OnInit {
   appEndTime = "";
   appStop = false;
   appStopMsg = "";
+  fontFamily = "";
   constructor(
     private apiServices: ApiServices,
     private settingsServices: SettingsService,
@@ -425,13 +427,13 @@ export class LandingComponent implements OnInit {
       let logo = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
       if (logo != "")
         this.LOGO_IMG = this.KIOSK_PROPERTIES['commonsetup']['company_logo'];
+
       let app_bg = this.KIOSK_PROPERTIES['commonsetup']['app_background'];
 
       if (app_bg != "")
         document.querySelector("body[app-bg]")['style']['background'] = "url('" + app_bg + "') no-repeat center";
       else
-        document.querySelector("body[app-bg]")['style']['background'] = "url('" + "../assets/images/bg/app_bg.jpg" + "') no-repeat center";
-      //  document.querySelector("[welcome-bg]")['style']['background'] = "url('" + welcome_background + "') no-repeat center";
+        document.querySelector("body[app-bg]")['style']['background'] = "url('" + "assets/images/bg/app_bg.jpg" + "') no-repeat center";
 
       this.composeRunTimeCss();
       if (this.KIOSK_PROPERTIES.WalkinSettings.card_dispenser.enable || this.KIOSK_PROPERTIES.AppointmentSettings.card_dispenser.enable) {
@@ -496,17 +498,24 @@ export class LandingComponent implements OnInit {
     const KIOSK_BusinessCard = localStorage.getItem('KIOSK_BusinessCard');
     const KIOSK_Appointment = localStorage.getItem('KIOSK_Appointment');
     const KIOSK_ManualRegistration = localStorage.getItem('KIOSK_ManualRegistration');
+    //this.KIOSK_PROPERTIES['commonsetup']['font_family_name'] = "fantasy"
+    if (this.KIOSK_PROPERTIES['commonsetup']['font_family_name'] != undefined && this.KIOSK_PROPERTIES['commonsetup']['font_family_name'] != "") {
+      this.fontFamily = this.KIOSK_PROPERTIES['commonsetup']['font_family_name'];
+      document.querySelector("body")['style']['font-family'] = this.fontFamily;
+    }
+
     let welcome_background = "";
     if (this.KIOSK_PROPERTIES['commonsetup']['welcome_background'] != undefined && this.KIOSK_PROPERTIES['commonsetup']['welcome_background'] != "")
       welcome_background = this.KIOSK_PROPERTIES['commonsetup']['welcome_background'];
-    else welcome_background = "../assets/images/bg/app_bg.jpg";
+    else welcome_background = "assets/images/bg/app_bg.jpg";
     console.log("apply image css ->>" + this.CheckIn);
     let _css = `
     [welcome-bg]{background: url(`+ welcome_background + `) 0 0/100% 100% no-repeat !important;}
     [welcome-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header1'] + ` !important; }
     [info-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
     [info-time] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
-    [sub-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
+    [sub-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important;
+    font-family: `+ this.fontFamily + ` !important;}
     [my-theme-round-button], [my-theme-button] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] + ` !important;
       background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1'] + `) !important;
@@ -544,6 +553,7 @@ export class LandingComponent implements OnInit {
     }
     [my-reg-option-btn]{
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header1'] + ` !important;
+      font-family: `+ this.fontFamily + ` !important;
     }
     [my-reg-option-radio]{
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header1'] + ` !important;
@@ -597,7 +607,30 @@ export class LandingComponent implements OnInit {
       color:` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_txt'] + ` !important;
       background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_keyboard_btn_gtd_1'] + `) !important;
       font-size: x-large!important;
-    }`;
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    .mat-form-field{
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    button{
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    .mat-dialog-title {
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    input{
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    .mat-tab-label .mat-tab-label-content {
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    [my-reg-option-radio] {
+      font-family: `+ this.fontFamily + ` !important;
+    }
+    `;
     document.getElementById("MY_RUNTIME_CSS").innerHTML = _css;
   }
   getDayOfTheWeek(day) {

@@ -1,0 +1,41 @@
+<div loader-page style="text-align: center; padding: 30px">
+  <p info-title>Please scan your ID barcode to proceed</p>
+  <div class="loading">
+    <div class="bullet"></div>
+    <div class="bullet"></div>
+    <div class="bullet"></div>
+    <div class="bullet"></div>
+    <div class="bullet"></div>
+  </div>
+</div>
+
+<mat-form-field class="example-full-width" style="opacity: 0">
+  <input
+    #barcodeInput
+    matInput
+    maxlength="9"
+    (keydown.enter)="onKeydown($event)"
+    placeholder="Card Serial Number"
+    value=""
+    (input)="onInput(barcodeInput.value)"
+  />
+</mat-form-field>
+<div my-footer-toolbar>
+  <!-- <button
+    mat-icon-button
+    my-theme-round-button
+    (click)="takeActFor('back')"
+    style="float: left"
+  >
+    <i class="siva-icon-left-big"></i>
+  </button> -->
+
+  <button
+    mat-raised-button
+    my-theme-button
+    style="float: center"
+    (click)="takeActFor('cancel')"
+  >
+    Cancel
+  </button>
+</div>

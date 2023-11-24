@@ -73,6 +73,10 @@ export class AppointmentDetailComponent implements OnInit {
       .subscribe(params => {
         this.mainModule = localStorage.getItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE);
         this.docType = params['docType'];
+        if (this.mainModule === 'vcheckin' && this.docType == "OTHER" && params['SGID'] != undefined && params['SGID'] != "") {
+          this.aptmDetails.id = params['SGID'];
+          this.isDisableid = true;
+        }
 
         if (this.mainModule === 'preAppointment') {
           console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));

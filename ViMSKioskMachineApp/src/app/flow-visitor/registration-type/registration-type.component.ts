@@ -37,11 +37,11 @@ export class RegistrationTypeComponent implements OnInit {
   takeActFor(action: string) {
     if (action === "back") {
 
-        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.enable) {
-          this.router.navigateByUrl('/visitorAgree');
-        } else {
-          this.router.navigateByUrl('/landing');
-        }
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.T_and_C.enable) {
+        this.router.navigateByUrl('/visitorAgree');
+      } else {
+        this.router.navigateByUrl('/landing');
+      }
 
     } else if (action === "next") {
       this.openPrepareScanDocDialog();
@@ -114,7 +114,10 @@ export class RegistrationTypeComponent implements OnInit {
         } else { }
       });
     } else if (this.SEL_REGISTRATION_TYPE == 'OTHER') {
-      this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.SEL_REGISTRATION_TYPE } });
+      if (this.mainModule === 'vcheckin' && this.KIOSK_PROPERTIES.commonsetup.Enable_SGID_barcode_scan != undefined && this.KIOSK_PROPERTIES.commonsetup.Enable_SGID_barcode_scan)
+        this.router.navigateByUrl('/barcode-verification');
+      else
+        this.router.navigate(['/visitorAppointmentDetail'], { queryParams: { docType: this.SEL_REGISTRATION_TYPE } });
     }
   }
   KIOSK_PROPERTIES: any = {};

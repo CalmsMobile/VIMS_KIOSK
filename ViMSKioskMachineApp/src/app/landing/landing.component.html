@@ -32,6 +32,7 @@
         {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
       </h1>
       <img
+        *ngIf="LOGO_IMG != ''"
         style="height: 24vh; margin-top: 2vh"
         alt="Angular Logo"
         [src]="LOGO_IMG"
@@ -74,12 +75,7 @@
         sp-button-red-out1
         matRipple
         matRippleColor="rgba(255,255,255,0.1)"
-        style="
-          margin-right: 5vh;
-          text-align: center;
-          font-size: 20px;
-          font-weight: 700;
-        "
+        style="text-align: center; font-size: 20px; font-weight: 700"
         *ngIf="KIOSK_PROPERTIES.WalkinSettings.Enable"
         value="CHECKIN"
         [ngStyle]="{
@@ -97,8 +93,8 @@
           src="{{ CheckIn }}"
           onError="src ='assets/images/cus_icons/checkin.png'"
           style="
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             padding-bottom: 10px;
             margin: 0 auto;
             display: block;
@@ -112,12 +108,7 @@
         sp-button-violet-out
         matRipple
         matRippleColor="rgba(255,255,255,0.1)"
-        style="
-          margin-right: 5vh;
-          text-align: center;
-          font-size: 20px;
-          font-weight: 700;
-        "
+        style="text-align: center; font-size: 20px; font-weight: 700"
         *ngIf="KIOSK_PROPERTIES.AppointmentSettings.Enable"
         value="PREAPPOINTMT"
         [ngStyle]="{
@@ -135,8 +126,8 @@
           src="{{ Appointment }}"
           onError="src ='assets/images/cus_icons/pre_appointment.png'"
           style="
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             padding-bottom: 10px;
             margin: 0 auto;
             display: block;
@@ -150,12 +141,7 @@
         sp-button-green-out1
         matRipple
         matRippleColor="rgba(255,255,255,0.1)"
-        style="
-          margin-right: 5vh;
-          text-align: center;
-          font-size: 20px;
-          font-weight: 700;
-        "
+        style="text-align: center; font-size: 20px; font-weight: 700"
         *ngIf="KIOSK_PROPERTIES.ReqApptSettings.Enable"
         [ngStyle]="{
           'font-weight': KIOSK_PROPERTIES.ReqApptSettings.CaptionBold
@@ -172,8 +158,8 @@
           src="{{ RequestAppointment }}"
           onError="src ='assets/images/cus_icons/register.png'"
           style="
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             padding-bottom: 10px;
             margin: 0 auto;
             display: block;
@@ -187,12 +173,7 @@
         sp-button-green-out1
         matRipple
         matRippleColor="rgba(255,255,255,0.1)"
-        style="
-          margin-right: 5vh;
-          text-align: center;
-          font-size: 20px;
-          font-weight: 700;
-        "
+        style="text-align: center; font-size: 20px; font-weight: 700"
         *ngIf="
           KIOSK_PROPERTIES.CheckOutSettings != undefined &&
           KIOSK_PROPERTIES.CheckOutSettings.Enable
@@ -212,8 +193,8 @@
           src="{{ CheckOut }}"
           onError="src ='assets/images/cus_icons/checkout.png'"
           style="
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             padding-bottom: 10px;
             margin: 0 auto;
             display: block;
@@ -312,8 +293,8 @@
             src="{{ CheckIn }}"
             onError="src ='assets/images/cus_icons/checkin.png'"
             style="
-              width: 12vh;
-              height: 12vh;
+              width: 16vh;
+              height: 16vh;
               padding-bottom: 10px;
               margin: 0 auto;
               display: block;
@@ -345,8 +326,8 @@
             src="{{ Appointment }}"
             onError="src ='assets/images/cus_icons/pre_appointment.png'"
             style="
-              width: 12vh;
-              height: 12vh;
+              width: 16vh;
+              height: 16vh;
               padding-bottom: 10px;
               margin: 0 auto;
               display: block;
@@ -377,8 +358,8 @@
             src="{{ RequestAppointment }}"
             onError="src ='assets/images/cus_icons/register.png'"
             style="
-              width: 12vh;
-              height: 12vh;
+              width: 16vh;
+              height: 16vh;
               padding-bottom: 10px;
               margin: 0 auto;
               display: block;
@@ -410,8 +391,8 @@
             src="{{ CheckOut }}"
             onError="src ='assets/images/cus_icons/checkout.png'"
             style="
-              width: 12vh;
-              height: 12vh;
+              width: 16vh;
+              height: 16vh;
               padding-bottom: 10px;
               margin: 0 auto;
               display: block;

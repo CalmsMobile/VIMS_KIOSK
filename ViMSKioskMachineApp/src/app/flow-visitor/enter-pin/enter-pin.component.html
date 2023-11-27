@@ -1,0 +1,30 @@
+<div>
+  <mat-form-field
+    style="width: -webkit-fill-available"
+    appearance="outline"
+    floatLabel="auto"
+    no-padding
+    matRipple
+    matRippleColor="rgba(255,255,255,0.1)"
+    theme-border-input-small
+    app-detail-grid-input
+  >
+    <mat-label>{{ "Enter pin " }}</mat-label>
+    <input
+      matInput
+      theme-input-button
+      (keyup)="onKey(box.value, $event)"
+      [(ngModel)]="pin"
+      #box
+      type="password"
+      maxlength="6"
+      minlength="6"
+    />
+  </mat-form-field>
+  <div style="text-align: center">
+    <div class="simple-keyboard"></div>
+  </div>
+  <h2 style="text-align: center" (click)="updateSettings()">
+    <u>Sync Settings</u>
+  </h2>
+</div>

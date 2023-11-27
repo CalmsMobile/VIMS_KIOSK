@@ -25,6 +25,8 @@ import { QuestionnariesComponent } from './questionnaries/questionnaries.compone
 import { MatVideoModule } from 'mat-video';
 import { HostListComponent } from './flow-visitor/host-list/host-list.component';
 import { KeboardBottomSheetComponent } from './flow-visitor/keboard-bottom-sheet/keboard-bottom-sheet.component';
+import { EnterPinComponent } from './flow-visitor/enter-pin/enter-pin.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +62,6 @@ import { KeboardBottomSheetComponent } from './flow-visitor/keboard-bottom-sheet
   providers: [ApiServices, DatePipe, SettingsService],
   bootstrap: [AppComponent],
 
-  entryComponents: [DialogAppCommonDialog, DialogAppSessionTimeOutDialog, HostListComponent, KeboardBottomSheetComponent]
+  entryComponents: [DialogAppCommonDialog, DialogAppSessionTimeOutDialog, HostListComponent, KeboardBottomSheetComponent,EnterPinComponent]
 })
 export class AppModule { }

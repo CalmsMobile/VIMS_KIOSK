@@ -3,13 +3,14 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { ApiServices } from 'src/services/apiService';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialog, MatBottomSheet } from '@angular/material';
 import { SettingsService } from 'src/services/settings.service';
 import { DialogAppCommonDialog } from '../app.common.dialog';
 import { DialogSuccessMessagePage } from '../flow-visitor/appointment-success/appointment-success.component';
 import { DialogPrepareForScanComponent } from '../flow-visitor/registration-type/registration-type.component';
 import { Subscription, timer } from 'rxjs';
 import { map, share } from "rxjs/operators";
+import { EnterPinComponent } from '../flow-visitor/enter-pin/enter-pin.component';
 
 @Component({
   selector: 'app-landing',
@@ -47,7 +48,8 @@ export class LandingComponent implements OnInit {
     private elRef: ElementRef,
     public snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private router: Router) {
+    private router: Router,
+    private bottomSheet: MatBottomSheet) {
 
     this._clearAllLocalData();
     this._updateKioskSettings();
@@ -408,13 +410,31 @@ export class LandingComponent implements OnInit {
       clearTimeout(this.GO_SETTINGS_TIMER);
       this.snackBar.dismiss();
       document.getElementById("bodyloader").style.display = "none";
-      this.router.navigateByUrl('/getKioskCode');
+      this.openEnterPinBottomSheet();
+      //this.router.navigateByUrl('/getKioskCode');
     }
     if (this.GO_SETTINGS_COUNT > 5 && this.GO_SETTINGS_COUNT < numOfClicks) {
       this.snackBar.open("Need " + (numOfClicks - this.GO_SETTINGS_COUNT) + " more clicks go to Settings", "", { duration: 2000 });
     }
   }
+  openEnterPinBottomSheet() {
+    const host = this.bottomSheet.open(EnterPinComponent, {
+      panelClass: 'enter-pin-bottom-sheet',
+      data: {
+        pin: this.KIOSK_PROPERTIES.commonsetup.password_pin != undefined && this.KIOSK_PROPERTIES.commonsetup.password_pin != "" ? this.KIOSK_PROPERTIES.commonsetup.password_pin : "123456"
+      }
 
+    });
+    host.afterDismissed().subscribe(result => {
+      if (result != undefined) {
+        if (result) {
+          this._updateKioskSettings();
+          //this.openEnterPinBottomSheet();
+        }
+
+      }
+    });
+  }
   KIOSK_PROPERTIES: any = {};
   _updateKioskSettings() {
     let kioskType = localStorage.getItem('KIOSK_TYPE');

@@ -60,6 +60,7 @@ import { HostListComponent } from './host-list/host-list.component';
 import { KeboardBottomSheetComponent } from './keboard-bottom-sheet/keboard-bottom-sheet.component';
 import { UiSettingsComponent } from './ui-settings/ui-settings.component';
 import { BarcodeVerificationComponent, DialogRetry } from './barcode-verification/barcode-verification.component';
+import { EnterPinComponent } from './enter-pin/enter-pin.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
@@ -68,7 +69,7 @@ import { BarcodeVerificationComponent, DialogRetry } from './barcode-verificatio
     AppointmentDetailComponent, BottomSheetPurposeSheet, BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
     AppointmentSuccessComponent, DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
     VisitorPreApontmntComponent, VisitorCheckoutComponent, CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
-    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent, BarcodeVerificationComponent, DialogRetry],
+    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent, BarcodeVerificationComponent, DialogRetry, EnterPinComponent],
   imports: [
     RouterModule.forChild(ROUTES),
     CommonModule,

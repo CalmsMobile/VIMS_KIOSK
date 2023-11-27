@@ -10,14 +10,16 @@
       z-index: 999999999;
     "
   ></button>
-  <div
+
+  <h3
+    info-time
     *ngIf="
       this.KIOSK_PROPERTIES.commonsetup.OperationTime != undefined &&
       this.KIOSK_PROPERTIES.commonsetup.OperationTime.Enable
     "
   >
-    <h3 info-time>{{ rxTime | date : "medium" }}</h3>
-  </div>
+    {{ rxTime | date : "medium" }}
+  </h3>
   <div *ngIf="KIOSK_TYPE == 'Landscape'">
     <!-- <div my-headerbar-homeButton *ngIf="KIOSK_PROPERTIES.modules.card_dispenser.enable">
   <button disabled mat-icon-button my-theme-round-button [matBadge]="KIOSK_AVAL_CARDS" matBadgePosition="before"
@@ -219,6 +221,7 @@
         {{ KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 }}
       </h1>
       <img
+        *ngIf="LOGO_IMG != ''"
         style="height: 15vh; margin-top: 2vh"
         alt="Angular Logo"
         [src]="LOGO_IMG"

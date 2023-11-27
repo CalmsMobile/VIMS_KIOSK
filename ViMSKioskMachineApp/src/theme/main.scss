@@ -1121,6 +1121,13 @@ app-scanqrcode {
     display: none !important;
   }
 }
+.enter-pin-bottom-sheet {
+  //min-height: 100vh !important;
+  max-height: 100vh !important;
+  min-width: 30vw !important;
+  max-width: 30vw !important;
+  margin-top: 80px;
+}
 .search-host-bottom-sheet {
   min-height: 100vh !important;
   max-height: 100vh !important;
@@ -1141,11 +1148,15 @@ app-scanqrcode {
   margin-top: 80px;
 }
 [info-time] {
-  font-size: 2.8vmin;
-  color: theme-colors("textColors", "primaryWhite");
+  font-size: 2.3vmin;
+  color: white;
   margin: 1vh auto;
-  margin-left: 10px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
-  float: left;
+  float: right;
+  right: 3px;
+  position: fixed;
+  bottom: -1vh;
 }
 @import "simple-keyboard/build/css/index.css";

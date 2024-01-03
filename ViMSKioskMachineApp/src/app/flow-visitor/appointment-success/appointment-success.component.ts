@@ -1318,6 +1318,7 @@ export class AppointmentSuccessComponent implements OnInit {
         appSettings: {
           allowSMS: this.KIOSK_PROPERTIES.COMMON_CONFIG.SMS.enable,
           allowEmail: this.KIOSK_PROPERTIES.COMMON_CONFIG.Email.Enable_Checkin_Email,
+          printerName: this.KIOSK_PROPERTIES.COMMON_CONFIG.printer.receipt_printer_name,
         }
       }
       console.log(JSON.stringify(uploadArray));

@@ -67,7 +67,8 @@ export class KeboardBottomSheetComponent {
     /* this.value = input;
     console.log("Input changed", input); */
     setTimeout(() => {
-      this.inputId.nativeElement.value = input.toUpperCase();
+      //this.inputId.nativeElement.value = input.toUpperCase();
+      this.inputId.nativeElement.value = input;
       //this.box.nativeElement.focus();
       //this.onKey(this.box.nativeElement.value, null)
     });

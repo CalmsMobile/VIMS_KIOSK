@@ -58,7 +58,8 @@ export class HostListComponent implements OnInit {
 
   onChange = (input: string) => {
     setTimeout(() => {
-      this.box.nativeElement.value = input.toUpperCase();
+      this.box.nativeElement.value = input;
+      //this.box.nativeElement.value = input.toUpperCase();
       this.box.nativeElement.focus();
       this.onKey(this.box.nativeElement.value, null)
     });

@@ -195,6 +195,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.id = doc_detail["id"];
       this.aptmDetails.company = doc_detail["company"] || "";
       this.aptmDetails.category = doc_detail["category"] || "";
+      this.aptmDetails.categoryId = doc_detail["categoryId"] || "";
       this.aptmDetails.countryId = doc_detail["Country"] || "";
       this.aptmDetails.genderId = doc_detail["Gender"] || "";
       this.aptmDetails.contact = doc_detail["contact"] || "";
@@ -226,8 +227,9 @@ export class AppointmentDetailComponent implements OnInit {
         this.isDisablecompany = true;
       }
       if (this.aptmDetails.category) {
-        this.aptmDetails.categoryId = this.aptmDetails.category;
-        if (localStorage.getItem('_CATEGORY_OF_VISIT') != undefined && localStorage.getItem('_CATEGORY_OF_VISIT') != '') {
+        debugger
+        /*this.aptmDetails.categoryId = this.aptmDetails.category;
+         if (localStorage.getItem('_CATEGORY_OF_VISIT') != undefined && localStorage.getItem('_CATEGORY_OF_VISIT') != '') {
           const categroyList = JSON.parse(localStorage.getItem('_CATEGORY_OF_VISIT'));
           for (let i = 0; i < categroyList.length; i++) {
             if (categroyList[i].visitor_ctg_id === this.aptmDetails.category || categroyList[i].visitor_ctg_desc === this.aptmDetails.category) {
@@ -236,7 +238,7 @@ export class AppointmentDetailComponent implements OnInit {
               break;
             }
           }
-        }
+        } */
         this.isDisablecategory = true;
 
         let Questionnaries = false;

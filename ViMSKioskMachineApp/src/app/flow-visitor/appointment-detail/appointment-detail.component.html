@@ -46,7 +46,7 @@
           readonly
           theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
-          oninput="this.value = this.value.toUpperCase()"
+
           [disabled]="isDisablecategory"
           [(ngModel)]="aptmDetails.category"
         />
@@ -73,7 +73,7 @@
           readonly
           theme-input-button
           [required]="true"
-          oninput="this.value = this.value.toUpperCase()"
+
           [disabled]="isDisableBranch"
           [(ngModel)]="aptmDetails.branchName"
         />
@@ -105,7 +105,7 @@
           readonly
           theme-input-button
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
-          oninput="this.value = this.value.toUpperCase()"
+
           [disabled]="
             isDisableHost || (showMultiBranch && !aptmDetails.branchName)
           "
@@ -150,7 +150,7 @@
           #box
           (keyup)="onKey(box.value, $event)"
           (blur)="textDataBindTemp($event.target.value, 'id')"
-          oninput="this.value = this.value.toUpperCase()"
+
           (focusout)="itFocusOut($event.target.value, 'id')"
           (ngModelChange)="onChange($event)"
           [minlength]="VISITOR_ID_MIN_LENGTH"
@@ -197,7 +197,7 @@
           (blur)="textDataBindTemp($event.target.value, 'name')"
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MinLength"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MaxLength"
-          oninput="this.value = this.value.toUpperCase()"
+
           spellcheck="false"
           [disabled]="isDisablename"
 
@@ -233,7 +233,7 @@
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
           [(ngModel)]="aptmDetails.company"
           (blur)="textDataBindTemp($event.target.value, 'company')"
-          oninput="this.value = this.value.toUpperCase()"
+
           spellcheck="false"
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength"
@@ -275,7 +275,7 @@
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength"
           [disabled]="isDisablecontact"
-          oninput="this.value = this.value.toUpperCase()"
+
 
           (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, $event.target.value, $event,true)"
         />
@@ -352,7 +352,7 @@
           [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength"
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength"
           [disabled]="isDisablevehicle"
-          oninput="this.value = this.value.toUpperCase()"
+
 
           (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder, $event.target.value, $event,false)"
         />
@@ -380,7 +380,7 @@
           spellcheck="false"
           [minlength]="KIOSK_PROPERTIES_LOCAL.passNoMinLength"
           [maxlength]="KIOSK_PROPERTIES_LOCAL.passNoMaxLength"
-          oninput="this.value = this.value.toUpperCase()"
+
 
           (click)="openKeyBoard(KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder, $event.target.value, $event,false)"
         />
@@ -416,7 +416,7 @@
           [(ngModel)]="aptmDetails.purpose"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory"
           [disabled]="isDisablePurpose"
-          oninput="this.value = this.value.toUpperCase()"
+
           spellcheck="false"
         />
         <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
@@ -451,7 +451,7 @@
           theme-input-button
           [(ngModel)]="aptmDetails.gender"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory"
-          oninput="this.value = this.value.toUpperCase()"
+
           [disabled]="isDisableGender"
           spellcheck="false"
         />
@@ -487,7 +487,7 @@
           theme-input-button
           [(ngModel)]="aptmDetails.country"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory"
-          oninput="this.value = this.value.toUpperCase()"
+          
           [disabled]="isDisableCountry"
           spellcheck="false"
         />
@@ -523,7 +523,7 @@
           theme-input-button
           [(ngModel)]="aptmDetails.meetingHours"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory"
-          oninput="this.value = this.value.toUpperCase()"
+
           spellcheck="false"
         />
         <mat-icon matSuffix>keyboard_arrow_down</mat-icon>

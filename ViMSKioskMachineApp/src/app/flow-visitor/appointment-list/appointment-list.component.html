@@ -1,9 +1,19 @@
-<div style="text-align:center;padding:30px;">
+<div style="text-align: center; padding: 30px">
   <p info-title margin-bottom>
-    Total Appointments {{listOFAppointments.length}}
+    Total Appointments {{ listOFAppointments.length }}
   </p>
   <div class="bg-div">
-    <table my-appointment-table style="width: 100%; background: white; padding-left: 0;padding-right: 0;" *ngIf="listOFAppointments.length > 0">
+    <table
+      my-appointment-table
+      style="
+        width: 100%;
+        background: white;
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 100px;
+      "
+      *ngIf="listOFAppointments.length > 0"
+    >
       <!-- <thead>
         <tr>
           <th class="title"><u>Host</u></th>
@@ -25,19 +35,37 @@
           <td class="subtitle"><button mat-raised-button class = "my-theme-alt-button">Select</button></td>
         </tr>
       </tbody> -->
-      <tr style="border-radius: 20%;" *ngFor="let appointments of listOFAppointments; let i = index;"
-        (click)="takeActFor('confirm', appointments)">
+      <tr
+        style="border-radius: 20%"
+        *ngFor="let appointments of listOFAppointments; let i = index"
+        (click)="takeActFor('confirm', appointments)"
+      >
         <td>
           <div class="row">
             <div class="columnleft">
-              <h1 class="title">Host: <span class="subtitle">{{appointments.host_name}}</span></h1>
-              <h1 class="title" *ngIf="appointments.purposeDesc" >Purpose: <span class="subtitle">{{appointments.purposeDesc}}</span></h1>
-              <h1 class="title" *ngIf="appointments.MeetingLoc" >Meeting Location: <span class="subtitle">{{appointments.MeetingLoc}}</span></h1>
-              <h1 class="title">Start: <span class="subtitle">{{appointments.START_TIME}}</span></h1>
-              <h1 class="title">End: <span class="subtitle">{{appointments.END_TIME}}</span></h1>
+              <h1 class="title">
+                Host: <span class="subtitle">{{ appointments.host_name }}</span>
+              </h1>
+              <h1 class="title" *ngIf="appointments.purposeDesc">
+                Purpose:
+                <span class="subtitle">{{ appointments.purposeDesc }}</span>
+              </h1>
+              <h1 class="title" *ngIf="appointments.MeetingLoc">
+                Meeting Location:
+                <span class="subtitle">{{ appointments.MeetingLoc }}</span>
+              </h1>
+              <h1 class="title">
+                Start:
+                <span class="subtitle">{{ appointments.START_TIME }}</span>
+              </h1>
+              <h1 class="title">
+                End: <span class="subtitle">{{ appointments.END_TIME }}</span>
+              </h1>
             </div>
             <div class="columnright">
-              <button mat-raised-button class = "my-theme-alt-button">Select</button>
+              <button mat-raised-button class="my-theme-alt-button">
+                Select
+              </button>
             </div>
           </div>
 
@@ -52,17 +80,21 @@
             <p class="datetim">END TIME - {{appointments.END_TIME}}</p>
 
           </div> -->
-
         </td>
       </tr>
     </table>
-    <div info-title *ngIf="listOFAppointments.length <= 0"> No appointments found </div>
+    <div info-title *ngIf="listOFAppointments.length <= 0">
+      No appointments found
+    </div>
   </div>
 </div>
 <div my-footer-toolbar>
-  <button mat-icon-button my-theme-round-button (click)="takeActFor('back', '')" style="float: left;">
+  <button
+    mat-icon-button
+    my-theme-round-button
+    (click)="takeActFor('back', '')"
+    style="float: left"
+  >
     <i class="siva-icon-left-big"></i>
   </button>
-
-
 </div>

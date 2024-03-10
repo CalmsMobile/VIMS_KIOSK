@@ -1,0 +1,56 @@
+.example-radio-button {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+[hideTab0Flag]{
+.class-hide-tab0 div.mat-tab-label:nth-child(1) {
+  display: none;
+}
+}
+
+/* ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  color: rgb(255, 255, 255);
+  font-size: 28px;
+  font-weight: bold;
+}
+
+::ng-deep .mat-tab-list .mat-tab-labels {
+  color: rgb(255, 255, 255);
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 24px;
+}
+
+::ng-deep .mat-ink-bar {
+  background-color: #d65600 !important;
+  //width: 300px !important;
+  height: 2pt !important;
+} */
+/* Styles for tab labels */
+.mat-tab-label {
+   //min-width: 25px !important;
+   padding: 15px;
+   background-color: rgb(65, 63, 63);
+   color: rgb(255, 255, 255);
+   font-weight: bold;
+   font-size: 28px;
+
+}
+
+/* Styles for the active tab label */
+.mat-tab-label.mat-tab-label-active {
+ //min-width: 25px !important;
+ padding: 15px;
+ background-color: white;
+ color: rgb(0, 0, 0);
+ font-weight: bold;
+ font-size: 28px;
+}
+
+/* Styles for the ink bar */
+.mat-ink-bar {
+  background-color: #d60000 !important;
+  height: 3pt !important;
+}

@@ -41,6 +41,7 @@ export class LandingComponent implements OnInit {
   appStop = false;
   appStopMsg = "";
   fontFamily = "";
+  HostEnrolment: string;
   constructor(
     private apiServices: ApiServices,
     private settingsServices: SettingsService,
@@ -386,6 +387,9 @@ export class LandingComponent implements OnInit {
 
     } else if (action === "vcheckout") {
       this.router.navigateByUrl('/visitorCheckout');
+    } else if (action === 'HostEnrolment') {
+      localStorage.setItem(AppSettings.LOCAL_STORAGE.MAIN_MODULE, action);
+      this.router.navigate(['/host-enrolment'], { queryParams: { docType: "HostEnrolment" } });
     }
   }
   _clearAllLocalData() {
@@ -512,6 +516,7 @@ export class LandingComponent implements OnInit {
     this.RequestAppointment = localStorage.getItem('KIOSK_RequestAppointment');
     this.CheckIn = localStorage.getItem('KIOSK_WalkinRegistration');
     this.CheckOut = localStorage.getItem('KIOSK_CheckOut');
+    this.HostEnrolment = localStorage.getItem('KIOSK_HostEnrolIcon');
     const MyKad = localStorage.getItem('KIOSK_MyKad');
     const KIOSK_IDScanner = localStorage.getItem('KIOSK_IDScanner');
     const KIOSK_Passport = localStorage.getItem('KIOSK_Passport');

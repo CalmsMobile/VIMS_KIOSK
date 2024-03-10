@@ -1,0 +1,47 @@
+<div style="text-align: center; padding: 30px">
+  <p info-title margin-bottom>
+    {{ '' }}
+  </p>
+
+  <div style="text-align: center; margin-top: 15vh">
+    <div style="vertical-align: top">
+      <p sub-title>
+        {{
+        host.Name
+        }}
+      </p>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <img (click)="takeVistorProfilePicture('',image)" *ngIf="image != null" [src]="image" class="visitorImage" style="
+        width: 200px;
+        height: 200px;
+        max-width: 200px;
+        min-width: 200px;
+        border-radius: 50%;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+      " onError="src ='assets/images/cus_icons/user.png'" />
+    </div>
+    <button mat-raised-button my-theme-button (click)="takeVistorProfilePicture('',image)" style="margin-top: 20px;">
+      Update Photo
+    </button>
+
+  </div>
+</div>
+<div my-footer-toolbar>
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left">
+    <i class="siva-icon-left-big"></i>
+  </button>
+  <button mat-raised-button my-theme-button [disabled]="
+      !isUpdateReady
+    " style="float: right" (click)="takeActFor('Update')">
+    {{
+    'Update'
+    }}
+  </button>
+</div>

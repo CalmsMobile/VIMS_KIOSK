@@ -28,6 +28,8 @@ export const ROUTES: Routes = [
   { path: 'visitorTemperature', component: visitorTemperatureComponent },
   { path: 'visitorTemperature', component: visitorTemperatureComponent },
   { path: 'barcode-verification', component: BarcodeVerificationComponent },
+  { path: 'host-enrolment', component: HostEnrolmentComponent },
+  { path: 'host-view', component: HostViewComponent },
 ];
 import {
   MatToolbarModule,
@@ -61,15 +63,17 @@ import { KeboardBottomSheetComponent } from './keboard-bottom-sheet/keboard-bott
 import { UiSettingsComponent } from './ui-settings/ui-settings.component';
 import { BarcodeVerificationComponent, DialogRetry } from './barcode-verification/barcode-verification.component';
 import { EnterPinComponent } from './enter-pin/enter-pin.component';
+import { HostEnrolmentComponent } from './host-enrolment/host-enrolment.component';
+import { HostViewComponent, takeHostPictureDialog } from './host-view/host-view.component';
 
 @NgModule({
   declarations: [FlowVisitorComponent, HostMobileComponent, DialogMobileVerifyComponent,
     RegistrationTypeComponent, DialogPrepareForScanComponent, DialogPrepareForScanComponent1,
     ScanRLoadingComponent, AppTermsAndCondtion, DialogAlertBox, BottomSheetHoursSelect,
-    AppointmentDetailComponent, BottomSheetPurposeSheet, BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,
+    AppointmentDetailComponent, BottomSheetPurposeSheet, BottomSheetBranchSelect, DialogVisitorAlreadyExist, takeVisitorPictureDialog,takeHostPictureDialog,
     AppointmentSuccessComponent, DialogSuccessMessagePage, VisitorSummaryComponent, appConfirmDialog,
     VisitorPreApontmntComponent, VisitorCheckoutComponent, CheckoutSuccessComponent, BottomSheetCategorySelect, BottomSheetHostSelect, staffDetailForTempComponent,
-    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent, BarcodeVerificationComponent, DialogRetry, EnterPinComponent],
+    staffTemperatureComponent, visitorDetailForTempComponent, visitorTemperatureComponent, BottomSheetCountrySelect, BottomSheetGenderSelect, AppointmentListComponent, HostListComponent, KeboardBottomSheetComponent, UiSettingsComponent, BarcodeVerificationComponent, DialogRetry, EnterPinComponent, HostEnrolmentComponent, HostViewComponent],
   imports: [
     RouterModule.forChild(ROUTES),
     CommonModule,
@@ -98,7 +102,7 @@ import { EnterPinComponent } from './enter-pin/enter-pin.component';
     BottomSheetGenderSelect,
     BottomSheetHoursSelect,
     DialogAlertBox,
-    DialogVisitorAlreadyExist, takeVisitorPictureDialog,
+    DialogVisitorAlreadyExist, takeVisitorPictureDialog,takeHostPictureDialog,
     DialogMobileVerifyComponent,
     DialogPrepareForScanComponent,
     DialogPrepareForScanComponent1,

@@ -17,7 +17,7 @@ export class GetkioskcodeComponent implements OnInit {
   KIOSK_CODE: any;
   KIOSK_AVAL_CARDS: number = 0;
   UPDATE_SETTINGS_SHOW: boolean = true;
-  KIOSK_TYPE:string = AppSettings.KIOSK_TYPE_LANDSCAPE;
+  KIOSK_TYPE: string = AppSettings.KIOSK_TYPE_LANDSCAPE;
   constructor(private router: Router,
     private route: ActivatedRoute,
     private settingServices: SettingsService,
@@ -170,7 +170,7 @@ export class GetkioskcodeComponent implements OnInit {
     let kioskType = localStorage.getItem('KIOSK_TYPE');
     if (kioskType != undefined) {
       this.KIOSK_TYPE = kioskType;
-    }else{
+    } else {
       this.changeOrientation(AppSettings.KIOSK_TYPE_LANDSCAPE);
     }
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
@@ -190,6 +190,7 @@ export class GetkioskcodeComponent implements OnInit {
     localStorage.setItem('KIOSK_BusinessCard', '');
     localStorage.setItem('KIOSK_Appointment', '');
     localStorage.setItem('KIOSK_ManualRegistration', '');
+    localStorage.setItem('KIOSK_HostEnrolIcon', '');
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];

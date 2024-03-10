@@ -1,6 +1,6 @@
 export const AppSettings = Object.freeze({
-  KIOSK_TYPE_PORTRAIT:"Portrait",
-  KIOSK_TYPE_LANDSCAPE:"Landscape",
+  KIOSK_TYPE_PORTRAIT: "Portrait",
+  KIOSK_TYPE_LANDSCAPE: "Landscape",
   APP_DEFAULT_SETTIGS: {
     "APP_TYPE": "debug",
     "SEL_LANGUAGE": "en",
@@ -85,6 +85,9 @@ export const AppSettings = Object.freeze({
     "VisitorAckSave": "api/vims/VisitorAckSave",
     "GetAllBranch": "api/kiosk/GetAllBranch",
     "GetAutoApprovalOption": "api/kiosk/GetAutoApprovalOption",
+
+    "SearchHostBy": "api/kiosk/SearchHostBy",
+    "UpdateHostPhoto": "api/kiosk/UpdateHostPhoto",
 
     "AddLogs": "api/Portal/AddLogs"
 

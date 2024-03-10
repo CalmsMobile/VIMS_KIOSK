@@ -1,0 +1,39 @@
+<div style="text-align: center; padding: 30px">
+  <p info-title margin-bottom>
+    {{ KIOSK_PROPERTIES.COMMON_CONFIG.Caption }}
+  </p>
+
+  <div style="text-align: center; margin-top: 15vh">
+    <div style="vertical-align: top">
+      <p sub-title>
+        {{
+        KIOSK_PROPERTIES.COMMON_CONFIG.SearchHostBy == 'id'?'Enter your ID':'Enter your smart card number'
+        }}
+      </p>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big
+        style="display: block; width: 50% !important"
+        (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.SearchHostBy,searchText)">
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.SearchHostBy
+          }}</mat-label>
+        <input matInput [(ngModel)]="searchText" oninput="this.value = this.value.toUpperCase()" />
+      </mat-form-field>
+
+    </div>
+
+  </div>
+</div>
+<div my-footer-toolbar>
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left">
+    <i class="siva-icon-left-big"></i>
+  </button>
+  <button mat-raised-button my-theme-button [disabled]="
+      searchText.length == 0
+    " style="float: right" (click)="takeActFor('getHostDetail')">
+    {{
+    'Get Host Details'
+    }}
+  </button>
+</div>

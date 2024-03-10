@@ -132,6 +132,7 @@ export class EnterPinComponent implements OnInit {
     localStorage.setItem('KIOSK_BusinessCard', '');
     localStorage.setItem('KIOSK_Appointment', '');
     localStorage.setItem('KIOSK_ManualRegistration', '');
+    localStorage.setItem('KIOSK_HostEnrolIcon', '');
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');
     if (setngs != undefined && setngs != "") {
       this.KIOSK_PROPERTIES = JSON.parse(setngs)['kioskSetup'];

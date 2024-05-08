@@ -12,5 +12,6 @@
   "passNoPlaceHolder":"Pass No.",
   "passNoMandatory":true,
   "passNoMinLength":1,
-  "passNoMaxLength":10
+  "passNoMaxLength":10,
+  "allowedContactStartingNumbers":"5"
 }

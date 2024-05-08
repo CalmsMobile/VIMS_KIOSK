@@ -1639,7 +1639,35 @@ export class AppointmentDetailComponent implements OnInit {
     host.afterDismissed().subscribe(result => {
       if (result != undefined) {
         console.log(result);
-        event.target.value = result;
+        if (isNumeric && this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.length > 0) {
+          if (this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]) && result.length >= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength) {
+            event.target.value = result;
+          } else {
+            var msg = '';
+            if (!this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]) && result.length <= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
+              msg = 'Please enter valid contact number (number should start with ' + this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.split(',').join(' or ') + ') Please enter minimum ' + this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength + ' character';
+            else if (!this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]))
+              msg = 'Please enter valid contact number (number should start with ' + this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.split(',').join(' or ') + ')';
+            else if (result.length <= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
+              msg = 'Please enter minimum ' + this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength + ' character';
+            const dialogRef = this.dialog.open(DialogAppCommonDialog, {
+              //width: '250px',
+              data: {
+                "title": 'Notification',
+                "subTile": msg,
+                "enbCancel": false,
+                "oktext": 'Ok',
+                "canceltext": ''
+              },
+              disableClose: false
+            });
+            dialogRef.afterClosed().subscribe(result1 => {
+              this.openKeyBoard(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, result, event, true)
+            });
+          }
+
+        } else
+          event.target.value = result;
       }
     });
   }

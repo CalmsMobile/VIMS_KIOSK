@@ -1627,6 +1627,10 @@ export class AppointmentDetailComponent implements OnInit {
     }
   }
   openKeyBoard(field_caption, value, event: any, isNumeric) {
+    if(this.KIOSK_PROPERTIES_LOCAL == undefined){
+      let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+      this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+    }
 
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
       panelClass: isNumeric ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
@@ -1643,13 +1647,13 @@ export class AppointmentDetailComponent implements OnInit {
           if (this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]) && result.length >= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength) {
             event.target.value = result;
           } else {
-            var msg = '';
-            if (!this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]) && result.length <= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
+            var msg = 'Please enter a valid contact number';
+            /* if (!this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]) && result.length <= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
               msg = 'Please enter valid contact number (number should start with ' + this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.split(',').join(' or ') + ') Please enter minimum ' + this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength + ' character';
             else if (!this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.includes(result[0]))
               msg = 'Please enter valid contact number (number should start with ' + this.KIOSK_PROPERTIES_LOCAL.allowedContactStartingNumbers.split(',').join(' or ') + ')';
             else if (result.length <= this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
-              msg = 'Please enter minimum ' + this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength + ' character';
+              msg = 'Please enter minimum ' + this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength + ' character'; */
             const dialogRef = this.dialog.open(DialogAppCommonDialog, {
               //width: '250px',
               data: {

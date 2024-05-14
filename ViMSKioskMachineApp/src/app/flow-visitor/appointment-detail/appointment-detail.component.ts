@@ -68,6 +68,12 @@ export class AppointmentDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.NUMBER_OF_INPUTS || this.NUMBER_OF_INPUTS === 0) {
+      this._updateKioskSettings();
+      if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && !this.aptmDetails.purpose) {
+        this.aptmDetails.purpose = this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.default;
+      }
+    }
     this.route
       .queryParams
       .subscribe(params => {
@@ -79,6 +85,7 @@ export class AppointmentDetailComponent implements OnInit {
         }
 
         if (this.mainModule === 'preAppointment') {
+          debugger
           console.log(localStorage.getItem("VISI_SCAN_DOC_DATA"));
           this.docType = "PREAPPOINTMT";
           let setngs = localStorage.getItem('KIOSK_PROPERTIES');
@@ -125,6 +132,9 @@ export class AppointmentDetailComponent implements OnInit {
               this.showAppointmentExpiredAlert();
             }
 
+          } else {
+
+
           }
         } else {
           const resumeData = params['resumeData'];
@@ -151,12 +161,7 @@ export class AppointmentDetailComponent implements OnInit {
         // }
       });
 
-    if (!this.NUMBER_OF_INPUTS || this.NUMBER_OF_INPUTS === 0) {
-      this._updateKioskSettings();
-      if (!this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory && !this.aptmDetails.purpose) {
-        this.aptmDetails.purpose = this.KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.default;
-      }
-    }
+
     this._initUpdateScanDataValues();
     this._updateVisitorCheckINSettings();
     this._getAllPurposeOfVisit();
@@ -180,7 +185,7 @@ export class AppointmentDetailComponent implements OnInit {
 
     } else if (this.docType == "PREAPPOINTMT" && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
-
+      debugger
       let doc_detail = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_DATA"));
       /* if (this.KIOSK_PROPERTIES.COMMON_CONFIG.id_verification.enable && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != undefined && localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA") != '') {
         let id = JSON.parse(localStorage.getItem("VISI_SCAN_DOC_VERIFICATION_DATA"))['visDOCID'];
@@ -227,7 +232,7 @@ export class AppointmentDetailComponent implements OnInit {
         this.isDisablecompany = true;
       }
       if (this.aptmDetails.category) {
-        debugger
+
         /*this.aptmDetails.categoryId = this.aptmDetails.category;
          if (localStorage.getItem('_CATEGORY_OF_VISIT') != undefined && localStorage.getItem('_CATEGORY_OF_VISIT') != '') {
           const categroyList = JSON.parse(localStorage.getItem('_CATEGORY_OF_VISIT'));
@@ -286,6 +291,32 @@ export class AppointmentDetailComponent implements OnInit {
           }
         }
         this.isDisableGender = true;
+
+      }
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentQuickCheckIn && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentQuickCheckIn.enable) {
+
+        if (this.aptmDetails.visitor_blacklist === 'true' || this.aptmDetails.visitor_blacklist === true || this.aptmDetails.visitor_blacklist === 1 || this.aptmDetails.visitor_blacklist === '1') {
+          const dialogRef = this.dialog.open(DialogAppCommonDialog, {
+            //width: '250px',
+            data: {
+              "title": "Notification", "subTile": "You are not authorize to enter.Please contact host or receiptionist.",
+              "enbCancel": false, "oktext": "Ok", "canceltext": "Cancel"
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.router.navigateByUrl('/landing');
+          });
+          return;
+        }
+
+        this.aptmDetails.visitorB64Image = '';
+        if (this.KIOSK_PROPERTIES.commonsetup.Enable_PDPA) {
+
+          this.aptmDetails.id = this.aptmDetails.id.slice(-4) + "_" + this.aptmDetails.name.replace(/\s/g, "");;
+          console.log("this.aptmDetails.id == ", this.aptmDetails.id)
+        }
+        this.confirmAfterTakePhoto();
+
       }
     } else if ((this.docType == "BUSINESS") && localStorage.getItem("VISI_SCAN_DOC_DATA") != undefined
       && localStorage.getItem("VISI_SCAN_DOC_DATA") != "") {
@@ -536,7 +567,6 @@ export class AppointmentDetailComponent implements OnInit {
         });
       }
     } else if (action === "confirm") {
-
       if (this.aptmDetails.visitor_blacklist === 'true' || this.aptmDetails.visitor_blacklist === true || this.aptmDetails.visitor_blacklist === 1 || this.aptmDetails.visitor_blacklist === '1') {
         const dialogRef = this.dialog.open(DialogAppCommonDialog, {
           //width: '250px',
@@ -1477,6 +1507,10 @@ export class AppointmentDetailComponent implements OnInit {
     console.log('this.aptmDetails.id: ' + valueInput + '--' + this.cClassMain.aptmDetails.id);
     this.cClassMain.aptmDetails.id = valueInput;
     this.cClassMain.changeDetectorRef.detectChanges();
+    this.calcIdLength();
+    this.cClassMain.changeDetectorRef.detectChanges();
+  }
+  calcIdLength() {
     if (this.KIOSK_PROPERTIES.commonsetup.Enable_NRIC_Passport_validation) {
       if (this.aptmDetails.id) {
         if (isNaN(+this.aptmDetails.id)) {
@@ -1495,9 +1529,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.VISITOR_ID_MIN_LENGTH = this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MinLength;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength = 30;
     }
-    this.cClassMain.changeDetectorRef.detectChanges();
   }
-
   onKeydown(event) {
     console.log(event);
     if (event.key === "Enter") {
@@ -1624,10 +1656,13 @@ export class AppointmentDetailComponent implements OnInit {
       this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MaxLength = 50;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength = 15;
       this.calculateNumberofInputs();
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
+        this.calcIdLength();
+      }
     }
   }
-  openKeyBoard(field_caption, value, event: any, isNumeric) {
-    if(this.KIOSK_PROPERTIES_LOCAL == undefined){
+  openKeyBoard(field_caption, value, event: any, isNumeric, isEmail, minimumLength) {
+    if (this.KIOSK_PROPERTIES_LOCAL == undefined) {
       let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
       this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
     }
@@ -1637,7 +1672,9 @@ export class AppointmentDetailComponent implements OnInit {
       data: {
         mode: isNumeric ? "numeric" : "other",
         value: value,
-        field_caption: field_caption
+        field_caption: field_caption,
+        isEmail: isEmail,
+        minimumLength: minimumLength
       }
     });
     host.afterDismissed().subscribe(result => {
@@ -1666,7 +1703,7 @@ export class AppointmentDetailComponent implements OnInit {
               disableClose: false
             });
             dialogRef.afterClosed().subscribe(result1 => {
-              this.openKeyBoard(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, result, event, true)
+              this.openKeyBoard(this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, result, event, true, false, this.KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)
             });
           }
 

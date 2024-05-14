@@ -10,15 +10,27 @@ import Keyboard from "simple-keyboard";
   templateUrl: './keboard-bottom-sheet.component.html',
   styleUrls: ['./keboard-bottom-sheet.component.scss']
 })
-export class KeboardBottomSheetComponent {
+export class KeboardBottomSheetComponent implements OnInit {
   value = "";
   keyboard: Keyboard;
   @ViewChild('inputId') inputId: ElementRef;
+  error: HTMLElement;
+  validateEmail: (email: any) => any;
   constructor(private bottomSheetRef: MatBottomSheetRef<KeboardBottomSheetComponent>, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,) {
 
   }
+  ngOnInit(): void {
+    this.error = document.getElementById('error');
+    // this.validation();
+    this.validateEmail = (email) => {
+      return email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+    };
+  }
 
   ngAfterViewInit() {
+
     if (this.data.mode == 'numeric') {
       this.keyboard = new Keyboard({
         debug: true,
@@ -62,13 +74,35 @@ export class KeboardBottomSheetComponent {
       this.inputId.nativeElement.focus();
     });
   }
+  /* validation() {
+    const input = document.getElementById("inputId") as HTMLInputElement;
+    this.error = document.getElementById('error');
+    const regex = /[\\\/:*?"<>|]+/;
 
+    input.addEventListener('input', (e) => {
+      const value = (e.target as HTMLInputElement).value
+
+      if (regex.test(value)) {
+        input.value = value.slice(0, value.length - 1);
+        error.textContent = 'A filename cannot contain any of the following characters: \/:*?"<>|';
+      } else {
+        error.textContent = '';
+      }
+
+    });
+  } */
   onChange = (input: string) => {
     /* this.value = input;
     console.log("Input changed", input); */
     setTimeout(() => {
       //this.inputId.nativeElement.value = input.toUpperCase();
+
+      if (this.data.minimumLength && input.length < this.data.minimumLength)
+        this.error.textContent = 'Please enter minimum ' + this.data.minimumLength + ' characters';
+      else this.error.textContent = '';
       this.inputId.nativeElement.value = input;
+
+
       //this.box.nativeElement.focus();
       //this.onKey(this.box.nativeElement.value, null)
     });
@@ -77,7 +111,23 @@ export class KeboardBottomSheetComponent {
   onKeyPress = (button: string) => {
     console.log("Button pressed", button);
     if (button == "{enter}") {
-      this.bottomSheetRef.dismiss(this.inputId.nativeElement.value)
+      if (this.data.isEmail) {
+        if (this.validateEmail(this.inputId.nativeElement.value)) {
+          this.error.textContent = '';
+          this.bottomSheetRef.dismiss(this.inputId.nativeElement.value)
+        } else {
+          this.error.textContent = 'Please enter valid email address';
+        }
+      }
+      else {
+        if (this.data.minimumLength && this.inputId.nativeElement.value.length < this.data.minimumLength)
+          this.error.textContent = 'Please enter minimum ' + this.data.minimumLength + ' characters';
+        else {
+          this.error.textContent = '';
+          this.bottomSheetRef.dismiss(this.inputId.nativeElement.value)
+        }
+      }
+
     }
     /**
      * If you want to handle the shift and caps lock buttons

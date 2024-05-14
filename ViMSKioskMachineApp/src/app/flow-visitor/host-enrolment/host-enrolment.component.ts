@@ -106,7 +106,9 @@ export class HostEnrolmentComponent implements OnInit {
       data: {
         mode: "other",
         value: value,
-        field_caption: field_caption
+        field_caption: field_caption,
+        isEmail:false,
+        minimumLength:0
       }
     });
     host.afterDismissed().subscribe(result => {

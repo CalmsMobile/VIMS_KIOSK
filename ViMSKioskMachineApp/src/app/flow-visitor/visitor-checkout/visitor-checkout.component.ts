@@ -128,7 +128,9 @@ export class VisitorCheckoutComponent implements OnInit {
       data: {
         mode: isNumeric ? "numeric" : "other",
         value: value,
-        field_caption: field_caption
+        field_caption: field_caption,
+        isEmail:false,
+        minimumLength:0
       }
     });
     host.afterDismissed().subscribe(result => {

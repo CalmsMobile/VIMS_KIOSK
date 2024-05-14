@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { MatButtonModule, MatInputModule, MatDialogModule, MatSnackBarModule, MatFormFieldModule, MatBadgeModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatDialogModule, MatSnackBarModule, MatFormFieldModule, MatBadgeModule, MatProgressSpinnerModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, DialogAppSessionTimeOutDialog } from './app.component';
 import { DialogAppCommonDialog } from './app.common.dialog';
@@ -26,6 +26,7 @@ import { MatVideoModule } from 'mat-video';
 import { HostListComponent } from './flow-visitor/host-list/host-list.component';
 import { KeboardBottomSheetComponent } from './flow-visitor/keboard-bottom-sheet/keboard-bottom-sheet.component';
 import { EnterPinComponent } from './flow-visitor/enter-pin/enter-pin.component';
+import { ScannerProgressDialog } from './flow-visitor/visitor-pre-apontmnt/visitor-pre-apontmnt.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { EnterPinComponent } from './flow-visitor/enter-pin/enter-pin.component'
     DialogAppSessionTimeOutDialog,
     GetkioskcodeComponent,
     ScanqrcodeComponent,
-    QuestionnariesComponent
+    QuestionnariesComponent,
+    ScannerProgressDialog
   ],
   imports: [
     HttpModule,
@@ -57,11 +59,12 @@ import { EnterPinComponent } from './flow-visitor/enter-pin/enter-pin.component'
     MatSnackBarModule,
     BrowserAnimationsModule,
     NgVirtualKeyboardModule,
-    MatVideoModule
+    MatVideoModule,
+    MatProgressSpinnerModule
   ],
   providers: [ApiServices, DatePipe, SettingsService],
   bootstrap: [AppComponent],
 
-  entryComponents: [DialogAppCommonDialog, DialogAppSessionTimeOutDialog, HostListComponent, KeboardBottomSheetComponent,EnterPinComponent]
+  entryComponents: [DialogAppCommonDialog, DialogAppSessionTimeOutDialog, HostListComponent, KeboardBottomSheetComponent,EnterPinComponent,ScannerProgressDialog]
 })
 export class AppModule { }

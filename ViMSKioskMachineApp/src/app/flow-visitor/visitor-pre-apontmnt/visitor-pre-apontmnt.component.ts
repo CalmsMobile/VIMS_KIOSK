@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatBottomSheet, MatDialog, MatInput } from '@angular/material';
+import { MAT_DIALOG_DATA, MatBottomSheet, MatDialog, MatDialogRef, MatInput } from '@angular/material';
 import { ApiServices } from 'src/services/apiService';
 import { SettingsService } from '../../../services/settings.service';
 import { appConfirmDialog } from '../flow-visitor.component';
 import { KeboardBottomSheetComponent } from '../keboard-bottom-sheet/keboard-bottom-sheet.component';
+import { DialogData } from '../registration-type/registration-type.component';
 
 @Component({
   selector: 'app-visitor-pre-apontmnt',
@@ -50,7 +51,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.showScanButton = false;
       this.openKeyBoard(
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
-        this.APONTMNT_NRIC);
+        this.APONTMNT_NRIC,false);
       setTimeout(() => {
         this.nric.nativeElement.focus()
       });
@@ -60,7 +61,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.showScanButton = false;
       this.openKeyBoard(
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.field_caption,
-        this.APONTMNT_CONTACT);
+        this.APONTMNT_CONTACT,false);
       setTimeout(() => {
         this.contact.nativeElement.focus()
       });
@@ -70,7 +71,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.showScanButton = false;
       this.openKeyBoard(
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.field_caption,
-        this.APONTMNT_EMAIL);
+        this.APONTMNT_EMAIL,true);
       setTimeout(() => {
         this.email.nativeElement.focus()
       });
@@ -82,7 +83,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       if (!this.qrScanAppointmentId)
         this.openKeyBoard(
           this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.field_caption,
-          this.APONTMNT_CODE);
+          this.APONTMNT_CODE,false);
       setTimeout(() => {
         this.appint_id.nativeElement.focus()
       });
@@ -278,9 +279,28 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.router.navigateByUrl('/landing')
     } else if (action == "scanNow") {
       this.router.navigate(['/scanQRCode'], { queryParams: { scanType: 'PREAPPOINTMT' } });
+    }else if (action == "scan") {
+     /*  setTimeout(() => {
+        this.appint_id.nativeElement.focus()
+      }); */
+     // this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_loading_msg = 'Scan your code'
+this.openScannerDialog();
     }
   }
+  openScannerDialog(): void {
+    const dialogRef = this.dialog.open(ScannerProgressDialog, {
+      width: '250px',
+      data: {msg:this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_loading_msg}
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if(result){
+        this.APONTMNT_CODE = result;
+        this.getAppointmentDetails();
+      }
+    });
+  }
   _getAllPurposeOfVisit() {
     this.apiServices.localPostMethod('getPurpose', {}).subscribe((data: any) => {
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
@@ -448,14 +468,16 @@ export class VisitorPreApontmntComponent implements OnInit {
     return purposeTitle
   }
 
-  openKeyBoard(field_caption, value) {
+  openKeyBoard(field_caption, value,isEmail) {
     //this.selectedType = selectedType;
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
       panelClass: this.selectedType == "contact" ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
       data: {
         mode: this.selectedType == "contact" ? "numeric" : "other",
         value: value,
-        field_caption: field_caption
+        field_caption: field_caption,
+        isEmail:isEmail,
+        minimumLength:0
       }
     });
     host.afterDismissed().subscribe(result => {
@@ -492,4 +514,19 @@ export class VisitorPreApontmntComponent implements OnInit {
       }
     });
   }
+}
+@Component({
+  selector: 'scanner-progress-dialog',
+  templateUrl: 'scanner-progress-dialog.html',
+})
+export class ScannerProgressDialog {
+  APONTMNT_CODE = '';
+  constructor(
+    public dialogRef: MatDialogRef<ScannerProgressDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onSubmit(): void {
+    this.dialogRef.close(this.APONTMNT_CODE);
+  }
+
 }

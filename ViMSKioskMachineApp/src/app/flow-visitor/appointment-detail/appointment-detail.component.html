@@ -163,7 +163,7 @@
           "
           spellcheck="false"
           autocomplete="off"
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.PlaceHolder, $event.target.value, $event,false)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.PlaceHolder, $event.target.value, $event,false,false,VISITOR_ID_MIN_LENGTH)"
         />
       </mat-form-field>
 
@@ -201,7 +201,7 @@
           spellcheck="false"
           [disabled]="isDisablename"
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.PlaceHolder, $event.target.value, $event,false)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MinLength)"
         />
       </mat-form-field>
 
@@ -239,7 +239,7 @@
           [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength"
           [disabled]="isDisablecompany"
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Company.PlaceHolder, $event.target.value, $event,false)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Company.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength)"
         />
       </mat-form-field>
 
@@ -277,7 +277,7 @@
           [disabled]="isDisablecontact"
 
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, $event.target.value, $event,true)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, $event.target.value, $event,true,false,KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)"
         />
       </mat-form-field>
 
@@ -316,7 +316,7 @@
           oninput="this.value = this.value.toLowerCase()"
           pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.PlaceHolder, $event.target.value, $event,false)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.PlaceHolder, $event.target.value, $event,false,true,KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength)"
         />
       </mat-form-field>
 
@@ -354,7 +354,7 @@
           [disabled]="isDisablevehicle"
 
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder, $event.target.value, $event,false)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)"
         />
       </mat-form-field>
       <mat-form-field
@@ -382,7 +382,7 @@
           [maxlength]="KIOSK_PROPERTIES_LOCAL.passNoMaxLength"
 
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder, $event.target.value, $event,false)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES_LOCAL.passNoMinLength)"
         />
       </mat-form-field>
 
@@ -487,7 +487,7 @@
           theme-input-button
           [(ngModel)]="aptmDetails.country"
           [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory"
-          
+
           [disabled]="isDisableCountry"
           spellcheck="false"
         />

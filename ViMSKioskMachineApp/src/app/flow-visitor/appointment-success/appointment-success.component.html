@@ -30,15 +30,34 @@
     </mat-form-field>
   </div>
   <div *ngIf="!isLoading">
-    <div
-      *ngIf="!qrcodeProcessed && EnableAcsQrCode && DisplayImageHandlerURL"
+   <!--  <div
+      *ngIf="EnableAcsQrCode && DisplayImageHandlerURL"
       style="display: inline-grid"
-    >
+    > -->
+
       <img
         [src]="DisplayImageHandlerURL"
-        style="width: 500px; height: 500px; margin: 0 auto"
+        style="width: 300px; height: 300px; margin: 0 auto"
         *ngIf="EnableAcsQrCode && DisplayImageHandlerURL"
       />
+      <div [ngStyle]="{'margin-top': !EnableAcsQrCode ?'10%':''}">
+        <img
+        *ngIf="!EnableAcsQrCode && DisplaySuccessImageHandlerURL"
+        [src]="DisplaySuccessImageHandlerURL"
+        style="width: 70px; height: 70px"
+      />
+      </div>
+          <p info-title [ngStyle]="{'font-size':(EnableAcsQrCode && DisplayImageHandlerURL)?'4vmin':''}" [innerHTML]="RESULT_MSG | safeHtml"></p>
+          <p
+            info-title [ngStyle]="{'font-size':(EnableAcsQrCode && DisplayImageHandlerURL)?'4vmin':''}"
+            *ngIf="RESULT_MSG2"
+            [innerHTML]="RESULT_MSG2 | safeHtml"
+          ></p>
+          <p
+            info-title [ngStyle]="{'font-size':(EnableAcsQrCode && DisplayImageHandlerURL)?'4vmin':''}"
+            *ngIf="RESULT_MSG3"
+            [innerHTML]="RESULT_MSG3 | safeHtml"
+          ></p>
       <button
         style="margin: 0 auto; margin-top: 25px; margin-bottom: 25px"
         mat-raised-button
@@ -53,17 +72,17 @@
         Print
       </button>
 
-      <button
+      <!-- <button
         style="position: absolute; right: 0; bottom: 0; margin: 10px"
         mat-raised-button
         my-theme-button
         (click)="processNexttoSuccess()"
       >
         Proceed
-      </button>
-    </div>
+      </button> -->
+   <!--  </div> -->
 
-    <div *ngIf="qrcodeProcessed" style="padding-top: 12vh">
+   <!--  <div *ngIf="qrcodeProcessed" style="padding-top: 12vh">
       <img
         *ngIf="DisplaySuccessImageHandlerURL"
         [src]="DisplaySuccessImageHandlerURL"
@@ -83,11 +102,10 @@
       ></p>
 
       <p info-title *ngIf="TEST_PIN != ''">Your Test OTP : {{ TEST_PIN }}</p>
-      <!-- <img width="100px" alt="Angular Logo" [src]="LOGO_IMG" /> -->
-    </div>
-    <div
+    </div> -->
+   <!--  <div
       *ngIf="
-        qrcodeProcessed &&
+
         (LabelPrintEnable || ReceiptPrintEnable) &&
         LabelPrintManualOrAuto == 20
       "
@@ -99,7 +117,7 @@
         my-theme-button
         (click)="triggerLabelPrint()"
       >
-        <!-- <i class="material-icons icon-image-preview">print</i> -->
+
         Print
       </button>
 
@@ -111,6 +129,6 @@
       >
         Proceed
       </button>
-    </div>
+    </div> -->
   </div>
 </div>

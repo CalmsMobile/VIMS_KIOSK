@@ -51,7 +51,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.showScanButton = false;
       this.openKeyBoard(
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
-        this.APONTMNT_NRIC,false);
+        this.APONTMNT_NRIC, false);
       setTimeout(() => {
         this.nric.nativeElement.focus()
       });
@@ -61,7 +61,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.showScanButton = false;
       this.openKeyBoard(
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.field_caption,
-        this.APONTMNT_CONTACT,false);
+        this.APONTMNT_CONTACT, false);
       setTimeout(() => {
         this.contact.nativeElement.focus()
       });
@@ -71,7 +71,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.showScanButton = false;
       this.openKeyBoard(
         this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.field_caption,
-        this.APONTMNT_EMAIL,true);
+        this.APONTMNT_EMAIL, true);
       setTimeout(() => {
         this.email.nativeElement.focus()
       });
@@ -80,10 +80,10 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.selectedType = 'appint_id';
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan.enable)
         this.showScanButton = true;
-      if (!this.qrScanAppointmentId)
+      if (!this.qrScanAppointmentId && !this.showScanButton)
         this.openKeyBoard(
           this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.field_caption,
-          this.APONTMNT_CODE,false);
+          this.APONTMNT_CODE, false);
       setTimeout(() => {
         this.appint_id.nativeElement.focus()
       });
@@ -279,23 +279,23 @@ export class VisitorPreApontmntComponent implements OnInit {
       this.router.navigateByUrl('/landing')
     } else if (action == "scanNow") {
       this.router.navigate(['/scanQRCode'], { queryParams: { scanType: 'PREAPPOINTMT' } });
-    }else if (action == "scan") {
-     /*  setTimeout(() => {
-        this.appint_id.nativeElement.focus()
-      }); */
-     // this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_loading_msg = 'Scan your code'
-this.openScannerDialog();
+    } else if (action == "scan") {
+      /*  setTimeout(() => {
+         this.appint_id.nativeElement.focus()
+       }); */
+      // this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_loading_msg = 'Scan your code'
+      this.openScannerDialog();
     }
   }
   openScannerDialog(): void {
     const dialogRef = this.dialog.open(ScannerProgressDialog, {
       width: '250px',
-      data: {msg:this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_loading_msg}
+      data: { msg: this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_loading_msg }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if(result){
+      if (result) {
         this.APONTMNT_CODE = result;
         this.getAppointmentDetails();
       }
@@ -468,16 +468,17 @@ this.openScannerDialog();
     return purposeTitle
   }
 
-  openKeyBoard(field_caption, value,isEmail) {
+  openKeyBoard(field_caption, value, isEmail) {
     //this.selectedType = selectedType;
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
-      panelClass: this.selectedType == "contact" ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
+      panelClass: this.selectedType == "contact" || this.selectedType == "appint_id" ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
       data: {
-        mode: this.selectedType == "contact" ? "numeric" : "other",
+        mode: this.selectedType == "contact" || this.selectedType == "appint_id" ? "numeric" : "other",
         value: value,
         field_caption: field_caption,
-        isEmail:isEmail,
-        minimumLength:0
+        isEmail: isEmail,
+        minimumLength: 0,
+        defaultAlertMsg: 'Please entry the appointment ID and click Ok button'
       }
     });
     host.afterDismissed().subscribe(result => {
@@ -523,7 +524,7 @@ export class ScannerProgressDialog {
   APONTMNT_CODE = '';
   constructor(
     public dialogRef: MatDialogRef<ScannerProgressDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onSubmit(): void {
     this.dialogRef.close(this.APONTMNT_CODE);

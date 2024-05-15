@@ -129,10 +129,10 @@
           }}</mat-label>
         <input matInput [(ngModel)]="APONTMNT_EMAIL" (blur)="textDataBindEmail($event.target.value)" #email />
       </mat-form-field>
-      <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big
-        style="display: block;
-        width: 30% !important;
-        margin-top: 40px;" *ngIf="selectedType == 'appint_id'" (click)="
+
+      <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big [ngStyle]="(KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode' || showScanButton)?{'display': 'block',
+        'width': '30%',
+        'margin-top': '50px'}:{}" *ngIf="selectedType == 'appint_id'" (click)="
           qrScanAppointmentId == true
             ? null
             : openKeyBoard(
@@ -152,22 +152,56 @@
 
       </mat-form-field>
 
-      <div *ngIf="selectedType == 'appint_id' &&(KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode' || showScanButton)" horizontal-divider style="margin-left: 37px;display: grid;
-      align-items: center;">
+      <td
+        *ngIf="selectedType == 'appint_id' &&(KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode' || showScanButton)"
+        style="text-align: center; margin-left: 8%;margin-right: 8%;">
+        <div horizontal-divider style="width: 2px;
+            height: 90px; display: inline-flex;">
 
-        <button  *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode'" mat-raised-button my-theme-button (click)="takeActFor('scan')" style="margin-left: 35px;">
+        </div>
+        <div style="font-size: 25px;color: #ffffff;">OR</div>
+        <div horizontal-divider style="width: 2px;
+            height: 90px;  display: inline-flex;">
+
+        </div>
+      </td>
+      <div
+        *ngIf="selectedType == 'appint_id' &&(KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode' || showScanButton)"
+        style="display: grid;
+align-items: center;">
+        <button *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode'" mat-raised-button
+          my-theme-button (click)="takeActFor('scan')">
           {{
-         KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_button_caption
+          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_button_caption
           }}
         </button>
-        <button  *ngIf="showScanButton" mat-raised-button my-theme-button (click)="takeActFor('scanNow')" style="margin-left: 30px;">
+        <button *ngIf="showScanButton" mat-raised-button my-theme-button (click)="takeActFor('scanNow')">
           {{
           KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.WebCamScan
           .button_caption
           }}
         </button>
       </div>
+
+
+
+
     </div>
+    <div>
+      <button mat-raised-button my-theme-button [disabled]="
+      selectedType == '' ||
+      (selectedType == 'appint_id' && APONTMNT_CODE.toString().length == 0) ||
+      (selectedType == 'contact' && APONTMNT_CONTACT.toString().length == 0) ||
+      (selectedType == 'email' && APONTMNT_EMAIL.toString().length == 0) ||
+      (selectedType == 'nric' && APONTMNT_NRIC.toString().length == 0)
+    " (click)="takeActFor('getAppointmentDetail')">
+        {{
+        KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch
+        .get_appt_detail_button_caption
+        }}
+      </button>
+    </div>
+
     <!--  <div
       *ngIf="showScanButton"
     >
@@ -181,7 +215,7 @@
 
   </div>
 </div>
-<div my-footer-toolbar>
+<!-- <div my-footer-toolbar>
   <button *ngIf="this.isBackButtonVisible" mat-icon-button my-theme-round-button (click)="takeActFor('back')"
     style="float: left">
     <i class="siva-icon-left-big"></i>
@@ -198,4 +232,4 @@
     .get_appt_detail_button_caption
     }}
   </button>
-</div>
+</div> -->

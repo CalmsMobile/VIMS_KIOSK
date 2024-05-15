@@ -197,7 +197,7 @@ export class EnterPinComponent implements OnInit {
 
     this.dialog.open(appConfirmDialog, {
       width: '250px',
-      data: { title: "Kiosk Properties Updated !", btn_ok: "Ok" }
+      data: { title: "System settings synchronized successfully", btn_ok: "Ok" }
     });
     //this.router.navigate(['/landing'], { queryParams: {} });
   }

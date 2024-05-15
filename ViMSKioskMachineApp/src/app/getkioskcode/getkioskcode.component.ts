@@ -97,7 +97,7 @@ export class GetkioskcodeComponent implements OnInit {
             if (status) {
               this.dialog.open(appConfirmDialog, {
                 width: '250px',
-                data: { title: "Kiosk Properties Updated !", btn_ok: "Ok" }
+                data: { title: "System settings synchronized successfully", btn_ok: "Ok" }
               });
               this.router.navigate(['/landing'], { queryParams: {} });
             } else {
@@ -235,7 +235,7 @@ export class GetkioskcodeComponent implements OnInit {
     console.log("Image download success");
     this.dialog.open(appConfirmDialog, {
       width: '250px',
-      data: { title: "Kiosk Properties Updated !", btn_ok: "Ok" }
+      data: { title: "System settings synchronized successfully", btn_ok: "Ok" }
     });
     this.router.navigate(['/landing'], { queryParams: {} });
   }

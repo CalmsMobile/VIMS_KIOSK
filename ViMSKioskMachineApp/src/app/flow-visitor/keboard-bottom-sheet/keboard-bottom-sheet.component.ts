@@ -65,6 +65,10 @@ export class KeboardBottomSheetComponent implements OnInit {
         },
       });
     }
+    if (this.data.minimumLength > 0)
+      this.error.textContent = 'Please enter minimum ' + this.data.minimumLength + ' characters';
+    if (this.data.defaultAlertMsg)
+      this.error.textContent = this.data.defaultAlertMsg;
     //this.keyboard.replaceInput({ inputId: "test" })
 
 
@@ -102,6 +106,8 @@ export class KeboardBottomSheetComponent implements OnInit {
       else this.error.textContent = '';
       this.inputId.nativeElement.value = input;
 
+      if (this.data.defaultAlertMsg && input.length == 0)
+        this.error.textContent = this.data.defaultAlertMsg;
 
       //this.box.nativeElement.focus();
       //this.onKey(this.box.nativeElement.value, null)

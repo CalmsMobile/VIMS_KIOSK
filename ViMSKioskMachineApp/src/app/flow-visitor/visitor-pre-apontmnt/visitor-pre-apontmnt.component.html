@@ -152,10 +152,10 @@
 
       </mat-form-field>
 
-      <div *ngIf="selectedType == 'appint_id' &&(KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode' || showScanButton)" horizontal-divider style="margin-left: 50px;display: grid;
+      <div *ngIf="selectedType == 'appint_id' &&(KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode' || showScanButton)" horizontal-divider style="margin-left: 37px;display: grid;
       align-items: center;">
 
-        <button  *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode'" mat-raised-button my-theme-button (click)="takeActFor('scan')" style="margin-left: 50px;">
+        <button  *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.search_type === 'QRCode'" mat-raised-button my-theme-button (click)="takeActFor('scan')" style="margin-left: 35px;">
           {{
          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.scan_qr_button_caption
           }}

@@ -1,9 +1,14 @@
-<div loader-page style="text-align: center; padding: 30px">
-  <div *ngIf="isLoading" style="padding-top: 20vh">
+<div loader-page style="text-align: center;
+
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;">
+  <div *ngIf="isLoading" style="width: 100%;">
     <!--  <mat-form-field class="example-full-width" style="opacity:100;">
       <input #cardSerInput matInput maxlength="10" (keydown.enter)="onKeydown($event)" placeholder="Card Serial Number" value="" (input)="onInput(cardSerInput.value)">
     </mat-form-field> -->
-    <p
+    <p style="padding-bottom: 10%;"
       info-title
       [innerHTML]="
         KIOSK_PROPERTIES['commonsetup']['Register_loading_msg'] | safeHtml
@@ -29,7 +34,7 @@
       />
     </mat-form-field>
   </div>
-  <div *ngIf="!isLoading">
+  <div *ngIf="!isLoading" style="width: 100%;">
    <!--  <div
       *ngIf="EnableAcsQrCode && DisplayImageHandlerURL"
       style="display: inline-grid"

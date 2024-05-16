@@ -545,6 +545,18 @@ export class LandingComponent implements OnInit {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] + ` !important;
       background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1'] + `) !important;
     }
+    [horizontal-divider] {
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0),
+        ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] + `,
+        rgba(0, 0, 0, 0)
+      )
+      left bottom rgba(0, 0, 0, 0) no-repeat !important;
+    }
+    [or-text]{
+      color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1'] + ` !important;
+    }
     [my-theme-round-button]::before, [my-theme-button]::before {
       box-shadow: `+ shadow + ` !important;
     }
@@ -654,6 +666,9 @@ export class LandingComponent implements OnInit {
     }
     [my-reg-option-radio] {
       font-family: `+ this.fontFamily + ` !important;
+    }
+    .mat-ink-bar {
+      background-color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1'] + ` !important;
     }
     `;
     document.getElementById("MY_RUNTIME_CSS").innerHTML = _css;

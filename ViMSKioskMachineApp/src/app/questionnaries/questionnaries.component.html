@@ -1,9 +1,9 @@
 <div *ngIf="!isPlayVideo">
   <div style="text-align:center;padding:20px;">
-    <p info-title *ngIf="KIOSK_PROPERTIES" [ngStyle]="{'font-weight': (KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '') ,
+    <h3 welcome-title *ngIf="KIOSK_PROPERTIES" [ngStyle]="{'font-weight': (KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '') ,
     'text-transform':  (KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize ? 'capitalize': '')}">
       Screening Questions
-    </p>
+    </h3>
 
 
 

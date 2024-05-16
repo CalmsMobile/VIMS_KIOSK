@@ -381,7 +381,7 @@ video::-webkit-media-controls-start-playback-button {
   }
 }
 [welcome-title] {
-  font-size: 8vmin;
+  font-size: 9vmin;
   font-style: 600;
   color: theme-colors("textColors", "primaryWhite");
   width: 80%;
@@ -1067,6 +1067,9 @@ input[type="number"]::-webkit-outer-spin-button {
     )
     left bottom rgba(0, 0, 0, 0) no-repeat;
   background-size: 100% 100%;
+}
+[or-text]{
+  color: #ffffff;
 }
 [theme-input-button] {
   cursor: pointer;

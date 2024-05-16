@@ -4,18 +4,15 @@
     <i class="siva-icon-users-1"></i> </button> -->
 </div>
 <div style="text-align: center; padding: 30px">
-  <p
-    info-title
-    margin-bottom
-    [ngStyle]="{
-      'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold ? 'bold' : '',
-      'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize
-        ? 'uppercase'
-        : 'capitalize'
-    }"
-  >
+  <h3 welcome-title margin-bottom [ngStyle]="{
+    'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold ? 'bold' : '',
+    'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize
+      ? 'uppercase'
+      : 'capitalize'
+  }">
+  
     {{ KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.detail_page_title }}
-  </p>
+</h3>
   <div>
     <div [style.padding-top]="KIOSK_TYPE == 'Portrait' ? '5vh' : '15vh'">
       <mat-form-field

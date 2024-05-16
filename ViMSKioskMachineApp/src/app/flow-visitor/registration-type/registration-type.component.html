@@ -5,9 +5,9 @@
     <i class="siva-icon-users-1"></i> </button>
 </div>
 <div style="text-align:center;padding:30px;">
-  <p info-title [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
+  <h3 welcome-title [ngStyle]="{'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold? 'bold': '' , 'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize? 'uppercase': 'capitalize'}">
     {{title}}
-  </p>
+  </h3>
   <div style="padding-top: 10vh;">
       <mat-radio-group [(ngModel)]="SEL_REGISTRATION_TYPE">
           <mat-radio-button my-reg-option-radio sp-button-blue-out

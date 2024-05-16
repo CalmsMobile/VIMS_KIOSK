@@ -29,14 +29,15 @@
   height: 2pt !important;
 } */
 /* Styles for tab labels */
+
 .mat-tab-label {
    //min-width: 25px !important;
    padding: 15px;
    background-color: rgb(65, 63, 63);
    color: rgb(255, 255, 255);
    font-weight: bold;
-   font-size: 28px;
-
+   font-size: 33px;
+   height: 70px !important;
 }
 
 /* Styles for the active tab label */
@@ -46,11 +47,12 @@
  background-color: white;
  color: rgb(0, 0, 0);
  font-weight: bold;
- font-size: 28px;
+ font-size: 33px;
+ height: 70px;
 }
 
 /* Styles for the ink bar */
 .mat-ink-bar {
-  background-color: #d60000 !important;
+  //background-color: #d60000 !important;
   height: 3pt !important;
 }

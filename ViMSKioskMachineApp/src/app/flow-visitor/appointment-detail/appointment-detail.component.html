@@ -10,12 +10,50 @@
       ? 'uppercase'
       : 'capitalize'
   }">
-  
+
     {{ KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.detail_page_title }}
 </h3>
   <div>
     <div [style.padding-top]="KIOSK_TYPE == 'Portrait' ? '5vh' : '15vh'">
-      <mat-form-field
+
+    <!--   <ng-container *ngFor="let item of fieldList">
+        <mat-form-field
+        [ngStyle]="{
+          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+        }"
+        appearance="outline"
+        floatLabel="auto"
+        no-padding
+        matRipple
+        matRippleColor="rgba(255,255,255,0.1)"
+        theme-border-input-small
+        app-detail-grid-input
+        (click)="openBottomCategorySelect()"
+        *ngIf="
+          KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show &&
+          ((showFirstPageFields &&
+            KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1) ||
+            (!showFirstPageFields &&
+              !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1))
+        "
+      >
+        <mat-label>{{
+          KIOSK_PROPERTIES.COMMON_CONFIG.Category.Caption
+        }}</mat-label>
+        <input
+          matInput
+          readonly
+          theme-input-button
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
+
+          [disabled]="isDisablecategory"
+          [(ngModel)]="aptmDetails.category"
+        />
+        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+      </mat-form-field>
+      </ng-container> -->
+
+       <mat-form-field
         [ngStyle]="{
           display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
         }"
@@ -367,19 +405,19 @@
         app-detail-grid-input
         *ngIf="showPassNo"
       >
-        <mat-label>{{ KIOSK_PROPERTIES_LOCAL.passNoCaption }}</mat-label>
+        <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Caption }}</mat-label>
         <input
           matInput
           theme-input-button
-          [required]="KIOSK_PROPERTIES_LOCAL.passNoMandatory"
+          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Mandatory"
           [(ngModel)]="aptmDetails.att_pass_id"
           (blur)="textDataBindTemp($event.target.value, 'att_pass_id')"
           spellcheck="false"
-          [minlength]="KIOSK_PROPERTIES_LOCAL.passNoMinLength"
-          [maxlength]="KIOSK_PROPERTIES_LOCAL.passNoMaxLength"
+          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength"
+          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength"
 
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES_LOCAL.passNoPlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES_LOCAL.passNoMinLength)"
+          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength)"
         />
       </mat-form-field>
 
@@ -599,10 +637,10 @@
         KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory &&
         aptmDetails.vehicle == '') ||
       (showPassNo &&
-        KIOSK_PROPERTIES_LOCAL.passNoMandatory &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Mandatory &&
         aptmDetails.att_pass_id == '' &&
         aptmDetails.att_pass_id.length <
-          KIOSK_PROPERTIES_LOCAL.passNoMinLength) ||
+        KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength) ||
       (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show &&
         KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 &&
         aptmDetails.email &&
@@ -698,10 +736,10 @@
         KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory &&
         aptmDetails.vehicle == '') ||
       (showPassNo &&
-        KIOSK_PROPERTIES_LOCAL.passNoMandatory &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Mandatory &&
         aptmDetails.att_pass_id == '' &&
         aptmDetails.att_pass_id.length <
-          KIOSK_PROPERTIES_LOCAL.passNoMinLength) ||
+        KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength) ||
       (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show &&
         !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 &&
         aptmDetails.email &&

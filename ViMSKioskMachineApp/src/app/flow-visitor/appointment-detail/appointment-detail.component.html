@@ -12,567 +12,287 @@
   }">
 
     {{ KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.detail_page_title }}
-</h3>
+  </h3>
   <div>
     <div [style.padding-top]="KIOSK_TYPE == 'Portrait' ? '5vh' : '15vh'">
+      <ng-container *ngFor="let field of KIOSK_PROPERTIES.COMMON_CONFIG.fieldList">
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomCategorySelect()" *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Category.Index === field.Index  &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Category.Caption
+            }}</mat-label>
+          <input matInput readonly theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
+            [disabled]="isDisablecategory" [(ngModel)]="aptmDetails.category" />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
-    <!--   <ng-container *ngFor="let item of fieldList">
-        <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomCategorySelect()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Category.Caption
-        }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomBranchSelect()" *ngIf="showMultiBranch">
+          <mat-label>{{ KIOSK_PROPERTIES_LOCAL.multiBrnachLable }}</mat-label>
+          <input matInput readonly theme-input-button [required]="true" [disabled]="isDisableBranch"
+            [(ngModel)]="aptmDetails.branchName" />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
-          [disabled]="isDisablecategory"
-          [(ngModel)]="aptmDetails.category"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
-      </ng-container> -->
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomHostSelect()" *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Host.Index === field.Index &&
+    ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1))
+  ">
+          <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption }}</mat-label>
+          <input matInput readonly theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
+            [disabled]="
+      isDisableHost || (showMultiBranch && !aptmDetails.branchName)
+    " [(ngModel)]="
+      aptmDetails.hostDetails.PatientName
+        ? aptmDetails.hostDetails.PatientName
+        : aptmDetails.hostDetails.name
+    " />
+          <mat-icon matSuffix *ngIf="!isDisableHost">keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
-       <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomCategorySelect()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Category.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Category.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Category.Caption
-        }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Category.Mandatory"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption
+            }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory"
+            [(ngModel)]="aptmDetails.id" #box (keyup)="onKey(box.value, $event)"
+            (blur)="textDataBindTemp($event.target.value, 'id')" (focusout)="itFocusOut($event.target.value, 'id')"
+            (ngModelChange)="onChange($event)" [minlength]="VISITOR_ID_MIN_LENGTH"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength" [disabled]="
+      isDisableid ||
+      docType == 'MYCARD' ||
+      docType == 'SING_NRICrDRIV' ||
+      docType == 'PASSPORT'
+    " spellcheck="false" autocomplete="off"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.PlaceHolder, $event.target.value, $event,false,false,VISITOR_ID_MIN_LENGTH)" />
+        </mat-form-field>
 
-          [disabled]="isDisablecategory"
-          [(ngModel)]="aptmDetails.category"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Caption
+            }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Mandatory"
+            [(ngModel)]="aptmDetails.name" (blur)="textDataBindTemp($event.target.value, 'name')"
+            [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MaxLength" spellcheck="false"
+            [disabled]="isDisablename"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MinLength)" />
+        </mat-form-field>
 
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomBranchSelect()"
-        *ngIf="showMultiBranch"
-      >
-        <mat-label>{{ KIOSK_PROPERTIES_LOCAL.multiBrnachLable }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [required]="true"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Company.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption
+            }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
+            [(ngModel)]="aptmDetails.company" (blur)="textDataBindTemp($event.target.value, 'company')"
+            spellcheck="false" [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength" [disabled]="isDisablecompany"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Company.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength)" />
+        </mat-form-field>
 
-          [disabled]="isDisableBranch"
-          [(ngModel)]="aptmDetails.branchName"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption
+            }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
+            [(ngModel)]="aptmDetails.contact" (blur)="textDataBindTemp($event.target.value, 'contact')"
+            spellcheck="false" [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength" [disabled]="isDisablecontact"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, $event.target.value, $event,true,false,KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)" />
+        </mat-form-field>
 
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomHostSelect()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show &&
-          ((showFirstPageFields && KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1))
-        "
-      >
-        <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.Host.Caption }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Host.Mandatory"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption
+            }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory"
+            [(ngModel)]="aptmDetails.email" (blur)="textDataBindTemp($event.target.value, 'email')" spellcheck="false"
+            [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MaxLength" [disabled]="isDisableemail"
+            oninput="this.value = this.value.toLowerCase()"
+            pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.PlaceHolder, $event.target.value, $event,false,true,KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength)" />
+        </mat-form-field>
 
-          [disabled]="
-            isDisableHost || (showMultiBranch && !aptmDetails.branchName)
-          "
-          [(ngModel)]="
-            aptmDetails.hostDetails.PatientName
-              ? aptmDetails.hostDetails.PatientName
-              : aptmDetails.hostDetails.name
-          "
-        />
-        <mat-icon matSuffix *ngIf="!isDisableHost"
-          >keyboard_arrow_down</mat-icon
-        >
-      </mat-form-field>
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption
+            }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
+            [(ngModel)]="aptmDetails.vehicle" (blur)="textDataBindTemp($event.target.value, 'vehicle')"
+            spellcheck="false" [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength" [disabled]="isDisablevehicle"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)" />
+        </mat-form-field>
 
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Caption
-        }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory"
-          [(ngModel)]="aptmDetails.id"
-          #box
-          (keyup)="onKey(box.value, $event)"
-          (blur)="textDataBindTemp($event.target.value, 'id')"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1))
+  ">
+          <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Caption }}</mat-label>
+          <input matInput theme-input-button [required]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Mandatory"
+            [(ngModel)]="aptmDetails.att_pass_id" (blur)="textDataBindTemp($event.target.value, 'att_pass_id')"
+            spellcheck="false" [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength"
+            [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength"
+            (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength)" />
+        </mat-form-field>
 
-          (focusout)="itFocusOut($event.target.value, 'id')"
-          (ngModelChange)="onChange($event)"
-          [minlength]="VISITOR_ID_MIN_LENGTH"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.MaxLength"
-          [disabled]="
-            isDisableid ||
-            docType == 'MYCARD' ||
-            docType == 'SING_NRICrDRIV' ||
-            docType == 'PASSPORT'
-          "
-          spellcheck="false"
-          autocomplete="off"
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.PlaceHolder, $event.target.value, $event,false,false,VISITOR_ID_MIN_LENGTH)"
-        />
-      </mat-form-field>
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomPurposeSheet()" *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Caption
+            }}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.purpose"
+            [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory" [disabled]="isDisablePurpose"
+            spellcheck="false" />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Caption
-        }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.Mandatory"
-          [(ngModel)]="aptmDetails.name"
-          (blur)="textDataBindTemp($event.target.value, 'name')"
-          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MinLength"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MaxLength"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomGenderSelect()" *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Caption
+            }}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.gender"
+            [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory" [disabled]="isDisableGender"
+            spellcheck="false" />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
-          spellcheck="false"
-          [disabled]="isDisablename"
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomCountrySelect()" *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.Country.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.Country.Caption
+            }}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.country"
+            [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory" [disabled]="isDisableCountry"
+            spellcheck="false" />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
 
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MinLength)"
-        />
-      </mat-form-field>
+        <mat-form-field [ngStyle]="{
+    display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
+  }" appearance="outline" floatLabel="auto" no-padding matRipple matRippleColor="rgba(255,255,255,0.1)"
+          theme-border-input-small app-detail-grid-input (click)="openBottomHoursSelect()" *ngIf="
+    KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Index === field.Index &&
+    ((showFirstPageFields &&
+      KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1) ||
+      (!showFirstPageFields &&
+        !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1))
+  ">
+          <mat-label>{{
+            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Caption
+            }}</mat-label>
+          <input matInput readonly theme-input-button [(ngModel)]="aptmDetails.meetingHours"
+            [required]="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory" spellcheck="false" />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+        </mat-form-field>
+      </ng-container>
 
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Company.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Company.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Company.Caption
-        }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.Mandatory"
-          [(ngModel)]="aptmDetails.company"
-          (blur)="textDataBindTemp($event.target.value, 'company')"
-
-          spellcheck="false"
-          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength"
-          [disabled]="isDisablecompany"
-
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Company.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.Company.MinLength)"
-        />
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Caption
-        }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.Mandatory"
-          [(ngModel)]="aptmDetails.contact"
-          (blur)="textDataBindTemp($event.target.value, 'contact')"
-          spellcheck="false"
-          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MaxLength"
-          [disabled]="isDisablecontact"
-
-
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Contact.PlaceHolder, $event.target.value, $event,true,false,KIOSK_PROPERTIES.COMMON_CONFIG.Contact.MinLength)"
-        />
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Caption
-        }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory"
-          [(ngModel)]="aptmDetails.email"
-          (blur)="textDataBindTemp($event.target.value, 'email')"
-          spellcheck="false"
-          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MaxLength"
-          [disabled]="isDisableemail"
-          oninput="this.value = this.value.toLowerCase()"
-          pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
-
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.PlaceHolder, $event.target.value, $event,false,true,KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.MinLength)"
-        />
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Caption
-        }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.Mandatory"
-          [(ngModel)]="aptmDetails.vehicle"
-          (blur)="textDataBindTemp($event.target.value, 'vehicle')"
-          spellcheck="false"
-          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength"
-          [disabled]="isDisablevehicle"
-
-
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MinLength)"
-        />
-      </mat-form-field>
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        *ngIf="showPassNo"
-      >
-        <mat-label>{{ KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Caption }}</mat-label>
-        <input
-          matInput
-          theme-input-button
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Mandatory"
-          [(ngModel)]="aptmDetails.att_pass_id"
-          (blur)="textDataBindTemp($event.target.value, 'att_pass_id')"
-          spellcheck="false"
-          [minlength]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength"
-          [maxlength]="KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength"
-
-
-          (click)="openKeyBoard(KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.PlaceHolder, $event.target.value, $event,false,false,KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MinLength)"
-        />
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomPurposeSheet()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Caption
-        }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [(ngModel)]="aptmDetails.purpose"
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Purpose.Mandatory"
-          [disabled]="isDisablePurpose"
-
-          spellcheck="false"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomGenderSelect()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Caption
-        }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [(ngModel)]="aptmDetails.gender"
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Mandatory"
-
-          [disabled]="isDisableGender"
-          spellcheck="false"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomCountrySelect()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.Country.Caption
-        }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [(ngModel)]="aptmDetails.country"
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory"
-
-          [disabled]="isDisableCountry"
-          spellcheck="false"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field
-        [ngStyle]="{
-          display: KIOSK_TYPE == 'Portrait' ? 'contents' : 'inline-block'
-        }"
-        appearance="outline"
-        floatLabel="auto"
-        no-padding
-        matRipple
-        matRippleColor="rgba(255,255,255,0.1)"
-        theme-border-input-small
-        app-detail-grid-input
-        (click)="openBottomHoursSelect()"
-        *ngIf="
-          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Show &&
-          ((showFirstPageFields &&
-            KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1) ||
-            (!showFirstPageFields &&
-              !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Page1))
-        "
-      >
-        <mat-label>{{
-          KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Caption
-        }}</mat-label>
-        <input
-          matInput
-          readonly
-          theme-input-button
-          [(ngModel)]="aptmDetails.meetingHours"
-          [required]="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentHours.Mandatory"
-
-          spellcheck="false"
-        />
-        <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-      </mat-form-field>
     </div>
   </div>
 </div>
 <div my-footer-toolbar>
-  <button
-    mat-icon-button
-    my-theme-round-button
-    (click)="takeActFor('back')"
-    style="float: left"
-  >
+  <button mat-icon-button my-theme-round-button (click)="takeActFor('back')" style="float: left">
     <i class="siva-icon-left-big"></i>
   </button>
   <!-- <button mat-raised-button my-theme-button (click)="takeActFor('addVisitor')"
@@ -596,13 +316,8 @@
   ">
     {{KIOSK_PROPERTIES.modules.only_visitor.checkin.in_multi_act_but_label}}</button>
  -->
-  <button
-    mat-raised-button
-    my-theme-button
-    *ngIf="showFirstPageFields"
-    style="float: right"
-    (click)="takeActFor('confirm')"
-    [disabled]="
+  <button mat-raised-button my-theme-button *ngIf="showFirstPageFields" style="float: right"
+    (click)="takeActFor('confirm')" [disabled]="
       validateAndReturnEmail() ||
       (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show &&
         KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 &&
@@ -687,22 +402,16 @@
         KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 &&
         KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory &&
         aptmDetails.country == '')
-    "
-  >
+    ">
     {{
-      showFirstPageFields && this.NUMBER_OF_INPUTS > 7
-        ? "Next"
-        : KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.submit_button_caption
+    showFirstPageFields && this.NUMBER_OF_INPUTS > 7
+    ? "Next"
+    : KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.submit_button_caption
     }}
   </button>
 
-  <button
-    mat-raised-button
-    my-theme-button
-    *ngIf="!showFirstPageFields"
-    style="float: right"
-    (click)="takeActFor('confirm')"
-    [disabled]="
+  <button mat-raised-button my-theme-button *ngIf="!showFirstPageFields" style="float: right"
+    (click)="takeActFor('confirm')" [disabled]="
       (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show &&
         !KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 &&
         KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory &&
@@ -786,12 +495,11 @@
         !KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 &&
         KIOSK_PROPERTIES.COMMON_CONFIG.Country.Mandatory &&
         aptmDetails.country == '')
-    "
-  >
+    ">
     {{
-      showFirstPageFields && this.NUMBER_OF_INPUTS > 7
-        ? "Next"
-        : KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.submit_button_caption
+    showFirstPageFields && this.NUMBER_OF_INPUTS > 7
+    ? "Next"
+    : KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.submit_button_caption
     }}
   </button>
 </div>

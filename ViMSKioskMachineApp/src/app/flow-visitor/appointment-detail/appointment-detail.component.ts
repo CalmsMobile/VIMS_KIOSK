@@ -57,7 +57,6 @@ export class AppointmentDetailComponent implements OnInit {
   hostListCount = 0;
   branchMastersCount = 0;
   DefaultAddVisitorSettings = JSON.stringify({ "AddVisitorsSeqId": 0, "NameEnabled": false, "NameRequired": false, "IdProofEnabled": false, "IdProofRequired": false, "EmailEnabled": false, "EmailRequired": false, "CompanyEnabled": false, "CompanyRequired": false, "CategoryEnabled": true, "CategoryRequired": true, "ContactNumberEnabled": false, "ContactNumberRequired": false, "VehicleNumberEnabled": false, "VehicleNumberRequired": false, "GenderEnabled": false, "GenderRequired": false, "ImageUploadEnabled": false, "WorkPermit": false, "WorkPermitRequired": false, "WorkPermitExpiry": false, "WorkPermitExpiryRequired": false, "CountryEnabled": false, "CountryRequired": false, "AddressEnabled": false, "AddressRequired": false, "HostNameEnabled": false, "HostNameRequired": false, "HostDepartmentEnabled": false, "HostDepartmentRequired": false, "AttachmentUploadEnabled": false, "AttachmentUploadRequired": false, "MaxAttachmentAllowed": 0, "VisitorCategories": "0", "PurposeEnabled": false, "PurposeRequired": false });
-  fieldList = [];
   constructor(private router: Router,
     private bottomSheet: MatBottomSheet,
     private route: ActivatedRoute,
@@ -886,7 +885,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.NUMBER_OF_INPUTS++;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.Gender.Count = this.NUMBER_OF_INPUTS;
     }
-    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
+    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo && this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
       this.NUMBER_OF_INPUTS++;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Count = this.NUMBER_OF_INPUTS;
     }
@@ -1593,7 +1592,6 @@ export class AppointmentDetailComponent implements OnInit {
   VISITOR_ID_MIN_LENGTH = 0;
   VISITOR_ID_MAX_LENGTH = 30;
   showMultiBranch = false;
-  showPassNo = false;
   checkAutoApproval = false;
   KIOSK_TYPE: string;
   _updateKioskSettings() {
@@ -1609,7 +1607,6 @@ export class AppointmentDetailComponent implements OnInit {
       this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
       if (this.KIOSK_PROPERTIES_LOCAL) {
         this.showMultiBranch = this.KIOSK_PROPERTIES_LOCAL.supportMultiBranch;
-        //this.showPassNo = this.KIOSK_PROPERTIES_LOCAL.showPassNo;
         this.checkAutoApproval = this.KIOSK_PROPERTIES_LOCAL.checkAutoApproval;
       }
       this.KIOSK_PROPERTIES.IsKeyMansIdValidate = JSON.parse(setngs).IsKeyMansIdValidate;
@@ -1622,11 +1619,8 @@ export class AppointmentDetailComponent implements OnInit {
         }
       } else if (this.mainModule === 'vcheckinapproval') {
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.ReqApptSettings;
-        this.showPassNo = false;
       } else if (this.mainModule === 'preAppointment') {
-debugger
         this.KIOSK_PROPERTIES.COMMON_CONFIG = this.KIOSK_PROPERTIES.AppointmentSettings;
-        this.showPassNo = this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show;
       }
 
 
@@ -1636,7 +1630,8 @@ debugger
       this.KIOSK_PROPERTIES.COMMON_CONFIG.Company.MaxLength = 100;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MaxLength = 50;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength = 15;
-      this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength = 15;
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo)
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength = 15;
       this.calculateNumberofInputs();
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
         this.calcIdLength();

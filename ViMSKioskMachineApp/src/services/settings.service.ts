@@ -208,6 +208,11 @@ export class SettingsService {
             if (_details['Table2'] != undefined && _details['Table2'].length > 0) {
               _prepare['kioskName'] = _details['Table2'][0]['Name'];
             }
+
+
+            _prepare['kioskSetup']['WalkinSettings']['fieldList'] = this.getFieldList(_prepare['kioskSetup']['WalkinSettings']);
+            _prepare['kioskSetup']['AppointmentSettings']['fieldList'] = this.getFieldList(_prepare['kioskSetup']['AppointmentSettings']);
+            _prepare['kioskSetup']['ReqApptSettings']['fieldList'] = this.getFieldList(_prepare['kioskSetup']['ReqApptSettings']);
             console.log("KIOSK_PROPERTIES " + JSON.stringify(_prepare));
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
             //new setting
@@ -232,6 +237,38 @@ export class SettingsService {
         _callBack(false);
         return false;
       });
+  }
+  getFieldList(sttng): any {
+    const w = [];
+    //var sttng = _prepare['kioskSetup']['WalkinSettings'];
+    if (sttng.VisitorId && sttng.VisitorId.Show && sttng.VisitorId.Index)
+      w.push(sttng.VisitorId)
+    if (sttng.VisitorName && sttng.VisitorName.Show && sttng.VisitorName.Index)
+      w.push(sttng.VisitorName)
+    if (sttng.Company && sttng.Company.Show && sttng.Company.Index)
+      w.push(sttng.Company)
+    if (sttng.Category && sttng.Category.Show && sttng.Category.Index)
+      w.push(sttng.Category)
+    if (sttng.Contact && sttng.Contact.Show && sttng.Contact.Index)
+      w.push(sttng.Contact)
+    if (sttng.EmailId && sttng.EmailId.Show && sttng.EmailId.Index)
+      w.push(sttng.EmailId)
+    if (sttng.Vehicle && sttng.Vehicle.Show && sttng.Vehicle.Index)
+      w.push(sttng.Vehicle)
+    if (sttng.Purpose && sttng.Purpose.Show && sttng.Purpose.Index)
+      w.push(sttng.Purpose)
+    if (sttng.Host && sttng.Host.Show && sttng.Host.Index)
+      w.push(sttng.Host)
+    if (sttng.Gender && sttng.Gender.Show && sttng.Gender.Index)
+      w.push(sttng.Gender)
+    if (sttng.Country && sttng.Country.Show && sttng.Country.Index)
+      w.push(sttng.Country)
+    if (sttng.PassNo && sttng.PassNo.Show && sttng.PassNo.Index)
+      w.push(sttng.PassNo)
+    if (sttng.AppointmentHours && sttng.AppointmentHours.Show && sttng.AppointmentHours.Index)
+      w.push(sttng.AppointmentHours)
+    var s = w.sort((a, b) => a.Index - b.Index);
+    return s;
   }
   public _initCardDispenserModule() {
     let setngs = localStorage.getItem('KIOSK_PROPERTIES');

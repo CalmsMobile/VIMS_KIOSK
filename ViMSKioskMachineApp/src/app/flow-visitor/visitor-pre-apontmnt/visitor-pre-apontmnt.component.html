@@ -5,7 +5,7 @@
   </button>
 </div>
 <div style="text-align: center; padding: 30px">
-  <h3 welcome-title margin-bottom [ngStyle]="{
+  <h3  welcome-title margin-bottom style="margin-top: 10px;" [ngStyle]="{
     'font-weight': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionBold ? 'bold' : '',
     'text-transform': KIOSK_PROPERTIES.COMMON_CONFIG.CaptionCapitalize
       ? 'uppercase'
@@ -93,7 +93,7 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-    <div style="display: flex; justify-content: center;margin-top: 0px">
+    <div style="display: flex; justify-content: center;margin-top: 25px">
       <mat-form-field appearance="outline" floatLabel="always" theme-border-input-big
         style="display: block; width: 50% !important" *ngIf="selectedType == 'nric'" (click)="
           openKeyBoard(

@@ -379,7 +379,7 @@ export class VisitorPreApontmntComponent implements OnInit {
       document.getElementById("bodyloader").style.display = "none";
       if (data.length > 0 && data[0]["Status"] === true && data[0]["Data"] != undefined) {
         let Data = data[0]["Data"];
-        if (Data["Table"] != undefined && Data["Table"].length > 0 && Data["Table"][0]['Code'] == 10) {
+        if (Data["Table"] != undefined && Data["Table"].length > 0) {
           if (Data["Table1"] != undefined && Data["Table1"].length > 0) {
             if (Data["Table1"].length == 1) {
               let _app_details = Data["Table1"][0];
@@ -423,9 +423,19 @@ export class VisitorPreApontmntComponent implements OnInit {
             }
 
           } else {
+            var msg = '';
+            if (Data["Table"][0]['Code'] == 30)
+              msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc;
+            if (Data["Table"][0]['Code'] == 40)
+              msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.expiry_appointment_alert;
+            if (Data["Table"][0]['Code'] == 50)
+              msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.not_valid_today?this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.not_valid_today:Data["Table"][0]['description'];
+            if (Data["Table"][0]['Code'] == 60)
+              msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_checkin_limit_reached;
+
             this.dialog.open(appConfirmDialog, {
               width: '250px',
-              data: { title: this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_not_found_desc, btn_ok: "Ok" }
+              data: { title: msg, btn_ok: "Ok" }
             });
           }
         } else {

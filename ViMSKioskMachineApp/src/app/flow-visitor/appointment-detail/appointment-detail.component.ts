@@ -989,6 +989,13 @@ export class AppointmentDetailComponent implements OnInit {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
           }
         }
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
+          if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Count < 5) {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = true;
+          } else {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = false;
+          }
+        }
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show) {
           if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 5) {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
@@ -1068,6 +1075,13 @@ export class AppointmentDetailComponent implements OnInit {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
           } else {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
+          }
+        }
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
+          if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Count < 6) {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = true;
+          } else {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = false;
           }
         }
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show) {
@@ -1150,6 +1164,14 @@ export class AppointmentDetailComponent implements OnInit {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
           }
         }
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
+          if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Count < 6) {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = true;
+          } else {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = false;
+          }
+        }
+
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show) {
           if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 6) {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
@@ -1231,6 +1253,14 @@ export class AppointmentDetailComponent implements OnInit {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = false;
           }
         }
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
+          if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Count < 7) {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = true;
+          } else {
+            this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = false;
+          }
+        }
+
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show) {
           if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Count < 7) {
             this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
@@ -1281,6 +1311,11 @@ export class AppointmentDetailComponent implements OnInit {
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Show) {
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Host.Page1 = true;
         }
+
+        if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Show) {
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.Page1 = true;
+        }
+
         if (this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Show) {
           this.KIOSK_PROPERTIES.COMMON_CONFIG.Country.Page1 = true;
         }
@@ -1631,7 +1666,7 @@ export class AppointmentDetailComponent implements OnInit {
       this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorName.MaxLength = 50;
       this.KIOSK_PROPERTIES.COMMON_CONFIG.Vehicle.MaxLength = 15;
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo)
-        this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength = 15;
+        this.KIOSK_PROPERTIES.COMMON_CONFIG.PassNo.MaxLength = 10;
       this.calculateNumberofInputs();
       if (this.KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show) {
         this.calcIdLength();

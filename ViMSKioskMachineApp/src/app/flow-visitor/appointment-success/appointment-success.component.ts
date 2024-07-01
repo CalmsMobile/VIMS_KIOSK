@@ -175,7 +175,7 @@ export class AppointmentSuccessComponent implements OnInit {
       this.router.navigateByUrl('/landing');
     }, _timeout);
   }
-  triggerLabelPrint() {
+ /*  triggerLabelPrint() {
 
     if (this.LabelPrintEnable) {
 
@@ -185,7 +185,7 @@ export class AppointmentSuccessComponent implements OnInit {
 
       this.loadreceiptprint(this.CheckInVisitorData);
     }
-  }
+  } */
   _registerVisitors(isRetry?: boolean) {
     let uploadArray: any = JSON.parse(localStorage.getItem("VISI_LIST_ARRAY"));
     if (isRetry) {
@@ -690,12 +690,6 @@ export class AppointmentSuccessComponent implements OnInit {
                 if (visitorData.length > 0) {
 
                   this.processNexttoSuccess();
-                  /*  if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
-                       this.loadlblprint(visitorData, (pri_status: boolean) => { });
-                   }
-                   if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
-                     this.loadreceiptprint(visitorData);
-                   } */
                   _nextElemcallBack(true);
                   return;
                 } else {
@@ -799,12 +793,6 @@ export class AppointmentSuccessComponent implements OnInit {
                 if (visitorData.length > 0) {
 
                   this.processNexttoSuccess();
-                  /* if (_Modules['printer']['enable'] && this.LabelPrintManualOrAuto == 10) {
-                    this.loadlblprint(visitorData, (pri_status: boolean) => { });
-                  }
-                  if (_Modules['printer']['recipt_enable'] && this.LabelPrintManualOrAuto == 10) {
-                    this.loadreceiptprint(visitorData);
-                  } */
                   _nextElemcallBack(true);
                   return;
                 } else {
@@ -868,12 +856,16 @@ export class AppointmentSuccessComponent implements OnInit {
         if (status['s'] === true) {
           if (visitorData.length > 0) {
             if (_Modules['printer']['label_printer_enable'] && this.LabelPrintManualOrAuto == 10) {
+              setTimeout(() => {
+                this.loadlblprint(visitorData, (pri_status: boolean) => { });
+              }, (this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds?this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds:0)*1000);
 
-              this.loadlblprint(visitorData, (pri_status: boolean) => { });
             }
             if (_Modules['printer']['receipt_printer_enable'] && this.LabelPrintManualOrAuto == 10) {
-
+              setTimeout(() => {
               this.loadreceiptprint(visitorData);
+            }, (this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds?this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds:0)*1000);
+
             }
             _nextElemcallBack(true);
             return;
@@ -951,11 +943,16 @@ export class AppointmentSuccessComponent implements OnInit {
           if (visitorData.length > 0) {
             if (_Modules['printer']['label_printer_enable'] && this.LabelPrintManualOrAuto == 10) {
 
-              this.loadlblprint(visitorData, (pri_status: boolean) => { });
+              setTimeout(() => {
+                this.loadlblprint(visitorData, (pri_status: boolean) => { });
+              }, (this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds?this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds:0)*1000);
             }
             if (_Modules['printer']['receipt_printer_enable'] && this.LabelPrintManualOrAuto == 10) {
 
-              this.loadreceiptprint(visitorData);
+              setTimeout(() => {
+                this.loadreceiptprint(visitorData);
+              }, (this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds?this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds:0)*1000);
+
             }
             _nextElemcallBack(true);
             return;
@@ -989,7 +986,9 @@ export class AppointmentSuccessComponent implements OnInit {
           return;
         });
       } else {
-        this._finish_with_success_msg();
+        setTimeout(() => {
+          this._finish_with_success_msg();
+        }, (this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds?this.KIOSK_PROPERTIES_LOCAL.printDelayInSeconds:0)*1000);
       }
     }
     _callNext();

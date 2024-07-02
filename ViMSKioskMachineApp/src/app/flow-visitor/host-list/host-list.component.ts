@@ -50,10 +50,11 @@ export class HostListComponent implements OnInit {
 
   }
   ngAfterViewInit() {
-    this.keyboard = new Keyboard({
-      onChange: input => this.onChange(input),
-      onKeyPress: button => this.onKeyPress(button),
-    });
+    if (this.searchHostOption)
+      this.keyboard = new Keyboard({
+        onChange: input => this.onChange(input),
+        onKeyPress: button => this.onKeyPress(button),
+      });
   }
 
   onChange = (input: string) => {

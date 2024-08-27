@@ -46,15 +46,17 @@ export class VisitorPreApontmntComponent implements OnInit {
   }
   selectedTabValue(event) {
     console.log(event);
-    if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption) {
-      this.selectedType = 'nric';
-      this.showScanButton = false;
-      this.openKeyBoard(
-        this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
-        this.APONTMNT_NRIC, false);
-      setTimeout(() => {
-        this.nric.nativeElement.focus()
-      });
+    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC != undefined){
+      if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption) {
+        this.selectedType = 'nric';
+        this.showScanButton = false;
+        this.openKeyBoard(
+          this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
+          this.APONTMNT_NRIC, false);
+        setTimeout(() => {
+          this.nric.nativeElement.focus()
+        });
+      }
     }
     if (event.tab.textLabel == this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.title_caption) {
       this.selectedType = 'contact';
@@ -156,12 +158,12 @@ export class VisitorPreApontmntComponent implements OnInit {
     }
   }
   selTab() {
-    if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable || this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable ||
+    if ((this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC != undefined && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable) || this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Contact.enable ||
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.Email.enable ||
       this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.AppointmentID.enable) {
 
       this.selectedIndex = 0;
-      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable) {
+      if (this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC != undefined && this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable) {
         this.selectedType = 'nric';
         /* this.openKeyBoard(
           this.KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.field_caption,
@@ -429,7 +431,7 @@ export class VisitorPreApontmntComponent implements OnInit {
             if (Data["Table"][0]['Code'] == 40)
               msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.expiry_appointment_alert;
             if (Data["Table"][0]['Code'] == 50)
-              msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.not_valid_today?this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.not_valid_today:Data["Table"][0]['description'];
+              msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.not_valid_today ? this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.not_valid_today : Data["Table"][0]['description'];
             if (Data["Table"][0]['Code'] == 60)
               msg = this.KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.appt_checkin_limit_reached;
 

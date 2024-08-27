@@ -318,7 +318,10 @@
  -->
   <button mat-raised-button my-theme-button *ngIf="showFirstPageFields" style="float: right"
     (click)="takeActFor('confirm')" [disabled]="
-      validateAndReturnEmail() ||
+    (KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Show &&
+        KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Page1 &&
+        KIOSK_PROPERTIES.COMMON_CONFIG.EmailId.Mandatory &&
+        validateAndReturnEmail()) ||
       (KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Show &&
         KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Page1 &&
         KIOSK_PROPERTIES.COMMON_CONFIG.VisitorId.Mandatory &&

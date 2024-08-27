@@ -18,7 +18,7 @@
     <div style="display: inline-block; vertical-align: top">
       <mat-tab-group mat-align-tabs="center" (selectedTabChange)="selectedTabValue($event)"
         [selectedIndex]="selectedIndex">
-        <mat-tab *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable" [disabled]="
+        <mat-tab *ngIf="KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC !=undefined && KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable" [disabled]="
             !KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.enable
           " label="{{
             KIOSK_PROPERTIES.COMMON_CONFIG.AppointmentSearch.NRIC.title_caption

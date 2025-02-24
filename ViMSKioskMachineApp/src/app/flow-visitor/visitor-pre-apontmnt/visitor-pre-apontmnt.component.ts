@@ -31,6 +31,8 @@ export class VisitorPreApontmntComponent implements OnInit {
   @ViewChild("contact") contact: ElementRef;
   @ViewChild('email') email: ElementRef;
   @ViewChild('appint_id') appint_id: ElementRef;
+  KIOSK_PROPERTIES_LOCAL: any;
+  disableOnScreenKeyboard: any;
   constructor(private router: Router,
     private route: ActivatedRoute,
     private bottomSheet: MatBottomSheet,
@@ -482,6 +484,13 @@ export class VisitorPreApontmntComponent implements OnInit {
 
   openKeyBoard(field_caption, value, isEmail) {
     //this.selectedType = selectedType;
+    if (this.KIOSK_PROPERTIES_LOCAL == undefined) {
+      let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+      this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+      this.disableOnScreenKeyboard = this.KIOSK_PROPERTIES_LOCAL.disableOnScreenKeyboard;
+    }
+    if (this.disableOnScreenKeyboard)
+      return;
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
       panelClass: this.selectedType == "contact" || this.selectedType == "appint_id" ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
       data: {

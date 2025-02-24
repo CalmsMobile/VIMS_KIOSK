@@ -213,7 +213,7 @@ export class SettingsService {
             _prepare['kioskSetup']['WalkinSettings']['fieldList'] = this.getFieldList(_prepare['kioskSetup']['WalkinSettings']);
             _prepare['kioskSetup']['AppointmentSettings']['fieldList'] = this.getFieldList(_prepare['kioskSetup']['AppointmentSettings']);
             _prepare['kioskSetup']['ReqApptSettings']['fieldList'] = this.getFieldList(_prepare['kioskSetup']['ReqApptSettings']);
-            console.log("KIOSK_PROPERTIES " + JSON.stringify(_prepare));
+            console.log(_prepare);
             localStorage.setItem('KIOSK_PROPERTIES', JSON.stringify(_prepare));
             //new setting
             //this._initCardDispenserModule();

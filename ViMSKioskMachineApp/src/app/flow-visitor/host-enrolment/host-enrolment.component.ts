@@ -14,6 +14,8 @@ import { KeboardBottomSheetComponent } from '../keboard-bottom-sheet/keboard-bot
 export class HostEnrolmentComponent implements OnInit {
 
   searchText = '';
+  KIOSK_PROPERTIES_LOCAL: any;
+  disableOnScreenKeyboard: any;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -101,6 +103,13 @@ export class HostEnrolmentComponent implements OnInit {
 
   openKeyBoard(field_caption, value) {
     //this.selectedType = selectedType;
+    if (this.KIOSK_PROPERTIES_LOCAL == undefined) {
+      let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+      this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+      this.disableOnScreenKeyboard = this.KIOSK_PROPERTIES_LOCAL.disableOnScreenKeyboard;
+    }
+    if (this.disableOnScreenKeyboard)
+      return;
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
       panelClass: 'keyboard-normal-bottom-sheet',
       data: {

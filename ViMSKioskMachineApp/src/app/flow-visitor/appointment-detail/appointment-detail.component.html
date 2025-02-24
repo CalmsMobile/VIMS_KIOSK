@@ -505,4 +505,11 @@
     : KIOSK_PROPERTIES.COMMON_CONFIG.AdditionalTitle.submit_button_caption
     }}
   </button>
+
+  <button mat-raised-button my-theme-button
+  *ngIf="teamsCallToHost"
+  [disabled]="disableCallToHost"
+  style="float: right; margin-right: 20px;"
+    (click)="takeActFor('callHost')">
+    Call Host</button>
 </div>

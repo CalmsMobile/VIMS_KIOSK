@@ -15,6 +15,8 @@ export class VisitorCheckoutComponent implements OnInit {
   scanData: any = '';
   totalVisitors: number = 0;
   APONTMNT_CODE: any;
+  KIOSK_PROPERTIES_LOCAL: any;
+  disableOnScreenKeyboard: any;
   constructor(private router: Router,
     private route: ActivatedRoute,
     private settingService: SettingsService,
@@ -122,7 +124,13 @@ export class VisitorCheckoutComponent implements OnInit {
       });
   }
   openKeyBoard(field_caption, value, event: any, isNumeric) {
-
+    if (this.KIOSK_PROPERTIES_LOCAL == undefined) {
+      let setngs_local = localStorage.getItem('KIOSK_PROPERTIES_LOCAL');
+      this.KIOSK_PROPERTIES_LOCAL = JSON.parse(setngs_local);
+      this.disableOnScreenKeyboard = this.KIOSK_PROPERTIES_LOCAL.disableOnScreenKeyboard;
+    }
+    if (this.disableOnScreenKeyboard)
+      return;
     const host = this.bottomSheet.open(KeboardBottomSheetComponent, {
       panelClass: isNumeric ? 'keyboard-numeric-bottom-sheet' : 'keyboard-normal-bottom-sheet',
       data: {

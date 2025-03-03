@@ -225,6 +225,9 @@ export class AppointmentDetailComponent implements OnInit {
       this.aptmDetails.hostDetails.company = doc_detail["host_company_id"];
       this.aptmDetails.hostDetails.PatientName = doc_detail["PatientName"];
 
+      if (this.aptmDetails.hostDetails.email != undefined && this.aptmDetails.hostDetails.email != null && this.aptmDetails.hostDetails.email != '')
+        this.disableCallToHost = false;
+
       //localStorage.setItem("VISI_SCAN_DOC_DATA","");
       if (this.aptmDetails.purpose) {
         this.isDisablePurpose = true;
@@ -619,8 +622,8 @@ export class AppointmentDetailComponent implements OnInit {
       this.router.navigateByUrl('/landing')
     } else if (action === "visitorSummary") {
       this.router.navigateByUrl('/visitorSummaryDetail')
-    }else if(action === "callHost"){
-     var url ="msteams://teams.microsoft.com/l/call/0/0?users="+this.aptmDetails.hostDetails.email;
+    } else if (action === "callHost") {
+      var url = "msteams://teams.microsoft.com/l/call/0/0?users=" + this.aptmDetails.hostDetails.email;
       //window.open(url, 'winname', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=400,height=350');
       window.location.href = url;
     }
@@ -1374,11 +1377,10 @@ export class AppointmentDetailComponent implements OnInit {
 
           this.aptmDetails.hostDetails.HostDeptId = result['DEPARTMENT_REFID'];
           console.log(this.aptmDetails.hostDetails.id);
-          if(result['HOST_EMAIL']) {
+          if (result['HOST_EMAIL']) {
             this.aptmDetails.hostDetails.email = result['HOST_EMAIL'];
             this.disableCallToHost = false;
-          }else
-          {
+          } else {
             this.aptmDetails.hostDetails.email = '';
             this.disableCallToHost = true;
           }

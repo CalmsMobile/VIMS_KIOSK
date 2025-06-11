@@ -442,7 +442,7 @@ export class LandingComponent implements OnInit {
     [sub-title] { color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_txt_header2'] + ` !important; }
     [my-theme-round-button], [my-theme-button] {
       color: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_txt'] + ` !important;
-      background: linear-gradient(to top left, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_2'] + `, ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1'] + `) !important;
+      background: ` + this.KIOSK_PROPERTIES['commonsetup']['clr_btn_gtd_1'] + `!important;
     }
     [my-theme-round-button]::before, [my-theme-button]::before {
       box-shadow: `+ shadow + ` !important;

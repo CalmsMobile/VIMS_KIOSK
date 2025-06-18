@@ -8,11 +8,11 @@ min-width: 15vh;z-index: 999999999;">
     matBadgeColor="accent">
     <i class="siva-icon-docs-1"></i> </button>
 </div> -->
-<div style="text-align:center;padding:30px;">
+<div style="text-align:center;padding:30px;padding-top: 9%;">
   <h1 welcome-title *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1 != ''">
     {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_1}}
   </h1>
-  <img style="height: 24vh;margin-top: 2vh;" alt="Angular Logo" [src]="LOGO_IMG">
+  <img style="height: 23vh;margin-top: 2vh;" alt="Angular Logo" [src]="LOGO_IMG">
   <h3 info-title *ngIf="KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2 != ''" style="margin-top:10vh;">
     {{KIOSK_PROPERTIES.commonsetup.Home_screen_Label_2}}</h3>
 </div>
@@ -56,8 +56,8 @@ min-width: 15vh;z-index: 999999999;">
     value="CHECKIN" [ngStyle]="{'font-weight': KIOSK_PROPERTIES.WalkinSettings.CaptionBold? 'bold': '' ,
     'text-transform': KIOSK_PROPERTIES.WalkinSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
     (click)="takeActFor('vcheckin')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    <img src="{{CheckIn}}" onError="src ='assets/images/cus_icons/checkin.png'" style="    width: 100px;
-    height: 100px;
+    <img src="{{CheckIn}}" onError="src ='assets/images/cus_icons/checkin.png'" style="    width: 120px;
+    height: 120px;
     padding-bottom: 10px;
     margin: 0 auto;
     display: block;" />
@@ -71,8 +71,8 @@ min-width: 15vh;z-index: 999999999;">
     [ngStyle]="{'font-weight': KIOSK_PROPERTIES.AppointmentSettings.CaptionBold? 'bold': '400' ,
         'text-transform': KIOSK_PROPERTIES.AppointmentSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
     (click)="takeActFor('preAppointment')">
-    <img src="{{Appointment}}" onError="src ='assets/images/cus_icons/pre_appointment.png'" style="   width: 100px;
-    height: 100px;
+    <img src="{{Appointment}}" onError="src ='assets/images/cus_icons/pre_appointment.png'" style="   width: 120px;
+    height: 120px;
     padding-bottom: 10px;
     margin: 0 auto;
     display: block;" />
@@ -85,8 +85,8 @@ min-width: 15vh;z-index: 999999999;">
     [ngStyle]="{'font-weight': KIOSK_PROPERTIES.ReqApptSettings.CaptionBold? 'bold': '' ,
     'text-transform': KIOSK_PROPERTIES.ReqApptSettings.CaptionCapitalize? 'uppercase': 'capitalize'}"
     (click)="takeActFor('vcheckinapproval')" [disabled]="!IF_CONNECT_WITH_SERVER">
-    <img src="{{RequestAppointment}}" onError="src ='assets/images/cus_icons/register.png'" style="   width: 100px;
-    height: 100px;
+    <img src="{{RequestAppointment}}" onError="src ='assets/images/cus_icons/register.png'" style="   width: 120px;
+    height: 120px;
     padding-bottom: 10px;
     margin: 0 auto;
     display: block;" />
